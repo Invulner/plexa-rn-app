@@ -18,10 +18,12 @@
       "fallbackToCacheTimeout": 0
     },
     "assetBundlePatterns": [
-      "**/*"
+      "src/assets/images/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "config": {
+        "usesNonExemptEncryption": false
+      }
     }
   }
 }
