@@ -1,0 +1,5 @@
+const SAVE_DEVICE_INFO = 'SAVE_DEVICE_INFO'
+
+export default {
+  SAVE_DEVICE_INFO
+}
