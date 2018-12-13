@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Linking, Image } from 'react-native';
-import { signUpUrl } from '../../constants';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Linking, Image } from 'react-native'
+import { signUpUrl } from '../../constants'
 
 class LoginScreen extends Component {
   render() {
@@ -25,8 +25,7 @@ class LoginScreen extends Component {
 
         <TouchableOpacity style={styles.button}>
           <View>
-            <Text 
-              style={styles.buttonText}>
+            <Text style={styles.buttonText}>
               Log in
             </Text>
           </View>
@@ -34,16 +33,25 @@ class LoginScreen extends Component {
 
         <View style={{alignItems: "center"}}>
           <View style={styles.signUpContainer}>
-            <Text style={styles.signUpText}>Not a member?</Text>
+            <Text style={styles.signUpText}>
+              Not a member?
+            </Text>
             <Text 
               style={styles.signUpLink} 
-              onPress={ () => {Linking.openURL(signUpUrl)}}>Sign up
+              onPress={() => { Linking.openURL(signUpUrl) }}>
+              Sign up
             </Text>
           </View>
 
-          <Text style={styles.serviceText}>By using our service you agree with</Text>
-          <Text style={styles.termsAndPolicyText}>Terms of service</Text>
-          <Text style={styles.termsAndPolicyText}>Privacy policy</Text>
+          <Text style={styles.serviceText}>
+            By using our service you agree with
+          </Text>
+          <Text style={styles.termsAndPolicyText}>
+            Terms of service
+          </Text>
+          <Text style={styles.termsAndPolicyText}>
+            Privacy policy
+          </Text>
         </View> 
 
         <View style={styles.imageContainer}>
@@ -57,9 +65,10 @@ class LoginScreen extends Component {
     )
   }
 }
-const backgroundColor = '#ededed';
-const buttonColor = '#bcac85';
-const textColor = '#7e7763';
+
+const backgroundColor = '#ededed'
+const buttonColor = '#bcac85'
+const textColor = '#7e7763'
 
 const formControl = {
   paddingVertical: 17,
