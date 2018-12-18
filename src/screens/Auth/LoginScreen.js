@@ -1,8 +1,53 @@
 import React, { Component } from 'react'
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Linking, Image } from 'react-native'
-import { signUpUrl } from '../../constants'
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Linking, Image, Alert } from 'react-native'
+import axios from 'axios'
+import { signUpUrl, baseUrl } from '../../constants'
 
 class LoginScreen extends Component {
+  state = {
+    email: '',
+    password: ''
+  }
+
+  onEmailChange = (value) => {
+    this.setState({ email: value.toLowerCase() })
+  }
+
+  onPasswordChange = (value) => {
+    this.setState({ password: value })
+  }
+
+  checkEmailValidity() {
+    const re = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/
+    if (!re.test(this.state.email)) {
+      return false
+    } 
+    return true
+  }
+
+  checkPasswordValidity() {
+    if (this.state.password.length < 8) {
+      return false
+    } 
+    return true
+  }
+
+  inputSubmit = () => {
+    const isValidEmail = this.checkEmailValidity()
+    const isValidPassword = this.checkPasswordValidity()
+
+    if (!isValidEmail && !isValidPassword) {
+      Alert.alert('Incorrect email and password', 'Please, enter correct email and password')
+    } else if (!isValidEmail) {
+      Alert.alert('Incorrect email', 'Please, enter correct email')
+    } else if (!isValidPassword) {
+      Alert.alert('Incorrect password', 'Minimum length is 8 characters')
+    } else {
+      const payload = this.state
+      axios.post(`${baseUrl}/api/v1/session/sign_in`, payload)
+    }
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -14,16 +59,22 @@ class LoginScreen extends Component {
         <TextInput 
           style={styles.input}
           placeholder='Your e-mail'
-          textContentType='emailAddress'>
-        </TextInput>
+          textContentType='emailAddress'
+          value={this.state.email}
+          onChangeText={(value) => { this.onEmailChange(value) }}>
+          </TextInput>
 
         <TextInput
           style={styles.input}
           placeholder='Password'
-          textContentType='password'>
+          textContentType='password'
+          value={this.state.password}
+          onChangeText={(value) => { this.onPasswordChange(value) }}>
         </TextInput>
 
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity 
+          style={styles.button}
+          onPress={this.inputSubmit}>
           <View>
             <Text style={styles.buttonText}>
               Log in
