@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, Linking, Image, Alert } from 'react-native'
-import axios from 'axios'
-import { signUpUrl, baseUrl } from '../../constants'
+import { signUpUrl } from '../../constants'
 
 class LoginScreen extends Component {
   state = {
@@ -28,7 +27,7 @@ class LoginScreen extends Component {
   }
 
   isFormValid() {
-    return (this.isEmailValid() && this.isPasswordValid())
+    return this.isEmailValid() && this.isPasswordValid()
   }
 
   login() {
@@ -42,7 +41,6 @@ class LoginScreen extends Component {
     if (!this.isEmailValid() && !this.isPasswordValid()) {
       title = 'Incorrect email and password'
       message = 'Please, enter correct email and password'
-
     } else if (!this.isEmailValid()) {
       title = 'Incorrect email'
       message = 'Please, enter correct email'
@@ -52,12 +50,10 @@ class LoginScreen extends Component {
   }
 
   onSubmit = () => {
-    if (this.isFormValid()) {
+    if (this.isFormValid()) 
       this.login()
-    }
-    else {
+    else 
       this.showValidationMessage()
-    }
   }
 
   render() {
