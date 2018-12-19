@@ -9,46 +9,60 @@ class LoginScreen extends Component {
     password: ''
   }
 
-  onEmailChange = (value) => {
-    this.setState({ email: value.toLowerCase() })
+  onEmailChange = (email) => {
+    this.setState({ email: email.toLowerCase() })
   }
 
-  onPasswordChange = (value) => {
-    this.setState({ password: value })
+  onPasswordChange = (password) => {
+    this.setState({ password })
   }
 
-  checkEmailValidity() {
+  isEmailValid() {
     const re = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/
-    if (!re.test(this.state.email)) {
-      return false
-    } 
-    return true
+
+    return re.test(this.state.email)
   }
 
-  checkPasswordValidity() {
-    if (this.state.password.length < 8) {
-      return false
-    } 
-    return true
+  isPasswordValid() {
+    return this.state.password.length >= 8
   }
 
-  inputSubmit = () => {
-    const isValidEmail = this.checkEmailValidity()
-    const isValidPassword = this.checkPasswordValidity()
+  isFormValid() {
+    return (this.isEmailValid() && this.isPasswordValid())
+  }
 
-    if (!isValidEmail && !isValidPassword) {
-      Alert.alert('Incorrect email and password', 'Please, enter correct email and password')
-    } else if (!isValidEmail) {
-      Alert.alert('Incorrect email', 'Please, enter correct email')
-    } else if (!isValidPassword) {
-      Alert.alert('Incorrect password', 'Minimum length is 8 characters')
-    } else {
-      const payload = this.state
-      axios.post(`${baseUrl}/api/v1/session/sign_in`, payload)
+  login() {
+    console.log('working with redux: ajax call')
+  }
+
+  showValidationMessage() {
+    let title = 'Incorrect password'
+    let message = 'Please, enter correct password'
+
+    if (!this.isEmailValid() && !this.isPasswordValid()) {
+      title = 'Incorrect email and password'
+      message = 'Please, enter correct email and password'
+
+    } else if (!this.isEmailValid()) {
+      title = 'Incorrect email'
+      message = 'Please, enter correct email'
+    }
+
+    Alert.alert(title, message)
+  }
+
+  onSubmit = () => {
+    if (this.isFormValid()) {
+      this.login()
+    }
+    else {
+      this.showValidationMessage()
     }
   }
 
   render() {
+    const { email, password } = this.state
+
     return (
       <View style={styles.container}>
 
@@ -60,7 +74,7 @@ class LoginScreen extends Component {
           style={styles.input}
           placeholder='Your e-mail'
           textContentType='emailAddress'
-          value={this.state.email}
+          value={email}
           onChangeText={(value) => { this.onEmailChange(value) }}>
           </TextInput>
 
@@ -68,13 +82,13 @@ class LoginScreen extends Component {
           style={styles.input}
           placeholder='Password'
           textContentType='password'
-          value={this.state.password}
+          value={password}
           onChangeText={(value) => { this.onPasswordChange(value) }}>
         </TextInput>
 
         <TouchableOpacity 
           style={styles.button}
-          onPress={this.inputSubmit}>
+          onPress={this.onSubmit}>
           <View>
             <Text style={styles.buttonText}>
               Log in
