@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, Linking, Image, Alert } from 'react-native'
+import { connect } from 'react-redux'
+import { auth } from '../../operations/UserOperations'
 import { signUpUrl } from '../../constants'
 
 class LoginScreen extends Component {
@@ -31,7 +33,8 @@ class LoginScreen extends Component {
   }
 
   login() {
-    console.log('working with redux: ajax call')
+    const credentials = this.state
+    this.props.login(credentials)
   }
 
   showValidationMessage() {
@@ -223,4 +226,9 @@ const styles = StyleSheet.create({
   }
 })
 
-export default LoginScreen
+const mapDispatchToProps = dispatch => {
+  const login = (credentials) => dispatch(auth(credentials))
+  return { login }
+}
+
+export default connect(null, mapDispatchToProps)(LoginScreen)
