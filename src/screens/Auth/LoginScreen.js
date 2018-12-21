@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, Linking, Image, Alert } from 'react-native'
 import { connect } from 'react-redux'
-import { auth } from '../../operations/UserOperations'
+import userOperations from '../../operations/UserOperations'
 import { signUpUrl } from '../../constants'
 
 class LoginScreen extends Component {
@@ -227,7 +227,7 @@ const styles = StyleSheet.create({
 })
 
 const mapDispatchToProps = dispatch => {
-  const login = (credentials) => dispatch(auth(credentials))
+  const login = (credentials) => dispatch(userOperations.auth(credentials))
   return { login }
 }
 

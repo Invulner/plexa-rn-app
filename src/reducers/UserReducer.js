@@ -1,16 +1,17 @@
 import types from '../types/user'
+import UserActions from '../actions/UserActions';
 
 const initialState = {
-  user: {}
+  id: '',
+  email: '',
+  provider: '',
+  customer_id: ''
 }
 
 const userReducer = (state = initialState, action) => {
   switch(action.type) {
     case types.SUCCESS_AUTH:
-      return {
-        ...state, 
-        user: [...action.userData]
-      }
+      return {...state, ...action.userData}
     default:
       return state
   }
