@@ -1,10 +1,10 @@
 import types from '../types/user'
 
-const successAuth = (userData) => ({
-  type: types.SUCCESS_AUTH,
+const saveUserData = (userData) => ({
+  type: types.SAVE_USER_DATA,
   userData
 })
 
 export default {
-  successAuth
+  saveUserData
 }

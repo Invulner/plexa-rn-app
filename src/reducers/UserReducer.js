@@ -1,5 +1,4 @@
 import types from '../types/user'
-import UserActions from '../actions/UserActions';
 
 const initialState = {
   id: '',
@@ -10,7 +9,7 @@ const initialState = {
 
 const userReducer = (state = initialState, action) => {
   switch(action.type) {
-    case types.SUCCESS_AUTH:
+    case types.SAVE_USER_DATA:
       return {...state, ...action.userData}
     default:
       return state

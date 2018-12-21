@@ -1,5 +1,5 @@
-const SUCCESS_AUTH = 'SUCCESS_AUTH'
+const SAVE_USER_DATA = 'SAVE_USER_DATA'
 
 export default {
-  SUCCESS_AUTH
+  SAVE_USER_DATA
 }

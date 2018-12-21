@@ -4,6 +4,12 @@ import { connect } from 'react-redux'
 import userOperations from '../../operations/UserOperations'
 import { signUpUrl } from '../../constants'
 
+const mapDispatchToProps = dispatch => {
+  const login = (credentials) => dispatch(userOperations.auth(credentials))
+
+  return { login }
+}
+
 class LoginScreen extends Component {
   state = {
     email: '',
@@ -79,6 +85,7 @@ class LoginScreen extends Component {
 
         <TextInput
           style={styles.input}
+          secureTextEntry={true}
           placeholder='Password'
           textContentType='password'
           value={password}
@@ -225,10 +232,5 @@ const styles = StyleSheet.create({
     height: 42
   }
 })
-
-const mapDispatchToProps = dispatch => {
-  const login = (credentials) => dispatch(userOperations.auth(credentials))
-  return { login }
-}
 
 export default connect(null, mapDispatchToProps)(LoginScreen)
