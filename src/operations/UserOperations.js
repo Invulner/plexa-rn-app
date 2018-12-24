@@ -3,23 +3,23 @@ import { apiURL } from '../constants'
 import { Alert, AsyncStorage } from 'react-native'
 import actions from '../actions/UserActions'
 
-const auth = (credentials) => {
+const auth = (credentials, navigation) => {
 
   return dispatch => {
     
     return Axios.post(`${apiURL}/session/sign_in`, credentials)
-      .then(response => onLoginSuccess(response.data.data, dispatch))
+      .then(response => onLoginSuccess(response.data.data, dispatch, navigation))
       .catch(error => onLoginFail(error))
   }
 }
 
-const onLoginSuccess = (data, dispatch) => {
+const onLoginSuccess = (data, dispatch, navigation) => {
   const { id, email, provider, uid, customer_id, discuss_api_token } = data
   const userData = {id, email, provider, customer_id}
   const userSecretData = {uid, ...discuss_api_token}
   dispatch(actions.saveUserData(userData))
   saveUserToAsyncStorage(userSecretData)
-  redirect()
+  redirect(navigation)
 }
 
 const saveUserToAsyncStorage = (userSecretData) => { 
@@ -29,8 +29,8 @@ const saveUserToAsyncStorage = (userSecretData) => {
   AsyncStorage.multiSet(values, (error) =>  error ? console.log('ERROR: ', error) : null)
 }
 
-const redirect = () => {
-  console.log('redirected to new screen')
+const redirect = (navigation) => {
+ navigation.navigate('Feed')
 }
 
 const onLoginFail = (error) => {

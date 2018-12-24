@@ -4,8 +4,8 @@ import { connect } from 'react-redux'
 import userOperations from '../../operations/UserOperations'
 import { signUpUrl } from '../../constants'
 
-const mapDispatchToProps = dispatch => {
-  const login = (credentials) => dispatch(userOperations.auth(credentials))
+const mapDispatchToProps = (dispatch, { navigation }) => {
+  const login = (credentials) => dispatch(userOperations.auth(credentials, navigation))
 
   return { login }
 }
