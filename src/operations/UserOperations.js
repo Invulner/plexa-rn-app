@@ -8,25 +8,25 @@ const auth = (credentials) => {
   return dispatch => {
     
     return Axios.post(`${apiURL}/session/sign_in`, credentials)
-      .then(response => onLoginSuccess(response, dispatch))
+      .then(response => onLoginSuccess(response.data.data, dispatch))
       .catch(error => onLoginFail(error))
   }
 }
 
-const onLoginSuccess = (response, dispatch) => {
-    console.log(response)
-    const { data: { data: { id, email, provider, uid, customer_id, discuss_api_token } } } = response
-    const userData = {id, email, provider, customer_id}
-    const userSecretData = {uid, ...discuss_api_token}
-    console.log(userData)
-    dispatch(actions.saveUserData(userData))
-    saveUserToAsyncStorage(userSecretData)
-    redirect()
+const onLoginSuccess = (data, dispatch) => {
+  const { id, email, provider, uid, customer_id, discuss_api_token } = data
+  const userData = {id, email, provider, customer_id}
+  const userSecretData = {uid, ...discuss_api_token}
+  dispatch(actions.saveUserData(userData))
+  saveUserToAsyncStorage(userSecretData)
+  redirect()
 }
 
 const saveUserToAsyncStorage = (userSecretData) => { 
-  //AsyncStorage.setItem
-  console.log('async Storage', userSecretData)
+  const { uid, client } = userSecretData
+  const accessToken = userSecretData['access-token']
+  const values = [ ['uid', uid], ['accessToken', accessToken], ['client', client] ]
+  AsyncStorage.multiSet(values, (error) =>  error ? console.log('ERROR: ', error) : null)
 }
 
 const redirect = () => {
