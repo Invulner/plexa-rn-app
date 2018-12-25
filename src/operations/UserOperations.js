@@ -6,10 +6,11 @@ import actions from '../actions/UserActions'
 const auth = (credentials, navigation) => {
 
   return dispatch => {
-    
+    dispatch(actions.toggleUserDataLoading(true))
+
     return Axios.post(`${apiURL}/session/sign_in`, credentials)
       .then(response => onLoginSuccess(response.data.data, dispatch, navigation))
-      .catch(error => onLoginFail(error))
+      .catch(error => onLoginFail(error, dispatch))
   }
 }
 
@@ -20,6 +21,7 @@ const onLoginSuccess = (data, dispatch, navigation) => {
   dispatch(actions.saveUserData(userData))
   saveUserToAsyncStorage(userSecretData)
   redirect(navigation)
+  dispatch(actions.toggleUserDataLoading(false))
 }
 
 const saveUserToAsyncStorage = (userSecretData) => { 
@@ -36,6 +38,7 @@ const redirect = (navigation) => {
 const onLoginFail = (error) => {
   console.log('ERROR: ', error) 
   Alert.alert('Login error', 'Email or password is not correct')
+  dispatch(actions.toggleUserDataLoading(false))
 }
 
 export default {

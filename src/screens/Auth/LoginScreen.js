@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Linking, Image, Alert } from 'react-native'
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Linking, Image, Alert, ActivityIndicator } from 'react-native'
 import { connect } from 'react-redux'
 import userOperations from '../../operations/UserOperations'
 import { signUpUrl } from '../../constants'
@@ -8,6 +8,12 @@ const mapDispatchToProps = (dispatch, { navigation }) => {
   const login = (credentials) => dispatch(userOperations.auth(credentials, navigation))
 
   return { login }
+}
+
+const mapStateToProps = (state) => {
+  const loading = state.user.loading
+
+  return { loading }
 }
 
 class LoginScreen extends Component {
@@ -68,6 +74,25 @@ class LoginScreen extends Component {
   render() {
     const { email, password } = this.state
 
+    let logInButton = <TouchableOpacity 
+      style={styles.button}
+      onPress={this.onSubmit}>
+        <View>
+          <Text style={styles.buttonText}>Log in</Text>
+        </View>
+    </TouchableOpacity>
+
+    if (this.props.loading) {
+      logInButton = <TouchableOpacity 
+        style={styles.button}
+        onPress={this.onSubmit}
+        disabled>
+          <View>
+            <ActivityIndicator />
+          </View>
+        </TouchableOpacity>
+    }
+    
     return (
       <View style={styles.container}>
 
@@ -92,15 +117,7 @@ class LoginScreen extends Component {
           onChangeText={(value) => { this.onPasswordChange(value) }}>
         </TextInput>
 
-        <TouchableOpacity 
-          style={styles.button}
-          onPress={this.onSubmit}>
-          <View>
-            <Text style={styles.buttonText}>
-              Log in
-            </Text>
-          </View>
-        </TouchableOpacity>
+        { logInButton }
 
         <View style={{alignItems: "center"}}>
           <View style={styles.signUpContainer}>
@@ -233,4 +250,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect(null, mapDispatchToProps)(LoginScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen)

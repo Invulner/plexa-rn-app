@@ -5,6 +5,12 @@ const saveUserData = (userData) => ({
   userData
 })
 
+const toggleUserDataLoading = (flag) => ({
+  type: types.TOGGLE_USER_DATA_LOADING,
+  flag
+})
+
 export default {
-  saveUserData
+  saveUserData,
+  toggleUserDataLoading
 }
