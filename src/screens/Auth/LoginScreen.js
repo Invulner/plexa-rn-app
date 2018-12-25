@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, Linking, Image, Alert, ActivityIndicator } from 'react-native'
 import { connect } from 'react-redux'
 import userOperations from '../../operations/UserOperations'
-import { signUpUrl } from '../../constants'
+import { SIGN_UP_URL, MIN_PASSWORD_LENGTH } from '../../constants'
 
 const mapDispatchToProps = (dispatch, { navigation }) => {
   const login = (credentials) => dispatch(userOperations.auth(credentials, navigation))
@@ -11,7 +11,7 @@ const mapDispatchToProps = (dispatch, { navigation }) => {
 }
 
 const mapStateToProps = (state) => {
-  const loading = state.user.loading
+  const { loading } = state.user
 
   return { loading }
 }
@@ -37,7 +37,7 @@ class LoginScreen extends Component {
   }
 
   isPasswordValid() {
-    return this.state.password.length >= 8
+    return this.state.password.length >= MIN_PASSWORD_LENGTH
   }
 
   isFormValid() {
@@ -73,25 +73,7 @@ class LoginScreen extends Component {
 
   render() {
     const { email, password } = this.state
-
-    let logInButton = <TouchableOpacity 
-      style={styles.button}
-      onPress={this.onSubmit}>
-        <View>
-          <Text style={styles.buttonText}>Log in</Text>
-        </View>
-    </TouchableOpacity>
-
-    if (this.props.loading) {
-      logInButton = <TouchableOpacity 
-        style={styles.button}
-        onPress={this.onSubmit}
-        disabled>
-          <View>
-            <ActivityIndicator />
-          </View>
-        </TouchableOpacity>
-    }
+    const { loading } = this.props
     
     return (
       <View style={styles.container}>
@@ -100,13 +82,13 @@ class LoginScreen extends Component {
           Welcome, please login!
         </Text>
 
-        <TextInput 
+        <TextInput
           style={styles.input}
           placeholder='Your e-mail'
           textContentType='emailAddress'
           value={email}
-          onChangeText={(value) => { this.onEmailChange(value) }}>
-          </TextInput>
+          onChangeText={(value) => { this.onEmailChange(value) }}
+        />
 
         <TextInput
           style={styles.input}
@@ -114,10 +96,18 @@ class LoginScreen extends Component {
           placeholder='Password'
           textContentType='password'
           value={password}
-          onChangeText={(value) => { this.onPasswordChange(value) }}>
-        </TextInput>
+          onChangeText={(value) => { this.onPasswordChange(value) }}
+        />
 
-        { logInButton }
+        <TouchableOpacity
+          style={styles.button}
+          onPress={this.onSubmit}
+          disabled={loading}>
+          {loading ? 
+          <ActivityIndicator /> 
+          : 
+          <Text style={styles.buttonText}>Log in</Text>}
+        </TouchableOpacity>
 
         <View style={{alignItems: "center"}}>
           <View style={styles.signUpContainer}>
@@ -126,7 +116,7 @@ class LoginScreen extends Component {
             </Text>
             <Text 
               style={styles.signUpLink} 
-              onPress={() => { Linking.openURL(signUpUrl) }}>
+              onPress={() => { Linking.openURL(SIGN_UP_URL) }}>
               Sign up
             </Text>
           </View>
