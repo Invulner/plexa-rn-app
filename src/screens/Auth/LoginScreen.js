@@ -1,9 +1,80 @@
 import React, { Component } from 'react'
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Linking, Image } from 'react-native'
-import { signUpUrl } from '../../constants'
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Linking, Image, Alert, ActivityIndicator } from 'react-native'
+import { connect } from 'react-redux'
+import userOperations from '../../operations/UserOperations'
+import { SIGN_UP_URL, MIN_PASSWORD_LENGTH } from '../../constants'
+
+const mapDispatchToProps = (dispatch, { navigation }) => {
+  const login = (credentials) => dispatch(userOperations.auth(credentials, navigation))
+
+  return { login }
+}
+
+const mapStateToProps = (state) => {
+  const { loading } = state.user
+
+  return { loading }
+}
 
 class LoginScreen extends Component {
+  state = {
+    email: '',
+    password: ''
+  }
+
+  onEmailChange = (email) => {
+    this.setState({ email: email.toLowerCase() })
+  }
+
+  onPasswordChange = (password) => {
+    this.setState({ password })
+  }
+
+  isEmailValid() {
+    const re = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/
+
+    return re.test(this.state.email)
+  }
+
+  isPasswordValid() {
+    return this.state.password.length >= MIN_PASSWORD_LENGTH
+  }
+
+  isFormValid() {
+    return this.isEmailValid() && this.isPasswordValid()
+  }
+
+  login() {
+    const credentials = this.state
+    this.props.login(credentials)
+  }
+
+  showValidationMessage() {
+    let title = 'Incorrect password'
+    let message = 'Please, enter correct password'
+
+    if (!this.isEmailValid() && !this.isPasswordValid()) {
+      title = 'Incorrect email and password'
+      message = 'Please, enter correct email and password'
+    } else if (!this.isEmailValid()) {
+      title = 'Incorrect email'
+      message = 'Please, enter correct email'
+    }
+
+    Alert.alert(title, message)
+  }
+
+  onSubmit = () => {
+    if (this.isFormValid()) 
+      this.login()
+    else 
+      this.showValidationMessage()
+  }
+
   render() {
+    const { email, password } = this.state
+    const { loading } = this.props
+    
     return (
       <View style={styles.container}>
 
@@ -11,24 +82,32 @@ class LoginScreen extends Component {
           Welcome, please login!
         </Text>
 
-        <TextInput 
+        <TextInput
           style={styles.input}
           placeholder='Your e-mail'
-          textContentType='emailAddress'>
-        </TextInput>
+          textContentType='emailAddress'
+          value={email}
+          onChangeText={(value) => { this.onEmailChange(value) }}
+        />
 
         <TextInput
           style={styles.input}
+          secureTextEntry={true}
           placeholder='Password'
-          textContentType='password'>
-        </TextInput>
+          textContentType='password'
+          value={password}
+          onChangeText={(value) => { this.onPasswordChange(value) }}
+        />
 
-        <TouchableOpacity style={styles.button}>
-          <View>
-            <Text style={styles.buttonText}>
-              Log in
-            </Text>
-          </View>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={this.onSubmit}
+          disabled={loading}>
+          {loading ? 
+            <ActivityIndicator /> 
+            : 
+            <Text style={styles.buttonText}>Log in</Text>
+          }
         </TouchableOpacity>
 
         <View style={{alignItems: "center"}}>
@@ -38,7 +117,7 @@ class LoginScreen extends Component {
             </Text>
             <Text 
               style={styles.signUpLink} 
-              onPress={() => { Linking.openURL(signUpUrl) }}>
+              onPress={() => { Linking.openURL(SIGN_UP_URL) }}>
               Sign up
             </Text>
           </View>
@@ -162,4 +241,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default LoginScreen
+export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen)
