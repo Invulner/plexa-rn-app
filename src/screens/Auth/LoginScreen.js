@@ -104,9 +104,10 @@ class LoginScreen extends Component {
           onPress={this.onSubmit}
           disabled={loading}>
           {loading ? 
-          <ActivityIndicator /> 
-          : 
-          <Text style={styles.buttonText}>Log in</Text>}
+            <ActivityIndicator /> 
+            : 
+            <Text style={styles.buttonText}>Log in</Text>
+          }
         </TouchableOpacity>
 
         <View style={{alignItems: "center"}}>
