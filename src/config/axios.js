@@ -1,7 +1,7 @@
 import Axios from 'axios'
 import { AsyncStorage } from 'react-native'
 
-const apiCall = async () => {
+const getAxiosInstance = async () => {
   try {
     let secretData = await AsyncStorage.getItem('secretData')
 
@@ -14,14 +14,13 @@ const apiCall = async () => {
           'Client': secretData.client
         }
       }
-      const request = Axios.create(params)
 
-      return request
+      return Axios.create(params)
     }
 
   } catch (error) {
-    console.log('config file', error)
+    console.log('AXIOS CONFIG FILE ERROR: ', error)
   }
 }
 
-export default apiCall
+export default getAxiosInstance

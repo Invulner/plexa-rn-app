@@ -2,7 +2,7 @@ import Axios from 'axios'
 import { API_URL } from '../constants'
 import { Alert, AsyncStorage } from 'react-native'
 import UserActions from '../actions/UserActions'
-import apiCall from '../config/axios'
+import getAxiosInstance from '../config/axios'
 
 const auth = (credentials, navigation) => {
   return dispatch => {
@@ -14,23 +14,22 @@ const auth = (credentials, navigation) => {
   }
 }
 
-const validateSecretData = async (dispatch, navigation) => {
-  const request = await apiCall()
-  
-  request.get(`${API_URL}/profiles/me`)
-    .then(response => {
-      console.log(response)
-      dispatch(UserActions.saveUserData(response.data))
-      redirectToFeed(navigation)
-    })
-    .catch((error) => {
-      console.log('USER OP SECRET DATA ERROR: ', error)
-      redirectToLogin(navigation)
-      removeWrongDataFromStorage()
-    })
+const getProfileData = (dispatch, navigation) => {
+  getAxiosInstance().then(api => {
+    api.get(`${API_URL}/profiles/me`)
+      .then(response => {
+        dispatch(UserActions.saveUserData(response.data))
+        redirectToFeed(navigation)
+      })
+      .catch(error => {
+        console.log('USER OP SECRET DATA ERROR: ', error)
+        redirectToLogin(navigation)
+        clearUserSecretData()
+      })
+  })
 }
 
-const removeWrongDataFromStorage = () => {
+const clearUserSecretData = () => {
   AsyncStorage.removeItem('secretData', (error) => error ? console.log('ERROR: ', error) : null)
 }
 
@@ -47,6 +46,19 @@ const onLoginSuccess = (data, dispatch, navigation) => {
   saveUserToAsyncStorage(userSecretData)
   redirectToFeed(navigation)
   dispatch(UserActions.toggleUserDataLoading(false))
+  getProfileAfterLogin(dispatch)
+}
+
+const getProfileAfterLogin = (dispatch) => {
+  getAxiosInstance().then(api => {
+    api.get(`${API_URL}/profiles/me`)
+      .then(response => {
+        dispatch(UserActions.saveUserData(response.data))
+      })
+      .catch(error => {
+        console.log('PROFILE API CALL ERROR: ', error)
+      })
+  })
 }
 
 const saveUserToAsyncStorage = (userSecretData) => { 
@@ -64,5 +76,5 @@ const onLoginFail = (dispatch) => {
 
 export default {
   auth,
-  validateSecretData
+  getProfileData
 }

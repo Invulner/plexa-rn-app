@@ -2,9 +2,8 @@ import { AsyncStorage } from 'react-native'
 import UserOperations from './UserOperations'
  
 const initializeApp = (navigation) => {
-  
   return dispatch => {
-  checkForSavedCreds(dispatch, navigation)
+    checkForSavedCreds(dispatch, navigation)
   }
 }
 
@@ -13,7 +12,7 @@ const checkForSavedCreds = async (dispatch, navigation) => {
     const secretData = await AsyncStorage.getItem('secretData')
 
     if (secretData) {
-      UserOperations.validateSecretData(dispatch, navigation)
+      UserOperations.getProfileData(dispatch, navigation)
     }
     else {
       console.log('storage is empty')
@@ -21,7 +20,7 @@ const checkForSavedCreds = async (dispatch, navigation) => {
     }
 
   } catch (error) {
-      console.log('AsyncStorage error: ', error)
+      console.log('ASYNC STORAGE ERROR: ', error)
   }
 }
 
