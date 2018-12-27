@@ -1,11 +1,12 @@
 import Axios from 'axios'
 import { API_URL } from '../constants'
 import { Alert, AsyncStorage } from 'react-native'
-import actions from '../actions/UserActions'
+import UserActions from '../actions/UserActions'
+import apiCall from '../config/axios'
 
 const auth = (credentials, navigation) => {
   return dispatch => {
-    dispatch(actions.toggleUserDataLoading(true))
+    dispatch(UserActions.toggleUserDataLoading(true))
 
     return Axios.post(`${API_URL}/session/sign_in`, credentials)
       .then(response => onLoginSuccess(response.data.data, dispatch, navigation))
@@ -13,15 +14,39 @@ const auth = (credentials, navigation) => {
   }
 }
 
+const validateSecretData = async (dispatch, navigation) => {
+  const request = await apiCall()
+  
+  request.get(`${API_URL}/profiles/me`)
+    .then(response => {
+      console.log(response)
+      dispatch(UserActions.saveUserData(response.data))
+      redirectToFeed(navigation)
+    })
+    .catch((error) => {
+      console.log('USER OP SECRET DATA ERROR: ', error)
+      redirectToLogin(navigation)
+      removeWrongDataFromStorage()
+    })
+}
+
+const removeWrongDataFromStorage = () => {
+  AsyncStorage.removeItem('secretData', (error) => error ? console.log('ERROR: ', error) : null)
+}
+
+const redirectToLogin = (navigation) => {
+  navigation.navigate('Auth')
+}
+
 const onLoginSuccess = (data, dispatch, navigation) => {
   const { id, email, provider, uid, customer_id, discuss_api_token } = data
   const userData = {id, email, provider, customer_id}
   const userSecretData = {uid, ...discuss_api_token}
 
-  dispatch(actions.saveUserData(userData))
+  dispatch(UserActions.saveUserData(userData))
   saveUserToAsyncStorage(userSecretData)
   redirectToFeed(navigation)
-  dispatch(actions.toggleUserDataLoading(false))
+  dispatch(UserActions.toggleUserDataLoading(false))
 }
 
 const saveUserToAsyncStorage = (userSecretData) => { 
@@ -34,9 +59,10 @@ const redirectToFeed = (navigation) => {
 
 const onLoginFail = (dispatch) => {
   Alert.alert('Login error', 'Email or password is not correct')
-  dispatch(actions.toggleUserDataLoading(false))
+  dispatch(UserActions.toggleUserDataLoading(false))
 }
 
 export default {
-  auth
+  auth,
+  validateSecretData
 }
