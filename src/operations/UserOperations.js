@@ -14,19 +14,22 @@ const auth = (credentials, navigation) => {
   }
 }
 
-const getProfileData = (dispatch, navigation) => {
-  getAxiosInstance().then(api => {
-    api.get(`${API_URL}/profiles/me`)
-      .then(response => {
-        dispatch(UserActions.saveUserData(response.data))
-        redirectToFeed(navigation)
-      })
-      .catch(error => {
-        console.log('USER OP SECRET DATA ERROR: ', error)
-        redirectToLogin(navigation)
-        clearUserSecretData()
-      })
-  })
+const getProfileData = (navigation, cb) => {
+  return dispatch => {
+
+    return getAxiosInstance().then(api => {
+      api.get(`${API_URL}/profiles/me`)
+        .then(response => {
+          dispatch(UserActions.saveUserData(response.data))
+          cb && cb(navigation)
+        })
+        .catch(error => {
+          console.log('USER OP SECRET DATA ERROR: ', error)
+          redirectToLogin(navigation)
+          clearUserSecretData()
+        })
+    })
+  }
 }
 
 const clearUserSecretData = () => {
@@ -46,19 +49,7 @@ const onLoginSuccess = (data, dispatch, navigation) => {
   saveUserToAsyncStorage(userSecretData)
   redirectToFeed(navigation)
   dispatch(UserActions.toggleUserDataLoading(false))
-  getProfileAfterLogin(dispatch)
-}
-
-const getProfileAfterLogin = (dispatch) => {
-  getAxiosInstance().then(api => {
-    api.get(`${API_URL}/profiles/me`)
-      .then(response => {
-        dispatch(UserActions.saveUserData(response.data))
-      })
-      .catch(error => {
-        console.log('PROFILE API CALL ERROR: ', error)
-      })
-  })
+  getProfileData(dispatch)
 }
 
 const saveUserToAsyncStorage = (userSecretData) => { 
