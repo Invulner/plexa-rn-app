@@ -21,7 +21,7 @@ const getProfileData = (navigation, cb) => {
       api.get(`${API_URL}/profiles/me`)
         .then(response => {
           dispatch(UserActions.saveUserData(response.data))
-          cb && cb(navigation)
+          cb && cb()
         })
         .catch(error => {
           console.log('USER OP SECRET DATA ERROR: ', error)

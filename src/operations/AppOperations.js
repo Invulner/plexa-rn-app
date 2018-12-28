@@ -12,12 +12,11 @@ const checkForSavedCreds = async (dispatch, navigation) => {
     const secretData = await AsyncStorage.getItem('secretData')
 
     if (secretData) {
-      const successCallback = (navigation) => {
+      const successCallback = () => {
         navigation.navigate('Feed')
       }
       dispatch(UserOperations.getProfileData(navigation, successCallback))
-    }
-    else {
+    } else {
       console.log('storage is empty')
       navigateToLogin(navigation)
     }
