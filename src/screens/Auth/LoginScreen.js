@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, Linking, Image, Alert, ActivityIndicator } from 'react-native'
 import { connect } from 'react-redux'
-import userOperations from '../../operations/UserOperations'
+import UserOperations from '../../operations/UserOperations'
 import { SIGN_UP_URL, MIN_PASSWORD_LENGTH } from '../../constants'
 
 const mapDispatchToProps = (dispatch, { navigation }) => {
-  const login = (credentials) => dispatch(userOperations.auth(credentials, navigation))
+  const login = (credentials) => dispatch(UserOperations.auth(credentials, navigation))
 
   return { login }
 }

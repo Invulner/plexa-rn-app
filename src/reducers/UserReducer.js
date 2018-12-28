@@ -1,12 +1,6 @@
 import types from '../types/user'
 
-const initialState = {
-  id: '',
-  email: '',
-  provider: '',
-  customer_id: '',
-  loading: false
-}
+const initialState = {}
 
 const userReducer = (state = initialState, action) => {
   switch(action.type) {

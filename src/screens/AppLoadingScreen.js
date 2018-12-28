@@ -3,12 +3,15 @@ import { Constants } from 'expo'
 import { connect } from 'react-redux'
 import { ActivityIndicator } from 'react-native'
 import DeviceActions from '../actions/DeviceActions'
+import AppOperations from '../operations/AppOperations'
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch, { navigation }) => {
   const saveDeviceInfo = (data) => dispatch(DeviceActions.saveDeviceInfo(data))
+  const initializeApp = () => dispatch(AppOperations.initializeApp(navigation))
 
   return {
-    saveDeviceInfo
+    saveDeviceInfo,
+    initializeApp
   }
 }
 
@@ -21,16 +24,7 @@ class AppLoadingScreen extends Component {
     }
 
     this.props.saveDeviceInfo(data)
-  }
-
-  componentDidMount() {
-    setTimeout(() => {
-      this.goToNextScreen()
-    }, 2000)
-  }
-
-  goToNextScreen() {
-    this.props.navigation.navigate('Auth')
+    this.props.initializeApp()
   }
 
   render() {
