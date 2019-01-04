@@ -100,11 +100,11 @@ class LoginScreen extends Component {
         />
 
         <TouchableOpacity
-          style={[styles.button, loading ? styles.touched : null]}
+          style={[styles.button, loading ? styles.buttonActive : null]}
           onPress={this.onSubmit}
           disabled={loading}>
           {loading ? 
-            <ActivityIndicator /> 
+            <ActivityIndicator color="#fff"/> 
             : 
             <Text style={styles.buttonText}>Log in</Text>
           }
@@ -196,7 +196,7 @@ const styles = StyleSheet.create({
     backgroundColor: buttonColor
   },
 
-  touched: {
+  buttonActive: {
     paddingVertical: 19
   },
 
