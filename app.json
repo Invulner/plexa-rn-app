@@ -11,7 +11,7 @@
     "icon": "src/assets/images/icon.png",
     "splash": {
       "image": "src/assets/images/nav-bg_final-01.png",
-      "resizeMode": "contain",
+      "resizeMode": "cover",
       "backgroundColor": "#ededed"
     },
     "updates": {

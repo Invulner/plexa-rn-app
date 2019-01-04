@@ -29,7 +29,7 @@ class AppLoadingScreen extends Component {
 
   render() {
     return (
-      <View>
+      <View style={styles.container}>
         <Image 
           style={styles.image}
           source={require('../assets/images/nav-bg_final-01.png')}
@@ -40,9 +40,15 @@ class AppLoadingScreen extends Component {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignSelf: 'stretch'
+  },
+  
   image: {
-    resizeMode: 'contain',
-    flex: 1
+    width: '100%',
+    flex: 1,
+    resizeMode: 'cover'
   }
 })
 

@@ -100,7 +100,7 @@ class LoginScreen extends Component {
         />
 
         <TouchableOpacity
-          style={styles.button}
+          style={[styles.button, loading ? styles.touched : null]}
           onPress={this.onSubmit}
           disabled={loading}>
           {loading ? 
@@ -194,6 +194,10 @@ const styles = StyleSheet.create({
     ...formControl,
     marginBottom: 20,
     backgroundColor: buttonColor
+  },
+
+  touched: {
+    paddingVertical: 19
   },
 
   buttonText: {
