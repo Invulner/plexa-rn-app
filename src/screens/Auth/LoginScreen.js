@@ -72,6 +72,7 @@ class LoginScreen extends Component {
   }
 
   render() {
+    console.log('render method')
     const { email, password } = this.state
     const { loading } = this.props
     

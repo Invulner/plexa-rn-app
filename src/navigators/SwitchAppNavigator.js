@@ -1,12 +1,12 @@
 import { createSwitchNavigator } from 'react-navigation'
 import AppLoadingScreen from '../screens/AppLoadingScreen'
-import LoginScreen from '../screens/Auth/LoginScreen'
 import FeedScreen from '../screens/FeedScreen'
+import AuthStack from './StackAuthNavigator'
 
-export const SwitchAppNavigator = createSwitchNavigator(
+const SwitchAppNavigator = createSwitchNavigator(
   {
     AppLoading: AppLoadingScreen,
-    Auth: LoginScreen,
+    Auth: AuthStack,
     Feed: FeedScreen
   },
   {
