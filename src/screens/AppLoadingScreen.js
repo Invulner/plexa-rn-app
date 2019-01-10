@@ -16,7 +16,7 @@ const mapDispatchToProps = (dispatch, { navigation }) => {
 }
 
 class AppLoadingScreen extends Component {
-  componentWillMount() {
+  componentDidMount() {
     const data = {
       uuid: Constants.installationId || Constants.deviceId,
       platform: Object.keys(Constants.platform)[0],

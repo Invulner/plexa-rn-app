@@ -4,7 +4,12 @@ import PrivacyPolicy from '../screens/Auth/PrivacyPolicy'
 import TermsOfService from '../screens/Auth/TermsOfService'
 
 const AuthStack = createStackNavigator({
-  Login: LoginScreen,
+  Login: {
+    screen: LoginScreen,
+    navigationOptions: () => ({
+      headerBackTitle: null
+    })
+  },
   Policy: PrivacyPolicy,
   Terms: TermsOfService
 },
