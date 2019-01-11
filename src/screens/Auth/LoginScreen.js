@@ -3,6 +3,8 @@ import { View, Text, TextInput, StyleSheet, TouchableOpacity, Linking, Image, Al
 import { connect } from 'react-redux'
 import UserOperations from '../../operations/UserOperations'
 import { SIGN_UP_URL, MIN_PASSWORD_LENGTH } from '../../constants'
+import { TEXT_COLOR, BG_COLOR } from '../../assets/styles/colors'
+import SafeArea from '../../components/common/SafeArea'
 
 const mapDispatchToProps = (dispatch, { navigation }) => {
   const login = (credentials) => dispatch(UserOperations.auth(credentials, navigation))
@@ -73,81 +75,84 @@ class LoginScreen extends Component {
 
   render() {
     const { email, password } = this.state
-    const { loading } = this.props
+    const { loading, navigation } = this.props
     
     return (
-      <View style={styles.container}>
+      <SafeArea>
+        <View style={styles.container}>
+          <Text style={styles.welcomeText}>
+            Welcome, please login!
+          </Text>
 
-        <Text style={styles.welcomeText}>
-          Welcome, please login!
-        </Text>
+          <TextInput
+            style={styles.input}
+            placeholder='Your e-mail'
+            textContentType='emailAddress'
+            value={email}
+            onChangeText={(value) => this.onEmailChange(value)}
+          />
 
-        <TextInput
-          style={styles.input}
-          placeholder='Your e-mail'
-          textContentType='emailAddress'
-          value={email}
-          onChangeText={(value) => { this.onEmailChange(value) }}
-        />
+          <TextInput
+            style={styles.input}
+            secureTextEntry={true}
+            placeholder='Password'
+            textContentType='password'
+            value={password}
+            onChangeText={(value) => this.onPasswordChange(value)}
+          />
 
-        <TextInput
-          style={styles.input}
-          secureTextEntry={true}
-          placeholder='Password'
-          textContentType='password'
-          value={password}
-          onChangeText={(value) => { this.onPasswordChange(value) }}
-        />
+          <TouchableOpacity
+            style={[styles.button, loading ? styles.buttonActive : null]}
+            onPress={this.onSubmit}
+            disabled={loading}>
+            {loading ? 
+              <ActivityIndicator color="#fff"/> 
+              : 
+              <Text style={styles.buttonText}>Log in</Text>
+            }
+          </TouchableOpacity>
 
-        <TouchableOpacity
-          style={[styles.button, loading ? styles.buttonActive : null]}
-          onPress={this.onSubmit}
-          disabled={loading}>
-          {loading ? 
-            <ActivityIndicator color="#fff"/> 
-            : 
-            <Text style={styles.buttonText}>Log in</Text>
-          }
-        </TouchableOpacity>
+          <View style={styles.signUpOuterContainer}>
+            <View style={styles.signUpContainer}>
+              <Text style={styles.signUpText}>
+                Not a member?
+              </Text>
+              <Text 
+                style={styles.signUpLink} 
+                onPress={() => Linking.openURL(SIGN_UP_URL)}>
+                Sign up
+              </Text>
+            </View>
 
-        <View style={{alignItems: "center"}}>
-          <View style={styles.signUpContainer}>
-            <Text style={styles.signUpText}>
-              Not a member?
+            <Text style={styles.serviceText}>
+              By using our service you agree with
             </Text>
             <Text 
-              style={styles.signUpLink} 
-              onPress={() => { Linking.openURL(SIGN_UP_URL) }}>
-              Sign up
+              style={styles.termsAndPolicyText}
+              onPress={()=> navigation.navigate('Terms')}>
+              Terms of service
             </Text>
+            <Text 
+              style={styles.termsAndPolicyText}
+              onPress={() => navigation.navigate('Policy')}>
+              Privacy policy
+            </Text>
+          </View> 
+
+          <View style={styles.imageContainer}>
+            <Image
+              source={require('../../assets/images/text-logo.png')}
+              style={styles.logoImage}
+            />
           </View>
 
-          <Text style={styles.serviceText}>
-            By using our service you agree with
-          </Text>
-          <Text style={styles.termsAndPolicyText}>
-            Terms of service
-          </Text>
-          <Text style={styles.termsAndPolicyText}>
-            Privacy policy
-          </Text>
-        </View> 
-
-        <View style={styles.imageContainer}>
-          <Image
-            source={require('../../assets/images/text-logo.png')}
-            style={styles.logoImage}
-          />
         </View>
-
-      </View>
+      </SafeArea>
     )
   }
 }
 
-const backgroundColor = '#ededed'
 const buttonColor = '#bcac85'
-const textColor = '#7e7763'
 
 const formControl = {
   paddingVertical: 17,
@@ -158,11 +163,11 @@ const formControl = {
 }
 const signUpText = {
   fontSize: 18,
-  color: textColor,
+  color: TEXT_COLOR,
   marginBottom: 15
 }
 const serviceText = {
-  color: textColor,
+  color: TEXT_COLOR,
   fontSize: 16,
   marginBottom: 5
 }
@@ -173,7 +178,7 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor,
+    backgroundColor: BG_COLOR,
     paddingHorizontal: 45
   },
 
@@ -204,6 +209,10 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: '#fff',
     textAlign: 'center'
+  },
+
+  signUpOuterContainer: {
+    alignItems: 'center'
   },
 
   signUpContainer: {

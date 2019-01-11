@@ -17,7 +17,6 @@ const checkForSavedCreds = async (dispatch, navigation) => {
       }
       dispatch(UserOperations.getProfileData(navigation, successCallback))
     } else {
-      console.log('storage is empty')
       navigateToLogin(navigation)
     }
 
