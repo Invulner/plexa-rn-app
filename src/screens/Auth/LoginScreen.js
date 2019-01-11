@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Linking, Image, Alert, ActivityIndicator, SafeAreaView } from 'react-native'
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Linking, Image, Alert, ActivityIndicator } from 'react-native'
 import { connect } from 'react-redux'
 import UserOperations from '../../operations/UserOperations'
-import { SIGN_UP_URL, MIN_PASSWORD_LENGTH, TEXT_COLOR, BG_COLOR } from '../../constants'
+import { SIGN_UP_URL, MIN_PASSWORD_LENGTH } from '../../constants'
+import { TEXT_COLOR, BG_COLOR } from '../../assets/styles/colors'
+import SafeArea from '../../components/common/SafeArea'
 
 const mapDispatchToProps = (dispatch, { navigation }) => {
   const login = (credentials) => dispatch(UserOperations.auth(credentials, navigation))
@@ -17,10 +19,6 @@ const mapStateToProps = (state) => {
 }
 
 class LoginScreen extends Component {
-  static navigationOptions = {
-    header: null
-  }
-
   state = {
     email: '',
     password: ''
@@ -80,7 +78,7 @@ class LoginScreen extends Component {
     const { loading, navigation } = this.props
     
     return (
-      <SafeAreaView style={{flex: 1, backgroundColor: BG_COLOR}}>
+      <SafeArea>
         <View style={styles.container}>
           <Text style={styles.welcomeText}>
             Welcome, please login!
@@ -91,7 +89,7 @@ class LoginScreen extends Component {
             placeholder='Your e-mail'
             textContentType='emailAddress'
             value={email}
-            onChangeText={(value) => { this.onEmailChange(value) }}
+            onChangeText={(value) => this.onEmailChange(value)}
           />
 
           <TextInput
@@ -100,7 +98,7 @@ class LoginScreen extends Component {
             placeholder='Password'
             textContentType='password'
             value={password}
-            onChangeText={(value) => { this.onPasswordChange(value) }}
+            onChangeText={(value) => this.onPasswordChange(value)}
           />
 
           <TouchableOpacity
@@ -114,14 +112,14 @@ class LoginScreen extends Component {
             }
           </TouchableOpacity>
 
-          <View style={{alignItems: "center"}}>
+          <View style={styles.signUpOuterContainer}>
             <View style={styles.signUpContainer}>
               <Text style={styles.signUpText}>
                 Not a member?
               </Text>
               <Text 
                 style={styles.signUpLink} 
-                onPress={() => { Linking.openURL(SIGN_UP_URL) }}>
+                onPress={() => Linking.openURL(SIGN_UP_URL)}>
                 Sign up
               </Text>
             </View>
@@ -131,12 +129,12 @@ class LoginScreen extends Component {
             </Text>
             <Text 
               style={styles.termsAndPolicyText}
-              onPress={()=> { navigation.navigate('Terms') }}>
+              onPress={()=> navigation.navigate('Terms')}>
               Terms of service
             </Text>
             <Text 
               style={styles.termsAndPolicyText}
-              onPress={() => { navigation.navigate('Policy') }}>
+              onPress={() => navigation.navigate('Policy')}>
               Privacy policy
             </Text>
           </View> 
@@ -149,7 +147,7 @@ class LoginScreen extends Component {
           </View>
 
         </View>
-      </SafeAreaView>
+      </SafeArea>
     )
   }
 }
@@ -211,6 +209,10 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: '#fff',
     textAlign: 'center'
+  },
+
+  signUpOuterContainer: {
+    alignItems: 'center'
   },
 
   signUpContainer: {

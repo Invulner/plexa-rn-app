@@ -17,7 +17,6 @@ const checkForSavedCreds = async (dispatch, navigation) => {
       }
       dispatch(UserOperations.getProfileData(navigation, successCallback))
     } else {
-      console.log('storage is empty')
       navigateToLogin(navigation)
     }
 
@@ -28,7 +27,6 @@ const checkForSavedCreds = async (dispatch, navigation) => {
 
 const navigateToLogin = (navigation) => {
   navigation.navigate('Auth')
-  console.log('went to auth')
 }
 
 export default {
