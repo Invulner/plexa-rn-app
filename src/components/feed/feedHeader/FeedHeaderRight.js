@@ -5,7 +5,9 @@ class FeedHeaderRight extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <TouchableOpacity style={styles.messageButton} onPress={() => console.log('header right')}>
+        <TouchableOpacity 
+          style={styles.messageButton} 
+          onPress={() => console.log('header message button')}>
           <Image 
             style={styles.messageIcon}
             source={require('../../../assets/icons/envelope-icon-white.png')}

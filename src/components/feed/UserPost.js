@@ -38,14 +38,18 @@ class UserPost extends Component {
 
         </View>
 
-        <PostTextRegular style={styles.linkCaption}>Shared from plexa.ai:</PostTextRegular>
+        <PostTextRegular style={styles.linkCaption}>
+          Shared from plexa.ai:
+        </PostTextRegular>
         <SharedPreview />
         <View style={styles.socialContainer}>
         <Image 
           source={require('../../assets/icons/like-icon.png')}
           style={styles.likeIcon}
         />
-        <PostTextLight>0</PostTextLight>
+        <PostTextLight>
+          0
+        </PostTextLight>
         </View>
       </View>
     )
