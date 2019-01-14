@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 30 40">
+	<defs><clipPath id="a" transform="translate(-8.75 -6.25)">
+		<rect x="-6" y="-5.88" width="59.38" height="59.38" style="fill:none"/></clipPath>
+	</defs><title>lock</title><g style="clip-path:url(#a)">
+	<path d="M23.75,6.25a12.54,12.54,0,0,0-12.5,12.5v12.5h5V18.75a7.5,7.5,0,0,1,15,0v12.5h5V18.75a12.54,12.54,0,0,0-12.5-12.5" transform="translate(-8.75 -6.25)" style="fill:#FFF"/><path d="M38.75,41.25a5,5,0,0,1-5,5h-20a5,5,0,0,1-5-5V28.75a5,5,0,0,1,5-5h20a5,5,0,0,1,5,5Z" transform="translate(-8.75 -6.25)" style="fill:#FFF"/>
+</g></svg>
