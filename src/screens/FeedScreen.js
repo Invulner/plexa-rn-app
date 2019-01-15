@@ -1,8 +1,13 @@
 import React, { Component } from 'react'
-import { View, Text } from 'react-native'
+import { FlatList } from 'react-native'
 import SafeArea from '../components/common/SafeArea'
 import getAxiosInstance from '../config/axios'
-import UserPost from '../components/feed/UserPost'
+import FeedPost from '../components/feed/FeedPost'
+import ScrollArea from '../components/common/ScrollArea'
+import NewsPreview from '../components/feed/NewsPreview'
+import LinkPreview from '../components/feed/LinkPreview'
+import NewsPost from '../components/feed/NewsPost'
+
 
 class FeedScreen extends Component {
 
@@ -19,7 +24,19 @@ class FeedScreen extends Component {
   render() {
     return (
       <SafeArea>
-        <UserPost />
+        <ScrollArea>
+          <FeedPost 
+            author='Qest Provider' 
+            hoursAgo='17'
+            link={<NewsPreview />}
+          />
+          <NewsPost />
+          <FeedPost 
+            author='Irina' 
+            hoursAgo='5'
+            link={<LinkPreview />}
+          />
+        </ScrollArea>
       </SafeArea>
     )
   }
