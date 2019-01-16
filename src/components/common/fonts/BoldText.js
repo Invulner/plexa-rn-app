@@ -1,7 +1,7 @@
 import React from 'react'
 import { Text } from 'react-native'
 
-export default function PostTextLight(props) {
+function BoldText(props) {
   const { children, style } = props
   
   return (
@@ -10,3 +10,5 @@ export default function PostTextLight(props) {
     </Text>
   )
 }
+
+export default BoldText

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import { BTN_COLOR } from '../../assets/styles/colors'
 import NewsIcon from './NewsIcon'
-import RegularText from '../common/fonts/RegularText'
+import { RegularText } from '../common/fonts'
 
 class NewsPost extends Component {
   render() {

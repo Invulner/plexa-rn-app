@@ -1,34 +1,33 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
-import SemiboldText from '../common/fonts/SemiboldText'
-import RegularText from '../common/fonts/RegularText'
+import { SemiboldText, RegularText } from '../common/fonts'
 import { feedStyles } from '../../assets/styles/feed/feedStyles'
 
 function NewsPreview() {
   return (
     <View>
-        <RegularText style={feedStyles.linkCaption}>
-          Lorem ipsum dolor sit amet consectetur.
-        </RegularText>
-        <View style={feedStyles.linkContainer}>
+      <RegularText style={feedStyles.linkCaption}>
+        Lorem ipsum dolor sit amet consectetur.
+      </RegularText>
+      <View style={feedStyles.linkContainer}>
 
-          <View style={styles.newsTitleBox}>
-            <SemiboldText style={[feedStyles.linkText, styles.newsTitleText]}>
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Cupiditate obcaecati assumenda.
-            </SemiboldText>
-          </View>
-
-          <View style={styles.newsSourceBox}>
-            <RegularText style={[styles.linkSource, styles.newsSourceText]}>
-              Internationsl Journal of Epidemiology
-            </RegularText>
-          </View>
-
-          <SemiboldText style={[feedStyles.linkText, styles.newsText]}>
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatum tenetur minima doloribus eveniet aut. Error dicta dolorem vero fuga cupiditate excepturi dolor quam odit, voluptate reiciendis, numquam et sint eveniet alias animi nisi nulla fugiat dolorum saepe eligendi corporis nesciunt.
+        <View style={styles.newsTitleBox}>
+          <SemiboldText style={[feedStyles.linkText, styles.newsTitleText]}>
+            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Cupiditate obcaecati assumenda.
           </SemiboldText>
         </View>
+
+        <View style={styles.newsSourceBox}>
+          <RegularText style={[styles.linkSource, styles.newsSourceText]}>
+            Internationsl Journal of Epidemiology
+          </RegularText>
+        </View>
+
+        <SemiboldText style={[feedStyles.linkText, styles.newsText]}>
+            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatum tenetur minima doloribus eveniet aut. Error dicta dolorem vero fuga cupiditate excepturi dolor quam odit, voluptate reiciendis, numquam et sint eveniet alias animi nisi nulla fugiat dolorum saepe eligendi corporis nesciunt.
+        </SemiboldText>
       </View>
+    </View>
   )
 }
 

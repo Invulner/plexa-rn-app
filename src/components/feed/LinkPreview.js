@@ -1,7 +1,6 @@
 import React from 'react'
 import { View, StyleSheet, Image } from 'react-native'
-import SemiboldText from '../common/fonts/SemiboldText'
-import RegularText from '../common/fonts/RegularText'
+import { SemiboldText, RegularText } from '../common/fonts'
 import { feedStyles } from '../../assets/styles/feed/feedStyles'
 
 function LinkPreview() {

@@ -1,15 +1,10 @@
 import React, { Component } from 'react'
 import { View, Image, StyleSheet } from 'react-native'
-import SemiboldText from '../common/fonts/SemiboldText'
-import RegularText from '../common/fonts/RegularText'
+import { SemiboldText, RegularText } from '../common/fonts'
 import Social from './Social'
+import utils from '../../utils'
 
 class FeedPost extends Component {
-  getInitials = () => {
-    let initials = this.props.author.split(/\s/).reduce((acc, cur) => acc += cur.slice(0,1), '')
-    return initials
-  }
-
   render() {
     const { author, hoursAgo, link } = this.props
 
@@ -19,7 +14,7 @@ class FeedPost extends Component {
 
           <View style={styles.avatarPLaceholder}>
             <RegularText style={styles.initials}>
-              {this.getInitials()}
+              {utils.getInitials(author)}
             </RegularText>
           </View>
 
@@ -116,7 +111,8 @@ const styles = StyleSheet.create({
     width: 15,
     height: 15,
     resizeMode: 'contain',
-    marginLeft: 'auto'
+    marginLeft: 'auto',
+    marginTop: 5
   }
 })
 

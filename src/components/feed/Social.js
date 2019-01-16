@@ -1,6 +1,6 @@
 import React from 'react'
 import { Image, View, StyleSheet } from 'react-native'
-import LightText from '../common/fonts/LightText'
+import { LightText } from '../common/fonts'
 
 function Social() {
   return (
