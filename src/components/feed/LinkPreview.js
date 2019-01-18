@@ -9,22 +9,22 @@ function LinkPreview(props) {
     return (
       <View>
         <View style={feedStyles.linkContainer}>
-        {image ?
-          <Image 
-            source={{uri: image}}
-            style={styles.linkImage}
-          />
-          :
-          null
-        }
-        <SemiboldText style={feedStyles.linkText}>
-          {title}
-        </SemiboldText>
-        <RegularText style={feedStyles.linkSource}>
-          {domain}
-        </RegularText>
+          {image ?
+            <Image 
+              source={{uri: image}}
+              style={styles.linkImage}
+            />
+            :
+            null
+          }
+          <SemiboldText style={feedStyles.linkText}>
+            {title}
+          </SemiboldText>
+          <RegularText style={feedStyles.linkSource}>
+            {domain}
+          </RegularText>
+        </View>
       </View>
-    </View>
     )
 
 }

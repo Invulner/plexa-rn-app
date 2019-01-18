@@ -15,7 +15,7 @@ function Social(props) {
         {likesCount}
       </LightText>
       {commentsEnabled ? 
-        (<View style={styles.commentsContainer}>
+        <View style={styles.commentsContainer}>
           <Image 
             source={require('../../assets/icons/comments.png')}
             style={styles.icon}
@@ -23,7 +23,7 @@ function Social(props) {
           <LightText>
             {answersCount}
           </LightText>
-        </View>)
+        </View>
         :
         null
       }
