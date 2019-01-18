@@ -65,7 +65,25 @@ const onLoginFail = (dispatch) => {
   dispatch(UserActions.toggleUserDataLoading(false))
 }
 
+const getFeed = () => {
+  return dispatch => {
+    dispatch(UserActions.toggleFeedDataLoading(true))
+
+    return getAxiosInstance().then(api => {
+      api.get('https://staging.plexa.ai/api/v1/feed?page=1')
+        .then(response => {
+          dispatch(UserActions.saveFeedData(response.data))
+          console.log(response)
+          dispatch(UserActions.toggleFeedDataLoading(false))
+        })
+        .catch(error => console.log('Request error: ', error))
+    })
+    .catch(error => console.log('Axios config error: ', error))
+  }
+}
+
 export default {
   auth,
-  getProfileData
+  getProfileData,
+  getFeed
 }

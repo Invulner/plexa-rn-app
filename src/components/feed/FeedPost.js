@@ -1,35 +1,47 @@
 import React, { Component } from 'react'
 import { View, Image, StyleSheet } from 'react-native'
 import { SemiboldText, RegularText } from '../common/fonts'
+import Research from './Research'
+import LinkPreview from './LinkPreview'
 import Social from './Social'
 import utils from '../../utils'
+import { feedStyles } from '../../assets/styles/feed/feedStyles'
+import ta from 'time-ago'
 
 class FeedPost extends Component {
   render() {
-    const { author, hoursAgo, link } = this.props
+    const { newsKind, createdAt, likesCount, commentsEnabled, answersCount, newsItem, linkDetails, content, author: { avatar_url, full_name, title } } = this.props
 
     return (
       <View style={styles.postContainer}>
         <View style={styles.userContainer}>
 
-          <View style={styles.avatarPLaceholder}>
-            <RegularText style={styles.initials}>
-              {utils.getInitials(author)}
-            </RegularText>
-          </View>
+          {avatar_url ? 
+            <View style={styles.avatarPLaceholder}>
+              <Image 
+                source={{uri: avatar_url}}
+                style={styles.avatarImage}/>
+            </View>
+            :
+            <View style={styles.avatarPLaceholder}>
+              <RegularText style={styles.initials}>
+                {utils.getInitials(full_name)}
+              </RegularText>
+            </View>
+          }
 
           <View>
             <View style={styles.authorRowContainer}>
               <SemiboldText style={styles.postAuthor}>
-                {author}
+                {full_name}
               </SemiboldText>
               <View style={styles.dotImage} />
               <RegularText style={styles.hoursAgo}>
-                {hoursAgo}h
+                {ta.ago(createdAt, true)}
               </RegularText>
             </View>
             <RegularText style={styles.userDescription}>
-              ATSI Health Practitioner
+              {title}
             </RegularText>
           </View>
 
@@ -39,8 +51,43 @@ class FeedPost extends Component {
           />
 
         </View>
-        {link}
-        <Social />
+        {content ? 
+          <RegularText style={feedStyles.linkCaption}>
+            {content}
+          </RegularText>
+          :
+          null
+        }
+        {newsKind === 'research' ?
+          <Research 
+            newsItem={newsItem}
+            content={content}
+          />
+          :
+          null
+        }
+        {newsKind === 'news' ?
+          <RegularText>
+            News template placeholder
+          </RegularText>
+          :
+          null
+        }
+        {Object.getOwnPropertyNames(linkDetails).length !== 0 && newsKind === null ?
+          <LinkPreview 
+            linkDetails={linkDetails}
+            content={content}
+          />
+          :
+          null
+        }
+        
+        <Social 
+          likesCount={likesCount}
+          commentsEnabled={commentsEnabled}
+          answersCount={answersCount}
+        />
+
       </View>
     )
   }
@@ -58,6 +105,12 @@ const styles = StyleSheet.create({
   userContainer: {
     flexDirection: 'row',
     marginBottom: 15
+  },
+
+  avatarImage: {
+    width: 80,
+    height: 80,
+    resizeMode: 'contain'
   },
 
   avatarPLaceholder: {

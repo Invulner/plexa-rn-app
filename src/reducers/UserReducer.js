@@ -8,6 +8,10 @@ const userReducer = (state = initialState, action) => {
       return {...state, ...action.userData}
     case types.TOGGLE_USER_DATA_LOADING:
       return {...state, loading: action.flag}
+    case types.SAVE_FEED_DATA:
+      return {...state, feed: action.feedData}
+    case types.TOGGLE_FEED_DATA_LOADING:
+      return {...state, feedLoading: action.flag}
     default:
       return state
   }

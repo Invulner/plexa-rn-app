@@ -2,7 +2,9 @@ import React from 'react'
 import { Image, View, StyleSheet } from 'react-native'
 import { LightText } from '../common/fonts'
 
-function Social() {
+function Social(props) {
+  const { likesCount, commentsEnabled, answersCount } = props
+
   return (
     <View style={styles.socialContainer}>
       <Image 
@@ -10,15 +12,21 @@ function Social() {
         style={styles.icon}
       />
       <LightText style={styles.likeCounter}>
-        0
+        {likesCount}
       </LightText>
-      <Image 
-        source={require('../../assets/icons/comments.png')}
-        style={styles.icon}
-      />
-      <LightText>
-        3
-      </LightText>
+      {commentsEnabled ? 
+        (<View style={styles.commentsContainer}>
+          <Image 
+            source={require('../../assets/icons/comments.png')}
+            style={styles.icon}
+          />
+          <LightText>
+            {answersCount}
+          </LightText>
+        </View>)
+        :
+        null
+      }
     </View>
   )
 }
@@ -37,6 +45,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: 10
+  },
+
+  commentsContainer: {
+    flexDirection: 'row', 
+    alignItems: 'center'
   },
 
   likeCounter: {
