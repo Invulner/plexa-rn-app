@@ -1,45 +1,59 @@
 import React, { Component } from 'react'
-import { FlatList } from 'react-native'
+import { FlatList, ActivityIndicator, View, StyleSheet } from 'react-native'
 import SafeArea from '../components/common/SafeArea'
-import getAxiosInstance from '../config/axios'
 import FeedPost from '../components/feed/FeedPost'
-import ScrollArea from '../components/common/ScrollArea'
-import NewsPreview from '../components/feed/NewsPreview'
-import LinkPreview from '../components/feed/LinkPreview'
-import NewsPost from '../components/feed/NewsPost'
+import FeedOperations from '../operations/FeedOperations'
+import { connect } from 'react-redux'
 
+const mapDispatchToProps = (dispatch) => {
+  const getFeed = () => dispatch(FeedOperations.getFeed())
+
+  return { 
+    getFeed 
+  }
+}
+
+const mapStateToProps = (state) => {
+  const { feed } = state
+
+  return { 
+    feed 
+  }
+}
 
 class FeedScreen extends Component {
-
   componentDidMount() {
-    getAxiosInstance()
-      .then(api => {
-        api.get('https://staging.plexa.ai/api/v1/feed')
-          .then(res => console.log(res))
-          .then(err => console.log(err))
-      })
-      .catch(err => console.log(err))
+    this.props.getFeed()
   }
 
   render() {
+    const { feedData, feedLoading } = this.props.feed
+
     return (
       <SafeArea>
-        <ScrollArea>
-          <FeedPost 
-            author='Qest Provider' 
-            hoursAgo='17'
-            link={<NewsPreview />}
-          />
-          <NewsPost />
-          <FeedPost 
-            author='Irina' 
-            hoursAgo='5'
-            link={<LinkPreview />}
-          />
-        </ScrollArea>
+        {feedLoading ?
+          <View style={styles.indicatorContainer}>
+            <ActivityIndicator />
+          </View>
+          :
+          <FlatList 
+            data={feedData}
+            keyExtractor={item => item.id + ''}
+            renderItem={({ item }) => (
+              <FeedPost item={item} />
+            )} />
+        }
       </SafeArea>
     )
   }
 }
 
-export default FeedScreen
+const styles = StyleSheet.create({
+  indicatorContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  }
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(FeedScreen)

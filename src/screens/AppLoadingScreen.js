@@ -32,8 +32,7 @@ class AppLoadingScreen extends Component {
       <View style={styles.container}>
         <Image 
           style={styles.image}
-          source={require('../assets/images/nav-bg_final-01.png')}
-        />
+          source={require('../assets/images/nav-bg_final-01.png')} />
       </View>
     )
   }

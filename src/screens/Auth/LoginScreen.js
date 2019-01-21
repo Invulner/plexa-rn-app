@@ -89,8 +89,7 @@ class LoginScreen extends Component {
             placeholder='Your e-mail'
             textContentType='emailAddress'
             value={email}
-            onChangeText={(value) => this.onEmailChange(value)}
-          />
+            onChangeText={(value) => this.onEmailChange(value)} />
 
           <TextInput
             style={styles.input}
@@ -98,8 +97,7 @@ class LoginScreen extends Component {
             placeholder='Password'
             textContentType='password'
             value={password}
-            onChangeText={(value) => this.onPasswordChange(value)}
-          />
+            onChangeText={(value) => this.onPasswordChange(value)} />
 
           <TouchableOpacity
             style={[styles.button, loading ? styles.buttonActive : null]}
@@ -142,8 +140,7 @@ class LoginScreen extends Component {
           <View style={styles.imageContainer}>
             <Image
               source={require('../../assets/images/text-logo.png')}
-              style={styles.logoImage}
-            />
+              style={styles.logoImage} />
           </View>
 
         </View>

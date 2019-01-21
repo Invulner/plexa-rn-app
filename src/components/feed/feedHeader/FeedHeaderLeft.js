@@ -7,8 +7,7 @@ class FeedHeaderLeft extends Component {
       <View style={styles.container}>
         <Image 
           style={styles.menuImage}
-          source={require('../../../assets/icons/menu.png')}
-        />
+          source={require('../../../assets/icons/menu.png')} />
       </View>
     )
   }

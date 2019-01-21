@@ -16,7 +16,7 @@ export const feedStyles = StyleSheet.create({
   linkText: {
     fontSize: 16,
     letterSpacing: 0.3,
-    lineHeight: 14,
+    lineHeight: 15,
     margin: 10
   },
 

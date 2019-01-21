@@ -3,23 +3,22 @@ import { View, StyleSheet, Image } from 'react-native'
 import { SemiboldText, RegularText } from '../common/fonts'
 import { feedStyles } from '../../assets/styles/feed/feedStyles'
 
-function LinkPreview() {
+function LinkPreview(props) {
+  const { domain, image, title } = props.linkDetails
 
     return (
       <View>
-        <RegularText style={feedStyles.linkCaption}>
-          Shared from plexa.ai:
-        </RegularText>
         <View style={feedStyles.linkContainer}>
-          <Image 
-            source={{uri: 'http://via.placeholder.com/400'}}
-            style={styles.linkImage}
-          />
+          {image &&
+            <Image 
+              source={{uri: image}}
+              style={styles.linkImage} />
+          }
           <SemiboldText style={feedStyles.linkText}>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos qui porro corporis quia dolore voluptate deleniti | BJGP Open
+            {title}
           </SemiboldText>
           <RegularText style={feedStyles.linkSource}>
-            bjgpopen.org
+            {domain}
           </RegularText>
         </View>
       </View>
@@ -31,8 +30,7 @@ const styles = StyleSheet.create({
   linkImage: {
     width: '100%',
     resizeMode: 'cover',
-    height: 200,
-    borderTopLeftRadius: 10
+    height: 200
   }
 })
 

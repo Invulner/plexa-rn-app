@@ -1,46 +1,95 @@
 import React, { Component } from 'react'
-import { View, Image, StyleSheet } from 'react-native'
+import { View, Image, Text, StyleSheet } from 'react-native'
 import { SemiboldText, RegularText } from '../common/fonts'
+import Research from './Research'
+import LinkPreview from './LinkPreview'
 import Social from './Social'
-import utils from '../../utils'
+import { feedStyles } from '../../assets/styles/feed/feedStyles'
+import ta from 'time-ago'
+import ProfileAvatar from '../common/ProfileAvatar'
 
 class FeedPost extends Component {
+  areAnyLinkDetails = () => {
+    return Object.getOwnPropertyNames(this.props.item.link_details).length !== 0
+  }
+
+  renderResearch = () => {
+    return (
+      <Research newsItem={this.props.item.news_item} />
+    )
+  }
+
+  renderNews = () => {
+    return (
+      <Text>
+        Placeholder for the shared news preview
+      </Text>
+    )
+  }
+
+  renderLinkDetails = () => {
+    return (
+      <LinkPreview linkDetails={this.props.item.link_details} />
+    )
+  }
+
+  renderAttachedBlock = () => { 
+    switch(this.props.item.news_kind) {
+      case 'research':
+        return this.renderResearch()
+      case 'news':
+        return this.renderNews()
+      case null:
+        if (this.areAnyLinkDetails()) 
+          return this.renderLinkDetails()
+        else 
+          return null
+      default:
+        return null  
+    }
+  }
+
   render() {
-    const { author, hoursAgo, link } = this.props
+    const { created_at, likes_count, answers_count, content, author: { avatar_url, full_name, title } } = this.props.item
 
     return (
       <View style={styles.postContainer}>
         <View style={styles.userContainer}>
 
-          <View style={styles.avatarPLaceholder}>
-            <RegularText style={styles.initials}>
-              {utils.getInitials(author)}
-            </RegularText>
-          </View>
+          <ProfileAvatar 
+            url={avatar_url}
+            name={full_name} />
 
           <View>
             <View style={styles.authorRowContainer}>
               <SemiboldText style={styles.postAuthor}>
-                {author}
+                {full_name}
               </SemiboldText>
               <View style={styles.dotImage} />
               <RegularText style={styles.hoursAgo}>
-                {hoursAgo}h
+                {ta.ago(created_at, true)}
               </RegularText>
             </View>
             <RegularText style={styles.userDescription}>
-              ATSI Health Practitioner
+              {title}
             </RegularText>
           </View>
 
           <Image
             source={require('../../assets/icons/arrow-down.png')}
-            style={styles.hideIcon}
-          />
+            style={styles.hideIcon} />
 
         </View>
-        {link}
-        <Social />
+        {!!content &&
+          <RegularText style={feedStyles.linkCaption}>
+            {content}
+          </RegularText>
+        }
+        {this.renderAttachedBlock()}
+        <Social 
+          likesCount={likes_count}
+          answersCount={answers_count} />
+
       </View>
     )
   }
@@ -58,21 +107,6 @@ const styles = StyleSheet.create({
   userContainer: {
     flexDirection: 'row',
     marginBottom: 15
-  },
-
-  avatarPLaceholder: {
-    width: 80,
-    height: 80,
-    marginRight: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#d3a400'
-  },
-
-  initials: {
-    color: '#fff',
-    fontSize: 26,
-    paddingTop: 10
   },
 
   postAuthor: {

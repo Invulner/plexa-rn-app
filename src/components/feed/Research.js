@@ -3,28 +3,26 @@ import { View, StyleSheet } from 'react-native'
 import { SemiboldText, RegularText } from '../common/fonts'
 import { feedStyles } from '../../assets/styles/feed/feedStyles'
 
-function NewsPreview() {
+function Research(props) {
+  const { description, source_title, title } = props.newsItem
   return (
     <View>
-      <RegularText style={feedStyles.linkCaption}>
-        Lorem ipsum dolor sit amet consectetur.
-      </RegularText>
       <View style={feedStyles.linkContainer}>
 
         <View style={styles.newsTitleBox}>
           <SemiboldText style={[feedStyles.linkText, styles.newsTitleText]}>
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Cupiditate obcaecati assumenda.
+            {title}
           </SemiboldText>
         </View>
 
         <View style={styles.newsSourceBox}>
           <RegularText style={[styles.linkSource, styles.newsSourceText]}>
-            Internationsl Journal of Epidemiology
+            {source_title}
           </RegularText>
         </View>
 
         <SemiboldText style={[feedStyles.linkText, styles.newsText]}>
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatum tenetur minima doloribus eveniet aut. Error dicta dolorem vero fuga cupiditate excepturi dolor quam odit, voluptate reiciendis, numquam et sint eveniet alias animi nisi nulla fugiat dolorum saepe eligendi corporis nesciunt.
+          {description}
         </SemiboldText>
       </View>
     </View>
@@ -62,4 +60,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default NewsPreview
+export default Research
