@@ -2,21 +2,20 @@ import React, { Component } from 'react'
 import { FlatList, ActivityIndicator, View, StyleSheet } from 'react-native'
 import SafeArea from '../components/common/SafeArea'
 import FeedPost from '../components/feed/FeedPost'
-import UserOperations from '../operations/UserOperations'
+import FeedOperations from '../operations/FeedOperations'
 import { connect } from 'react-redux'
 
 const mapDispatchToProps = (dispatch) => {
-  const getFeed = () => dispatch(UserOperations.getFeed())
+  const getFeed = () => dispatch(FeedOperations.getFeed())
 
   return { getFeed }
 }
 
 const mapStateToProps = (state) => {
-  const { feed, feedLoading } = state.user
+  const { feed } = state
 
   return { 
-    feed,
-    feedLoading
+    feed
   }
 }
 
@@ -26,7 +25,7 @@ class FeedScreen extends Component {
   }
 
   render() {
-    const { feedLoading, feed } = this.props
+    const { feedData, feedLoading } = this.props.feed
 
     return (
       <SafeArea>
@@ -36,21 +35,10 @@ class FeedScreen extends Component {
           </View>
           :
           <FlatList 
-            data={feed}
+            data={feedData}
             keyExtractor={item => item.id + ''}
             renderItem={({ item }) => (
-              <FeedPost
-                author={item.author}
-                createdAt={item.created_at}
-                avatarUrl={item.author.avatar_url}
-                likesCount={item.likes_count}
-                commentsEnabled={item.comments_enabled}
-                answersCount={item.answers_count}
-                newsItem={item.news_item}
-                linkDetails={item.link_details}
-                content={item.content}
-                newsKind={item.news_kind}
-              />
+              <FeedPost item={item} />
             )}
           />
         }

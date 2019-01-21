@@ -3,7 +3,7 @@ import { Image, View, StyleSheet } from 'react-native'
 import { LightText } from '../common/fonts'
 
 function Social(props) {
-  const { likesCount, commentsEnabled, answersCount } = props
+  const { likesCount, answersCount } = props
 
   return (
     <View style={styles.socialContainer}>
@@ -14,7 +14,7 @@ function Social(props) {
       <LightText style={styles.likeCounter}>
         {likesCount}
       </LightText>
-      {commentsEnabled ? 
+      {answersCount !== 0 &&
         <View style={styles.commentsContainer}>
           <Image 
             source={require('../../assets/icons/comments.png')}
@@ -24,8 +24,6 @@ function Social(props) {
             {answersCount}
           </LightText>
         </View>
-        :
-        null
       }
     </View>
   )

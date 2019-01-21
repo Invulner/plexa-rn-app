@@ -9,13 +9,11 @@ function LinkPreview(props) {
     return (
       <View>
         <View style={feedStyles.linkContainer}>
-          {image ?
+          {image &&
             <Image 
               source={{uri: image}}
               style={styles.linkImage}
             />
-            :
-            null
           }
           <SemiboldText style={feedStyles.linkText}>
             {title}

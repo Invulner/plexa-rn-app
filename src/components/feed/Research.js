@@ -11,7 +11,7 @@ function Research(props) {
 
         <View style={styles.newsTitleBox}>
           <SemiboldText style={[feedStyles.linkText, styles.newsTitleText]}>
-          {title}
+            {title}
           </SemiboldText>
         </View>
 
@@ -22,7 +22,7 @@ function Research(props) {
         </View>
 
         <SemiboldText style={[feedStyles.linkText, styles.newsText]}>
-            {description}
+          {description}
         </SemiboldText>
       </View>
     </View>

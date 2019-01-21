@@ -1,34 +1,69 @@
 import React, { Component } from 'react'
-import { View, Image, StyleSheet } from 'react-native'
+import { View, Image, Text, StyleSheet } from 'react-native'
 import { SemiboldText, RegularText } from '../common/fonts'
 import Research from './Research'
 import LinkPreview from './LinkPreview'
 import Social from './Social'
-import utils from '../../utils'
 import { feedStyles } from '../../assets/styles/feed/feedStyles'
 import ta from 'time-ago'
+import ProfileAvatar from '../common/ProfileAvatar'
 
 class FeedPost extends Component {
+  areAnyLinkDetails = () => {
+    return Object.getOwnPropertyNames(this.props.item.link_details).length !== 0
+  }
+
+  renderResearch = () => {
+    return (
+      <Research 
+        newsItem={this.props.item.news_item}
+      />
+    )
+  }
+
+  renderNews = () => {
+    return (
+      <Text>
+        Placeholder for the shared news preview
+      </Text>
+    )
+  }
+
+  renderLinkDetails = () => {
+    return (
+      <LinkPreview 
+        linkDetails={this.props.item.link_details}
+      />
+    )
+  }
+
+  renderAttachedBlock = () => { 
+    switch(this.props.item.news_kind) {
+      case 'research':
+        return this.renderResearch()
+      case 'news':
+        return this.renderNews()
+      case null:
+        if (this.areAnyLinkDetails()) 
+          return this.renderLinkDetails()
+        else 
+          return null
+      default:
+        return null  
+    }
+  }
+
   render() {
-    const { newsKind, createdAt, likesCount, commentsEnabled, answersCount, newsItem, linkDetails, content, author: { avatar_url, full_name, title } } = this.props
+    const { created_at, likes_count, answers_count, content, author: { avatar_url, full_name, title } } = this.props.item
 
     return (
       <View style={styles.postContainer}>
         <View style={styles.userContainer}>
 
-          {avatar_url ? 
-            <View style={styles.avatarPLaceholder}>
-              <Image 
-                source={{uri: avatar_url}}
-                style={styles.avatarImage}/>
-            </View>
-            :
-            <View style={styles.avatarPLaceholder}>
-              <RegularText style={styles.initials}>
-                {utils.getInitials(full_name)}
-              </RegularText>
-            </View>
-          }
+          <ProfileAvatar 
+            url={avatar_url}
+            name={full_name}
+          />
 
           <View>
             <View style={styles.authorRowContainer}>
@@ -37,7 +72,7 @@ class FeedPost extends Component {
               </SemiboldText>
               <View style={styles.dotImage} />
               <RegularText style={styles.hoursAgo}>
-                {ta.ago(createdAt, true)}
+                {ta.ago(created_at, true)}
               </RegularText>
             </View>
             <RegularText style={styles.userDescription}>
@@ -51,41 +86,15 @@ class FeedPost extends Component {
           />
 
         </View>
-        {content ? 
+        {content !== null &&
           <RegularText style={feedStyles.linkCaption}>
             {content}
           </RegularText>
-          :
-          null
         }
-        {newsKind === 'research' ?
-          <Research 
-            newsItem={newsItem}
-            content={content}
-          />
-          :
-          null
-        }
-        {newsKind === 'news' ?
-          <RegularText>
-            News template placeholder
-          </RegularText>
-          :
-          null
-        }
-        {Object.getOwnPropertyNames(linkDetails).length !== 0 && newsKind === null ?
-          <LinkPreview 
-            linkDetails={linkDetails}
-            content={content}
-          />
-          :
-          null
-        }
-        
+        {this.renderAttachedBlock()}
         <Social 
-          likesCount={likesCount}
-          commentsEnabled={commentsEnabled}
-          answersCount={answersCount}
+          likesCount={likes_count}
+          answersCount={answers_count}
         />
 
       </View>
@@ -105,27 +114,6 @@ const styles = StyleSheet.create({
   userContainer: {
     flexDirection: 'row',
     marginBottom: 15
-  },
-
-  avatarImage: {
-    width: 80,
-    height: 80,
-    resizeMode: 'contain'
-  },
-
-  avatarPLaceholder: {
-    width: 80,
-    height: 80,
-    marginRight: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#d3a400'
-  },
-
-  initials: {
-    color: '#fff',
-    fontSize: 26,
-    paddingTop: 10
   },
 
   postAuthor: {
