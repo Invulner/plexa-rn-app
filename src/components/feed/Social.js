@@ -9,17 +9,15 @@ function Social(props) {
     <View style={styles.socialContainer}>
       <Image 
         source={require('../../assets/icons/like-icon.png')}
-        style={styles.icon}
-      />
+        style={styles.icon} />
       <LightText style={styles.likeCounter}>
         {likesCount}
       </LightText>
-      {answersCount !== 0 &&
+      {!!answersCount &&
         <View style={styles.commentsContainer}>
           <Image 
             source={require('../../assets/icons/comments.png')}
-            style={styles.icon}
-          />
+            style={styles.icon} />
           <LightText>
             {answersCount}
           </LightText>

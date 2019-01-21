@@ -15,9 +15,7 @@ class FeedPost extends Component {
 
   renderResearch = () => {
     return (
-      <Research 
-        newsItem={this.props.item.news_item}
-      />
+      <Research newsItem={this.props.item.news_item} />
     )
   }
 
@@ -31,9 +29,7 @@ class FeedPost extends Component {
 
   renderLinkDetails = () => {
     return (
-      <LinkPreview 
-        linkDetails={this.props.item.link_details}
-      />
+      <LinkPreview linkDetails={this.props.item.link_details} />
     )
   }
 
@@ -62,8 +58,7 @@ class FeedPost extends Component {
 
           <ProfileAvatar 
             url={avatar_url}
-            name={full_name}
-          />
+            name={full_name} />
 
           <View>
             <View style={styles.authorRowContainer}>
@@ -82,11 +77,10 @@ class FeedPost extends Component {
 
           <Image
             source={require('../../assets/icons/arrow-down.png')}
-            style={styles.hideIcon}
-          />
+            style={styles.hideIcon} />
 
         </View>
-        {content !== null &&
+        {!!content &&
           <RegularText style={feedStyles.linkCaption}>
             {content}
           </RegularText>
@@ -94,8 +88,7 @@ class FeedPost extends Component {
         {this.renderAttachedBlock()}
         <Social 
           likesCount={likes_count}
-          answersCount={answers_count}
-        />
+          answersCount={answers_count} />
 
       </View>
     )

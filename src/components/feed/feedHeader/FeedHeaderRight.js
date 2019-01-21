@@ -10,16 +10,14 @@ class FeedHeaderRight extends Component {
           onPress={() => console.log('header message button')}>
           <Image 
             style={styles.messageIcon}
-            source={require('../../../assets/icons/envelope-icon-white.png')}
-          />
+            source={require('../../../assets/icons/envelope-icon-white.png')} />
         </TouchableOpacity>
         <TouchableOpacity 
           style={styles.addPostButton} 
           onPress={() => console.log('header right add post')}>
           <Image 
             style={styles.addPostIcon}
-            source={require('../../../assets/icons/add-post.png')}
-          />
+            source={require('../../../assets/icons/add-post.png')} />
         </TouchableOpacity>
       </View>
     )

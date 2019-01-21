@@ -8,14 +8,16 @@ import { connect } from 'react-redux'
 const mapDispatchToProps = (dispatch) => {
   const getFeed = () => dispatch(FeedOperations.getFeed())
 
-  return { getFeed }
+  return { 
+    getFeed 
+  }
 }
 
 const mapStateToProps = (state) => {
   const { feed } = state
 
   return { 
-    feed
+    feed 
   }
 }
 
@@ -39,8 +41,7 @@ class FeedScreen extends Component {
             keyExtractor={item => item.id + ''}
             renderItem={({ item }) => (
               <FeedPost item={item} />
-            )}
-          />
+            )} />
         }
       </SafeArea>
     )

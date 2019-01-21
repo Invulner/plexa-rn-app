@@ -12,8 +12,7 @@ function LinkPreview(props) {
           {image &&
             <Image 
               source={{uri: image}}
-              style={styles.linkImage}
-            />
+              style={styles.linkImage} />
           }
           <SemiboldText style={feedStyles.linkText}>
             {title}

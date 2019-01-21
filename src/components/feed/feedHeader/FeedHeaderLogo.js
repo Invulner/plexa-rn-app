@@ -6,8 +6,7 @@ function FeedHeaderLogo() {
     <View>
       <Image 
         source={require('../../../assets/images/logo-min.png')}
-        style={{width: 40, height: 40}}
-      />
+        style={{width: 40, height: 40}} />
     </View>
     
   )

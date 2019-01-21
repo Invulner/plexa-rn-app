@@ -11,7 +11,7 @@ function ProfileAvatar(props) {
       {url ? 
         <Image 
           source={{uri: url}}
-          style={styles.avatarImage}/>
+          style={styles.avatarImage} />
         :
         <RegularText style={styles.initials}>
           {utils.getInitials(name)}
