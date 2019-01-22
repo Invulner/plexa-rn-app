@@ -28,17 +28,18 @@ class FeedScreen extends Component {
 
   getFeed = () => {
     const { page, feedLoading }  = this.props.feed
+    nextPage = page + 1
     if (!feedLoading) {
-      this.props.getFeed(page)
+      this.props.getFeed(nextPage)
     } 
   }
 
   render() {
-    const { feedData, feedLoading, page } = this.props.feed
+    const { feedData, feedLoading } = this.props.feed
 
     return (
       <SafeArea>
-        {feedLoading && feedData.length === 0 ?
+        {feedLoading && !feedData.length ?
           <View style={styles.indicatorContainer}>
             <ActivityIndicator />
           </View>
@@ -47,7 +48,7 @@ class FeedScreen extends Component {
             data={feedData}
             keyExtractor={item => item.id + ''}
             renderItem={({ item }) => <FeedPost item={item} />} 
-            onEndReached={() => this.getFeed(page)} 
+            onEndReached={() => this.getFeed()} 
             onEndReachedThreshold={1}
             ListFooterComponent={feedLoading && <ActivityIndicator />} />
         }

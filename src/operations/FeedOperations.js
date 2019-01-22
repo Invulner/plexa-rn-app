@@ -10,7 +10,7 @@ const getFeed = (page = 1) => {
       api.get(`${API_URL}/feed?page=${page}`)
         .then(response => {
           dispatch(FeedActions.saveFeedData(response.data))
-          dispatch(FeedActions.updateFeedPage())
+          dispatch(FeedActions.updateFeedPage(page))
           console.log(response)
           dispatch(FeedActions.toggleFeedDataLoading(false))
         })
