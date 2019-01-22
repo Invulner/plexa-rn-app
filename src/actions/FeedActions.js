@@ -10,7 +10,19 @@ const toggleFeedDataLoading = (flag) => ({
   flag
 })
 
+const updateFeedPage = (page) => ({
+  type: types.UPDATE_FEED_PAGE,
+  page
+})
+
+const toggleNextPageLoading = (flag) => ({
+  type: types.TOGGLE_NEXT_PAGE_LOADING,
+  flag
+})
+
 export default {
   saveFeedData,
-  toggleFeedDataLoading
+  toggleFeedDataLoading,
+  updateFeedPage,
+  toggleNextPageLoading
 }
