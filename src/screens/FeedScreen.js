@@ -7,9 +7,11 @@ import { connect } from 'react-redux'
 
 const mapDispatchToProps = (dispatch) => {
   const getFeed = () => dispatch(FeedOperations.getFeed())
+  const loadMoreFeed = (page) => dispatch(FeedOperations.loadMoreFeed(page))
 
   return { 
-    getFeed 
+    getFeed,
+    loadMoreFeed
   }
 }
 
@@ -26,8 +28,18 @@ class FeedScreen extends Component {
     this.props.getFeed()
   }
 
+  loadMoreFeed = () => {
+    const { page, nextPageLoading }  = this.props.feed
+    if (!nextPageLoading) {
+      this.props.loadMoreFeed(page)
+      console.log('load more feed fired')
+    } else {
+      return
+    }
+  }
+
   render() {
-    const { feedData, feedLoading } = this.props.feed
+    const { feedData, feedLoading, nextPageLoading } = this.props.feed
 
     return (
       <SafeArea>
@@ -38,10 +50,11 @@ class FeedScreen extends Component {
           :
           <FlatList 
             data={feedData}
-            keyExtractor={item => item.id + ''}
-            renderItem={({ item }) => (
-              <FeedPost item={item} />
-            )} />
+            keyExtractor={item => item.created_at}
+            renderItem={({ item }) => (<FeedPost item={item} />)} 
+            onEndReached={this.loadMoreFeed} 
+            onEndReachedThreshold={1}
+            ListFooterComponent={nextPageLoading && <ActivityIndicator />} />
         }
       </SafeArea>
     )
