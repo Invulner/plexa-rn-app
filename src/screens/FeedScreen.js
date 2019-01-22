@@ -6,12 +6,10 @@ import FeedOperations from '../operations/FeedOperations'
 import { connect } from 'react-redux'
 
 const mapDispatchToProps = (dispatch) => {
-  const getFeed = () => dispatch(FeedOperations.getFeed())
-  const loadMoreFeed = (page) => dispatch(FeedOperations.loadMoreFeed(page))
+  const getFeed = (page) => dispatch(FeedOperations.getFeed(page))
 
   return { 
-    getFeed,
-    loadMoreFeed
+    getFeed
   }
 }
 
@@ -28,33 +26,30 @@ class FeedScreen extends Component {
     this.props.getFeed()
   }
 
-  loadMoreFeed = () => {
-    const { page, nextPageLoading }  = this.props.feed
-    if (!nextPageLoading) {
-      this.props.loadMoreFeed(page)
-      console.log('load more feed fired')
-    } else {
-      return
-    }
+  getFeed = () => {
+    const { page, feedLoading }  = this.props.feed
+    if (!feedLoading) {
+      this.props.getFeed(page)
+    } 
   }
 
   render() {
-    const { feedData, feedLoading, nextPageLoading } = this.props.feed
+    const { feedData, feedLoading, page } = this.props.feed
 
     return (
       <SafeArea>
-        {feedLoading ?
+        {feedLoading && feedData.length === 0 ?
           <View style={styles.indicatorContainer}>
             <ActivityIndicator />
           </View>
           :
           <FlatList 
             data={feedData}
-            keyExtractor={item => item.created_at}
-            renderItem={({ item }) => (<FeedPost item={item} />)} 
-            onEndReached={this.loadMoreFeed} 
+            keyExtractor={item => item.id + ''}
+            renderItem={({ item }) => <FeedPost item={item} />} 
+            onEndReached={() => this.getFeed(page)} 
             onEndReachedThreshold={1}
-            ListFooterComponent={nextPageLoading && <ActivityIndicator />} />
+            ListFooterComponent={feedLoading && <ActivityIndicator />} />
         }
       </SafeArea>
     )

@@ -10,9 +10,8 @@ const toggleFeedDataLoading = (flag) => ({
   flag
 })
 
-const updateFeedPage = (page) => ({
-  type: types.UPDATE_FEED_PAGE,
-  page: page
+const updateFeedPage = () => ({
+  type: types.UPDATE_FEED_PAGE
 })
 
 const toggleNextPageLoading = (flag) => ({

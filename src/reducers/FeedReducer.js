@@ -2,7 +2,7 @@ import types from '../types/feed'
 
 const initialState = {
   feedData: [],
-  nextPageLoading: false
+  page: 1
 }
 
 const feedReducer = (state = initialState, action) => {
@@ -12,9 +12,7 @@ const feedReducer = (state = initialState, action) => {
     case types.TOGGLE_FEED_DATA_LOADING:
       return {...state, feedLoading: action.flag}
     case types.UPDATE_FEED_PAGE:
-      return {...state, page: action.page + 1}
-    case types.TOGGLE_NEXT_PAGE_LOADING: 
-      return {...state, nextPageLoading: action.flag}
+      return {...state, page: ++state.page}
     default:
       return state
   }
