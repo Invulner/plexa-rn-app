@@ -9,7 +9,6 @@ import ta from 'time-ago'
 import ProfileAvatar from '../common/ProfileAvatar'
 import FeedPicker from './FeedPicker'
 
-
 class FeedPost extends Component {
   areAnyLinkDetails = () => {
     return Object.getOwnPropertyNames(this.props.item.link_details).length !== 0
@@ -78,9 +77,9 @@ class FeedPost extends Component {
           </View>
 
           <FeedPicker />
-
           
         </View>
+
         {!!content &&
           <RegularText style={feedStyles.linkCaption}>
             {content}
