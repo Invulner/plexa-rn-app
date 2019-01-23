@@ -7,6 +7,8 @@ import Social from './Social'
 import { feedStyles } from '../../assets/styles/feed/feedStyles'
 import ta from 'time-ago'
 import ProfileAvatar from '../common/ProfileAvatar'
+import FeedPicker from './FeedPicker'
+
 
 class FeedPost extends Component {
   areAnyLinkDetails = () => {
@@ -75,10 +77,9 @@ class FeedPost extends Component {
             </RegularText>
           </View>
 
-          <Image
-            source={require('../../assets/icons/arrow-down.png')}
-            style={styles.hideIcon} />
+          <FeedPicker />
 
+          
         </View>
         {!!content &&
           <RegularText style={feedStyles.linkCaption}>
@@ -88,8 +89,7 @@ class FeedPost extends Component {
         {this.renderAttachedBlock()}
         <Social 
           likesCount={likes_count}
-          answersCount={answers_count} />
-
+          answersCount={answers_count} />  
       </View>
     )
   }
@@ -139,14 +139,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginTop: -5,
     letterSpacing: 0.5
-  },
-
-  hideIcon: {
-    width: 15,
-    height: 15,
-    resizeMode: 'contain',
-    marginLeft: 'auto',
-    marginTop: 5
   }
 })
 
