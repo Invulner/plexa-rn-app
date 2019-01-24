@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Image, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 import { SemiboldText, RegularText } from '../common/fonts'
 import Research from './Research'
 import LinkPreview from './LinkPreview'
@@ -7,7 +7,7 @@ import Social from './Social'
 import { feedStyles } from '../../assets/styles/feed/feedStyles'
 import ta from 'time-ago'
 import ProfileAvatar from '../common/ProfileAvatar'
-import FeedPicker from './FeedPicker'
+import PostActionButton from './PostActionButton'
 
 class FeedPost extends Component {
   areAnyLinkDetails = () => {
@@ -76,8 +76,8 @@ class FeedPost extends Component {
             </RegularText>
           </View>
 
-          <FeedPicker />
-          
+          <PostActionButton />
+              
         </View>
 
         {!!content &&
@@ -93,6 +93,7 @@ class FeedPost extends Component {
     )
   }
 }
+
 
 const styles = StyleSheet.create({
   postContainer: {
