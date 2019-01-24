@@ -1,26 +1,21 @@
 import React, { Component } from 'react'
-import { Image, StyleSheet, TouchableOpacity } from 'react-native'
+import { Image, StyleSheet, TouchableOpacity, Platform } from 'react-native'
 import ActionSheet from 'react-native-action-sheet'
-import { Platform } from 'react-native'
 
 class PostActionButton extends Component {
   callActionsSheet = () => {
-    const btnsIOS = [
-      'Send message',
-      'Hide post',
-      'Report',
-      'Block user',
-      'Cancel'
-    ]
-  
     const btnsAndroid = [
       'Send message',
       'Hide post',
       'Report',
       'Block user'
     ]
+    const btnsIOS = [
+      ...btnsAndroid,
+      'Cancel'
+    ]
 
-    const cancelIndex = 4
+    const cancelIndex = btnsIOS.length - 1
 
     ActionSheet.showActionSheetWithOptions({
       options: (Platform.OS == 'ios') ? btnsIOS : btnsAndroid,
@@ -37,7 +32,7 @@ class PostActionButton extends Component {
         onPress={this.callActionsSheet}
         style={styles.actionBtn}>
         <Image
-          source={require('../../assets/icons/arrow-down.png')}
+          source={require('../../assets/icons/ico1-01.png')}
           style={styles.actionIcon} />
       </TouchableOpacity>
     )

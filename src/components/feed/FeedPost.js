@@ -75,9 +75,7 @@ class FeedPost extends Component {
               {title}
             </RegularText>
           </View>
-
-          <PostActionButton />
-              
+          <PostActionButton />   
         </View>
 
         {!!content &&
