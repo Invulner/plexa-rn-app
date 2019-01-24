@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Image, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 import { SemiboldText, RegularText } from '../common/fonts'
 import Research from './Research'
 import LinkPreview from './LinkPreview'
@@ -7,6 +7,7 @@ import Social from './Social'
 import { feedStyles } from '../../assets/styles/feed/feedStyles'
 import ta from 'time-ago'
 import ProfileAvatar from '../common/ProfileAvatar'
+import PostActionButton from './PostActionButton'
 
 class FeedPost extends Component {
   areAnyLinkDetails = () => {
@@ -74,12 +75,9 @@ class FeedPost extends Component {
               {title}
             </RegularText>
           </View>
-
-          <Image
-            source={require('../../assets/icons/arrow-down.png')}
-            style={styles.hideIcon} />
-
+          <PostActionButton />   
         </View>
+
         {!!content &&
           <RegularText style={feedStyles.linkCaption}>
             {content}
@@ -88,12 +86,12 @@ class FeedPost extends Component {
         {this.renderAttachedBlock()}
         <Social 
           likesCount={likes_count}
-          answersCount={answers_count} />
-
+          answersCount={answers_count} />  
       </View>
     )
   }
 }
+
 
 const styles = StyleSheet.create({
   postContainer: {
@@ -139,14 +137,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginTop: -5,
     letterSpacing: 0.5
-  },
-
-  hideIcon: {
-    width: 15,
-    height: 15,
-    resizeMode: 'contain',
-    marginLeft: 'auto',
-    marginTop: 5
   }
 })
 
