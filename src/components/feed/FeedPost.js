@@ -8,26 +8,9 @@ import { feedStyles } from '../../assets/styles/feed/feedStyles'
 import ta from 'time-ago'
 import ProfileAvatar from '../common/ProfileAvatar'
 import PostActionButton from './PostActionButton'
+import utils from '../../utils'
 
 class FeedPost extends Component {
-  displayContent = () => {
-    let { content } = this.props.item
-
-    if (content) {
-      if (content.length > 250) {
-        content = content.slice(0, 250) + ' ...'
-      }
-
-      return (
-        <RegularText style={feedStyles.linkCaption}>
-          {content}
-        </RegularText>
-      )
-    } else {
-      return null
-    }
-  }
-
   areAnyLinkDetails = () => {
     return Object.getOwnPropertyNames(this.props.item.link_details).length !== 0
   }
@@ -95,7 +78,11 @@ class FeedPost extends Component {
           </View>
           <PostActionButton />   
         </View>
-        {this.displayContent()}
+        {!!content && 
+          <RegularText style={feedStyles.linkCaption}>
+            {utils.truncate(content)}
+          </RegularText>
+          }
         {!!image_urls.length &&
           <Image 
             source={{uri: image_urls[0].preview_url}}
