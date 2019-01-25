@@ -6,12 +6,10 @@ import FeedOperations from '../operations/FeedOperations'
 import { connect } from 'react-redux'
 
 const mapDispatchToProps = (dispatch) => {
-  const getFeed = (page) => dispatch(FeedOperations.getFeed(page))
-  const refreshFeed = (feedData) => dispatch(FeedOperations.refreshFeed(feedData))
+  const getFeed = (saveOption, page) => dispatch(FeedOperations.getFeed(saveOption, page))
 
   return { 
-    getFeed,
-    refreshFeed
+    getFeed
   }
 }
 
@@ -25,25 +23,25 @@ const mapStateToProps = (state) => {
 
 class FeedScreen extends Component {
   componentDidMount() {
-    this.props.getFeed()
+    this.props.getFeed('add')
   }
 
   getFeed = () => {
     const { page, feedLoading }  = this.props.feed
     nextPage = page + 1
     if (!feedLoading) {
-      this.props.getFeed(nextPage)
+      this.props.getFeed('add', nextPage)
     } 
   }
 
   render() {
-    const { refreshFeed, feed: { feedData, feedLoading } } = this.props
+    const { getFeed, feed: { feedData, feedLoading } } = this.props
 
     return (
       <SafeArea>
         {feedLoading && !feedData.length ?
           <View style={styles.indicatorContainer}>
-            <ActivityIndicator />
+            <ActivityIndicator size='large' />
           </View>
           :
           <FlatList 
@@ -52,7 +50,7 @@ class FeedScreen extends Component {
             renderItem={({ item }) => <FeedPost item={item} />} 
             onEndReached={() => this.getFeed()} 
             onEndReachedThreshold={1}
-            onRefresh={() => refreshFeed(feedData)}
+            onRefresh={() => getFeed('refresh')}
             refreshing={feedLoading}
             ListFooterComponent={feedLoading && <ActivityIndicator size='large' />} />
         }

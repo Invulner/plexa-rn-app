@@ -13,8 +13,8 @@ const feedReducer = (state = initialState, action) => {
       return {...state, feedLoading: action.flag}
     case types.UPDATE_FEED_PAGE:
       return {...state, page: action.page}
-    case types.REFRESH_FEED: 
-      return {...state, feedData: [...action.newPosts, ...state.feedData]}
+    case types.REFRESH_FEED:
+      return {...state, feedData: action.refreshedFeedData}
     default:
       return state
   }
