@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
   linkImage: {
     width: '100%',
     resizeMode: 'cover',
-    height: 200
+    height: 126
   }
 })
 
