@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, Image, StyleSheet } from 'react-native'
 import { SemiboldText, RegularText } from '../common/fonts'
 import Research from './Research'
 import LinkPreview from './LinkPreview'
@@ -8,6 +8,7 @@ import { feedStyles } from '../../assets/styles/feed/feedStyles'
 import ta from 'time-ago'
 import ProfileAvatar from '../common/ProfileAvatar'
 import PostActionButton from './PostActionButton'
+import utils from '../../utils'
 
 class FeedPost extends Component {
   areAnyLinkDetails = () => {
@@ -51,7 +52,7 @@ class FeedPost extends Component {
   }
 
   render() {
-    const { created_at, likes_count, answers_count, content, author: { avatar_url, full_name, title } } = this.props.item
+    const { created_at, likes_count, answers_count, content, image_urls, author: { avatar_url, full_name, title } } = this.props.item
 
     return (
       <View style={styles.postContainer}>
@@ -77,11 +78,15 @@ class FeedPost extends Component {
           </View>
           <PostActionButton />   
         </View>
-
-        {!!content &&
+        {!!content && 
           <RegularText style={feedStyles.linkCaption}>
-            {content}
+            {utils.truncate(content)}
           </RegularText>
+          }
+        {!!image_urls.length &&
+          <Image 
+            source={{uri: image_urls[0].preview_url}}
+            style={styles.linkImage} />
         }
         {this.renderAttachedBlock()}
         <Social 
@@ -91,7 +96,6 @@ class FeedPost extends Component {
     )
   }
 }
-
 
 const styles = StyleSheet.create({
   postContainer: {
@@ -137,6 +141,11 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginTop: -5,
     letterSpacing: 0.5
+  },
+
+  linkImage: {
+    ...feedStyles.linkImage,
+    marginVertical: 5
   }
 })
 
