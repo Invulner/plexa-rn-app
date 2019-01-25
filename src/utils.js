@@ -5,13 +5,8 @@ const getInitials = (name) => {
   return initials
 }
 
-const truncate = (text, textLength = MAX_CONTENT_LENGTH) => {
-  let content = text
-    if (content.length > textLength) {
-      content = content.slice(0, textLength) + ' ...'
-    }
-
-    return content
+const truncate = (text, maxLength = MAX_CONTENT_LENGTH) => {
+ return text.length > maxLength ? text.slice(0, maxLength) + ' ...' : text
 }
 
 export default {
