@@ -17,13 +17,19 @@ export const feedStyles = StyleSheet.create({
     fontSize: 16,
     letterSpacing: 0.3,
     lineHeight: 15,
-    margin: 10
+    marginHorizontal: 10,
+    marginTop: 10
   },
 
   linkSource: {
     fontSize: 14,
-    marginTop: -7,
-    marginLeft: 10,
-    marginBottom: 5
+    marginVertical: 5,
+    marginLeft: 10
+  },
+
+  linkImage: {
+    width: '100%',
+    resizeMode: 'cover',
+    height: 126
   }
 })

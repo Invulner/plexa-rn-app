@@ -1,6 +1,6 @@
 import React from 'react'
-import { View, StyleSheet, Image } from 'react-native'
-import { SemiboldText, RegularText } from '../common/fonts'
+import { View, Image } from 'react-native'
+import { RegularText } from '../common/fonts'
 import { feedStyles } from '../../assets/styles/feed/feedStyles'
 
 function LinkPreview(props) {
@@ -12,26 +12,19 @@ function LinkPreview(props) {
           {image &&
             <Image 
               source={{uri: image}}
-              style={styles.linkImage} />
+              style={feedStyles.linkImage} />
           }
-          <SemiboldText style={feedStyles.linkText}>
-            {title}
-          </SemiboldText>
+          {!!title &&
+            <RegularText style={feedStyles.linkText}>
+              {title.trim()}
+            </RegularText>
+          }
           <RegularText style={feedStyles.linkSource}>
             {domain}
           </RegularText>
         </View>
       </View>
     )
-
 }
-
-const styles = StyleSheet.create({
-  linkImage: {
-    width: '100%',
-    resizeMode: 'cover',
-    height: 126
-  }
-})
 
 export default LinkPreview
