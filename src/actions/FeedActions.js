@@ -15,14 +15,14 @@ const updateFeedPage = (page) => ({
   page
 })
 
-const toggleNextPageLoading = (flag) => ({
-  type: types.TOGGLE_NEXT_PAGE_LOADING,
-  flag
+const refreshFeed = (refreshedFeedData) => ({
+  type: types.REFRESH_FEED,
+  refreshedFeedData
 })
 
 export default {
   saveFeedData,
   toggleFeedDataLoading,
   updateFeedPage,
-  toggleNextPageLoading
+  refreshFeed
 }
