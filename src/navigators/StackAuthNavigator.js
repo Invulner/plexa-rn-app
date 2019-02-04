@@ -1,7 +1,7 @@
 import { createStackNavigator } from 'react-navigation'
-import LoginScreen from '../screens/Auth/LoginScreen'
-import PrivacyPolicy from '../screens/Auth/PrivacyPolicy'
-import TermsOfService from '../screens/Auth/TermsOfService'
+import LoginScreen from '../screens/auth/LoginScreen'
+import PrivacyPolicy from '../screens/terms/PrivacyPolicy'
+import TermsOfService from '../screens/terms/TermsOfService'
 import { TEXT_COLOR } from '../assets/styles/colors'
 
 const AuthStack = createStackNavigator({

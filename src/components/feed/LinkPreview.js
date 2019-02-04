@@ -4,7 +4,7 @@ import { RegularText } from '../common/fonts'
 import { feedStyles } from '../../assets/styles/feed/feedStyles'
 
 function LinkPreview(props) {
-  const { domain, image, title } = props.linkDetails
+  const { link_url, link_details: { domain, image, title } } = props.item
 
     return (
       <View>
@@ -14,11 +14,13 @@ function LinkPreview(props) {
               source={{uri: image}}
               style={feedStyles.linkImage} />
           }
-          {!!title &&
-            <RegularText style={feedStyles.linkText}>
-              {title.trim()}
-            </RegularText>
-          }
+          <RegularText style={feedStyles.linkText}>
+            {!!title ? 
+              title.trim()
+              :
+              link_url.trim()
+            }
+          </RegularText>
           <RegularText style={feedStyles.linkSource}>
             {domain}
           </RegularText>
