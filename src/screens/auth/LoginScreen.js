@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import { View, TextInput, StyleSheet, TouchableOpacity, Linking, Image, Alert, ActivityIndicator } from 'react-native'
 import { connect } from 'react-redux'
-import UserOperations from '../operations/UserOperations'
-import { SIGN_UP_URL, MIN_PASSWORD_LENGTH } from '../constants'
-import { TEXT_COLOR, BG_COLOR, BTN_COLOR } from '../assets/styles/colors'
-import SafeArea from '../components/common/SafeArea'
-import { LightText } from '../components/common/fonts'
+import UserOperations from '../../operations/UserOperations'
+import { SIGN_UP_URL, MIN_PASSWORD_LENGTH } from '../../constants'
+import { TEXT_COLOR, BG_COLOR, BTN_COLOR } from '../../assets/styles/colors'
+import SafeArea from '../../components/common/SafeArea'
+import { LightText } from '../../components/common/fonts'
 
 const mapDispatchToProps = (dispatch, { navigation }) => {
   const login = (credentials) => dispatch(UserOperations.auth(credentials, navigation))
@@ -142,7 +142,7 @@ class LoginScreen extends Component {
 
           <View style={styles.imageContainer}>
             <Image
-              source={require('../assets/images/text-logo.png')}
+              source={require('../../assets/images/text-logo.png')}
               style={styles.logoImage} />
           </View>
 
