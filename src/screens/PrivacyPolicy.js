@@ -12,7 +12,7 @@ class PrivacyPolicy extends Component {
         <ScrollArea>
 
           <ItalicText>
-          Updated June 2017{"\n"}
+            Updated June 2017{"\n"}
           </ItalicText>
           
           <LightText style={termsAndPolicyStyles.paragraph}>
