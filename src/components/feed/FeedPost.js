@@ -31,7 +31,7 @@ class FeedPost extends Component {
 
   renderLinkDetails = () => {
     return (
-      <LinkPreview linkDetails={this.props.item.link_details} />
+      <LinkPreview item={this.props.item}/>
     )
   }
 

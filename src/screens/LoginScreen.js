@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Linking, Image, Alert, ActivityIndicator } from 'react-native'
+import { View, TextInput, StyleSheet, TouchableOpacity, Linking, Image, Alert, ActivityIndicator } from 'react-native'
 import { connect } from 'react-redux'
-import UserOperations from '../../operations/UserOperations'
-import { SIGN_UP_URL, MIN_PASSWORD_LENGTH } from '../../constants'
-import { TEXT_COLOR, BG_COLOR, BTN_COLOR } from '../../assets/styles/colors'
-import SafeArea from '../../components/common/SafeArea'
+import UserOperations from '../operations/UserOperations'
+import { SIGN_UP_URL, MIN_PASSWORD_LENGTH } from '../constants'
+import { TEXT_COLOR, BG_COLOR, BTN_COLOR } from '../assets/styles/colors'
+import SafeArea from '../components/common/SafeArea'
+import { LightText } from '../components/common/fonts'
 
 const mapDispatchToProps = (dispatch, { navigation }) => {
   const login = (credentials) => dispatch(UserOperations.auth(credentials, navigation))
@@ -80,9 +81,9 @@ class LoginScreen extends Component {
     return (
       <SafeArea>
         <View style={styles.container}>
-          <Text style={styles.welcomeText}>
+          <LightText style={styles.welcomeText}>
             Welcome, please login!
-          </Text>
+          </LightText>
 
           <TextInput
             style={styles.input}
@@ -106,40 +107,42 @@ class LoginScreen extends Component {
             {loading ? 
               <ActivityIndicator color="#fff"/> 
               : 
-              <Text style={styles.buttonText}>Log in</Text>
+              <LightText style={styles.buttonText}>
+                Log in
+              </LightText>
             }
           </TouchableOpacity>
 
           <View style={styles.signUpOuterContainer}>
             <View style={styles.signUpContainer}>
-              <Text style={styles.signUpText}>
+              <LightText style={styles.signUpText}>
                 Not a member?
-              </Text>
-              <Text 
+              </LightText>
+              <LightText 
                 style={styles.signUpLink} 
                 onPress={() => Linking.openURL(SIGN_UP_URL)}>
                 Sign up
-              </Text>
+              </LightText>
             </View>
 
-            <Text style={styles.serviceText}>
+            <LightText style={styles.serviceText}>
               By using our service you agree with
-            </Text>
-            <Text 
+            </LightText>
+            <LightText 
               style={styles.termsAndPolicyText}
               onPress={()=> navigation.navigate('Terms')}>
               Terms of service
-            </Text>
-            <Text 
+            </LightText>
+            <LightText 
               style={styles.termsAndPolicyText}
               onPress={() => navigation.navigate('Policy')}>
               Privacy policy
-            </Text>
+            </LightText>
           </View> 
 
           <View style={styles.imageContainer}>
             <Image
-              source={require('../../assets/images/text-logo.png')}
+              source={require('../assets/images/text-logo.png')}
               style={styles.logoImage} />
           </View>
 
@@ -203,7 +206,9 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 20,
     color: '#fff',
-    textAlign: 'center'
+    textAlign: 'center',
+    marginBottom: -5,
+    marginTop: 2
   },
 
   signUpOuterContainer: {
