@@ -4,7 +4,7 @@ import { Dimensions } from 'react-native'
 import FeedStack from './StackFeedNavigator'
 import TermsOfService from '../screens/terms/TermsOfService'
 
-const { width } = Dimensions.get('window')
+//const { width } = Dimensions.get('window')
 
 const FeedDrawerNavigator = createDrawerNavigator({
   Feed: {
