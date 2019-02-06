@@ -1,13 +1,17 @@
 import React, { Component } from 'react'
-import { View, Image, StyleSheet } from 'react-native'
+import { View, Image, StyleSheet, TouchableOpacity } from 'react-native'
+import { withNavigation } from 'react-navigation'
 
 class FeedHeaderLeft extends Component {
   render() {
+    const { navigation } = this.props
     return (
       <View style={styles.container}>
-        <Image 
-          style={styles.menuImage}
-          source={require('../../../assets/icons/menu.png')} />
+        <TouchableOpacity onPress={() => navigation.openDrawer()}>
+          <Image 
+            style={styles.menuImage}
+            source={require('../../../assets/icons/menu.png')} />
+        </TouchableOpacity>
       </View>
     )
   }
@@ -28,4 +32,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default FeedHeaderLeft
+export default withNavigation(FeedHeaderLeft)

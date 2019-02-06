@@ -1,13 +1,13 @@
 import { createSwitchNavigator } from 'react-navigation'
 import AppLoadingScreen from '../screens/AppLoadingScreen'
-import FeedStack from './StackFeedNavigator'
 import AuthStack from './StackAuthNavigator'
+import FeedDrawerNavigator from './FeedDrawerNavigator'
 
 const SwitchAppNavigator = createSwitchNavigator(
   {
     AppLoading: AppLoadingScreen,
     Auth: AuthStack,
-    Feed: FeedStack
+    Feed: FeedDrawerNavigator
   },
   {
     initialRouteName: 'AppLoading'
