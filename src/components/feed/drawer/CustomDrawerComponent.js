@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, Image, ImageBackground, FlatList } from 'react-native'
+import { View, StyleSheet, Image, ImageBackground } from 'react-native'
 import { connect } from 'react-redux'
 import { RegularText } from '../../common/fonts'
 import { BG_COLOR, BRAND_DARK } from '../../../assets/styles/colors'
 import ScrollArea from '../../common/ScrollArea'
 import SafeArea from '../../common/SafeArea'
-import DrawerListHeader from './DrawerListHeader'
+import DrawerList from './DrawerList'
 
 const mapStateToProps = (state) => {
   const { full_name, avatar_url } = state.user
@@ -32,7 +32,8 @@ class CustomDrawerComponent extends Component {
       },
       {
         title: 'Messages',
-        path: ''
+        path: '',
+        messages: 3
       }],
 
     groupsData: [{
@@ -75,15 +76,8 @@ class CustomDrawerComponent extends Component {
     }]
   }
 
-  navigateTo = (route) => {
-    const { navigate, closeDrawer } = this.props.navigation
-
-    navigate(route)
-    closeDrawer()
-  }
-
   render() {
-    const { full_name, avatar_url } = this.props
+    const { full_name, avatar_url, navigation } = this.props
     const { plexaData, groupsData, filterSpecialtyData, filterLocationData } = this.state
 
     return (
@@ -104,55 +98,31 @@ class CustomDrawerComponent extends Component {
                 </RegularText>
               </View>
 
-              <FlatList 
+              <DrawerList 
                 data={plexaData}
-                renderItem={({item}) => (
-                  <RegularText 
-                    onPress={() => this.navigateTo(item.path)}
-                    style={styles.item}>
-                    {item.title}
-                  </RegularText>)}
-                keyExtractor={item => item.title}
-                ListHeaderComponent={<DrawerListHeader title={'Plexa'}/>} />
+                navigation={navigation}
+                headerTitle={'Plexa'} />
 
               <View style={[styles.line, styles.flatList]} />
 
-              <FlatList 
-                style={styles.flatList}
+              <DrawerList
+                style={styles.flatList} 
                 data={groupsData}
-                renderItem={({item}) => (
-                  <RegularText 
-                    onPress={() => this.navigateTo(item.path)}
-                    style={styles.item}>
-                    {item.title}
-                  </RegularText>)}
-                keyExtractor={item => item.title}
-                ListHeaderComponent={<DrawerListHeader title={'Groups'}/>} />
+                navigation={navigation}
+                headerTitle={'Groups'} />
 
-              <FlatList 
+              <DrawerList 
+                style={styles.flatList} 
                 data={filterSpecialtyData}
-                style={styles.flatList}
-                renderItem={({item}) => (
-                  <RegularText 
-                    onPress={() => this.navigateTo(item.path)}
-                    style={styles.item}>
-                    {item.title}
-                  </RegularText>)}
-                keyExtractor={item => item.title}
-                ListHeaderComponent={<DrawerListHeader title={'Filter by Specialty'}/>} />
+                navigation={navigation}
+                headerTitle={'Filter by Specialty'} />
 
-              <FlatList 
+              <DrawerList 
+                style={styles.flatList} 
                 data={filterLocationData}
-                style={styles.flatList}
-                renderItem={({item}) => (
-                  <RegularText 
-                    onPress={() => this.navigateTo(item.path)}
-                    style={styles.item}>
-                    {item.title}
-                  </RegularText>)}
-                keyExtractor={item => item.title}
-                ListHeaderComponent={<DrawerListHeader title={'Filter by Location'}/>} />
-              
+                navigation={navigation}
+                headerTitle={'Filter by Location'} />
+
             </ScrollArea>
           </ImageBackground>
         </ImageBackground>
@@ -176,12 +146,6 @@ const styles = StyleSheet.create({
     height: 60,
     resizeMode: 'contain',
     borderRadius: 7
-  },
-
-  item: {
-    fontSize: 20,
-    marginVertical: 5,
-    marginLeft: 5
   },
 
   imageBG: {
