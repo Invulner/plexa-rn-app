@@ -1,8 +1,8 @@
-import CustomDrawerComponent from '../components/feed/drawer/CustomDrawerComponent'
+import CustomDrawerComponent from '../components/drawer/CustomDrawerComponent'
 import { createDrawerNavigator } from 'react-navigation'
 import FeedStack from './StackFeedNavigator'
 
-const FeedDrawerNavigator = createDrawerNavigator({
+const AppDrawerNavigator = createDrawerNavigator({
   Feed: {
     screen: FeedStack,
   }
@@ -10,4 +10,4 @@ const FeedDrawerNavigator = createDrawerNavigator({
   contentComponent: CustomDrawerComponent
 })
 
-export default FeedDrawerNavigator
+export default AppDrawerNavigator

@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { View, StyleSheet, FlatList } from 'react-native'
 import DrawerListHeader from './DrawerListHeader'
-import { RegularText } from '../../common/fonts'
-import { BG_COLOR, BRAND_DARK } from '../../../assets/styles/colors'
+import { RegularText } from '../common/fonts'
+import { BG_COLOR, BRAND_DARK } from '../../assets/styles/colors'
+import { withNavigation } from 'react-navigation'
 
 class DrawerList extends Component {
   navigateTo = (route) => {
@@ -13,11 +14,11 @@ class DrawerList extends Component {
   }
 
   render() {
-    const { data, headerTitle, style } = this.props
+    const { data, headerTitle } = this.props
 
     return (
       <FlatList 
-        style={style}
+        style={styles.flatList}
         data={data}
         renderItem={({item}) => (
 
@@ -25,7 +26,7 @@ class DrawerList extends Component {
             <RegularText 
               onPress={() => this.navigateTo(item.path)}
               style={styles.item}>
-              {item.title}
+              {item.option}
             </RegularText>
             {item.messages && 
               <View style={styles.messagesBox}>
@@ -33,9 +34,9 @@ class DrawerList extends Component {
               </View>
             }
           </View>
-          
+
         )}
-        keyExtractor={item => item.title}
+        keyExtractor={item => item.option}
         ListHeaderComponent={<DrawerListHeader title={headerTitle}/>} />
     )
   }
@@ -68,6 +69,10 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     flexDirection: 'row'
   },
+
+  flatList: {
+    marginBottom: 35
+  }
 })
 
-export default DrawerList
+export default withNavigation(DrawerList)

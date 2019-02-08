@@ -5,6 +5,7 @@ import { withNavigation } from 'react-navigation'
 class FeedHeaderLeft extends Component {
   render() {
     const { navigation } = this.props
+    
     return (
       <View style={styles.container}>
         <TouchableOpacity onPress={() => navigation.openDrawer()}>

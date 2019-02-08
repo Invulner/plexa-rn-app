@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { View, StyleSheet, TouchableOpacity } from 'react-native'
-import { BTN_COLOR } from '../../assets/styles/colors'
+import { BRAND_LIGHT } from '../../assets/styles/colors'
 import NewsIcon from './NewsIcon'
 import { RegularText } from '../common/fonts'
 
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
   },
 
   btn: {
-    backgroundColor: BTN_COLOR,
+    backgroundColor: BRAND_LIGHT,
     borderRadius: 18,
     justifyContent: 'center',
     alignItems: 'center',
