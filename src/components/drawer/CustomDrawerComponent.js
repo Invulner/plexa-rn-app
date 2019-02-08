@@ -20,6 +20,7 @@ class CustomDrawerComponent extends Component {
   menuBlocks = [
     {
       title: 'Plexa',
+      iconType: 'plexa',
       items: [
         {
           option: 'Create new post',
@@ -42,6 +43,7 @@ class CustomDrawerComponent extends Component {
     },
     {
       title: 'Groups',
+      iconType: 'groups',
       items: [
         {
           option: 'Group one',
@@ -55,6 +57,7 @@ class CustomDrawerComponent extends Component {
     },
     {
       title: 'Filter by Specialty',
+      iconType: 'specialty',
       items: [
         {
           option: 'Addiction Medicine',
@@ -76,6 +79,7 @@ class CustomDrawerComponent extends Component {
     },
     {
       title: 'Filter by Location',
+      iconType: 'location',
       items: [
         {
           option: 'United Kingdom',
@@ -93,12 +97,12 @@ class CustomDrawerComponent extends Component {
     }
   ]
 
-  menuElements = this.menuBlocks.map((item, index) => (
+  menuElements = this.menuBlocks.map((item) => (
     <DrawerList 
       key={item.title}
       data={item.items}
       headerTitle={item.title}
-      index={index} />
+      iconType={item.iconType} />
   ))
 
   render() {
