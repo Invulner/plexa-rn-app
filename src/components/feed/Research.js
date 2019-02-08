@@ -2,6 +2,8 @@ import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import { SemiboldText, RegularText } from '../common/fonts'
 import { feedStyles } from '../../assets/styles/feed/feedStyles'
+import { PREVIEW_DARK } from '../../assets/styles/colors'
+import utils from '../../utils'
 
 function Research(props) {
   const { description, source_title, title } = props.newsItem
@@ -15,14 +17,14 @@ function Research(props) {
           </SemiboldText>
         </View>
 
-        <View style={styles.newsSourceBox}>
+        <View style={feedStyles.newsSourceBox}>
           <RegularText style={[styles.linkSource, styles.newsSourceText]}>
             {source_title}
           </RegularText>
         </View>
 
         <SemiboldText style={[feedStyles.linkText, styles.newsText]}>
-          {description}
+          {utils.truncate(description)}
         </SemiboldText>
       </View>
     </View>
@@ -31,23 +33,14 @@ function Research(props) {
 
 const styles = StyleSheet.create({
   newsTitleBox: {
-    backgroundColor: '#085d24',
-    paddingBottom: 10
+    backgroundColor: PREVIEW_DARK,
+    paddingBottom: 12
   },
 
   newsTitleText: {
     color: '#fff',
-    marginLeft: 10
-  },
-
-  newsSourceBox: {
-    backgroundColor: '#00a453',
-    flex: -1,
-    padding: 10,
-    paddingBottom: 5,
     marginLeft: 10,
-    marginTop: -15,
-    marginRight: 'auto'
+    paddingBottom: 10
   },
 
   newsSourceText: {
@@ -56,7 +49,7 @@ const styles = StyleSheet.create({
 
   newsText: {
     marginLeft: 10,
-    marginTop: 10
+    marginTop: 15
   }
 })
 

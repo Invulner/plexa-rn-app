@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, Image, StyleSheet } from 'react-native'
+import { View, Image, StyleSheet } from 'react-native'
 import { SemiboldText, RegularText } from '../common/fonts'
 import Research from './Research'
 import LinkPreview from './LinkPreview'
@@ -9,6 +9,7 @@ import ta from 'time-ago'
 import ProfileAvatar from '../common/ProfileAvatar'
 import PostActionButton from './PostActionButton'
 import utils from '../../utils'
+import News from './News'
 
 class FeedPost extends Component {
   areAnyLinkDetails = () => {
@@ -23,9 +24,7 @@ class FeedPost extends Component {
 
   renderNews = () => {
     return (
-      <Text>
-        Placeholder for the shared news preview
-      </Text>
+      <News newsItem={this.props.item.news_item} />
     )
   }
 
