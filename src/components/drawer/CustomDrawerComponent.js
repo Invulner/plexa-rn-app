@@ -93,11 +93,12 @@ class CustomDrawerComponent extends Component {
     }
   ]
 
-  menuElements = this.menuBlocks.map((item) => (
+  menuElements = this.menuBlocks.map((item, index) => (
     <DrawerList 
       key={item.title}
       data={item.items}
-      headerTitle={item.title} />
+      headerTitle={item.title}
+      index={index} />
   ))
 
   render() {

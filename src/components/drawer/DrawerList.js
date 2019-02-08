@@ -14,7 +14,7 @@ class DrawerList extends Component {
   }
 
   render() {
-    const { data, headerTitle } = this.props
+    const { data, headerTitle, index } = this.props
 
     return (
       <FlatList 
@@ -37,7 +37,7 @@ class DrawerList extends Component {
 
         )}
         keyExtractor={item => item.option}
-        ListHeaderComponent={<DrawerListHeader title={headerTitle}/>} />
+        ListHeaderComponent={<DrawerListHeader title={headerTitle} index={index}/>} />
     )
   }
 }

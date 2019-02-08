@@ -6,14 +6,14 @@ import { menuIcons } from '../../constants'
 
 class DrawerListHeader extends Component {
   render() {
-    const { title }  = this.props
+    const { title, index }  = this.props
 
     return (
       <React.Fragment>
         <View style={styles.container}>
           <View style={styles.iconBox}>
             <Image
-              source={menuIcons[title]} 
+              source={menuIcons[index]} 
               style={styles.icon} />
           </View>
           <RegularText style={styles.text}>

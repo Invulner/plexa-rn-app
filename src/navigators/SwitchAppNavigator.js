@@ -7,7 +7,7 @@ const SwitchAppNavigator = createSwitchNavigator(
   {
     AppLoading: AppLoadingScreen,
     Auth: AuthStack,
-    Feed: AppDrawerNavigator
+    App: AppDrawerNavigator
   },
   {
     initialRouteName: 'AppLoading'

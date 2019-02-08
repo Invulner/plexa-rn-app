@@ -57,7 +57,7 @@ const saveUserToAsyncStorage = (userSecretData) => {
 }
 
 const redirectToFeed = (navigation) => {
-  navigation.navigate('Feed')
+  navigation.navigate('App')
 }
 
 const onLoginFail = (dispatch) => {
