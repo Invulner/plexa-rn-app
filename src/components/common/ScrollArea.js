@@ -3,7 +3,9 @@ import { ScrollView } from 'react-native'
 
 function ScrollArea(props) {
   return (
-    <ScrollView contentContainerStyle={{ padding: 15 }}>
+    <ScrollView 
+      contentContainerStyle={{ padding: 15 }}
+      showsVerticalScrollIndicator={props.showsVerticalScrollIndicator}>
       {props.children}
     </ScrollView>
   )

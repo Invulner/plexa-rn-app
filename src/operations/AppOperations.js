@@ -13,7 +13,7 @@ const checkForSavedCreds = async (dispatch, navigation) => {
 
     if (secretData) {
       const successCallback = () => {
-        navigation.navigate('Feed')
+        navigation.navigate('App')
       }
       dispatch(UserOperations.getProfileData(navigation, successCallback))
     } else {
