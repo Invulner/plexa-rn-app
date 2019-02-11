@@ -24,7 +24,7 @@ class FeedPost extends Component {
 
   renderNews = () => {
     return (
-      <News newsItem={this.props.item.news_item} />
+      <News item={this.props.item} />
     )
   }
 

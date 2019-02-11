@@ -5,15 +5,16 @@ import { SemiboldText, RegularText } from '../common/fonts'
 import utils from '../../utils'
 
 function News(props) {
-  const { description, image, source_title, title } = props.newsItem
+  const { link_details, news_item: { description, image, source_title, title } } = props.item
+  const imageSrc = image || link_details.image
 
     return (
       <View style={feedStyles.linkContainer}>
 
-        {!!image ? 
+        {imageSrc ? 
           <Image 
             style={styles.image} 
-            source={{uri: image}} />
+            source={{uri: imageSrc}} />
           :
           <View style={styles.blankView}/>
         }

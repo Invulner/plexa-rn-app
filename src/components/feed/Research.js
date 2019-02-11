@@ -7,6 +7,7 @@ import utils from '../../utils'
 
 function Research(props) {
   const { description, source_title, title } = props.newsItem
+  
   return (
     <View>
       <View style={feedStyles.linkContainer}>
