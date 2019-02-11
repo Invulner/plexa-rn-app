@@ -2,7 +2,8 @@ import { StyleSheet } from 'react-native'
 
 const termsStyles = StyleSheet.create({
   title: {
-    fontSize: 26
+    fontSize: 26,
+    marginBottom: -10
   },
 
   text: {
