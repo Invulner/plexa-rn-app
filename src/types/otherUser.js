@@ -1,0 +1,5 @@
+const SAVE_OTHER_USER_DATA = 'SAVE_OTHER_USER_DATA'
+
+export default {
+  SAVE_OTHER_USER_DATA
+}

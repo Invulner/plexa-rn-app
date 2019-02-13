@@ -65,7 +65,16 @@ const onLoginFail = (dispatch) => {
   dispatch(UserActions.toggleUserDataLoading(false))
 }
 
+const logout = (navigation) => {
+  return dispatch => {
+    redirectToLogin(navigation)
+    clearUserSecretData()
+    dispatch(UserActions.clearUserData())
+  }
+}
+
 export default {
   auth,
-  getProfileData
+  getProfileData,
+  logout
 }

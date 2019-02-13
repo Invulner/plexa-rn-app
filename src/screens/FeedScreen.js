@@ -37,7 +37,7 @@ class FeedScreen extends Component {
   }
 
   render() {
-    const { refreshFeed, feed: { feedData, feedLoading } } = this.props
+    const { navigation, refreshFeed, feed: { feedData, feedLoading } } = this.props
 
     return (
       <SafeArea>
@@ -49,7 +49,7 @@ class FeedScreen extends Component {
           <FlatList 
             data={feedData}
             keyExtractor={item => item.id + ''}
-            renderItem={({ item }) => <FeedPost item={item} />} 
+            renderItem={({ item }) => <FeedPost item={item} navigation={navigation}/>} 
             onEndReached={() => this.addToFeed()} 
             onEndReachedThreshold={1}
             onRefresh={() => refreshFeed()}

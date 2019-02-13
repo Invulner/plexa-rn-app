@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Image, StyleSheet } from 'react-native'
+import { View, Image, StyleSheet, TouchableWithoutFeedback } from 'react-native'
 import { SemiboldText, RegularText } from '../common/fonts'
 import Research from './Research'
 import LinkPreview from './LinkPreview'
@@ -10,6 +10,14 @@ import ProfileAvatar from '../common/ProfileAvatar'
 import PostActionButton from './PostActionButton'
 import utils from '../../utils'
 import News from './News'
+import OtherUserOperations from '../../operations/OtherUserOperations'
+import { connect } from 'react-redux'
+
+const mapDispatchToProps = (dispatch, { navigation, item: { author: { id } } }) => {
+  const getOterUserProfile = () => dispatch(OtherUserOperations.getOtherUserProfile(id, navigation))
+
+  return { getOterUserProfile }
+}
 
 class FeedPost extends Component {
   areAnyLinkDetails = () => {
@@ -51,19 +59,23 @@ class FeedPost extends Component {
   }
 
   render() {
-    const { created_at, likes_count, answers_count, content, image_urls, author: { avatar_url, full_name, title } } = this.props.item
+    const { getOterUserProfile, item: { created_at, likes_count, answers_count, content, image_urls, author: { avatar_url, full_name, title } } } = this.props
 
     return (
       <View style={styles.postContainer}>
         <View style={styles.userContainer}>
 
-          <ProfileAvatar 
-            url={avatar_url}
-            name={full_name} />
+          <TouchableWithoutFeedback onPress={getOterUserProfile}>
+            <View>
+              <ProfileAvatar 
+                url={avatar_url}
+                name={full_name} />
+            </View>
+          </TouchableWithoutFeedback>
 
           <View>
             <View style={styles.authorRowContainer}>
-              <SemiboldText style={styles.postAuthor}>
+              <SemiboldText style={styles.postAuthor} onPress={getOterUserProfile}>
                 {full_name}
               </SemiboldText>
               <View style={styles.dotImage} />
@@ -148,4 +160,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default FeedPost
+export default connect(null, mapDispatchToProps)(FeedPost)

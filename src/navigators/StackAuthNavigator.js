@@ -1,8 +1,11 @@
+import React from 'react'
 import { createStackNavigator } from 'react-navigation'
 import LoginScreen from '../screens/auth/LoginScreen'
 import PrivacyPolicy from '../screens/terms/PrivacyPolicy'
 import TermsOfService from '../screens/terms/TermsOfService'
-import { TEXT_COLOR } from '../assets/styles/colors'
+import { BRAND_DARK } from '../assets/styles/colors'
+import BackArrow from '../components/common/BackArrow'
+import HeaderTitle from '../components/common/HeaderTitle'
 
 const AuthStack = createStackNavigator({
   Login: {
@@ -15,20 +18,22 @@ const AuthStack = createStackNavigator({
   Policy: { 
     screen: PrivacyPolicy,
     navigationOptions: () => ({
-      title: 'Privacy Policy'
+      headerTitle: <HeaderTitle title={'Privacy Policy'} />,
+      headerLeft: <BackArrow />
     })
   },
   Terms: {
     screen: TermsOfService,
     navigationOptions: () => ({
-      title: 'Terms of Service'
+      headerTitle: <HeaderTitle title={'Terms of Service'} />,
+      headerLeft: <BackArrow />
     })
   }
 },
 {
   initialRouteName: 'Login',
   defaultNavigationOptions: {
-    headerTintColor: TEXT_COLOR,
+    headerTintColor: BRAND_DARK,
     headerBackTitle: null,
     headerTitleStyle: {
       fontWeight: '400',

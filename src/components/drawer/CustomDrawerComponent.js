@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, Image, ImageBackground } from 'react-native'
+import { StyleSheet, Image, ImageBackground, TouchableWithoutFeedback, View } from 'react-native'
 import { connect } from 'react-redux'
 import { RegularText } from '../common/fonts'
 import { BG_COLOR } from '../../assets/styles/colors'
 import ScrollArea from '../common/ScrollArea'
 import SafeArea from '../common/SafeArea'
 import DrawerList from './DrawerList'
+import profileStyles from '../../assets/styles/profileStyles'
 
 const mapStateToProps = (state) => {
   const { full_name, avatar_url } = state.user
@@ -56,8 +57,8 @@ class CustomDrawerComponent extends Component {
       ]
     },
     {
-      title: 'Filter by Specialty',
-      iconType: 'specialty',
+      title: 'Filter by Speciality',
+      iconType: 'speciality',
       items: [
         {
           option: 'Addiction Medicine',
@@ -106,7 +107,7 @@ class CustomDrawerComponent extends Component {
   ))
 
   render() {
-    const { full_name, avatar_url } = this.props
+    const { full_name, avatar_url, navigation } = this.props
 
     return (
       <SafeArea style={styles.container}>
@@ -117,14 +118,17 @@ class CustomDrawerComponent extends Component {
 
             <ScrollArea 
               showsVerticalScrollIndicator={false}>
-              <View style={styles.userBox}>
-                <Image 
-                  source={{uri: avatar_url}} 
-                  style={styles.userImage}/>
-                <RegularText style={styles.userName}>
-                  {full_name}
-                </RegularText>
-              </View>
+
+              <TouchableWithoutFeedback onPress={() => navigation.navigate('OwnProfile')}>
+                <View style={profileStyles.userBox}>
+                  <Image 
+                    source={{uri: avatar_url}} 
+                    style={profileStyles.userImage} />
+                  <RegularText style={profileStyles.userName}>
+                    {full_name}
+                  </RegularText>
+                </View>
+              </TouchableWithoutFeedback>
 
               {this.menuElements}
 
@@ -146,28 +150,9 @@ const styles = StyleSheet.create({
     flex: 1
   },
   
-  userImage: {
-    width: 60,
-    height: 60,
-    resizeMode: 'contain',
-    borderRadius: 7
-  },
-
   imageBG: {
     flex: 1,
     resizeMode: 'contain'
-  },
-
-  userBox: {
-    flexDirection: 'row',
-    paddingVertical: 20,
-    alignItems: 'center'
-  },
-
-  userName: {
-    fontSize: 22,
-    marginLeft: 10,
-    marginTop: 10
   }
 })
 

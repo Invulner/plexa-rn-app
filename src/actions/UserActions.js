@@ -10,7 +10,12 @@ const toggleUserDataLoading = (flag) => ({
   flag
 })
 
+const clearUserData = () => ({
+  type: types.CLEAR_USER_DATA
+})
+
 export default {
   saveUserData,
-  toggleUserDataLoading
+  toggleUserDataLoading,
+  clearUserData
 }

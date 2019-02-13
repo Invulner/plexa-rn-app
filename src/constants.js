@@ -6,6 +6,6 @@ export const MAX_CONTENT_LENGTH = 250
 export const menuIcons = {
   'plexa': require('./assets/icons/logo-min-01.png'),
   'groups': require('./assets/icons/user-groups-01.png'),
-  'specialty': require('./assets/icons/specialties.png'),
+  'speciality': require('./assets/icons/specialties.png'),
   'location': require('./assets/icons/location-01.png')
 }

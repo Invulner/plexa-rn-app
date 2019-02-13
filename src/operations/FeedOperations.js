@@ -46,7 +46,14 @@ const refreshFeed = () => {
   }
 }
 
+const clearFeed = () => {
+  return dispatch => {
+    dispatch(FeedActions.clearFeed())
+  }
+}
+
 export default {
   getFeed,
-  refreshFeed
+  refreshFeed,
+  clearFeed
 }
