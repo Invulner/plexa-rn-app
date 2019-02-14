@@ -6,7 +6,7 @@ function BackArrow(props) {
   return (
     <TouchableOpacity onPress={() => props.navigation.goBack()}>
       <Image 
-        source={require('../../assets/icons/arrow-left.png')}
+        source={require('../../../assets/icons/arrow-left.png')}
         style={styles.image} />
     </TouchableOpacity>
   )

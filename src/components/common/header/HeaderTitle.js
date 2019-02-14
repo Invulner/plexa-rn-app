@@ -1,7 +1,7 @@
 import React from 'react'
-import { RegularText } from './fonts'
+import { RegularText } from '../fonts'
 import { View, StyleSheet } from 'react-native'
-import { BRAND_DARK } from '../../assets/styles/colors'
+import { BRAND_DARK } from '../../../assets/styles/colors'
 
 function HeaderTitle(props) {
   return (

@@ -10,13 +10,13 @@ import ProfileAvatar from '../common/ProfileAvatar'
 import PostActionButton from './PostActionButton'
 import utils from '../../utils'
 import News from './News'
-import OtherUserOperations from '../../operations/OtherUserOperations'
+import PublicUserOperations from '../../operations/PublicUserOperations'
 import { connect } from 'react-redux'
 
 const mapDispatchToProps = (dispatch, { navigation, item: { author: { id } } }) => {
-  const getOterUserProfile = () => dispatch(OtherUserOperations.getOtherUserProfile(id, navigation))
+  const getPublicUserProfile = () => dispatch(PublicUserOperations.getPublicUserProfile(id, navigation))
 
-  return { getOterUserProfile }
+  return { getPublicUserProfile }
 }
 
 class FeedPost extends Component {
@@ -59,13 +59,13 @@ class FeedPost extends Component {
   }
 
   render() {
-    const { getOterUserProfile, item: { created_at, likes_count, answers_count, content, image_urls, author: { avatar_url, full_name, title } } } = this.props
+    const { getPublicUserProfile, item: { created_at, likes_count, answers_count, content, image_urls, author: { avatar_url, full_name, title } } } = this.props
 
     return (
       <View style={styles.postContainer}>
         <View style={styles.userContainer}>
 
-          <TouchableWithoutFeedback onPress={getOterUserProfile}>
+          <TouchableWithoutFeedback onPress={getPublicUserProfile}>
             <View>
               <ProfileAvatar 
                 url={avatar_url}
@@ -75,7 +75,7 @@ class FeedPost extends Component {
 
           <View>
             <View style={styles.authorRowContainer}>
-              <SemiboldText style={styles.postAuthor} onPress={getOterUserProfile}>
+              <SemiboldText style={styles.postAuthor} onPress={getPublicUserProfile}>
                 {full_name}
               </SemiboldText>
               <View style={styles.dotImage} />

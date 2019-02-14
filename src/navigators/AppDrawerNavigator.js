@@ -3,9 +3,7 @@ import { createDrawerNavigator } from 'react-navigation'
 import FeedStack from './StackFeedNavigator'
 
 const AppDrawerNavigator = createDrawerNavigator({
-  Feed: {
-    screen: FeedStack,
-  }
+  Feed: FeedStack
 }, {
   contentComponent: CustomDrawerComponent
 })

@@ -2,7 +2,7 @@ import types from '../types/user'
 
 const initialState = {}
 
-const userReducer = (state = initialState, action) => {
+const UserReducer = (state = initialState, action) => {
   switch(action.type) {
     case types.SAVE_USER_DATA:
       return {...state, ...action.userData}
@@ -15,4 +15,4 @@ const userReducer = (state = initialState, action) => {
   }
 }
 
-export default userReducer
+export default UserReducer

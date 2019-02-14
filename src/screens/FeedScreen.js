@@ -4,6 +4,7 @@ import SafeArea from '../components/common/SafeArea'
 import FeedPost from '../components/feed/FeedPost'
 import FeedOperations from '../operations/FeedOperations'
 import { connect } from 'react-redux'
+import Loader from '../components/common/Loader'
 
 const mapDispatchToProps = (dispatch) => {
   const getFeed = (page) => dispatch(FeedOperations.getFeed(page))
@@ -42,9 +43,7 @@ class FeedScreen extends Component {
     return (
       <SafeArea>
         {feedLoading && !feedData.length ?
-          <View style={styles.indicatorContainer}>
-            <ActivityIndicator size='large' />
-          </View>
+          <Loader />
           :
           <FlatList 
             data={feedData}
@@ -60,13 +59,5 @@ class FeedScreen extends Component {
     )
   }
 }
-
-const styles = StyleSheet.create({
-  indicatorContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
-  }
-})
 
 export default connect(mapStateToProps, mapDispatchToProps)(FeedScreen)

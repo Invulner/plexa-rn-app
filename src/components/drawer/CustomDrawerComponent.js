@@ -119,7 +119,7 @@ class CustomDrawerComponent extends Component {
             <ScrollArea 
               showsVerticalScrollIndicator={false}>
 
-              <TouchableWithoutFeedback onPress={() => navigation.navigate('OwnProfile')}>
+              <TouchableWithoutFeedback onPress={() => navigation.navigate('Profile')}>
                 <View style={profileStyles.userBox}>
                   <Image 
                     source={{uri: avatar_url}} 

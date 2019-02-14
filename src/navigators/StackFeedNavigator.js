@@ -4,12 +4,10 @@ import FeedScreen from '../screens/FeedScreen'
 import FeedHeaderLogo from '../components/feed/feedHeader/FeedHeaderLogo'
 import FeedHeaderRight from '../components/feed/feedHeader/FeedHeaderRight'
 import FeedHeaderLeft from '../components/feed/feedHeader/FeedHeaderLeft'
-import OwnProfileScreen from '../screens/OwnProfileScreen'
-import BackArrow from '../components/common/BackArrow'
-import HeaderTitle from '../components/common/HeaderTitle'
-import PrivacyPolicy from '../screens/terms/PrivacyPolicy'
-import TermsOfService from '../screens/terms/TermsOfService'
-import UserProfileScreen from '../screens/UserProfileScreen'
+import ProfileScreen from '../screens/ProfileScreen'
+import BackArrow from '../components/common/header/BackArrow'
+import HeaderTitle from '../components/common/header/HeaderTitle'
+import PublicProfileScreen from '../screens/PublicProfileScreen'
 
 const FeedStack = createStackNavigator({
   Feed: {
@@ -17,51 +15,27 @@ const FeedStack = createStackNavigator({
     navigationOptions: () => ({
       headerTitle: <FeedHeaderLogo />,
       headerRight: <FeedHeaderRight />,
-      headerLeft: <FeedHeaderLeft />,
-      headerStyle: {
-        paddingVertical: 10
-      }
+      headerLeft: <FeedHeaderLeft />
     })
   },
-  OwnProfile: {
-    screen: OwnProfileScreen,
+  Profile: {
+    screen: ProfileScreen,
     navigationOptions: () => ({
-      headerTitle: <HeaderTitle title={'My profile'} />,
-      headerLeft: <BackArrow />,
-      headerStyle: {
-        paddingVertical: 10
-      }
+      headerTitle: <HeaderTitle title={'My profile'} />
     })
   },
-  UserProfile: {
-    screen: UserProfileScreen,
+  PublicProfile: {
+    screen: PublicProfileScreen,
     navigationOptions: () => ({
-      headerTitle: <HeaderTitle title={'User profile'} />,
-      headerLeft: <BackArrow />,
-      headerStyle: {
-        paddingVertical: 10
-      }
+      headerTitle: <HeaderTitle title={'User profile'} />
     })
-  },
-  ProfilePolicy: {
-    screen: PrivacyPolicy,
-    navigationOptions: () => ({
-      headerTitle: <HeaderTitle title={'Privacy Policy'} />,
-      headerLeft: <BackArrow />,
-      headerStyle: {
-        paddingVertical: 10
-      }
-    })
-  },
-  ProfileTerms: {
-    screen: TermsOfService,
-    navigationOptions: () => ({
-      headerTitle: <HeaderTitle title={'Terms of Service'} />,
-      headerLeft: <BackArrow />,
-      headerStyle: {
-        paddingVertical: 10
-      }
-    })
+  }
+}, {
+  defaultNavigationOptions: {
+    headerStyle: {
+      paddingVertical: 10
+    },
+    headerLeft: <BackArrow />
   }
 })
 

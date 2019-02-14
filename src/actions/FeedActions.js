@@ -20,8 +20,8 @@ const refreshFeed = (refreshedFeedData) => ({
   refreshedFeedData
 })
 
-const clearFeed = () => ({
-  type: types.CLEAR_FEED
+const resetFeed = () => ({
+  type: types.RESET_FEED
 })
 
 export default {
@@ -29,5 +29,5 @@ export default {
   toggleFeedDataLoading,
   updateFeedPage,
   refreshFeed,
-  clearFeed
+  resetFeed
 }
