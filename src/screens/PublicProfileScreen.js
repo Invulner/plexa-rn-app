@@ -32,11 +32,9 @@ class PublicProfileScreen extends Component {
 
   componentDidMount() {
     this.props.getPublicUserProfile()
-    console.log('mount')
   }
 
   render() {
-    console.log('render')
     const { avatar_url, full_name, title, location, specialities, sub_specialities, conditions, interests, loading } = this.props.publicUser
 
     if (full_name === 'Plexa Medbot') {

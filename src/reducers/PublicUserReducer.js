@@ -1,6 +1,8 @@
 import types from '../types/publicUser'
 
-const initialState = {}
+const initialState = {
+  loading: true
+}
 
 const PublicUserReducer = (state = initialState, action) => {
   switch (action.type) {

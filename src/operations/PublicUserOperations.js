@@ -6,10 +6,9 @@ const getPublicUserProfile = (navigation) => {
   return dispatch => {
 
     dispatch(PublicUserActions.togglePublicUserLoading(true))
-    //Chosen by convinience by now
+    //Chosen by convinience for now
     const fallBackId = 299
     const id = navigation.getParam('id', fallBackId)
-    console.log(id)
 
     return getAxiosInstance().then(api => {
       api.get(`${API_URL}/profiles/${id}`)
@@ -18,7 +17,7 @@ const getPublicUserProfile = (navigation) => {
           dispatch(PublicUserActions.savePublicUserData(response.data))
           dispatch(PublicUserActions.togglePublicUserLoading(false))
         })
-        .catch(error => console.log('OTHER USER PROFILE REQUEST ERROR: ', error))
+        .catch(error => console.log('PUBLIC USER PROFILE REQUEST ERROR: ', error))
     })
   }
 }
