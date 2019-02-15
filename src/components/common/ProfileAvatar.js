@@ -1,7 +1,9 @@
 import React from 'react'
 import { View, Image, StyleSheet } from 'react-native'
 import RegularText from '../common/fonts/RegularText'
+import { AVATAR_BG } from '../../assets/styles/colors'
 import utils from '../../utils'
+import profileStyles from '../../assets/styles/profileStyles'
 
 function ProfileAvatar(props) {
   const { url, name } = props
@@ -13,7 +15,7 @@ function ProfileAvatar(props) {
           source={{uri: url}}
           style={styles.avatarImage} />
         :
-        <RegularText style={styles.initials}>
+        <RegularText style={profileStyles.initials}>
           {utils.getInitials(name)}
         </RegularText>
       }
@@ -28,20 +30,14 @@ const styles = StyleSheet.create({
     marginRight: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#d3a400'
+    backgroundColor: AVATAR_BG
   },
 
   avatarImage: {
     width: 80,
     height: 80,
     resizeMode: 'contain'
-  },
-
-  initials: {
-    color: '#fff',
-    fontSize: 26,
-    paddingTop: 10
-  },
+  }
 })
 
 export default ProfileAvatar

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, FlatList } from 'react-native'
+import { View, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
 import DrawerListHeader from './DrawerListHeader'
 import { RegularText } from '../common/fonts'
 import { BG_COLOR, BRAND_DARK } from '../../assets/styles/colors'
@@ -23,11 +23,11 @@ class DrawerList extends Component {
         renderItem={({item}) => (
 
           <View style={styles.itemBox}>
-            <RegularText 
-              onPress={() => this.navigateTo(item.path)}
-              style={styles.item}>
-              {item.option}
-            </RegularText>
+            <TouchableOpacity onPress={() => this.navigateTo(item.path)}>
+              <RegularText style={styles.item}>
+                {item.option}
+              </RegularText>
+            </TouchableOpacity>
             {item.messages && 
               <View style={styles.messagesBox}>
                 <RegularText style={styles.messages}>{item.messages}</RegularText>

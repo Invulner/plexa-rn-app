@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Image, StyleSheet } from 'react-native'
+import { View, Image, StyleSheet, TouchableWithoutFeedback } from 'react-native'
 import { SemiboldText, RegularText } from '../common/fonts'
 import Research from './Research'
 import LinkPreview from './LinkPreview'
@@ -51,19 +51,25 @@ class FeedPost extends Component {
   }
 
   render() {
-    const { created_at, likes_count, answers_count, content, image_urls, author: { avatar_url, full_name, title } } = this.props.item
+    const { navigation, item: { created_at, likes_count, answers_count, content, image_urls, author: { avatar_url, full_name, title, id } } } = this.props
 
     return (
       <View style={styles.postContainer}>
         <View style={styles.userContainer}>
 
-          <ProfileAvatar 
-            url={avatar_url}
-            name={full_name} />
+          <TouchableWithoutFeedback onPress={() => navigation.navigate('PublicProfile', {id})}>
+            <View>
+              <ProfileAvatar 
+                url={avatar_url}
+                name={full_name} />
+            </View>
+          </TouchableWithoutFeedback>
 
           <View>
             <View style={styles.authorRowContainer}>
-              <SemiboldText style={styles.postAuthor}>
+              <SemiboldText 
+                style={styles.postAuthor} 
+                onPress={() => navigation.navigate('PublicProfile')}>
                 {full_name}
               </SemiboldText>
               <View style={styles.dotImage} />

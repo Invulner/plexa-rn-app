@@ -3,6 +3,8 @@ import { API_URL } from '../constants'
 import { Alert, AsyncStorage } from 'react-native'
 import UserActions from '../actions/UserActions'
 import getAxiosInstance from '../config/axios'
+import FeedOperations from './FeedOperations'
+import PublicUserOperations from './PublicUserOperations'
 
 const auth = (credentials, navigation) => {
   return dispatch => {
@@ -65,7 +67,18 @@ const onLoginFail = (dispatch) => {
   dispatch(UserActions.toggleUserDataLoading(false))
 }
 
+const logout = (navigation) => {
+  return dispatch => {
+    redirectToLogin(navigation)
+    clearUserSecretData()
+    dispatch(UserActions.clearUserData())
+    dispatch(FeedOperations.resetFeed())
+    dispatch(PublicUserOperations.clearPublicUserData())
+  }
+}
+
 export default {
   auth,
-  getProfileData
+  getProfileData,
+  logout
 }

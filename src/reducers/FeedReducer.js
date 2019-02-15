@@ -5,7 +5,7 @@ const initialState = {
   feedLoading: true
 }
 
-const feedReducer = (state = initialState, action) => {
+const FeedReducer = (state = initialState, action) => {
   switch(action.type) {
     case types.SAVE_FEED_DATA:
       return {...state, feedData: [...state.feedData, ...action.feedData]}
@@ -15,9 +15,11 @@ const feedReducer = (state = initialState, action) => {
       return {...state, page: action.page}
     case types.REFRESH_FEED:
       return {...state, feedData: action.refreshedFeedData}
+    case types.RESET_FEED: 
+      return initialState
     default:
       return state
   }
 }
 
-export default feedReducer
+export default FeedReducer
