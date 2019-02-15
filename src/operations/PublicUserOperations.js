@@ -2,11 +2,14 @@ import { API_URL } from '../constants'
 import getAxiosInstance from '../config/axios'
 import PublicUserActions from '../actions/PublicUserActions'
 
-const getPublicUserProfile = (id, navigation) => {
+const getPublicUserProfile = (navigation) => {
   return dispatch => {
 
     dispatch(PublicUserActions.togglePublicUserLoading(true))
-    navigation.navigate('PublicProfile')
+    //Chosen by convinience by now
+    const fallBackId = 299
+    const id = navigation.getParam('id', fallBackId)
+    console.log(id)
 
     return getAxiosInstance().then(api => {
       api.get(`${API_URL}/profiles/${id}`)

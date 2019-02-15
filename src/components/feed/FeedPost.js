@@ -10,14 +10,6 @@ import ProfileAvatar from '../common/ProfileAvatar'
 import PostActionButton from './PostActionButton'
 import utils from '../../utils'
 import News from './News'
-import PublicUserOperations from '../../operations/PublicUserOperations'
-import { connect } from 'react-redux'
-
-const mapDispatchToProps = (dispatch, { navigation, item: { author: { id } } }) => {
-  const getPublicUserProfile = () => dispatch(PublicUserOperations.getPublicUserProfile(id, navigation))
-
-  return { getPublicUserProfile }
-}
 
 class FeedPost extends Component {
   areAnyLinkDetails = () => {
@@ -59,13 +51,13 @@ class FeedPost extends Component {
   }
 
   render() {
-    const { getPublicUserProfile, item: { created_at, likes_count, answers_count, content, image_urls, author: { avatar_url, full_name, title } } } = this.props
+    const { navigation, item: { created_at, likes_count, answers_count, content, image_urls, author: { avatar_url, full_name, title, id } } } = this.props
 
     return (
       <View style={styles.postContainer}>
         <View style={styles.userContainer}>
 
-          <TouchableWithoutFeedback onPress={getPublicUserProfile}>
+          <TouchableWithoutFeedback onPress={() => navigation.navigate('PublicProfile', {id})}>
             <View>
               <ProfileAvatar 
                 url={avatar_url}
@@ -75,7 +67,9 @@ class FeedPost extends Component {
 
           <View>
             <View style={styles.authorRowContainer}>
-              <SemiboldText style={styles.postAuthor} onPress={getPublicUserProfile}>
+              <SemiboldText 
+                style={styles.postAuthor} 
+                onPress={() => navigation.navigate('PublicProfile')}>
                 {full_name}
               </SemiboldText>
               <View style={styles.dotImage} />
@@ -160,4 +154,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect(null, mapDispatchToProps)(FeedPost)
+export default FeedPost

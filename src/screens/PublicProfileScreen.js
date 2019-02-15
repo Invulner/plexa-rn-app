@@ -8,6 +8,7 @@ import AvatarBox from '../components/profile/AvatarBox'
 import DetailsBox from '../components/profile/DetailsBox'
 import Loader from '../components/common/Loader'
 import utils from '../utils'
+import PublicUserOperations from '../operations/PublicUserOperations'
 
 const mapStateToProps = (state) => {
   const { publicUser } = state
@@ -15,15 +16,27 @@ const mapStateToProps = (state) => {
   return { publicUser }
 }
 
+const mapDispatchToProps = (dispatch, { navigation }) => {
+  const getPublicUserProfile = () => dispatch(PublicUserOperations.getPublicUserProfile(navigation))
+
+  return { getPublicUserProfile }
+}
+
 class PublicProfileScreen extends Component {
   getLocation = (location) => { 
     let locationArr = location.filter((item, index) => index !== 1).map(item => item.name)
-    let locationString = [locationArr[1], locationArr[0]].join(', ')
+    let locationString = `${locationArr[1]}, ${locationArr[0]}`
 
     return utils.truncate(locationString, 20)
   }
 
+  componentDidMount() {
+    this.props.getPublicUserProfile()
+    console.log('mount')
+  }
+
   render() {
+    console.log('render')
     const { avatar_url, full_name, title, location, specialities, sub_specialities, conditions, interests, loading } = this.props.publicUser
 
     if (full_name === 'Plexa Medbot') {
@@ -48,7 +61,9 @@ class PublicProfileScreen extends Component {
           <Loader />
           :
           <ScrollView>
-            <AvatarBox avatar_url={avatar_url} full_name={full_name} />
+            <AvatarBox 
+              avatar_url={avatar_url} 
+              full_name={full_name} />
 
             <LightText style={profileStyles.heading}>
               PROFILE
@@ -109,4 +124,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect(mapStateToProps, null)(PublicProfileScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(PublicProfileScreen)
