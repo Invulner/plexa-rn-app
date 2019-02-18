@@ -7,10 +7,18 @@ class CustomTabBar extends Component {
     return (
       <SafeAreaView>
         <View style={styles.container}>
-          <TabButton iconType={'feed'} route={'Feed'} />
-          <TabButton iconType={'research'} route={'ResearchFeed'} />
-          <TabButton iconType={'messages'} route={'Messages'} />
-          <TabButton iconType={'profile'} route={'Profile'} />
+          <TabButton 
+            iconType={'feed'} 
+            route={'Feed'} />
+          <TabButton 
+            iconType={'research'} 
+            route={'ResearchFeed'} />
+          <TabButton 
+            iconType={'messages'} 
+            route={'Messages'} />
+          <TabButton 
+            iconType={'profile'} 
+            route={'Profile'} />
         </View>
       </SafeAreaView>
     )
