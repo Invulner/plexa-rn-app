@@ -4,21 +4,26 @@ import TabButton from './TabButton'
 
 class CustomTabBar extends Component {
   render() {
+    console.log(this.props.navigation.state.index)
     return (
       <SafeAreaView>
         <View style={styles.container}>
           <TabButton 
             iconType={'feed'} 
-            route={'Feed'} />
+            route={'Feed'}
+            tabIndex={0} />
           <TabButton 
             iconType={'research'} 
-            route={'ResearchFeed'} />
+            route={'ResearchFeed'}
+            tabIndex={1} />
           <TabButton 
             iconType={'messages'} 
-            route={'Messages'} />
+            route={'Messages'}
+            tabIndex={2} />
           <TabButton 
             iconType={'profile'} 
-            route={'Profile'} />
+            route={'Profile'}
+            tabIndex={3} />
         </View>
       </SafeAreaView>
     )
