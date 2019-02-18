@@ -6,7 +6,7 @@ import HeaderTitle from '../components/common/header/HeaderTitle'
 import PrivacyPolicy from '../screens/terms/PrivacyPolicy'
 import TermsOfService from '../screens/terms/TermsOfService'
 
-const AppStack = createStackNavigator({
+const TermsStack = createStackNavigator({
   MainSwitch: {
     screen: SwitchMainNavigator,
     navigationOptions: () => ({
@@ -35,4 +35,4 @@ const AppStack = createStackNavigator({
   }
 })
 
-export default AppStack
+export default TermsStack

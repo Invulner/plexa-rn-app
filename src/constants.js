@@ -9,3 +9,9 @@ export const menuIcons = {
   'speciality': require('./assets/icons/specialties.png'),
   'location': require('./assets/icons/location-01.png')
 }
+export const tabIcons = {
+  'feed': require('./assets/icons/feed.png'),
+  'research': require('./assets/icons/research.png'),
+  'messages': require('./assets/icons/envelope-icon-white.png'),
+  'profile': require('./assets/icons/profile.png')
+}
