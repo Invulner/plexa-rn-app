@@ -4,10 +4,9 @@ import TabButton from './TabButton'
 
 class CustomTabBar extends Component {
   render() {
-    console.log(this.props.navigation.state.index)
     return (
       <SafeAreaView>
-        <View style={styles.container}>
+        <View style={styles.tabContainer}>
           <TabButton 
             iconType={'feed'} 
             route={'Feed'}
@@ -31,13 +30,13 @@ class CustomTabBar extends Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  tabContainer: {
     flexDirection: 'row',
     height: 45,
     justifyContent: 'space-around',
+    overflow: 'hidden',
     borderTopWidth: 1,
-    borderTopColor: '#d8d8d8',
-    overflow: 'hidden'
+    borderTopColor: '#d8d8d8'
   },
 
   messageIcon: {
