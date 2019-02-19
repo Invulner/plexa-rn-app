@@ -69,7 +69,7 @@ class FeedPost extends Component {
             <View style={styles.authorRowContainer}>
               <SemiboldText 
                 style={styles.postAuthor} 
-                onPress={() => navigation.navigate('PublicProfile')}>
+                onPress={() => navigation.navigate('PublicProfile', {id})}>
                 {full_name}
               </SemiboldText>
               <View style={styles.dotImage} />

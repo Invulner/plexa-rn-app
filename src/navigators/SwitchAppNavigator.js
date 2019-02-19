@@ -1,11 +1,11 @@
 import { createSwitchNavigator } from 'react-navigation'
 import AppLoadingScreen from '../screens/AppLoadingScreen'
-import StackAppNavigator from './StackAppNavigator'
+import StackTermsNavigator from './StackTemsNavigator'
 
 const SwitchAppNavigator = createSwitchNavigator(
   {
     AppLoading: AppLoadingScreen,
-    App: StackAppNavigator
+    App: StackTermsNavigator
   },
   {
     initialRouteName: 'AppLoading'
