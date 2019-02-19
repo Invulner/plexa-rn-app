@@ -8,10 +8,12 @@ class FeedHeaderLeft extends Component {
     
     return (
       <View style={styles.container}>
-        <TouchableOpacity onPress={() => navigation.openDrawer()}>
+        <TouchableOpacity 
+          style={styles.addPostButton} 
+          onPress={() => console.log('header right add post')}>
           <Image 
-            style={styles.menuImage}
-            source={require('../../../assets/icons/menu.png')} />
+            style={styles.addPostIcon}
+            source={require('../../../assets/icons/add-post.png')} />
         </TouchableOpacity>
       </View>
     )
@@ -26,10 +28,13 @@ const styles = StyleSheet.create({
     alignItems: 'baseline'
   },
   
-  menuImage: {
-    width: 30,
-    height: 20,
-    resizeMode: 'contain'
+  addPostIcon: {
+    width: 32,
+    height: 32
+  },
+  
+  addPostButton: {
+    justifyContent: 'center'
   }
 })
 

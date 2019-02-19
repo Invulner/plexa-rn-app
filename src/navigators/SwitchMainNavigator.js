@@ -1,9 +1,9 @@
 import { createSwitchNavigator } from 'react-navigation'
-import AppDrawerNavigator from './AppDrawerNavigator'
 import LoginScreen from '../screens/auth/LoginScreen'
+import AppTabNavigator from './AppTabNavigator'
 
 const SwitchMainNavigator = createSwitchNavigator({
-  App: AppDrawerNavigator,
+  App: AppTabNavigator,
   Auth: LoginScreen
 })
 
