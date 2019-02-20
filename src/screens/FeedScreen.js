@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { FlatList, ActivityIndicator, View, StyleSheet } from 'react-native'
+import { FlatList, ActivityIndicator } from 'react-native'
 import SafeArea from '../components/common/SafeArea'
 import FeedPost from '../components/feed/FeedPost'
 import FeedOperations from '../operations/FeedOperations'

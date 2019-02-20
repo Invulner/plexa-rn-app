@@ -51,7 +51,7 @@ class FeedPost extends Component {
   }
 
   render() {
-    const { navigation, item: { created_at, likes_count, answers_count, content, image_urls, author: { avatar_url, full_name, title, id } } } = this.props
+    const { navigation, item: { id: postId, created_at, likes_count, answers_count, content, image_urls, author: { avatar_url, full_name, title, id } } } = this.props
 
     return (
       <View style={styles.postContainer}>
@@ -83,17 +83,21 @@ class FeedPost extends Component {
           </View>
           <PostActionButton />   
         </View>
-        {!!content && 
-          <RegularText style={feedStyles.linkCaption}>
-            {utils.truncate(content)}
-          </RegularText>
-          }
-        {!!image_urls.length &&
-          <Image 
-            source={{uri: image_urls[0].preview_url}}
-            style={styles.linkImage} />
-        }
-        {this.renderAttachedBlock()}
+        <TouchableWithoutFeedback onPress={() => navigation.navigate('Post', {postId})}>
+          <View>
+            {!!content && 
+              <RegularText style={feedStyles.linkCaption}>
+                {utils.truncate(content)}
+              </RegularText>
+              }
+            {!!image_urls.length &&
+              <Image 
+                source={{uri: image_urls[0].preview_url}}
+                style={styles.linkImage} />
+            }
+            {this.renderAttachedBlock()}
+          </View>
+        </TouchableWithoutFeedback>
         <Social 
           likesCount={likes_count}
           answersCount={answers_count} />  
