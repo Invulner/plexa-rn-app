@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
-import { View, Text } from 'react-native'
+import { ScrollView, StyleSheet } from 'react-native'
 import FeedPost from '../components/feed/FeedPost'
 import { connect } from 'react-redux'
+import { FeedPostComponentTypes } from '../constants'
+import { BG_COLOR } from '../assets/styles/colors'
 
 const mapStateToProps = (state) => {
   const { feedData } = state.feed
@@ -20,10 +22,25 @@ class PostScreen extends Component {
   }
 
   render() {
+    const { navigation } = this.props
+
     return (
-      <FeedPost item={this.getPostById()} />
+      <ScrollView 
+        style={styles.container}
+        showsVerticalScrollIndicator={false}>
+        <FeedPost 
+          item={this.getPostById()}
+          type={FeedPostComponentTypes.standaloneScreen}
+          navigation={navigation} />
+      </ScrollView>
     )
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: BG_COLOR
+  }
+})
 
 export default connect(mapStateToProps, null)(PostScreen)

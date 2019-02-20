@@ -10,27 +10,57 @@ import ProfileAvatar from '../common/ProfileAvatar'
 import PostActionButton from './PostActionButton'
 import utils from '../../utils'
 import News from './News'
+import { FeedPostComponentTypes } from '../../constants'
 
 class FeedPost extends Component {
+  renderContent = () => {
+    const { type, item: { content } } = this.props
+
+    if (content) {
+      if (type === FeedPostComponentTypes.partOfFeedScreen) {
+
+        return (
+          <RegularText style={feedStyles.linkCaption}>              
+              {utils.truncate(content)}
+          </RegularText>
+        )
+      } else if (type === FeedPostComponentTypes.standaloneScreen) {
+
+        return (
+          <RegularText style={feedStyles.linkCaption}>              
+              {content}
+          </RegularText>
+        )
+      }
+    } else {
+      return null
+    }
+  }
+
   areAnyLinkDetails = () => {
     return Object.getOwnPropertyNames(this.props.item.link_details).length !== 0
   }
 
   renderResearch = () => {
+    const { type, item: { news_item } } = this.props
     return (
-      <Research newsItem={this.props.item.news_item} />
+      <Research newsItem={news_item} type={type} />
     )
   }
 
   renderNews = () => {
+    const { item, type } = this.props
+
     return (
-      <News item={this.props.item} />
+      <News item={item} type={type} />
     )
   }
 
   renderLinkDetails = () => {
+    const { item, type } = this.props
+
     return (
-      <LinkPreview item={this.props.item}/>
+      <LinkPreview item={item} type={type} />
     )
   }
 
@@ -51,7 +81,8 @@ class FeedPost extends Component {
   }
 
   render() {
-    const { navigation, item: { id: postId, created_at, likes_count, answers_count, content, image_urls, author: { avatar_url, full_name, title, id } } } = this.props
+    const { navigation, type, item: { id: postId, created_at, likes_count, answers_count, content, image_urls, author: { avatar_url, full_name, title, id } } } = this.props
+    console.log(type)
 
     return (
       <View style={styles.postContainer}>
@@ -85,11 +116,7 @@ class FeedPost extends Component {
         </View>
         <TouchableWithoutFeedback onPress={() => navigation.navigate('Post', {postId})}>
           <View>
-            {!!content && 
-              <RegularText style={feedStyles.linkCaption}>
-                {utils.truncate(content)}
-              </RegularText>
-              }
+            {this.renderContent()}
             {!!image_urls.length &&
               <Image 
                 source={{uri: image_urls[0].preview_url}}

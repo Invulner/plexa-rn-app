@@ -4,16 +4,34 @@ import { SemiboldText, RegularText } from '../common/fonts'
 import { feedStyles } from '../../assets/styles/feed/feedStyles'
 import { PREVIEW_DARK } from '../../assets/styles/colors'
 import utils from '../../utils'
+import { FeedPostComponentTypes } from '../../constants'
 
 function Research(props) {
-  const { description, source_title, title } = props.newsItem
+  const { type, newsItem: { description, source_title, title } } = props
+
+  renderDescription = () => {
+    if (type === FeedPostComponentTypes.standaloneScreen) {
+
+      return (
+        <SemiboldText style={[feedStyles.linkText, styles.newsText, styles.textOnPostScreen]}>
+          {description}
+        </SemiboldText>
+      )
+    } else {
+      return (
+        <SemiboldText style={[feedStyles.linkText, styles.newsText]}>
+          {utils.truncate(description)}
+        </SemiboldText>
+      )
+    }
+  }
   
   return (
     <View>
       <View style={feedStyles.linkContainer}>
 
         <View style={styles.newsTitleBox}>
-          <SemiboldText style={[feedStyles.linkText, styles.newsTitleText]}>
+          <SemiboldText style={[feedStyles.linkText, styles.newsTitleText, type === FeedPostComponentTypes.standaloneScreen && styles.textOnPostScreen]}>
             {title}
           </SemiboldText>
         </View>
@@ -23,10 +41,7 @@ function Research(props) {
             {source_title}
           </RegularText>
         </View>
-
-        <SemiboldText style={[feedStyles.linkText, styles.newsText]}>
-          {utils.truncate(description)}
-        </SemiboldText>
+        {renderDescription()}
       </View>
     </View>
   )
@@ -41,7 +56,8 @@ const styles = StyleSheet.create({
   newsTitleText: {
     color: '#fff',
     marginLeft: 10,
-    paddingBottom: 10
+    paddingBottom: 10,
+    paddingTop: 3
   },
 
   newsSourceText: {
@@ -50,7 +66,12 @@ const styles = StyleSheet.create({
 
   newsText: {
     marginLeft: 10,
-    marginTop: 15
+    marginTop: 15,
+    paddingTop: 3
+  },
+
+  textOnPostScreen: {
+    fontSize: 18
   }
 })
 

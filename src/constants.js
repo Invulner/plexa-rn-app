@@ -19,3 +19,8 @@ export const tabIcons = {
   'messages': require('./assets/icons/message-inactive.png'),
   'profile': require('./assets/icons/profile-inactive.png')
 }
+
+export const FeedPostComponentTypes = {
+  standaloneScreen: 'standalone screen',
+  partOfFeedScreen: 'part of Feed Screen'
+}
