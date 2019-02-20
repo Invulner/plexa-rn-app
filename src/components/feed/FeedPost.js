@@ -10,33 +10,9 @@ import ProfileAvatar from '../common/ProfileAvatar'
 import PostActionButton from './PostActionButton'
 import utils from '../../utils'
 import News from './News'
-import { FeedPostComponentTypes } from '../../constants'
+import { PostTypes } from '../../constants'
 
 class FeedPost extends Component {
-  renderContent = () => {
-    const { type, item: { content } } = this.props
-
-    if (content) {
-      if (type === FeedPostComponentTypes.partOfFeedScreen) {
-
-        return (
-          <RegularText style={feedStyles.linkCaption}>              
-              {utils.truncate(content)}
-          </RegularText>
-        )
-      } else if (type === FeedPostComponentTypes.standaloneScreen) {
-
-        return (
-          <RegularText style={feedStyles.linkCaption}>              
-              {content}
-          </RegularText>
-        )
-      }
-    } else {
-      return null
-    }
-  }
-
   areAnyLinkDetails = () => {
     return Object.getOwnPropertyNames(this.props.item.link_details).length !== 0
   }
@@ -116,7 +92,11 @@ class FeedPost extends Component {
         </View>
         <TouchableWithoutFeedback onPress={() => navigation.navigate('Post', {postId})}>
           <View>
-            {this.renderContent()}
+            {!!content && 
+              <RegularText style={feedStyles.linkCaption}>              
+                {type === PostTypes.standaloneScreen ? content : utils.truncate(content)}
+              </RegularText>
+            }
             {!!image_urls.length &&
               <Image 
                 source={{uri: image_urls[0].preview_url}}

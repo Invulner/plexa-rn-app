@@ -3,10 +3,29 @@ import { View, Image, StyleSheet } from 'react-native'
 import { feedStyles } from '../../assets/styles/feed/feedStyles'
 import { SemiboldText, RegularText } from '../common/fonts'
 import utils from '../../utils'
+import { PostTypes } from '../../constants'
 
 function News(props) {
-  const { link_details, news_item: { description, image, source_title, title } } = props.item
+  const { type, item: { link_details, news_item: { description, image, source_title, title } } } = props
   const imageSrc = image || link_details.image
+
+  renderDescription = () => {
+    if (type === PostTypes.standaloneScreen) {
+
+      return (
+        <RegularText style={[styles.newsText, styles.textOnPostScreen]}>
+          {description}
+        </RegularText>
+      )
+    } else {
+
+      return (
+        <RegularText style={styles.newsText}>
+          {utils.truncate(description)}
+        </RegularText>
+      )
+    }
+  }
 
     return (
       <View style={feedStyles.linkContainer}>
@@ -16,7 +35,7 @@ function News(props) {
             style={styles.image} 
             source={{uri: imageSrc}} />
           :
-          <View style={styles.blankView}/>
+          <View style={styles.blankView} />
         }
 
         <View style={feedStyles.newsSourceBox}>
@@ -26,21 +45,20 @@ function News(props) {
         </View>
 
         <View>
-          <SemiboldText style={[feedStyles.linkText, styles.newsTitleText]}>
+          <SemiboldText style={[feedStyles.linkText, styles.newsTitleText, type === PostTypes.standaloneScreen && styles.textOnPostScreen]}>
             {title}
           </SemiboldText>
         </View>
 
-        <RegularText style={styles.newsText}>
-          {utils.truncate(description)}
-        </RegularText>
+        {renderDescription()}
       </View>
     )
 }
 
 const styles = StyleSheet.create({
   newsTitleText: {
-    marginLeft: 10
+    marginLeft: 10,
+    paddingTop: 3
   },
 
   newsSourceText: {
@@ -60,6 +78,10 @@ const styles = StyleSheet.create({
 
   blankView: {
     height: 25,
+  },
+
+  textOnPostScreen: {
+    fontSize: 18
   }
 })
 

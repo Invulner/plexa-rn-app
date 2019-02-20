@@ -4,13 +4,13 @@ import { SemiboldText, RegularText } from '../common/fonts'
 import { feedStyles } from '../../assets/styles/feed/feedStyles'
 import { PREVIEW_DARK } from '../../assets/styles/colors'
 import utils from '../../utils'
-import { FeedPostComponentTypes } from '../../constants'
+import { PostTypes } from '../../constants'
 
 function Research(props) {
   const { type, newsItem: { description, source_title, title } } = props
 
   renderDescription = () => {
-    if (type === FeedPostComponentTypes.standaloneScreen) {
+    if (type === PostTypes.standaloneScreen) {
 
       return (
         <SemiboldText style={[feedStyles.linkText, styles.newsText, styles.textOnPostScreen]}>
@@ -31,7 +31,7 @@ function Research(props) {
       <View style={feedStyles.linkContainer}>
 
         <View style={styles.newsTitleBox}>
-          <SemiboldText style={[feedStyles.linkText, styles.newsTitleText, type === FeedPostComponentTypes.standaloneScreen && styles.textOnPostScreen]}>
+          <SemiboldText style={[feedStyles.linkText, styles.newsTitleText, type === PostTypes.standaloneScreen && styles.textOnPostScreen]}>
             {title}
           </SemiboldText>
         </View>

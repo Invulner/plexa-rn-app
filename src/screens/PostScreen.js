@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { ScrollView, StyleSheet } from 'react-native'
 import FeedPost from '../components/feed/FeedPost'
 import { connect } from 'react-redux'
-import { FeedPostComponentTypes } from '../constants'
+import { PostTypes } from '../constants'
 import { BG_COLOR } from '../assets/styles/colors'
 
 const mapStateToProps = (state) => {
@@ -30,7 +30,7 @@ class PostScreen extends Component {
         showsVerticalScrollIndicator={false}>
         <FeedPost 
           item={this.getPostById()}
-          type={FeedPostComponentTypes.standaloneScreen}
+          type={PostTypes.standaloneScreen}
           navigation={navigation} />
       </ScrollView>
     )
