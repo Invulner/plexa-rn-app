@@ -1,15 +1,15 @@
 import React from 'react'
-import { View, Image } from 'react-native'
+import { Image, TouchableOpacity } from 'react-native'
+import { withNavigation } from 'react-navigation'
 
-function FeedHeaderLogo() {
+function FeedHeaderLogo(props) {
   return (
-    <View>
+    <TouchableOpacity onPress={() => props.navigation.navigate('Feed')}>
       <Image 
         source={require('../../../assets/images/logo-min.png')}
         style={{width: 40, height: 40}} />
-    </View>
-    
+    </TouchableOpacity>
   )
 }
 
-export default FeedHeaderLogo
+export default withNavigation(FeedHeaderLogo)
