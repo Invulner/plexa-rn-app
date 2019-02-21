@@ -1,16 +1,14 @@
 import React, { Component } from 'react'
 import { View, Image, StyleSheet, TouchableWithoutFeedback } from 'react-native'
-import { SemiboldText, RegularText } from '../common/fonts'
+import { RegularText } from '../common/fonts'
 import Research from './Research'
 import LinkPreview from './LinkPreview'
 import Social from './Social'
 import { feedStyles } from '../../assets/styles/feed/feedStyles'
-import ta from 'time-ago'
-import ProfileAvatar from '../common/ProfileAvatar'
-import PostActionButton from './PostActionButton'
 import utils from '../../utils'
 import News from './News'
 import { PostTypes } from '../../constants'
+import PostHead from './PostHead'
 
 class FeedPost extends Component {
   areAnyLinkDetails = () => {
@@ -19,25 +17,20 @@ class FeedPost extends Component {
 
   renderResearch = () => {
     const { type, item: { news_item } } = this.props
-    return (
-      <Research newsItem={news_item} type={type} />
-    )
+
+    return <Research newsItem={news_item} type={type} />
   }
 
   renderNews = () => {
     const { item, type } = this.props
 
-    return (
-      <News item={item} type={type} />
-    )
+    return <News item={item} type={type} />
   }
 
   renderLinkDetails = () => {
     const { item, type } = this.props
 
-    return (
-      <LinkPreview item={item} type={type} />
-    )
+    return <LinkPreview item={item} type={type} />
   }
 
   renderAttachedBlock = () => { 
@@ -57,39 +50,11 @@ class FeedPost extends Component {
   }
 
   render() {
-    const { navigation, type, item: { id: postId, created_at, likes_count, answers_count, content, image_urls, author: { avatar_url, full_name, title, id } } } = this.props
-    console.log(type)
+    const { navigation, type, item: { id: postId, created_at, likes_count, answers_count, content, image_urls, author } } = this.props
 
     return (
       <View style={styles.postContainer}>
-        <View style={styles.userContainer}>
-
-          <TouchableWithoutFeedback onPress={() => navigation.navigate('PublicProfile', {id})}>
-            <View>
-              <ProfileAvatar 
-                url={avatar_url}
-                name={full_name} />
-            </View>
-          </TouchableWithoutFeedback>
-
-          <View>
-            <View style={styles.authorRowContainer}>
-              <SemiboldText 
-                style={styles.postAuthor} 
-                onPress={() => navigation.navigate('PublicProfile', {id})}>
-                {full_name}
-              </SemiboldText>
-              <View style={styles.dotImage} />
-              <RegularText style={styles.hoursAgo}>
-                {ta.ago(created_at, true)}
-              </RegularText>
-            </View>
-            <RegularText style={styles.userDescription}>
-              {title}
-            </RegularText>
-          </View>
-          <PostActionButton />   
-        </View>
+        <PostHead author={author} created_at={created_at} />
         <TouchableWithoutFeedback onPress={() => navigation.navigate('Post', {postId})}>
           <View>
             {!!content && 
@@ -120,43 +85,6 @@ const styles = StyleSheet.create({
     paddingBottom: 5,
     backgroundColor: '#fff',
     marginVertical: 5
-  },
-  
-  userContainer: {
-    flexDirection: 'row',
-    marginBottom: 15
-  },
-
-  postAuthor: {
-    fontSize: 18,
-    letterSpacing: 0.5,
-    fontStyle: 'italic'
-  },
-
-  authorRowContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 5
-  },
-
-  dotImage: {
-    width: 5,
-    height: 5,
-    borderRadius: 50,
-    backgroundColor: 'green',
-    marginHorizontal: 10,
-    marginBottom: 8,
-    backgroundColor: '#ddd'
-  },
-
-  hoursAgo: {
-    color: '#b4b4b4'
-  },
-
-  useruserDescription: {
-    fontSize: 14,
-    marginTop: -5,
-    letterSpacing: 0.5
   },
 
   linkImage: {
