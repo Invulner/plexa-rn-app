@@ -2,7 +2,7 @@ import getAxiosInstance from '../config/axios'
 import { API_URL } from '../constants'
 import FeedActions from '../actions/FeedActions'
 
-const fetchFeed = (saveOption, page = 1) => {
+const fetchFeed = (saveOption, page = 2) => {
   return dispatch => {
     dispatch(FeedActions.toggleFeedDataLoading(true))
 
@@ -34,7 +34,7 @@ const fetchFeed = (saveOption, page = 1) => {
   }
 }
 
-const getFeed = (page = 1) => {
+const getFeed = (page = 2) => {
   return dispatch => {
     dispatch(fetchFeed('add', page))
   }

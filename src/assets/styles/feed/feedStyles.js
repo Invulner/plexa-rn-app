@@ -58,6 +58,7 @@ export const feedStyles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingBottom: 5,
     backgroundColor: '#fff',
-    marginVertical: 5
+    marginTop: 5,
+    marginBottom: 5
   }
 })

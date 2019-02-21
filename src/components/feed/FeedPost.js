@@ -53,7 +53,7 @@ class FeedPost extends Component {
     const { navigation, type, item: { id: postId, created_at, likes_count, answers_count, content, image_urls, author } } = this.props
 
     return (
-      <View style={feedStyles.postContainer}>
+      <View style={[feedStyles.postContainer, utils.addStyleForPostScreen(type, {marginBottom: 0})]}>
         <PostHead author={author} created_at={created_at} />
         <TouchableWithoutFeedback onPress={() => navigation.navigate('Post', {postId})}>
           <View>

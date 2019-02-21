@@ -40,6 +40,7 @@ class FeedScreen extends Component {
 
   render() {
     const { navigation, refreshFeed, feed: { feedData, feedLoading } } = this.props
+    let temp = feedData.filter(post => post.answers_count !== 0)
 
     return (
       <SafeArea>
@@ -47,7 +48,7 @@ class FeedScreen extends Component {
           <Loader />
           :
           <FlatList 
-            data={feedData}
+            data={temp}
             keyExtractor={item => item.id + ''}
             renderItem={({ item }) => (
               <FeedPost 

@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { PostTypes } from '../constants'
 import { BG_COLOR } from '../assets/styles/colors'
 import CommentsOperations from '../operations/CommentsOperations'
+import Comment from '../components/feed/Comment'
 
 const mapStateToProps = (state) => {
   const { feedData } = state.feed
@@ -64,9 +65,7 @@ class PostScreen extends Component {
           <FlatList 
             data={commentsData}
             keyExtractor={item => item.id + ''}
-            renderItem={({ item }) => (
-              <Text>{item.content}</Text>
-            )} />
+            renderItem={({ item }) => <Comment item={item} />} />
         }
       </ScrollView>
     )
