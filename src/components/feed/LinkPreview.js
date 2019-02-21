@@ -2,9 +2,10 @@ import React from 'react'
 import { View, Image } from 'react-native'
 import { RegularText } from '../common/fonts'
 import { feedStyles } from '../../assets/styles/feed/feedStyles'
+import utils from '../../utils'
 
 function LinkPreview(props) {
-  const { link_url, link_details: { domain, image, title } } = props.item
+  const { type, item: { link_url, link_details: { domain, image, title } } } = props
 
     return (
       <View>
@@ -14,14 +15,14 @@ function LinkPreview(props) {
               source={{uri: image}}
               style={feedStyles.linkImage} />
           }
-          <RegularText style={feedStyles.linkText}>
+          <RegularText style={[feedStyles.linkText, utils.addStyleForPostScreen(type, feedStyles.textOnPostScreen)]}>
             {!!title ? 
               title.trim()
               :
               link_url.trim()
             }
           </RegularText>
-          <RegularText style={feedStyles.linkSource}>
+          <RegularText style={[feedStyles.linkSource, utils.addStyleForPostScreen(type, feedStyles.sourceOnPostScreen)]}>
             {domain}
           </RegularText>
         </View>

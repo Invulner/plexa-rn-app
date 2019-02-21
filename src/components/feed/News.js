@@ -13,7 +13,7 @@ function News(props) {
     if (type === PostTypes.standaloneScreen) {
 
       return (
-        <RegularText style={[styles.newsText, styles.textOnPostScreen]}>
+        <RegularText style={[styles.newsText, feedStyles.textOnPostScreen]}>
           {description}
         </RegularText>
       )
@@ -39,17 +39,16 @@ function News(props) {
         }
 
         <View style={feedStyles.newsSourceBox}>
-          <RegularText style={[styles.linkSource, styles.newsSourceText]}>
+          <RegularText style={[styles.newsSourceText, utils.addStyleForPostScreen(type, feedStyles.sourceOnPostScreen)]}>
             {source_title}
           </RegularText>
         </View>
 
         <View>
-          <SemiboldText style={[feedStyles.linkText, styles.newsTitleText, type === PostTypes.standaloneScreen && styles.textOnPostScreen]}>
+          <SemiboldText style={[feedStyles.linkText, styles.newsTitleText, utils.addStyleForPostScreen(type, feedStyles.textOnPostScreen)]}>
             {title}
           </SemiboldText>
         </View>
-
         {renderDescription()}
       </View>
     )
@@ -57,8 +56,7 @@ function News(props) {
 
 const styles = StyleSheet.create({
   newsTitleText: {
-    marginLeft: 10,
-    paddingTop: 3
+    marginLeft: 10
   },
 
   newsSourceText: {

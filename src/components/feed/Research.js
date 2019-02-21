@@ -13,7 +13,7 @@ function Research(props) {
     if (type === PostTypes.standaloneScreen) {
 
       return (
-        <SemiboldText style={[feedStyles.linkText, styles.newsText, styles.textOnPostScreen]}>
+        <SemiboldText style={[feedStyles.linkText, styles.newsText, feedStyles.textOnPostScreen]}>
           {description}
         </SemiboldText>
       )
@@ -31,13 +31,13 @@ function Research(props) {
       <View style={feedStyles.linkContainer}>
 
         <View style={styles.newsTitleBox}>
-          <SemiboldText style={[feedStyles.linkText, styles.newsTitleText, type === PostTypes.standaloneScreen && styles.textOnPostScreen]}>
+          <SemiboldText style={[feedStyles.linkText, styles.newsTitleText, utils.addStyleForPostScreen(type, feedStyles.textOnPostScreen)]}>
             {title}
           </SemiboldText>
         </View>
 
         <View style={feedStyles.newsSourceBox}>
-          <RegularText style={[styles.linkSource, styles.newsSourceText]}>
+          <RegularText style={[styles.linkSource, styles.newsSourceText, utils.addStyleForPostScreen(type, feedStyles.sourceOnPostScreen)]}>
             {source_title}
           </RegularText>
         </View>
@@ -56,8 +56,7 @@ const styles = StyleSheet.create({
   newsTitleText: {
     color: '#fff',
     marginLeft: 10,
-    paddingBottom: 10,
-    paddingTop: 3
+    paddingBottom: 10
   },
 
   newsSourceText: {
@@ -68,10 +67,6 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginTop: 15,
     paddingTop: 3
-  },
-
-  textOnPostScreen: {
-    fontSize: 18
   }
 })
 

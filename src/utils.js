@@ -1,4 +1,4 @@
-import { MAX_CONTENT_LENGTH } from './constants'
+import { MAX_CONTENT_LENGTH, PostTypes } from './constants'
 
 const getInitials = (name) => {
   let initials = name.toUpperCase().split(/\s/).reduce((acc, cur) => acc += cur.slice(0,1), '')
@@ -19,8 +19,13 @@ renderProfileDetails = (details) => {
   })
 }
 
+addStyleForPostScreen = (type, style) => {
+  return type === PostTypes.standaloneScreen ? style : null
+}
+
 export default {
   getInitials,
   truncate,
-  renderProfileDetails
+  renderProfileDetails,
+  addStyleForPostScreen
 }
