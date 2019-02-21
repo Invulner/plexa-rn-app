@@ -4,11 +4,18 @@ import FeedPost from '../components/feed/FeedPost'
 import { connect } from 'react-redux'
 import { PostTypes } from '../constants'
 import { BG_COLOR } from '../assets/styles/colors'
+import CommentsOperations from '../operations/CommentsOperations'
 
 const mapStateToProps = (state) => {
   const { feedData } = state.feed
 
   return { feedData }
+}
+
+const mapDispatchToProps = (dispatch, { navigation }) => {
+  const getComments = () => dispatch(CommentsOperations.getComments(navigation))
+
+  return { getComments }
 }
 
 class PostScreen extends Component {
@@ -19,6 +26,10 @@ class PostScreen extends Component {
     const postArr = feedData.filter(post => post.id === navigation.getParam('postId', fallBackId))
 
     return postArr[0]
+  }
+
+  componentDidMount() {
+    this.props.getComments()
   }
 
   render() {
@@ -43,4 +54,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect(mapStateToProps, null)(PostScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(PostScreen)
