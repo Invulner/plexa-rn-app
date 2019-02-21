@@ -11,6 +11,8 @@ const CommentsReducer = (state = initialState, action) => {
       return {...state, commentsData: action.commentsData}
     case types.TOGGLE_COMMENTS_LOADING:
       return {...state, loading: action.flag}
+    case types.RESET_COMMENTS_DATA:
+      return initialState
     default: 
       return state
   }

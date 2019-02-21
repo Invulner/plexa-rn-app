@@ -19,6 +19,13 @@ const getComments = (navigation) => {
   }
 }
 
+resetComments = () => {
+  return dispatch => {
+    dispatch(CommentsActions.resetCommentsData())
+  }
+}
+
 export default {
-  getComments
+  getComments,
+  resetComments
 }

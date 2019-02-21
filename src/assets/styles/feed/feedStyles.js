@@ -51,5 +51,13 @@ export const feedStyles = StyleSheet.create({
 
   textOnPostScreen: {
     fontSize: 18
+  },
+
+  postContainer: {
+    paddingTop: 10,
+    paddingHorizontal: 10,
+    paddingBottom: 5,
+    backgroundColor: '#fff',
+    marginVertical: 5
   }
 })

@@ -10,7 +10,12 @@ const toggleCommentsLoading = (flag) => ({
   flag
 })
 
+const resetCommentsData = () => ({
+  type: types.RESET_COMMENTS_DATA
+})
+
 export default {
   saveCommentsData,
-  toggleCommentsLoading
+  toggleCommentsLoading,
+  resetCommentsData
 }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { ScrollView, StyleSheet } from 'react-native'
+import { ScrollView, StyleSheet, FlatList, Text } from 'react-native'
 import FeedPost from '../components/feed/FeedPost'
 import { connect } from 'react-redux'
 import { PostTypes } from '../constants'
@@ -8,14 +8,22 @@ import CommentsOperations from '../operations/CommentsOperations'
 
 const mapStateToProps = (state) => {
   const { feedData } = state.feed
+  const { commentsData } = state.comments
 
-  return { feedData }
+  return { 
+    feedData,
+    commentsData 
+  }
 }
 
 const mapDispatchToProps = (dispatch, { navigation }) => {
   const getComments = () => dispatch(CommentsOperations.getComments(navigation))
+  const resetComments = () => dispatch(CommentsOperations.resetComments())
 
-  return { getComments }
+  return { 
+    getComments,
+    resetComments
+  }
 }
 
 class PostScreen extends Component {
@@ -28,12 +36,21 @@ class PostScreen extends Component {
     return postArr[0]
   }
 
+  getComments = () => {
+    if (this.getPostById().answers_count !== 0)
+      this.props.getComments()
+  }
+
   componentDidMount() {
-    this.props.getComments()
+    this.getComments()
+  }
+
+  componentWillUnmount() {
+    this.props.resetComments()
   }
 
   render() {
-    const { navigation } = this.props
+    const { navigation, commentsData } = this.props
 
     return (
       <ScrollView 
@@ -43,6 +60,14 @@ class PostScreen extends Component {
           item={this.getPostById()}
           type={PostTypes.standaloneScreen}
           navigation={navigation} />
+        {commentsData.length !== 0 &&
+          <FlatList 
+            data={commentsData}
+            keyExtractor={item => item.id + ''}
+            renderItem={({ item }) => (
+              <Text>{item.content}</Text>
+            )} />
+        }
       </ScrollView>
     )
   }

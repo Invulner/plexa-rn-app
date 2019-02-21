@@ -53,7 +53,7 @@ class FeedPost extends Component {
     const { navigation, type, item: { id: postId, created_at, likes_count, answers_count, content, image_urls, author } } = this.props
 
     return (
-      <View style={styles.postContainer}>
+      <View style={feedStyles.postContainer}>
         <PostHead author={author} created_at={created_at} />
         <TouchableWithoutFeedback onPress={() => navigation.navigate('Post', {postId})}>
           <View>
@@ -79,14 +79,6 @@ class FeedPost extends Component {
 }
 
 const styles = StyleSheet.create({
-  postContainer: {
-    paddingTop: 10,
-    paddingHorizontal: 10,
-    paddingBottom: 5,
-    backgroundColor: '#fff',
-    marginVertical: 5
-  },
-
   linkImage: {
     ...feedStyles.linkImage,
     marginVertical: 5
