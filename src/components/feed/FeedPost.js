@@ -3,12 +3,12 @@ import { View, Image, StyleSheet, TouchableWithoutFeedback } from 'react-native'
 import { RegularText } from '../common/fonts'
 import Research from './Research'
 import LinkPreview from './LinkPreview'
-import Social from './Social'
+import Social from '../common/Social'
 import { feedStyles } from '../../assets/styles/feed/feedStyles'
 import utils from '../../utils'
 import News from './News'
 import { PostTypes } from '../../constants'
-import PostHead from './PostHead'
+import PostHead from '../common/PostHead'
 
 class FeedPost extends Component {
   areAnyLinkDetails = () => {

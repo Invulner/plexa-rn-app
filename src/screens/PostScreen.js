@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
-import { ScrollView, StyleSheet, FlatList, Text } from 'react-native'
+import { ScrollView, StyleSheet, FlatList, View } from 'react-native'
 import FeedPost from '../components/feed/FeedPost'
 import { connect } from 'react-redux'
 import { PostTypes } from '../constants'
 import { BG_COLOR } from '../assets/styles/colors'
 import CommentsOperations from '../operations/CommentsOperations'
-import Comment from '../components/feed/Comment'
+import Comment from '../components/comment/Comment'
+import NoComments from '../components/comment/NoComments'
+import ReplyBox from '../components/comment/ReplyBox';
 
 const mapStateToProps = (state) => {
   const { feedData } = state.feed
@@ -37,6 +39,8 @@ class PostScreen extends Component {
     return postArr[0]
   }
 
+  postAuthor = this.getPostById().author.full_name
+
   getComments = () => {
     if (this.getPostById().answers_count !== 0)
       this.props.getComments()
@@ -54,20 +58,24 @@ class PostScreen extends Component {
     const { navigation, commentsData } = this.props
 
     return (
-      <ScrollView 
-        style={styles.container}
-        showsVerticalScrollIndicator={false}>
-        <FeedPost 
-          item={this.getPostById()}
-          type={PostTypes.standaloneScreen}
-          navigation={navigation} />
-        {commentsData.length !== 0 &&
+      <React.Fragment>
+        <ScrollView 
+          style={styles.container}
+          showsVerticalScrollIndicator={false}>
+          <FeedPost 
+            item={this.getPostById()}
+            type={PostTypes.standaloneScreen}
+            navigation={navigation} /> 
           <FlatList 
             data={commentsData}
             keyExtractor={item => item.id + ''}
-            renderItem={({ item }) => <Comment item={item} />} />
-        }
-      </ScrollView>
+            renderItem={({ item }) => <Comment item={item} />}
+            ListEmptyComponent={<NoComments />} />
+        </ScrollView>
+        <View style={{marginTop: 'auto'}}>
+          <ReplyBox author={this.postAuthor} />
+        </View>
+      </React.Fragment>
     )
   }
 }

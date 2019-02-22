@@ -1,8 +1,8 @@
 import React from 'react'
 import { View, StyleSheet, TouchableWithoutFeedback } from 'react-native'
-import ProfileAvatar from '../common/ProfileAvatar'
+import ProfileAvatar from './ProfileAvatar'
 import PostActionButton from './PostActionButton'
-import { SemiboldText, RegularText } from '../common/fonts'
+import { SemiboldText, RegularText } from './fonts'
 import { withNavigation } from 'react-navigation'
 import ta from 'time-ago'
 

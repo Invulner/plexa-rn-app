@@ -48,7 +48,7 @@ class FeedScreen extends Component {
           <Loader />
           :
           <FlatList 
-            data={temp}
+            data={feedData}
             keyExtractor={item => item.id + ''}
             renderItem={({ item }) => (
               <FeedPost 
