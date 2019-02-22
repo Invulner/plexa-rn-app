@@ -6,16 +6,19 @@ import { PostTypes } from '../constants'
 import { BG_COLOR } from '../assets/styles/colors'
 import CommentsOperations from '../operations/CommentsOperations'
 import Comment from '../components/comment/Comment'
-import NoComments from '../components/comment/NoComments'
-import ReplyBox from '../components/comment/ReplyBox';
+import CommentsMessage from '../components/comment/CommentsMessage'
+import ReplyBox from '../components/comment/ReplyBox'
+import Loader from '../components/common/Loader'
+import TopGreyLine from '../components/comment/TopGreyLine';
 
 const mapStateToProps = (state) => {
   const { feedData } = state.feed
-  const { commentsData } = state.comments
+  const { commentsData, loading } = state.comments
 
   return { 
     feedData,
-    commentsData 
+    commentsData,
+    loading
   }
 }
 
@@ -39,15 +42,13 @@ class PostScreen extends Component {
     return postArr[0]
   }
 
-  postAuthor = this.getPostById().author.full_name
-
-  getComments = () => {
-    if (this.getPostById().answers_count !== 0)
-      this.props.getComments()
-  }
+  // getComments = () => {
+  //   if (this.getPostById().answers_count !== 0)
+  //     this.props.getComments()
+  // }
 
   componentDidMount() {
-    this.getComments()
+    this.props.getComments()
   }
 
   componentWillUnmount() {
@@ -55,26 +56,40 @@ class PostScreen extends Component {
   }
 
   render() {
-    const { navigation, commentsData } = this.props
+    const { navigation, commentsData, loading } = this.props
+    const postAuthor = this.getPostById().author.full_name
+    const areCommentsEnabled = this.getPostById().comments_enabled
 
     return (
       <React.Fragment>
         <ScrollView 
-          style={styles.container}
-          showsVerticalScrollIndicator={false}>
+          style={styles.container}>
           <FeedPost 
             item={this.getPostById()}
             type={PostTypes.standaloneScreen}
             navigation={navigation} /> 
-          <FlatList 
-            data={commentsData}
-            keyExtractor={item => item.id + ''}
-            renderItem={({ item }) => <Comment item={item} />}
-            ListEmptyComponent={<NoComments />} />
+          {loading ?
+            <Loader />
+            :
+            <React.Fragment>
+              <FlatList 
+                data={commentsData}
+                keyExtractor={item => item.id + ''}
+                renderItem={({ item }) => <Comment item={item} />}
+                ListEmptyComponent={(
+                  <React.Fragment>
+                    <TopGreyLine />
+                    <CommentsMessage message={'No comments'} />
+                  </React.Fragment>)} />
+              {!areCommentsEnabled &&
+                <CommentsMessage message={'Author has disabled commenting'}/>
+              }
+            </React.Fragment>
+          }
         </ScrollView>
-        <View style={{marginTop: 'auto'}}>
-          <ReplyBox author={this.postAuthor} />
-        </View>
+        {areCommentsEnabled &&
+          <ReplyBox author={postAuthor} />
+        }
       </React.Fragment>
     )
   }

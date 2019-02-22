@@ -40,7 +40,6 @@ class FeedScreen extends Component {
 
   render() {
     const { navigation, refreshFeed, feed: { feedData, feedLoading } } = this.props
-    let temp = feedData.filter(post => post.answers_count !== 0)
 
     return (
       <SafeArea>
