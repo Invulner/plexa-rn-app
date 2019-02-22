@@ -8,6 +8,7 @@ import ta from 'time-ago'
 
 function PostHead(props) {
   const { navigation, created_at, author: { avatar_url, full_name, title, id } } = props
+  
   return (
     <View style={styles.userContainer}>
       <TouchableWithoutFeedback onPress={() => navigation.navigate('PublicProfile', {id})}>

@@ -9,7 +9,7 @@ import Comment from '../components/comment/Comment'
 import CommentsMessage from '../components/comment/CommentsMessage'
 import ReplyBox from '../components/comment/ReplyBox'
 import Loader from '../components/common/Loader'
-import TopGreyLine from '../components/comment/TopGreyLine';
+import TopGreyLine from '../components/comment/TopGreyLine'
 
 const mapStateToProps = (state) => {
   const { feedData } = state.feed
@@ -41,11 +41,6 @@ class PostScreen extends Component {
 
     return postArr[0]
   }
-
-  // getComments = () => {
-  //   if (this.getPostById().answers_count !== 0)
-  //     this.props.getComments()
-  // }
 
   componentDidMount() {
     this.props.getComments()
