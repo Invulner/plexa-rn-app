@@ -9,9 +9,13 @@ import Featured from '../components/researchFeed/Featured'
 import { FEATURED } from '../assets/styles/colors'
 
 const mapDispatchToProps = (dispatch) => {
-  const fetchResearchFeed = (page) => dispatch(ResearchFeedOperations.fetchResearchFeed(page))
+  const getResearchFeed = (page) => dispatch(ResearchFeedOperations.getResearchFeed(page))
+  const refreshResearchFeed = () => dispatch(ResearchFeedOperations.refreshResearchFeed())
 
-  return { fetchResearchFeed }
+  return { 
+    getResearchFeed,
+    refreshResearchFeed
+  }
 }
 
 const mapStateToProps = (state) => {
@@ -22,17 +26,17 @@ const mapStateToProps = (state) => {
 
 class ResearchFeedScreen extends Component {
   componentDidMount() {
-    this.props.fetchResearchFeed()
+    this.props.getResearchFeed()
   }
 
   addToFeed = () => {
-    const { fetchResearchFeed, researchFeed: { page, loading } } = this.props
+    const { getResearchFeed, researchFeed: { page, loading } } = this.props
 
-    !loading && fetchResearchFeed(page+1)
+    !loading && getResearchFeed(page+1)
   }
 
   render() {
-    const { loading, feedData } = this.props.researchFeed
+    const { refreshResearchFeed, researchFeed: { loading, feedData } } = this.props
 
     return (
       <SafeArea>
@@ -46,7 +50,8 @@ class ResearchFeedScreen extends Component {
             refreshing={loading}
             ListFooterComponent={loading && <Loader />}
             onEndReached={this.addToFeed}
-            onEndReachedThreshold={0.5} />
+            onEndReachedThreshold={0.5}
+            onRefresh={refreshResearchFeed} />
         }
       </SafeArea>
     )

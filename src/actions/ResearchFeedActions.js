@@ -15,8 +15,14 @@ const updateResearchFeedPage = (page) => ({
   page
 })
 
+const refreshResearchFeed = (feedData) => ({
+  type: types.REFRESH_RESEARCH_FEED,
+  feedData
+})
+
 export default {
   saveResearchFeedData,
   toggleResearchFeedLoading,
-  updateResearchFeedPage
+  updateResearchFeedPage,
+  refreshResearchFeed
 }
