@@ -2,8 +2,20 @@ import React, { Component } from 'react'
 import SafeArea from '../components/common/SafeArea'
 import { View } from 'react-native'
 import { RegularText } from '../components/common/fonts'
+import { connect } from 'react-redux'
+import ResearchFeedOperations from '../operations/ResearchFeedOperations'
 
-export default class ResearchFeedScreen extends Component {
+const mapDispatchToProps = (dispatch) => {
+  const getResearchFeed = () => dispatch(ResearchFeedOperations.getResearchFeed())
+
+  return { getResearchFeed }
+}
+
+class ResearchFeedScreen extends Component {
+  componentDidMount() {
+    this.props.getResearchFeed()
+  }
+
   render() {
     return (
       <SafeArea>
@@ -14,3 +26,5 @@ export default class ResearchFeedScreen extends Component {
     )
   }
 }
+
+export default connect(null, mapDispatchToProps)(ResearchFeedScreen)
