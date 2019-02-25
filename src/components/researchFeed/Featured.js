@@ -3,17 +3,23 @@ import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import { BRAND_LIGHT } from '../../assets/styles/colors'
 import NewsIcon from '../feed/NewsIcon'
 import { RegularText } from '../common/fonts'
-import utils from '../../utils'
+import { FEATURED } from '../../assets/styles/colors'
 
 class Featured extends Component {
+  getIndex = () => {
+    const { index } = this.props
+    
+    return index > 17 ? index % 18 : index
+  }
+
   render() {
     const { source_title, title, description } = this.props.item
 
     return (
-      <View style={styles.newsContainer}>
+      <View style={[styles.newsContainer, {backgroundColor: FEATURED[this.getIndex()].bg}]}>
         <View style={styles.topBox}> 
           <View style={styles.iconBox}>
-            <NewsIcon style={styles.icon}/>
+            <NewsIcon style={styles.icon} />
           </View>
           <TouchableOpacity style={styles.btn}>
             <RegularText style={styles.btnText}>
@@ -24,7 +30,7 @@ class Featured extends Component {
         <RegularText style={styles.newsTitle}>
           {title}
         </RegularText>
-        <View style={styles.sourceContainer}>
+        <View style={[styles.sourceContainer, {backgroundColor: FEATURED[this.getIndex()].source}]}>
           <RegularText style={styles.sourceText}>
             {source_title}
           </RegularText>

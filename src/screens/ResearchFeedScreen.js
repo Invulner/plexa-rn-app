@@ -1,12 +1,10 @@
 import React, { Component } from 'react'
 import SafeArea from '../components/common/SafeArea'
-import { View, FlatList } from 'react-native'
-import { RegularText } from '../components/common/fonts'
+import { FlatList } from 'react-native'
 import { connect } from 'react-redux'
 import ResearchFeedOperations from '../operations/ResearchFeedOperations'
 import Loader from '../components/common/Loader'
 import Featured from '../components/researchFeed/Featured'
-import { FEATURED } from '../assets/styles/colors'
 
 const mapDispatchToProps = (dispatch) => {
   const getResearchFeed = (page) => dispatch(ResearchFeedOperations.getResearchFeed(page))
@@ -32,7 +30,7 @@ class ResearchFeedScreen extends Component {
   addToFeed = () => {
     const { getResearchFeed, researchFeed: { page, loading } } = this.props
 
-    !loading && getResearchFeed(page+1)
+    !loading && getResearchFeed(page + 1)
   }
 
   render() {
@@ -46,7 +44,11 @@ class ResearchFeedScreen extends Component {
           <FlatList 
             data={feedData}
             keyExtractor={item => item.id + ''}
-            renderItem={({item}) => <Featured item={item} />}
+            renderItem={({ item, index }) => (
+              <Featured 
+                item={item}
+                index={index} />
+            )}
             refreshing={loading}
             ListFooterComponent={loading && <Loader />}
             onEndReached={this.addToFeed}
