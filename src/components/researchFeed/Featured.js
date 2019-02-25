@@ -1,11 +1,14 @@
 import React, { Component } from 'react'
 import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import { BRAND_LIGHT } from '../../assets/styles/colors'
-import NewsIcon from './NewsIcon'
+import NewsIcon from '../feed/NewsIcon'
 import { RegularText } from '../common/fonts'
+import utils from '../../utils'
 
-class NewsPost extends Component {
+class Featured extends Component {
   render() {
+    const { source_title, title, description } = this.props.item
+
     return (
       <View style={styles.newsContainer}>
         <View style={styles.topBox}> 
@@ -19,15 +22,15 @@ class NewsPost extends Component {
           </TouchableOpacity>
         </View>
         <RegularText style={styles.newsTitle}>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed suscipit voluptatibus earum sit omnis rerum libero.
+          {title}
         </RegularText>
         <View style={styles.sourceContainer}>
           <RegularText style={styles.sourceText}>
-            news's source
+            {source_title}
           </RegularText>
         </View>
         <RegularText style={styles.newsText}>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos atque, dolor nulla non neque inventore quis earum magni iusto repellat! Nam officiis ullam odio deserunt repudiandae nihil, nemo unde numquam, repellendus eius officia perferendis modi ipsum accusantium consequatur dolorem atque...
+          {description}
         </RegularText>
       </View>
     )
@@ -103,4 +106,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default NewsPost
+export default Featured

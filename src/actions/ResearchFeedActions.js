@@ -10,7 +10,13 @@ const toggleResearchFeedLoading = (flag) => ({
   flag
 })
 
+const updateResearchFeedPage = (page) => ({
+  type: types.UPDATE_RESEARCH_FEED_PAGE,
+  page
+})
+
 export default {
   saveResearchFeedData,
-  toggleResearchFeedLoading
+  toggleResearchFeedLoading,
+  updateResearchFeedPage
 }

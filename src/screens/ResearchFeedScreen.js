@@ -1,30 +1,56 @@
 import React, { Component } from 'react'
 import SafeArea from '../components/common/SafeArea'
-import { View } from 'react-native'
+import { View, FlatList } from 'react-native'
 import { RegularText } from '../components/common/fonts'
 import { connect } from 'react-redux'
 import ResearchFeedOperations from '../operations/ResearchFeedOperations'
+import Loader from '../components/common/Loader'
+import Featured from '../components/researchFeed/Featured'
+import { FEATURED } from '../assets/styles/colors'
 
 const mapDispatchToProps = (dispatch) => {
-  const getResearchFeed = () => dispatch(ResearchFeedOperations.getResearchFeed())
+  const fetchResearchFeed = (page) => dispatch(ResearchFeedOperations.fetchResearchFeed(page))
 
-  return { getResearchFeed }
+  return { fetchResearchFeed }
+}
+
+const mapStateToProps = (state) => {
+  const { researchFeed } = state
+
+  return { researchFeed }
 }
 
 class ResearchFeedScreen extends Component {
   componentDidMount() {
-    this.props.getResearchFeed()
+    this.props.fetchResearchFeed()
+  }
+
+  addToFeed = () => {
+    const { fetchResearchFeed, researchFeed: { page, loading } } = this.props
+
+    !loading && fetchResearchFeed(page+1)
   }
 
   render() {
+    const { loading, feedData } = this.props.researchFeed
+
     return (
       <SafeArea>
-        <View style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
-          <RegularText style={{fontSize: 22}}>Research Feed</RegularText>
-        </View>
+        {loading && !feedData.length ?
+          <Loader />
+          :
+          <FlatList 
+            data={feedData}
+            keyExtractor={item => item.id + ''}
+            renderItem={({item}) => <Featured item={item} />}
+            refreshing={loading}
+            ListFooterComponent={loading && <Loader />}
+            onEndReached={this.addToFeed}
+            onEndReachedThreshold={0.5} />
+        }
       </SafeArea>
     )
   }
 }
 
-export default connect(null, mapDispatchToProps)(ResearchFeedScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(ResearchFeedScreen)
