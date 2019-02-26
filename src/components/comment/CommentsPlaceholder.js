@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { RegularText } from '../common/fonts'
 
-function CommentsMessage(props) {
+function CommentsPlaceholder(props) {
   return (
     <View style={styles.container}>
       <RegularText style={styles.text}>
@@ -27,4 +27,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default CommentsMessage
+export default CommentsPlaceholder

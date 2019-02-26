@@ -3,8 +3,8 @@ import { API_URL } from '../constants'
 import { Alert, AsyncStorage } from 'react-native'
 import UserActions from '../actions/UserActions'
 import getAxiosInstance from '../config/axios'
-import FeedOperations from './FeedOperations'
 import PublicUserOperations from './PublicUserOperations'
+import FeedActions from '../actions/FeedActions'
 
 const auth = (credentials, navigation) => {
   return dispatch => {
@@ -72,7 +72,7 @@ const logout = (navigation) => {
     redirectToLogin(navigation)
     clearUserSecretData()
     dispatch(UserActions.clearUserData())
-    dispatch(FeedOperations.resetFeed())
+    dispatch(FeedActions.resetFeed())
     dispatch(PublicUserOperations.clearPublicUserData())
   }
 }

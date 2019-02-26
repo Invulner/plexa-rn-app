@@ -7,7 +7,6 @@ import Social from '../common/Social'
 import { feedStyles } from '../../assets/styles/feed/feedStyles'
 import utils from '../../utils'
 import News from './News'
-import { PostTypes } from '../../constants'
 import PostHead from '../common/PostHead'
 
 class FeedPost extends Component {
@@ -16,21 +15,21 @@ class FeedPost extends Component {
   }
 
   renderResearch = () => {
-    const { type, item: { news_item } } = this.props
+    const { fullView, item: { news_item } } = this.props
 
-    return <Research newsItem={news_item} type={type} />
+    return <Research newsItem={news_item} fullView={fullView} />
   }
 
   renderNews = () => {
-    const { item, type } = this.props
+    const { item, fullView } = this.props
 
-    return <News item={item} type={type} />
+    return <News item={item} fullView={fullView} />
   }
 
   renderLinkDetails = () => {
-    const { item, type } = this.props
+    const { item, fullView } = this.props
 
-    return <LinkPreview item={item} type={type} />
+    return <LinkPreview item={item} fullView={fullView} />
   }
 
   renderAttachedBlock = () => { 
@@ -49,19 +48,35 @@ class FeedPost extends Component {
     }
   }
 
+  renderContent = () => {
+    const { fullView, item: { content } } = this.props
+
+    if (content) {
+
+      return (
+          <RegularText style={feedStyles.linkCaption}>              
+            {fullView ? content : utils.truncate(content)}
+          </RegularText>
+      )
+    } else {
+
+      return null
+    }
+  }
+
   render() {
-    const { navigation, type, item: { id: postId, created_at, likes_count, answers_count, content, image_urls, author } } = this.props
+    const { navigation, fullView, item: { id: postId, created_at, likes_count, answers_count, image_urls, author } } = this.props
 
     return (
-      <View style={[feedStyles.postContainer, utils.addStyleForPostScreen(type, {marginBottom: 0})]}>
-        <PostHead author={author} created_at={created_at} />
+      <View style={[feedStyles.postContainer, fullView && styles.fullViewContainer]}>
+
+        <PostHead 
+          author={author} 
+          created_at={created_at} />
+
         <TouchableWithoutFeedback onPress={() => navigation.navigate('Post', {postId})}>
           <View>
-            {!!content && 
-              <RegularText style={feedStyles.linkCaption}>              
-                {type === PostTypes.standaloneScreen ? content : utils.truncate(content)}
-              </RegularText>
-            }
+            {this.renderContent()}
             {!!image_urls.length &&
               <Image 
                 source={{uri: image_urls[0].preview_url}}
@@ -70,6 +85,7 @@ class FeedPost extends Component {
             {this.renderAttachedBlock()}
           </View>
         </TouchableWithoutFeedback>
+        
         <Social 
           likesCount={likes_count}
           answersCount={answers_count} />  
@@ -82,6 +98,10 @@ const styles = StyleSheet.create({
   linkImage: {
     ...feedStyles.linkImage,
     marginVertical: 5
+  },
+
+  fullViewContainer: {
+    marginBottom: 0
   }
 })
 

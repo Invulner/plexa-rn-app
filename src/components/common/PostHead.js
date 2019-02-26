@@ -9,9 +9,13 @@ import ta from 'time-ago'
 function PostHead(props) {
   const { navigation, created_at, author: { avatar_url, full_name, title, id } } = props
   
+  const goToProfile = () => {
+    navigation.navigate('PublicProfile', {id})
+  }
+
   return (
     <View style={styles.userContainer}>
-      <TouchableWithoutFeedback onPress={() => navigation.navigate('PublicProfile', {id})}>
+      <TouchableWithoutFeedback onPress={goToProfile}>
         <View>
           <ProfileAvatar 
             url={avatar_url}
@@ -23,7 +27,7 @@ function PostHead(props) {
         <View style={styles.authorRowContainer}>
           <SemiboldText 
             style={styles.postAuthor} 
-            onPress={() => navigation.navigate('PublicProfile', {id})}>
+            onPress={goToProfile}>
             {full_name}
           </SemiboldText>
           <View style={styles.dotImage} />

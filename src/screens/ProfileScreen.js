@@ -25,27 +25,28 @@ const mapDispatchToProps = (dispatch, { navigation }) => {
   return { logout }
 }
 
-class OwnProfileScreen extends Component {
+class ProfileScreen extends Component {
   render() {
     const { full_name, avatar_url, specialities, interests, navigation, logout } = this.props
 
     return (
       <SafeArea>
         <ScrollView>
-        
-          <AvatarBox 
-            full_name={full_name} 
-            avatar_url={avatar_url} />
+          {full_name && avatar_url &&
+            <AvatarBox 
+              full_name={full_name} 
+              avatar_url={avatar_url} />
+          }
 
           <LightText style={profileStyles.heading}>
             MEDICAL PRACTICE
           </LightText>
-          {!!specialities.length &&
+          {specialities && !!specialities.length &&
             <DetailsBox 
               detailTitle={'Speciality'} 
               detail={specialities} />
           }
-          {!!interests.length &&
+          {interests && !!interests.length &&
             <DetailsBox 
               detailTitle={'Areas of interest'} 
               detail={interests} />
@@ -84,4 +85,4 @@ class OwnProfileScreen extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(OwnProfileScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileScreen)

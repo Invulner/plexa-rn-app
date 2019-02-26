@@ -8,12 +8,8 @@ class ReplyBox extends Component {
     isInputFocused: false
   }
 
-  onInputBlur = () => {
-    this.setState({isInputFocused: false})
-  }
-
-  onInputFocus = () => {
-    this.setState({isInputFocused: true})
+  changeBtnBG = (value) => {
+    value.length ? this.setState({isInputFocused: true}) : this.setState({isInputFocused: false})
   }
   
   render() {
@@ -29,8 +25,7 @@ class ReplyBox extends Component {
 
               <TextInput 
                 placeholder={placeholder}
-                onFocus={this.onInputFocus}
-                onBlur={this.onInputBlur}
+                onChangeText={(value) => this.changeBtnBG(value)}
                 style={styles.input} />
 
                 <TouchableOpacity>
@@ -45,7 +40,7 @@ class ReplyBox extends Component {
       </React.Fragment>
     )
   }
-}
+} 
 
 const styles = StyleSheet.create({
   inputBox: {

@@ -5,7 +5,6 @@ import FeedPost from '../components/feed/FeedPost'
 import FeedOperations from '../operations/FeedOperations'
 import { connect } from 'react-redux'
 import Loader from '../components/common/Loader'
-import { PostTypes } from '../constants'
 
 const mapDispatchToProps = (dispatch) => {
   const getFeed = (page) => dispatch(FeedOperations.getFeed(page))
@@ -51,7 +50,7 @@ class FeedScreen extends Component {
             keyExtractor={item => item.id + ''}
             renderItem={({ item }) => (
               <FeedPost 
-                type={PostTypes.partOfFeedScreen} 
+                fullView={false} 
                 item={item} 
                 navigation={navigation} />)} 
             onEndReached={() => this.addToFeed()} 
