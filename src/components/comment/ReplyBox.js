@@ -19,6 +19,7 @@ class ReplyBox extends Component {
   
   render() {
     const placeholder = `Reply to ${this.props.author}`
+    const { reply } = this.state
 
     return (
       <React.Fragment>
@@ -30,7 +31,8 @@ class ReplyBox extends Component {
               <TextInput 
                 placeholder={placeholder}
                 onChangeText={(reply) => this.onReplyChange(reply)}
-                style={styles.input} />
+                style={styles.input}
+                value={reply} />
 
                 <TouchableOpacity>
                   <View style={[styles.iconBox, this.isEmptyInput() && styles.inputFocused]}>
