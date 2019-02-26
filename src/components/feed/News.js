@@ -5,7 +5,9 @@ import { SemiboldText, RegularText } from '../common/fonts'
 import utils from '../../utils'
 
 function News(props) {
-  const { fullView, item: { link_details, news_item: { description, image, source_title, title } } } = props
+  const { fullView, item } = props
+  const { link_details, news_item } = item
+  const { description, image, source_title, title } = news_item
   const imageSrc = image || link_details.image
 
   renderDescription = () => {

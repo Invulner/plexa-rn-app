@@ -6,7 +6,7 @@ import { PREVIEW_DARK } from '../../assets/styles/colors'
 import utils from '../../utils'
 
 function Research(props) {
-  const { fullView, newsItem: { description, source_title, title } } = props
+  const { fullView, data: { description, source_title, title } } = props
 
   renderDescription = () => {    
     if (fullView) {

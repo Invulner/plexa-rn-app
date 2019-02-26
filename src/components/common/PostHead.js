@@ -7,7 +7,8 @@ import { withNavigation } from 'react-navigation'
 import ta from 'time-ago'
 
 function PostHead(props) {
-  const { navigation, created_at, author: { avatar_url, full_name, title, id } } = props
+  const { navigation, created_at, author } = props
+  const { avatar_url, full_name, title, id } = author
   
   const goToProfile = () => {
     navigation.navigate('PublicProfile', {id})

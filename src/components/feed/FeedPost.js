@@ -17,7 +17,7 @@ class FeedPost extends Component {
   renderResearch = () => {
     const { fullView, item: { news_item } } = this.props
 
-    return <Research newsItem={news_item} fullView={fullView} />
+    return <Research data={news_item} fullView={fullView} />
   }
 
   renderNews = () => {
@@ -52,20 +52,18 @@ class FeedPost extends Component {
     const { fullView, item: { content } } = this.props
 
     if (content) {
-
       return (
           <RegularText style={feedStyles.linkCaption}>              
             {fullView ? content : utils.truncate(content)}
           </RegularText>
       )
-    } else {
-
+    } else 
       return null
-    }
   }
 
   render() {
-    const { navigation, fullView, item: { id: postId, created_at, likes_count, answers_count, image_urls, author } } = this.props
+    const { navigation, fullView, item } = this.props
+    const { id: postId, created_at, likes_count, answers_count, image_urls, author } = item
 
     return (
       <View style={[feedStyles.postContainer, fullView && styles.fullViewContainer]}>

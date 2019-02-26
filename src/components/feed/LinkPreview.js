@@ -4,7 +4,9 @@ import { RegularText } from '../common/fonts'
 import { feedStyles } from '../../assets/styles/feed/feedStyles'
 
 function LinkPreview(props) {
-  const { fullView, item: { link_url, link_details: { domain, image, title } } } = props
+  const { fullView, item } = props
+  const { link_url, link_details } = item
+  const { domain, image, title } = link_details
 
     return (
       <View>
