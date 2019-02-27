@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, StyleSheet, TouchableWithoutFeedback } from 'react-native'
+import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import ProfileAvatar from './ProfileAvatar'
 import PostActionButton from './PostActionButton'
 import { SemiboldText, RegularText } from './fonts'
@@ -14,23 +14,46 @@ function PostHead(props) {
     navigation.navigate('PublicProfile', {id})
   }
 
-  return (
-    <View style={styles.userContainer}>
-      <TouchableWithoutFeedback onPress={goToProfile}>
-        <View>
+  const renderAvatar = () => {
+    if (full_name === 'Plexa Medbot')
+      return (
+        <ProfileAvatar 
+          url={avatar_url}
+          name={full_name} />
+      )
+    else
+      return (
+        <TouchableOpacity onPress={goToProfile}>
           <ProfileAvatar 
             url={avatar_url}
             name={full_name} />
-        </View>
-      </TouchableWithoutFeedback>
+        </TouchableOpacity>
+      )
+  }
 
-      <View>
-        <View style={styles.authorRowContainer}>
-          <SemiboldText 
-            style={styles.postAuthor} 
-            onPress={goToProfile}>
+  const renderAuthorName = () => {
+    if (full_name === 'Plexa Medbot')
+      return (
+        <SemiboldText style={styles.postAuthor}>
+          {full_name}
+        </SemiboldText>
+      )
+    else
+      return (
+        <TouchableOpacity onPress={goToProfile}>
+          <SemiboldText style={styles.postAuthor}>
             {full_name}
           </SemiboldText>
+        </TouchableOpacity>
+      )
+  }
+
+  return (
+    <View style={styles.userContainer}>
+      {renderAvatar()}
+      <View>
+        <View style={styles.authorRowContainer}>
+          {renderAuthorName()}
           <View style={styles.dotImage} />
           <RegularText style={styles.hoursAgo}>
             {ta.ago(created_at, true)}
