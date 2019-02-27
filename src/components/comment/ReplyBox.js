@@ -14,7 +14,7 @@ class ReplyBox extends Component {
 
   isEmptyInput = () => {
     const { reply } = this.state
-    return reply.length ? true : false
+    return !!reply.length
   }
   
   render() {

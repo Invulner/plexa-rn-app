@@ -51,13 +51,13 @@ class FeedPost extends Component {
   renderContent = () => {
     const { fullView, item: { content } } = this.props
 
-    if (content) {
+    if (content) 
       return (
           <RegularText style={feedStyles.linkCaption}>              
             {fullView ? content : utils.truncate(content)}
           </RegularText>
       )
-    } else 
+    else 
       return null
   }
 
