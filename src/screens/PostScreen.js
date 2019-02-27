@@ -13,7 +13,7 @@ import CommentsActions from '../actions/CommentsActions'
 
 const mapStateToProps = (state, { navigation }) => {
   const { feedData } = state.feed
-  const { items, loading } = state.comments
+  const { items, loading, areCommentsEnabled } = state.comments
   //As well as profile id from public operations, fallBackId is chosen by convinience
   const fallBackId = 1093
   const post = feedData.filter(post => post.id === navigation.getParam('postId', fallBackId))[0]
@@ -21,7 +21,8 @@ const mapStateToProps = (state, { navigation }) => {
   return { 
     items,
     loading,
-    post
+    post,
+    areCommentsEnabled
   }
 }
 
@@ -45,9 +46,8 @@ class PostScreen extends Component {
   }
 
   render() {
-    const { navigation, items, loading, post } = this.props
+    const { navigation, items, loading, post, areCommentsEnabled } = this.props
     const postAuthor = post.author.full_name
-    const areCommentsEnabled = post.comments_enabled
 
     return (
       <React.Fragment>

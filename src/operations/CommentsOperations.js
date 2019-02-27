@@ -12,7 +12,8 @@ const getComments = (navigation) => {
 
       api.get(`${API_URL}/stories/${postId}/answers`)
         .then(response => {
-          dispatch(CommentsActions.saveCommentsData(response.data.answers))
+          console.log(response.data)
+          dispatch(CommentsActions.saveCommentsData(response.data))
           dispatch(CommentsActions.toggleCommentsLoading(false))
         }).catch(error => console.log('Request error: ', error))
     }).catch(error => console.log('Axios config error: ', error))
