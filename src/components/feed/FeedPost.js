@@ -66,28 +66,28 @@ class FeedPost extends Component {
     const { id: postId, created_at, likes_count, answers_count, image_urls, author } = item
 
     return (
-      <View style={[feedStyles.postContainer, fullView && styles.fullViewContainer]}>
+      <TouchableWithoutFeedback onPress={() => navigation.navigate('Post', {postId})}>
+        <View style={[feedStyles.postContainer, fullView && styles.fullViewContainer]}>
 
-        <PostHead 
-          author={author} 
-          created_at={created_at} />
+          <PostHead 
+            author={author} 
+            created_at={created_at} />
 
-        <TouchableWithoutFeedback onPress={() => navigation.navigate('Post', {postId})}>
-          <View>
-            {this.renderContent()}
-            {!!image_urls.length &&
-              <Image 
-                source={{uri: image_urls[0].preview_url}}
-                style={styles.linkImage} />
-            }
-            {this.renderAttachedBlock()}
-          </View>
-        </TouchableWithoutFeedback>
-        
-        <Social 
-          likesCount={likes_count}
-          answersCount={answers_count} />  
-      </View>
+            <View>
+              {this.renderContent()}
+              {!!image_urls.length &&
+                <Image 
+                  source={{uri: image_urls[0].preview_url}}
+                  style={styles.linkImage} />
+              }
+              {this.renderAttachedBlock()}
+            </View>
+          
+          <Social 
+            likesCount={likes_count}
+            answersCount={answers_count} />  
+        </View>
+      </TouchableWithoutFeedback>
     )
   }
 }

@@ -13,7 +13,7 @@ const FeedStack = createStackNavigator({
   PublicProfile: {
     screen: PublicProfileScreen,
     navigationOptions: () => ({
-      header: null
+     // header: null
     })
   },
   Post: {
