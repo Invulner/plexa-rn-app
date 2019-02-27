@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Image } from 'react-native'
+import { View, Image, TouchableOpacity, Linking } from 'react-native'
 import { RegularText } from '../common/fonts'
 import { feedStyles } from '../../assets/styles/feed/feedStyles'
 
@@ -9,7 +9,7 @@ function LinkPreview(props) {
   const { domain, image, title } = link_details
 
     return (
-      <View>
+      <TouchableOpacity onPress={() => Linking.openURL(link_url)}>
         <View style={feedStyles.linkContainer}>
           {image &&
             <Image 
@@ -27,7 +27,7 @@ function LinkPreview(props) {
             {domain}
           </RegularText>
         </View>
-      </View>
+      </TouchableOpacity>
     )
 }
 

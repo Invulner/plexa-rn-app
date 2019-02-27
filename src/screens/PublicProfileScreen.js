@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, ScrollView, ActivityIndicator } from 'react-native'
+import { StyleSheet, View, ScrollView } from 'react-native'
 import { connect } from 'react-redux'
 import profileStyles from '../assets/styles/profileStyles'
 import SafeArea from '../components/common/SafeArea'
