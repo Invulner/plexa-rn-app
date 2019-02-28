@@ -14,7 +14,7 @@ function PostHead(props) {
     return isMedbot() ? null : navigation.navigate('PublicProfile', {id})
   }
 
-  const renderOpacity = () => {
+  const getBtnOpacity = () => {
     return isMedbot() ? 1 : 0.2
   }
 
@@ -22,11 +22,11 @@ function PostHead(props) {
     return full_name === 'Plexa Medbot'
   }
 
-  renderTouchable = (component) => {
+  renderTouchableBlock = (component) => {
     return (
       <TouchableOpacity 
         onPress={handlePress}
-        activeOpacity={renderOpacity()}>
+        activeOpacity={getBtnOpacity()}>
         {component}
       </TouchableOpacity>
     )
@@ -46,10 +46,10 @@ function PostHead(props) {
 
   return (
     <View style={styles.userContainer}>
-      {renderTouchable(avatar)}
+      {renderTouchableBlock(avatar)}
       <View>
         <View style={styles.authorRowContainer}>
-          {renderTouchable(name)}
+          {renderTouchableBlock(name)}
           <View style={styles.dotImage} />
           <RegularText style={styles.hoursAgo}>
             {ta.ago(created_at, true)}

@@ -5,7 +5,7 @@ import BackArrow from '../components/common/header/BackArrow'
 import HeaderTitle from '../components/common/header/HeaderTitle'
 import PrivacyPolicy from '../screens/terms/PrivacyPolicy'
 import TermsOfService from '../screens/terms/TermsOfService'
-import FeedHeaderLogo from '../components/feed/feedHeader/FeedHeaderLogo'
+import HeaderLogo from '../components/common/header/HeaderLogo'
 import PublicProfileScreen from '../screens/PublicProfileScreen'
 import PostScreen from '../screens/PostScreen'
 
@@ -32,13 +32,13 @@ const MainStack = createStackNavigator({
   PublicProfile: {
     screen: PublicProfileScreen,
     navigationOptions: () => ({
-      headerTitle: FeedHeaderLogo
+      headerTitle: HeaderLogo
     })
   },
   Post: {
     screen: PostScreen,
     navigationOptions: () => ({
-      headerTitle: FeedHeaderLogo
+      headerTitle: HeaderLogo
     })
   }
 }, {

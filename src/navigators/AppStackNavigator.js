@@ -1,12 +1,12 @@
 import { createStackNavigator } from 'react-navigation'
 import AppTabNavigator from './AppTabNavigator'
-import FeedHeaderLogo from '../components/feed/feedHeader/FeedHeaderLogo'
+import HeaderLogo from '../components/common/header/HeaderLogo'
 
 const AppStack = createStackNavigator({
   App: {
     screen: AppTabNavigator,
     navigationOptions: () => ({
-      headerTitle: FeedHeaderLogo,
+      headerTitle: HeaderLogo,
       headerStyle: {
         paddingVertical: 10
       }
