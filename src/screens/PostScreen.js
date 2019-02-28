@@ -10,7 +10,6 @@ import ReplyBox from '../components/comment/ReplyBox'
 import Loader from '../components/common/Loader'
 import TopGreyLine from '../components/comment/TopGreyLine'
 import CommentsActions from '../actions/CommentsActions'
-import HeaderActions from '../actions/HeaderActions'
 import SafeArea from '../components/common/SafeArea'
 
 const mapStateToProps = (state, { navigation }) => {
@@ -31,23 +30,19 @@ const mapStateToProps = (state, { navigation }) => {
 const mapDispatchToProps = (dispatch, { navigation }) => {
   const getComments = () => dispatch(CommentsOperations.getComments(navigation))
   const resetComments = () => dispatch(CommentsActions.resetCommentsData())
-  const toggleBackArrow = (flag) => dispatch(HeaderActions.toggleBackArrow(flag))
 
   return { 
     getComments,
-    resetComments,
-    toggleBackArrow
+    resetComments
   }
 }
 
 class PostScreen extends Component {
   componentDidMount() {
     this.props.getComments()
-    // this.props.toggleBackArrow(true)
   }
 
   componentWillUnmount() {
-    // this.props.toggleBackArrow(false)
     this.props.resetComments()
   }
 
