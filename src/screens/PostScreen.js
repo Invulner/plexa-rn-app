@@ -10,6 +10,7 @@ import ReplyBox from '../components/comment/ReplyBox'
 import Loader from '../components/common/Loader'
 import TopGreyLine from '../components/comment/TopGreyLine'
 import CommentsActions from '../actions/CommentsActions'
+import HeaderActions from '../actions/HeaderActions'
 
 const mapStateToProps = (state, { navigation }) => {
   const { feedData } = state.feed
@@ -29,19 +30,23 @@ const mapStateToProps = (state, { navigation }) => {
 const mapDispatchToProps = (dispatch, { navigation }) => {
   const getComments = () => dispatch(CommentsOperations.getComments(navigation))
   const resetComments = () => dispatch(CommentsActions.resetCommentsData())
+  const toggleBackArrow = (flag) => dispatch(HeaderActions.toggleBackArrow(flag))
 
   return { 
     getComments,
-    resetComments
+    resetComments,
+    toggleBackArrow
   }
 }
 
 class PostScreen extends Component {
   componentDidMount() {
     this.props.getComments()
+    this.props.toggleBackArrow(true)
   }
 
   componentWillUnmount() {
+    this.props.toggleBackArrow(false)
     this.props.resetComments()
   }
 
@@ -54,8 +59,8 @@ class PostScreen extends Component {
         <ScrollView 
           style={styles.container}>
           <FeedPost 
+            fullView
             item={post}
-            fullView={true}
             navigation={navigation} /> 
           {loading ?
             <Loader />

@@ -5,14 +5,17 @@ import FeedPost from '../components/feed/FeedPost'
 import FeedOperations from '../operations/FeedOperations'
 import { connect } from 'react-redux'
 import Loader from '../components/common/Loader'
+import HeaderActions from '../actions/HeaderActions'
 
 const mapDispatchToProps = (dispatch) => {
   const getFeed = (page) => dispatch(FeedOperations.getFeed(page))
   const refreshFeed = () => dispatch(FeedOperations.refreshFeed())
+  const toggleBackArrow = (flag) => dispatch(HeaderActions.toggleBackArrow(flag))
 
   return { 
     getFeed,
-    refreshFeed
+    refreshFeed,
+    toggleBackArrow
   }
 }
 
@@ -49,8 +52,7 @@ class FeedScreen extends Component {
             data={feedData}
             keyExtractor={item => item.id + ''}
             renderItem={({ item }) => (
-              <FeedPost 
-                fullView={false} 
+              <FeedPost  
                 item={item} 
                 navigation={navigation} />)} 
             onEndReached={() => this.addToFeed()} 
