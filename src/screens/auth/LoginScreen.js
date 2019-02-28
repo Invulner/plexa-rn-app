@@ -101,7 +101,7 @@ class LoginScreen extends Component {
             onChangeText={(value) => this.onPasswordChange(value)} />
 
           <TouchableOpacity
-            style={[styles.button, loading ? styles.buttonActive : null]}
+            style={[styles.button, loading && styles.buttonActive]}
             onPress={this.onSubmit}
             disabled={loading}>
             {loading ? 

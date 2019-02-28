@@ -25,7 +25,7 @@ const fetchFeed = (saveOption, page = 1) => {
           }
 
           dispatch(FeedActions.updateFeedPage(page))
-          console.log(response)
+          console.log(response.data)
           dispatch(FeedActions.toggleFeedDataLoading(false))
         })
         .catch(error => console.log('Request error: ', error))
@@ -46,14 +46,7 @@ const refreshFeed = () => {
   }
 }
 
-const resetFeed = () => {
-  return dispatch => {
-    dispatch(FeedActions.resetFeed())
-  }
-}
-
 export default {
   getFeed,
-  refreshFeed,
-  resetFeed
+  refreshFeed
 }

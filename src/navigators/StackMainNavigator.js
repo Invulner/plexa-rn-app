@@ -5,8 +5,11 @@ import BackArrow from '../components/common/header/BackArrow'
 import HeaderTitle from '../components/common/header/HeaderTitle'
 import PrivacyPolicy from '../screens/terms/PrivacyPolicy'
 import TermsOfService from '../screens/terms/TermsOfService'
+import HeaderLogo from '../components/common/header/HeaderLogo'
+import PublicProfileScreen from '../screens/PublicProfileScreen'
+import PostScreen from '../screens/PostScreen'
 
-const TermsStack = createStackNavigator({
+const MainStack = createStackNavigator({
   MainSwitch: {
     screen: SwitchMainNavigator,
     navigationOptions: () => ({
@@ -25,6 +28,18 @@ const TermsStack = createStackNavigator({
     navigationOptions: () => ({
       headerTitle: <HeaderTitle title={'Terms of Service'} />
     })
+  },
+  PublicProfile: {
+    screen: PublicProfileScreen,
+    navigationOptions: () => ({
+      headerTitle: HeaderLogo
+    })
+  },
+  Post: {
+    screen: PostScreen,
+    navigationOptions: () => ({
+      headerTitle: HeaderLogo
+    })
   }
 }, {
   defaultNavigationOptions: {
@@ -35,4 +50,4 @@ const TermsStack = createStackNavigator({
   }
 })
 
-export default TermsStack
+export default MainStack

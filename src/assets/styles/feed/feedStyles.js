@@ -19,7 +19,8 @@ export const feedStyles = StyleSheet.create({
     letterSpacing: 0.3,
     lineHeight: 15,
     marginHorizontal: 10,
-    marginTop: 10
+    marginTop: 10,
+    paddingTop: 3
   },
 
   linkSource: {
@@ -42,5 +43,22 @@ export const feedStyles = StyleSheet.create({
     marginLeft: 10,
     marginTop: -15,
     marginRight: 'auto'
+  },
+
+  sourceOnPostScreen: {
+    fontSize: 16
+  },
+
+  textOnPostScreen: {
+    fontSize: 18
+  },
+
+  postContainer: {
+    paddingTop: 10,
+    paddingHorizontal: 10,
+    paddingBottom: 5,
+    backgroundColor: '#fff',
+    marginTop: 5,
+    marginBottom: 5
   }
 })

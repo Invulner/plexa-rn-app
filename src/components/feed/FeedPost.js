@@ -1,15 +1,13 @@
 import React, { Component } from 'react'
 import { View, Image, StyleSheet, TouchableWithoutFeedback } from 'react-native'
-import { SemiboldText, RegularText } from '../common/fonts'
+import { RegularText } from '../common/fonts'
 import Research from './Research'
 import LinkPreview from './LinkPreview'
-import Social from './Social'
+import Social from '../common/Social'
 import { feedStyles } from '../../assets/styles/feed/feedStyles'
-import ta from 'time-ago'
-import ProfileAvatar from '../common/ProfileAvatar'
-import PostActionButton from './PostActionButton'
 import utils from '../../utils'
 import News from './News'
+import PostHead from '../common/PostHead'
 
 class FeedPost extends Component {
   areAnyLinkDetails = () => {
@@ -17,21 +15,21 @@ class FeedPost extends Component {
   }
 
   renderResearch = () => {
-    return (
-      <Research newsItem={this.props.item.news_item} />
-    )
+    const { fullView, item: { news_item } } = this.props
+
+    return <Research data={news_item} fullView={fullView} />
   }
 
   renderNews = () => {
-    return (
-      <News item={this.props.item} />
-    )
+    const { item, fullView } = this.props
+
+    return <News item={item} fullView={fullView} />
   }
 
   renderLinkDetails = () => {
-    return (
-      <LinkPreview item={this.props.item}/>
-    )
+    const { item, fullView } = this.props
+
+    return <LinkPreview item={item} fullView={fullView} />
   }
 
   renderAttachedBlock = () => { 
@@ -50,107 +48,58 @@ class FeedPost extends Component {
     }
   }
 
+  renderContent = () => {
+    const { fullView, item: { content } } = this.props
+
+    if (content) 
+      return (
+          <RegularText style={feedStyles.linkCaption}>              
+            {fullView ? content : utils.truncate(content)}
+          </RegularText>
+      )
+    else 
+      return null
+  }
+
   render() {
-    const { navigation, item: { created_at, likes_count, answers_count, content, image_urls, author: { avatar_url, full_name, title, id } } } = this.props
+    const { navigation, fullView, item } = this.props
+    const { id: postId, created_at, likes_count, answers_count, image_urls, author } = item
 
     return (
-      <View style={styles.postContainer}>
-        <View style={styles.userContainer}>
+      <TouchableWithoutFeedback onPress={() => navigation.navigate('Post', {postId})}>
+        <View style={[feedStyles.postContainer, fullView && styles.fullViewContainer]}>
 
-          <TouchableWithoutFeedback onPress={() => navigation.navigate('PublicProfile', {id})}>
+          <PostHead 
+            author={author} 
+            created_at={created_at} />
+
             <View>
-              <ProfileAvatar 
-                url={avatar_url}
-                name={full_name} />
+              {this.renderContent()}
+              {!!image_urls.length &&
+                <Image 
+                  source={{uri: image_urls[0].preview_url}}
+                  style={styles.linkImage} />
+              }
+              {this.renderAttachedBlock()}
             </View>
-          </TouchableWithoutFeedback>
-
-          <View>
-            <View style={styles.authorRowContainer}>
-              <SemiboldText 
-                style={styles.postAuthor} 
-                onPress={() => navigation.navigate('PublicProfile', {id})}>
-                {full_name}
-              </SemiboldText>
-              <View style={styles.dotImage} />
-              <RegularText style={styles.hoursAgo}>
-                {ta.ago(created_at, true)}
-              </RegularText>
-            </View>
-            <RegularText style={styles.userDescription}>
-              {title}
-            </RegularText>
-          </View>
-          <PostActionButton />   
+          
+          <Social 
+            likesCount={likes_count}
+            answersCount={answers_count} />  
         </View>
-        {!!content && 
-          <RegularText style={feedStyles.linkCaption}>
-            {utils.truncate(content)}
-          </RegularText>
-          }
-        {!!image_urls.length &&
-          <Image 
-            source={{uri: image_urls[0].preview_url}}
-            style={styles.linkImage} />
-        }
-        {this.renderAttachedBlock()}
-        <Social 
-          likesCount={likes_count}
-          answersCount={answers_count} />  
-      </View>
+      </TouchableWithoutFeedback>
     )
   }
 }
 
 const styles = StyleSheet.create({
-  postContainer: {
-    paddingTop: 10,
-    paddingHorizontal: 10,
-    paddingBottom: 5,
-    backgroundColor: '#fff',
-    marginVertical: 5
-  },
-  
-  userContainer: {
-    flexDirection: 'row',
-    marginBottom: 15
-  },
-
-  postAuthor: {
-    fontSize: 18,
-    letterSpacing: 0.5,
-    fontStyle: 'italic'
-  },
-
-  authorRowContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 5
-  },
-
-  dotImage: {
-    width: 5,
-    height: 5,
-    borderRadius: 50,
-    backgroundColor: 'green',
-    marginHorizontal: 10,
-    marginBottom: 8,
-    backgroundColor: '#ddd'
-  },
-
-  hoursAgo: {
-    color: '#b4b4b4'
-  },
-
-  useruserDescription: {
-    fontSize: 14,
-    marginTop: -5,
-    letterSpacing: 0.5
-  },
-
   linkImage: {
     ...feedStyles.linkImage,
     marginVertical: 5
+  },
+
+  fullViewContainer: {
+    marginBottom: 0
   }
 })
 

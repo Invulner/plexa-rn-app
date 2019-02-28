@@ -2,7 +2,7 @@ import React from 'react'
 import { Image, TouchableOpacity } from 'react-native'
 import { withNavigation } from 'react-navigation'
 
-function FeedHeaderLogo(props) {
+function HeaderLogo(props) {
   return (
     <TouchableOpacity onPress={() => props.navigation.navigate('Feed')}>
       <Image 
@@ -12,4 +12,4 @@ function FeedHeaderLogo(props) {
   )
 }
 
-export default withNavigation(FeedHeaderLogo)
+export default withNavigation(HeaderLogo)

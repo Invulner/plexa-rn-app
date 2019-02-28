@@ -5,8 +5,28 @@ import { SemiboldText, RegularText } from '../common/fonts'
 import utils from '../../utils'
 
 function News(props) {
-  const { link_details, news_item: { description, image, source_title, title } } = props.item
+  const { fullView, item } = props
+  const { link_details, news_item } = item
+  const { description, image, source_title, title } = news_item
   const imageSrc = image || link_details.image
+
+  renderDescription = () => {
+    if (fullView) {
+
+      return (
+        <RegularText style={[styles.newsText, feedStyles.textOnPostScreen]}>
+          {description}
+        </RegularText>
+      )
+    } else {
+
+      return (
+        <RegularText style={styles.newsText}>
+          {utils.truncate(description)}
+        </RegularText>
+      )
+    }
+  }
 
     return (
       <View style={feedStyles.linkContainer}>
@@ -16,24 +36,21 @@ function News(props) {
             style={styles.image} 
             source={{uri: imageSrc}} />
           :
-          <View style={styles.blankView}/>
+          <View style={styles.blankView} />
         }
 
         <View style={feedStyles.newsSourceBox}>
-          <RegularText style={[styles.linkSource, styles.newsSourceText]}>
+          <RegularText style={[styles.newsSourceText, fullView && feedStyles.sourceOnPostScreen]}>
             {source_title}
           </RegularText>
         </View>
 
         <View>
-          <SemiboldText style={[feedStyles.linkText, styles.newsTitleText]}>
+          <SemiboldText style={[feedStyles.linkText, styles.newsTitleText, fullView && feedStyles.textOnPostScreen]}>
             {title}
           </SemiboldText>
         </View>
-
-        <RegularText style={styles.newsText}>
-          {utils.truncate(description)}
-        </RegularText>
+        {renderDescription()}
       </View>
     )
 }
@@ -60,6 +77,10 @@ const styles = StyleSheet.create({
 
   blankView: {
     height: 25,
+  },
+
+  textOnPostScreen: {
+    fontSize: 18
   }
 })
 

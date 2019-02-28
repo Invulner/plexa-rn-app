@@ -6,27 +6,42 @@ import { PREVIEW_DARK } from '../../assets/styles/colors'
 import utils from '../../utils'
 
 function Research(props) {
-  const { description, source_title, title } = props.newsItem
+  const { fullView, data: { description, source_title, title } } = props
+
+  renderDescription = () => {    
+    if (fullView) {
+
+      return (
+        <SemiboldText style={[feedStyles.linkText, styles.newsText, feedStyles.textOnPostScreen]}>
+          {description}
+        </SemiboldText>
+      )
+    } else {
+
+      return (
+        <SemiboldText style={[feedStyles.linkText, styles.newsText]}>
+          {utils.truncate(description)}
+        </SemiboldText>
+      )
+    }
+  }
   
   return (
     <View>
       <View style={feedStyles.linkContainer}>
 
         <View style={styles.newsTitleBox}>
-          <SemiboldText style={[feedStyles.linkText, styles.newsTitleText]}>
+          <SemiboldText style={[feedStyles.linkText, styles.newsTitleText, fullView && feedStyles.textOnPostScreen]}>
             {title}
           </SemiboldText>
         </View>
 
         <View style={feedStyles.newsSourceBox}>
-          <RegularText style={[styles.linkSource, styles.newsSourceText]}>
+          <RegularText style={[styles.linkSource, styles.newsSourceText, fullView && feedStyles.sourceOnPostScreen]}>
             {source_title}
           </RegularText>
         </View>
-
-        <SemiboldText style={[feedStyles.linkText, styles.newsText]}>
-          {utils.truncate(description)}
-        </SemiboldText>
+        {renderDescription()}
       </View>
     </View>
   )
@@ -50,7 +65,8 @@ const styles = StyleSheet.create({
 
   newsText: {
     marginLeft: 10,
-    marginTop: 15
+    marginTop: 15,
+    paddingTop: 3
   }
 })
 

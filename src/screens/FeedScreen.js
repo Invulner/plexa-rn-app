@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { FlatList, ActivityIndicator, View, StyleSheet } from 'react-native'
+import { FlatList, ActivityIndicator } from 'react-native'
 import SafeArea from '../components/common/SafeArea'
 import FeedPost from '../components/feed/FeedPost'
 import FeedOperations from '../operations/FeedOperations'
@@ -48,7 +48,10 @@ class FeedScreen extends Component {
           <FlatList 
             data={feedData}
             keyExtractor={item => item.id + ''}
-            renderItem={({ item }) => <FeedPost item={item} navigation={navigation}/>} 
+            renderItem={({ item }) => (
+              <FeedPost  
+                item={item} 
+                navigation={navigation} />)} 
             onEndReached={() => this.addToFeed()} 
             onEndReachedThreshold={1}
             onRefresh={() => refreshFeed()}
