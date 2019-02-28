@@ -5,6 +5,9 @@ import BackArrow from '../components/common/header/BackArrow'
 import HeaderTitle from '../components/common/header/HeaderTitle'
 import PrivacyPolicy from '../screens/terms/PrivacyPolicy'
 import TermsOfService from '../screens/terms/TermsOfService'
+import FeedHeaderLogo from '../components/feed/feedHeader/FeedHeaderLogo'
+import PublicProfileScreen from '../screens/PublicProfileScreen'
+import PostScreen from '../screens/PostScreen'
 
 const TermsStack = createStackNavigator({
   MainSwitch: {
@@ -24,6 +27,18 @@ const TermsStack = createStackNavigator({
     screen: TermsOfService,
     navigationOptions: () => ({
       headerTitle: <HeaderTitle title={'Terms of Service'} />
+    })
+  },
+  PublicProfile: {
+    screen: PublicProfileScreen,
+    navigationOptions: () => ({
+      headerTitle: FeedHeaderLogo
+    })
+  },
+  Post: {
+    screen: PostScreen,
+    navigationOptions: () => ({
+      headerTitle: FeedHeaderLogo
     })
   }
 }, {

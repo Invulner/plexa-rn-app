@@ -37,12 +37,12 @@ class PublicProfileScreen extends Component {
 
   componentDidMount() {
     this.props.getPublicUserProfile()
-    this.props.toggleBackArrow(true)
+    // this.props.toggleBackArrow(true)
   }
 
-  componentWillUnmount() {
-    this.props.toggleBackArrow(false)
-  }
+  // componentWillUnmount() {
+  //   this.props.toggleBackArrow(false)
+  // }
 
   render() {
     const { avatar_url, full_name, title, location, specialities, sub_specialities, conditions, interests, loading } = this.props.publicUser

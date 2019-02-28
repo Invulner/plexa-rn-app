@@ -10,18 +10,18 @@ const FeedStack = createStackNavigator({
       header: null
     })
   },
-  PublicProfile: {
-    screen: PublicProfileScreen,
-    navigationOptions: () => ({
-      header: null
-    })
-  },
-  Post: {
-    screen: PostScreen,
-    navigationOptions: () => ({
-      header: null
-    })
-  }
+  // PublicProfile: {
+  //   screen: PublicProfileScreen,
+  //   navigationOptions: () => ({
+  //     header: null
+  //   })
+  // },
+  // Post: {
+  //   screen: PostScreen,
+  //   navigationOptions: () => ({
+  //     header: null
+  //   })
+  // }
 })
 
 export default FeedStack

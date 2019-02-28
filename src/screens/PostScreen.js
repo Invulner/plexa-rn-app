@@ -11,6 +11,7 @@ import Loader from '../components/common/Loader'
 import TopGreyLine from '../components/comment/TopGreyLine'
 import CommentsActions from '../actions/CommentsActions'
 import HeaderActions from '../actions/HeaderActions'
+import SafeArea from '../components/common/SafeArea'
 
 const mapStateToProps = (state, { navigation }) => {
   const { feedData } = state.feed
@@ -42,11 +43,11 @@ const mapDispatchToProps = (dispatch, { navigation }) => {
 class PostScreen extends Component {
   componentDidMount() {
     this.props.getComments()
-    this.props.toggleBackArrow(true)
+    // this.props.toggleBackArrow(true)
   }
 
   componentWillUnmount() {
-    this.props.toggleBackArrow(false)
+    // this.props.toggleBackArrow(false)
     this.props.resetComments()
   }
 
@@ -55,7 +56,7 @@ class PostScreen extends Component {
     const postAuthor = post.author.full_name
 
     return (
-      <React.Fragment>
+      <SafeArea>
         <ScrollView 
           style={styles.container}>
           <FeedPost 
@@ -84,7 +85,7 @@ class PostScreen extends Component {
         {areCommentsEnabled &&
           <ReplyBox author={postAuthor} />
         }
-      </React.Fragment>
+      </SafeArea>
     )
   }
 }

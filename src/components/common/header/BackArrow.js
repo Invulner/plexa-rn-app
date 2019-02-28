@@ -3,24 +3,23 @@ import { Image, StyleSheet, TouchableOpacity } from 'react-native'
 import { withNavigation } from 'react-navigation'
 
 function BackArrow(props) {
-  const { goToFeed, navigation } = props
+  const { goToFeed: flag, navigation } = props
 
-  if (goToFeed)
+  const goToFeed = () => {
+    navigation.navigate('Feed')
+  }
+
+  const goBack = () => {
+    navigation.goBack()
+  }
+
   return (
-    <TouchableOpacity onPress={() => navigation.navigate('Feed')}>
+    <TouchableOpacity onPress={goToFeed && flag || goBack}>
       <Image 
         source={require('../../../assets/icons/arrow-left.png')}
         style={styles.image} />
     </TouchableOpacity>
   )
-  else
-    return (
-      <TouchableOpacity onPress={() => navigation.goBack()}>
-        <Image 
-          source={require('../../../assets/icons/arrow-left.png')}
-          style={styles.image} />
-    </TouchableOpacity>
-    )
 }
 
 const styles = StyleSheet.create({
