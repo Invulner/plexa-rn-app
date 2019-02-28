@@ -9,7 +9,7 @@ import FeedHeaderLogo from '../components/feed/feedHeader/FeedHeaderLogo'
 import PublicProfileScreen from '../screens/PublicProfileScreen'
 import PostScreen from '../screens/PostScreen'
 
-const TermsStack = createStackNavigator({
+const MainStack = createStackNavigator({
   MainSwitch: {
     screen: SwitchMainNavigator,
     navigationOptions: () => ({
@@ -50,4 +50,4 @@ const TermsStack = createStackNavigator({
   }
 })
 
-export default TermsStack
+export default MainStack
