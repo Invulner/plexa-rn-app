@@ -14,7 +14,7 @@ import SafeArea from '../components/common/SafeArea'
 
 const mapStateToProps = (state, { navigation }) => {
   const { feedData } = state.feed
-  const { items, loading, areCommentsEnabled } = state.comments
+  const { items, loading, enabled } = state.comments
   //As well as profile id from public operations, fallBackId is chosen by convinience
   const fallBackId = 1093
   const post = feedData.filter(post => post.id === navigation.getParam('postId', fallBackId))[0]
@@ -23,7 +23,7 @@ const mapStateToProps = (state, { navigation }) => {
     items,
     loading,
     post,
-    areCommentsEnabled
+    enabled
   }
 }
 
@@ -47,7 +47,7 @@ class PostScreen extends Component {
   }
 
   render() {
-    const { navigation, items, loading, post, areCommentsEnabled } = this.props
+    const { navigation, items, loading, post, enabled } = this.props
     const postAuthor = post.author.full_name
 
     return (
@@ -71,13 +71,13 @@ class PostScreen extends Component {
                     <TopGreyLine />
                     <CommentsPlaceholder message={'No comments'} />
                   </React.Fragment>)} />
-              {!areCommentsEnabled &&
+              {!enabled &&
                 <CommentsPlaceholder message={'Author has disabled commenting'}/>
               }
             </React.Fragment>
           }
         </ScrollView>
-        {areCommentsEnabled &&
+        {enabled &&
           <ReplyBox author={postAuthor} />
         }
       </SafeArea>
