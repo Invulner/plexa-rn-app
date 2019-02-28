@@ -10,11 +10,11 @@ import ReplyBox from '../components/comment/ReplyBox'
 import Loader from '../components/common/Loader'
 import TopGreyLine from '../components/comment/TopGreyLine'
 import CommentsActions from '../actions/CommentsActions'
-import HeaderActions from '../actions/HeaderActions'
+import SafeArea from '../components/common/SafeArea'
 
 const mapStateToProps = (state, { navigation }) => {
   const { feedData } = state.feed
-  const { items, loading, areCommentsEnabled } = state.comments
+  const { items, loading, enabled } = state.comments
   //As well as profile id from public operations, fallBackId is chosen by convinience
   const fallBackId = 1093
   const post = feedData.filter(post => post.id === navigation.getParam('postId', fallBackId))[0]
@@ -23,39 +23,35 @@ const mapStateToProps = (state, { navigation }) => {
     items,
     loading,
     post,
-    areCommentsEnabled
+    enabled
   }
 }
 
 const mapDispatchToProps = (dispatch, { navigation }) => {
   const getComments = () => dispatch(CommentsOperations.getComments(navigation))
   const resetComments = () => dispatch(CommentsActions.resetCommentsData())
-  const toggleBackArrow = (flag) => dispatch(HeaderActions.toggleBackArrow(flag))
 
   return { 
     getComments,
-    resetComments,
-    toggleBackArrow
+    resetComments
   }
 }
 
 class PostScreen extends Component {
   componentDidMount() {
     this.props.getComments()
-    this.props.toggleBackArrow(true)
   }
 
   componentWillUnmount() {
-    this.props.toggleBackArrow(false)
     this.props.resetComments()
   }
 
   render() {
-    const { navigation, items, loading, post, areCommentsEnabled } = this.props
+    const { navigation, items, loading, post, enabled } = this.props
     const postAuthor = post.author.full_name
 
     return (
-      <React.Fragment>
+      <SafeArea>
         <ScrollView 
           style={styles.container}>
           <FeedPost 
@@ -75,16 +71,16 @@ class PostScreen extends Component {
                     <TopGreyLine />
                     <CommentsPlaceholder message={'No comments'} />
                   </React.Fragment>)} />
-              {!areCommentsEnabled &&
+              {!enabled &&
                 <CommentsPlaceholder message={'Author has disabled commenting'}/>
               }
             </React.Fragment>
           }
         </ScrollView>
-        {areCommentsEnabled &&
+        {enabled &&
           <ReplyBox author={postAuthor} />
         }
-      </React.Fragment>
+      </SafeArea>
     )
   }
 }

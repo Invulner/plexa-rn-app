@@ -1,5 +1,0 @@
-const TOGGLE_BACK_ARROW = 'TOGGLE_BACK_ARROW'
-
-export default {
-  TOGGLE_BACK_ARROW
-}

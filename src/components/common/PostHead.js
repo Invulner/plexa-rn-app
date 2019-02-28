@@ -10,50 +10,46 @@ function PostHead(props) {
   const { navigation, created_at, author } = props
   const { avatar_url, full_name, title, id } = author
   
-  const goToProfile = () => {
-    navigation.navigate('PublicProfile', {id})
+  const handlePress = () => {
+    return isMedbot() ? null : navigation.navigate('PublicProfile', {id})
   }
 
-  const renderAvatar = () => {
-    if (full_name === 'Plexa Medbot')
-      return (
-        <ProfileAvatar 
-          url={avatar_url}
-          name={full_name} />
-      )
-    else
-      return (
-        <TouchableOpacity onPress={goToProfile}>
-          <ProfileAvatar 
-            url={avatar_url}
-            name={full_name} />
-        </TouchableOpacity>
-      )
+  const getBtnOpacity = () => {
+    return isMedbot() ? 1 : 0.2
   }
 
-  const renderAuthorName = () => {
-    if (full_name === 'Plexa Medbot')
-      return (
-        <SemiboldText style={styles.postAuthor}>
-          {full_name}
-        </SemiboldText>
-      )
-    else
-      return (
-        <TouchableOpacity onPress={goToProfile}>
-          <SemiboldText style={styles.postAuthor}>
-            {full_name}
-          </SemiboldText>
-        </TouchableOpacity>
-      )
+  const isMedbot = () => {
+    return full_name === 'Plexa Medbot'
   }
+
+  renderTouchableBlock = (component) => {
+    return (
+      <TouchableOpacity 
+        onPress={handlePress}
+        activeOpacity={getBtnOpacity()}>
+        {component}
+      </TouchableOpacity>
+    )
+  }
+
+  const name = (
+    <SemiboldText style={styles.postAuthor}>
+      {full_name}
+    </SemiboldText>
+  )
+
+  const avatar = (
+    <ProfileAvatar 
+      url={avatar_url}
+      name={full_name} />
+  )
 
   return (
     <View style={styles.userContainer}>
-      {renderAvatar()}
+      {renderTouchableBlock(avatar)}
       <View>
         <View style={styles.authorRowContainer}>
-          {renderAuthorName()}
+          {renderTouchableBlock(name)}
           <View style={styles.dotImage} />
           <RegularText style={styles.hoursAgo}>
             {ta.ago(created_at, true)}

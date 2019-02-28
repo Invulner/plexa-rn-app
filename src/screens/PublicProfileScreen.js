@@ -9,7 +9,6 @@ import DetailsBox from '../components/profile/DetailsBox'
 import Loader from '../components/common/Loader'
 import utils from '../utils'
 import PublicUserOperations from '../operations/PublicUserOperations'
-import HeaderActions from '../actions/HeaderActions'
 
 const mapStateToProps = (state) => {
   const { publicUser } = state
@@ -19,12 +18,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch, { navigation }) => {
   const getPublicUserProfile = () => dispatch(PublicUserOperations.getPublicUserProfile(navigation))
-  const toggleBackArrow = (flag) => dispatch(HeaderActions.toggleBackArrow(flag))
 
-  return { 
-    getPublicUserProfile,
-    toggleBackArrow
-  }
+  return { getPublicUserProfile }
 }
 
 class PublicProfileScreen extends Component {
@@ -37,11 +32,6 @@ class PublicProfileScreen extends Component {
 
   componentDidMount() {
     this.props.getPublicUserProfile()
-    this.props.toggleBackArrow(true)
-  }
-
-  componentWillUnmount() {
-    this.props.toggleBackArrow(false)
   }
 
   render() {
