@@ -9,7 +9,7 @@ const truncate = (text, maxLength = MAX_CONTENT_LENGTH) => {
  return text.length > maxLength ? text.slice(0, maxLength) + ' ...' : text
 }
 
-renderProfileDetails = (details) => {
+const renderProfileDetails = (details) => {
 
   return  details.map((item, index) => {
     if (index !== details.length - 1)
@@ -19,13 +19,18 @@ renderProfileDetails = (details) => {
   })
 }
 
-addStyleForPostScreen = (type, style) => {
+const addStyleForPostScreen = (type, style) => {
   return type === PostTypes.standaloneScreen ? style : null
+}
+
+const getDescription = (description, fullView) => {
+  return fullView ? description : truncate(description)
 }
 
 export default {
   getInitials,
   truncate,
   renderProfileDetails,
-  addStyleForPostScreen
+  addStyleForPostScreen,
+  getDescription
 }

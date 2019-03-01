@@ -3,7 +3,6 @@ import { View, Image, StyleSheet } from 'react-native'
 import { feedStyles } from '../../assets/styles/feed/feedStyles'
 import { SemiboldText, RegularText } from '../common/fonts'
 import utils from '../../utils'
-import { PostTypes } from '../../constants'
 
 function News(props) {
   const { fullView, item } = props
@@ -11,22 +10,12 @@ function News(props) {
   const { description, image, source_title, title } = news_item
   const imageSrc = image || link_details.image
 
-  renderDescription = () => {
-    if (fullView) {
-
-      return (
-        <RegularText style={[styles.newsText, feedStyles.textOnPostScreen]}>
-          {description}
-        </RegularText>
-      )
-    } else {
-
-      return (
-        <RegularText style={styles.newsText}>
-          {utils.truncate(description)}
-        </RegularText>
-      )
-    }
+  const renderWrapper = (description, fullView, getDescription) => {
+    return (
+      <RegularText style={[styles.newsText, fullView && feedStyles.textOnPostScreen]}>
+        {getDescription(description, fullView)}
+      </RegularText>
+    )
   }
 
     return (
@@ -51,7 +40,7 @@ function News(props) {
             {title}
           </SemiboldText>
         </View>
-        {renderDescription()}
+        {renderWrapper(description, fullView, utils.getDescription)}
       </View>
     )
 }
