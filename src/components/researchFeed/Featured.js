@@ -6,21 +6,15 @@ import { RegularText } from '../common/fonts'
 import { FEATURED } from '../../assets/styles/colors'
 
 class Featured extends Component {
-  state = {
-    colorIndex: 0
-  }
-
   getColorIndex = () => {
     return Math.floor(Math.random() * (FEATURED.length - 1))
   }
 
-  componentDidMount() {
-    this.setState({colorIndex: this.getColorIndex()})
-  }
+  colorIndex = this.getColorIndex()
 
   render() {
     const { source_title, title, description } = this.props.item
-    const { colorIndex } = this.state
+    const colorIndex = this.colorIndex
 
     return (
       <View style={[styles.newsContainer, {backgroundColor: FEATURED[colorIndex].bg}]}>

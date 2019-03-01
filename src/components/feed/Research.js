@@ -8,10 +8,10 @@ import utils from '../../utils'
 function Research(props) {
   const { fullView, data: { description, source_title, title } } = props
 
-  const renderWrapper = (getDescription) => {
+  const renderWrapper = () => {
     return (
       <SemiboldText style={[feedStyles.linkText, styles.newsText, fullView && feedStyles.textOnPostScreen]}>
-        {getDescription(description, fullView)}
+        {utils.getDescription(description, fullView)}
       </SemiboldText>
     )
   }
@@ -31,7 +31,7 @@ function Research(props) {
             {source_title}
           </RegularText>
         </View>
-        {renderWrapper(utils.getDescription)}
+        {renderWrapper()}
       </View>
     </View>
   )

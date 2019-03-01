@@ -10,10 +10,10 @@ function News(props) {
   const { description, image, source_title, title } = news_item
   const imageSrc = image || link_details.image
 
-  const renderWrapper = (getDescription) => {
+  const renderWrapper = () => {
     return (
       <RegularText style={[styles.newsText, fullView && feedStyles.textOnPostScreen]}>
-        {getDescription(description, fullView)}
+        {utils.getDescription(description, fullView)}
       </RegularText>
     )
   }
@@ -40,7 +40,7 @@ function News(props) {
             {title}
           </SemiboldText>
         </View>
-        {renderWrapper(utils.getDescription)}
+        {renderWrapper()}
       </View>
     )
 }
