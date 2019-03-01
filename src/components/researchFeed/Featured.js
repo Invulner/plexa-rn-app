@@ -1,16 +1,26 @@
 import React, { Component } from 'react'
 import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import { BRAND_LIGHT } from '../../assets/styles/colors'
-import NewsIcon from './NewsIcon'
+import NewsIcon from '../feed/NewsIcon'
 import { RegularText } from '../common/fonts'
+import { FEATURED } from '../../assets/styles/colors'
 
-class NewsPost extends Component {
+class Featured extends Component {
+  getColorIndex = () => {
+    return Math.floor(Math.random() * (FEATURED.length - 1))
+  }
+
+  colorIndex = this.getColorIndex()
+
   render() {
+    const { source_title, title, description } = this.props.item
+    const colorIndex = this.colorIndex
+
     return (
-      <View style={styles.newsContainer}>
+      <View style={[styles.newsContainer, {backgroundColor: FEATURED[colorIndex].bg}]}>
         <View style={styles.topBox}> 
           <View style={styles.iconBox}>
-            <NewsIcon style={styles.icon}/>
+            <NewsIcon style={styles.icon} />
           </View>
           <TouchableOpacity style={styles.btn}>
             <RegularText style={styles.btnText}>
@@ -19,15 +29,15 @@ class NewsPost extends Component {
           </TouchableOpacity>
         </View>
         <RegularText style={styles.newsTitle}>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed suscipit voluptatibus earum sit omnis rerum libero.
+          {title}
         </RegularText>
-        <View style={styles.sourceContainer}>
+        <View style={[styles.sourceContainer, {backgroundColor: FEATURED[colorIndex].source}]}>
           <RegularText style={styles.sourceText}>
-            news's source
+            {source_title}
           </RegularText>
         </View>
         <RegularText style={styles.newsText}>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos atque, dolor nulla non neque inventore quis earum magni iusto repellat! Nam officiis ullam odio deserunt repudiandae nihil, nemo unde numquam, repellendus eius officia perferendis modi ipsum accusantium consequatur dolorem atque...
+          {description}
         </RegularText>
       </View>
     )
@@ -78,11 +88,13 @@ const styles = StyleSheet.create({
 
   newsTitle: {
     fontSize: 26,
-    color: '#fff'
+    color: '#fff',
+    lineHeight: 23,
+    paddingTop: 5
   },
 
   sourceContainer: {
-    height: 40,
+    height: 45,
     backgroundColor: '#400846',
     justifyContent: 'center',
     alignItems: 'center',
@@ -90,7 +102,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     paddingTop: 5,
     marginBottom: 25,
-    marginTop: 15
+    marginTop: 12
   },
 
   sourceText: {
@@ -99,8 +111,10 @@ const styles = StyleSheet.create({
   },
 
   newsText: {
-    color: '#fff'
+    color: '#fff',
+    lineHeight: 13,
+    paddingBottom: 3
   }
 })
 
-export default NewsPost
+export default Featured

@@ -9,7 +9,7 @@ const truncate = (text, maxLength = MAX_CONTENT_LENGTH) => {
  return text.length > maxLength ? text.slice(0, maxLength) + ' ...' : text
 }
 
-renderProfileDetails = (details) => {
+const renderProfileDetails = (details) => {
 
   return  details.map((item, index) => {
     if (index !== details.length - 1)
@@ -19,8 +19,13 @@ renderProfileDetails = (details) => {
   })
 }
 
+const getDescription = (description, fullView) => {
+  return fullView ? description : truncate(description)
+}
+
 export default {
   getInitials,
   truncate,
-  renderProfileDetails
+  renderProfileDetails,
+  getDescription
 }

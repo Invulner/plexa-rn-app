@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { FlatList, ActivityIndicator } from 'react-native'
+import { FlatList } from 'react-native'
 import SafeArea from '../components/common/SafeArea'
 import FeedPost from '../components/feed/FeedPost'
 import FeedOperations from '../operations/FeedOperations'
@@ -56,7 +56,7 @@ class FeedScreen extends Component {
             onEndReachedThreshold={1}
             onRefresh={() => refreshFeed()}
             refreshing={feedLoading}
-            ListFooterComponent={feedLoading && <ActivityIndicator size='large' />} />
+            ListFooterComponent={feedLoading && <Loader />} />
         }
       </SafeArea>
     )
