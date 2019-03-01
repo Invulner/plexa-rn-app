@@ -6,11 +6,13 @@ import utils from '../../utils'
 import { PostTypes } from '../../constants'
 
 function News(props) {
-  const { type, item: { link_details, news_item: { description, image, source_title, title } } } = props
+  const { fullView, item } = props
+  const { link_details, news_item } = item
+  const { description, image, source_title, title } = news_item
   const imageSrc = image || link_details.image
 
   renderDescription = () => {
-    if (type === PostTypes.standaloneScreen) {
+    if (fullView) {
 
       return (
         <RegularText style={[styles.newsText, feedStyles.textOnPostScreen]}>
@@ -39,13 +41,13 @@ function News(props) {
         }
 
         <View style={feedStyles.newsSourceBox}>
-          <RegularText style={[styles.newsSourceText, utils.addStyleForPostScreen(type, feedStyles.sourceOnPostScreen)]}>
+          <RegularText style={[styles.newsSourceText, fullView && feedStyles.sourceOnPostScreen]}>
             {source_title}
           </RegularText>
         </View>
 
         <View>
-          <SemiboldText style={[feedStyles.linkText, styles.newsTitleText, utils.addStyleForPostScreen(type, feedStyles.textOnPostScreen)]}>
+          <SemiboldText style={[feedStyles.linkText, styles.newsTitleText, fullView && feedStyles.textOnPostScreen]}>
             {title}
           </SemiboldText>
         </View>

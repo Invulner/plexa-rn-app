@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, StyleSheet, TouchableWithoutFeedback } from 'react-native'
+import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import ProfileAvatar from './ProfileAvatar'
 import PostActionButton from './PostActionButton'
 import { SemiboldText, RegularText } from './fonts'
@@ -7,25 +7,49 @@ import { withNavigation } from 'react-navigation'
 import ta from 'time-ago'
 
 function PostHead(props) {
-  const { navigation, created_at, author: { avatar_url, full_name, title, id } } = props
+  const { navigation, created_at, author } = props
+  const { avatar_url, full_name, title, id } = author
   
+  const handlePress = () => {
+    return isMedbot() ? null : navigation.navigate('PublicProfile', {id})
+  }
+
+  const getBtnOpacity = () => {
+    return isMedbot() ? 1 : 0.2
+  }
+
+  const isMedbot = () => {
+    return full_name === 'Plexa Medbot'
+  }
+
+  renderTouchableBlock = (component) => {
+    return (
+      <TouchableOpacity 
+        onPress={handlePress}
+        activeOpacity={getBtnOpacity()}>
+        {component}
+      </TouchableOpacity>
+    )
+  }
+
+  const name = (
+    <SemiboldText style={styles.postAuthor}>
+      {full_name}
+    </SemiboldText>
+  )
+
+  const avatar = (
+    <ProfileAvatar 
+      url={avatar_url}
+      name={full_name} />
+  )
+
   return (
     <View style={styles.userContainer}>
-      <TouchableWithoutFeedback onPress={() => navigation.navigate('PublicProfile', {id})}>
-        <View>
-          <ProfileAvatar 
-            url={avatar_url}
-            name={full_name} />
-        </View>
-      </TouchableWithoutFeedback>
-
+      {renderTouchableBlock(avatar)}
       <View>
         <View style={styles.authorRowContainer}>
-          <SemiboldText 
-            style={styles.postAuthor} 
-            onPress={() => navigation.navigate('PublicProfile', {id})}>
-            {full_name}
-          </SemiboldText>
+          {renderTouchableBlock(name)}
           <View style={styles.dotImage} />
           <RegularText style={styles.hoursAgo}>
             {ta.ago(created_at, true)}

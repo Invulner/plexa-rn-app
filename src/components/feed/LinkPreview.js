@@ -1,32 +1,33 @@
 import React from 'react'
-import { View, Image } from 'react-native'
+import { View, Image, TouchableOpacity, Linking } from 'react-native'
 import { RegularText } from '../common/fonts'
 import { feedStyles } from '../../assets/styles/feed/feedStyles'
-import utils from '../../utils'
 
 function LinkPreview(props) {
-  const { type, item: { link_url, link_details: { domain, image, title } } } = props
+  const { fullView, item } = props
+  const { link_url, link_details } = item
+  const { domain, image, title } = link_details
 
     return (
-      <View>
+      <TouchableOpacity onPress={() => Linking.openURL(link_url)}>
         <View style={feedStyles.linkContainer}>
           {image &&
             <Image 
               source={{uri: image}}
               style={feedStyles.linkImage} />
           }
-          <RegularText style={[feedStyles.linkText, utils.addStyleForPostScreen(type, feedStyles.textOnPostScreen)]}>
+          <RegularText style={[feedStyles.linkText, fullView && feedStyles.textOnPostScreen]}>
             {!!title ? 
               title.trim()
               :
               link_url.trim()
             }
           </RegularText>
-          <RegularText style={[feedStyles.linkSource, utils.addStyleForPostScreen(type, feedStyles.sourceOnPostScreen)]}>
+          <RegularText style={[feedStyles.linkSource, fullView && feedStyles.sourceOnPostScreen]}>
             {domain}
           </RegularText>
         </View>
-      </View>
+      </TouchableOpacity>
     )
 }
 

@@ -1,30 +1,35 @@
 import React, { Component } from 'react'
-import { ScrollView, StyleSheet, FlatList, View } from 'react-native'
+import { ScrollView, StyleSheet, FlatList } from 'react-native'
 import FeedPost from '../components/feed/FeedPost'
 import { connect } from 'react-redux'
-import { PostTypes } from '../constants'
 import { BG_COLOR } from '../assets/styles/colors'
 import CommentsOperations from '../operations/CommentsOperations'
 import Comment from '../components/comment/Comment'
-import CommentsMessage from '../components/comment/CommentsMessage'
+import CommentsPlaceholder from '../components/comment/CommentsPlaceholder'
 import ReplyBox from '../components/comment/ReplyBox'
 import Loader from '../components/common/Loader'
 import TopGreyLine from '../components/comment/TopGreyLine'
+import CommentsActions from '../actions/CommentsActions'
+import SafeArea from '../components/common/SafeArea'
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, { navigation }) => {
   const { feedData } = state.feed
-  const { commentsData, loading } = state.comments
+  const { items, loading, enabled } = state.comments
+  //As well as profile id from public operations, fallBackId is chosen by convinience
+  const fallBackId = 1093
+  const post = feedData.filter(post => post.id === navigation.getParam('postId', fallBackId))[0]
 
   return { 
-    feedData,
-    commentsData,
-    loading
+    items,
+    loading,
+    post,
+    enabled
   }
 }
 
 const mapDispatchToProps = (dispatch, { navigation }) => {
   const getComments = () => dispatch(CommentsOperations.getComments(navigation))
-  const resetComments = () => dispatch(CommentsOperations.resetComments())
+  const resetComments = () => dispatch(CommentsActions.resetCommentsData())
 
   return { 
     getComments,
@@ -33,15 +38,6 @@ const mapDispatchToProps = (dispatch, { navigation }) => {
 }
 
 class PostScreen extends Component {
-  getPostById = () => {
-    const { navigation, feedData } = this.props
-    //As well as profile id from public operations, fallBackId is chosen by convinience
-    const fallBackId = 1093
-    const postArr = feedData.filter(post => post.id === navigation.getParam('postId', fallBackId))
-
-    return postArr[0]
-  }
-
   componentDidMount() {
     this.props.getComments()
   }
@@ -51,41 +47,40 @@ class PostScreen extends Component {
   }
 
   render() {
-    const { navigation, commentsData, loading } = this.props
-    const postAuthor = this.getPostById().author.full_name
-    const areCommentsEnabled = this.getPostById().comments_enabled
+    const { navigation, items, loading, post, enabled } = this.props
+    const postAuthor = post.author.full_name
 
     return (
-      <React.Fragment>
+      <SafeArea>
         <ScrollView 
           style={styles.container}>
           <FeedPost 
-            item={this.getPostById()}
-            type={PostTypes.standaloneScreen}
+            fullView
+            item={post}
             navigation={navigation} /> 
           {loading ?
             <Loader />
             :
             <React.Fragment>
               <FlatList 
-                data={commentsData}
+                data={items}
                 keyExtractor={item => item.id + ''}
                 renderItem={({ item }) => <Comment item={item} />}
                 ListEmptyComponent={(
                   <React.Fragment>
                     <TopGreyLine />
-                    <CommentsMessage message={'No comments'} />
+                    <CommentsPlaceholder message={'No comments'} />
                   </React.Fragment>)} />
-              {!areCommentsEnabled &&
-                <CommentsMessage message={'Author has disabled commenting'}/>
+              {!enabled &&
+                <CommentsPlaceholder message={'Author has disabled commenting'}/>
               }
             </React.Fragment>
           }
         </ScrollView>
-        {areCommentsEnabled &&
+        {enabled &&
           <ReplyBox author={postAuthor} />
         }
-      </React.Fragment>
+      </SafeArea>
     )
   }
 }

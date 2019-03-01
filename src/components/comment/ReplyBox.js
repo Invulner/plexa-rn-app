@@ -5,20 +5,21 @@ import TopGreyLine from './TopGreyLine'
 
 class ReplyBox extends Component {
   state = {
-    isInputFocused: false
+    reply: ''
   }
 
-  onInputBlur = () => {
-    this.setState({isInputFocused: false})
+  onReplyChange = (reply) => {
+    this.setState({reply})
   }
 
-  onInputFocus = () => {
-    this.setState({isInputFocused: true})
+  isEmptyInput = () => {
+    const { reply } = this.state
+    return !!reply.length
   }
   
   render() {
     const placeholder = `Reply to ${this.props.author}`
-    const { isInputFocused } = this.state
+    const { reply } = this.state
 
     return (
       <React.Fragment>
@@ -29,12 +30,12 @@ class ReplyBox extends Component {
 
               <TextInput 
                 placeholder={placeholder}
-                onFocus={this.onInputFocus}
-                onBlur={this.onInputBlur}
-                style={styles.input} />
+                onChangeText={(reply) => this.onReplyChange(reply)}
+                style={styles.input}
+                value={reply} />
 
                 <TouchableOpacity>
-                  <View style={[styles.iconBox, isInputFocused && styles.inputFocused]}>
+                  <View style={[styles.iconBox, this.isEmptyInput() && styles.inputFocused]}>
                     <Image
                       style={styles.icon} 
                       source={require('../../assets/icons/send-button.png')} />
@@ -45,7 +46,7 @@ class ReplyBox extends Component {
       </React.Fragment>
     )
   }
-}
+} 
 
 const styles = StyleSheet.create({
   inputBox: {

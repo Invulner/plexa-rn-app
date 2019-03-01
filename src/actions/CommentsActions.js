@@ -1,8 +1,8 @@
 import types from '../types/comments'
 
-const saveCommentsData = (commentsData) => ({
+const saveCommentsData = (data) => ({
   type: types.SAVE_COMMENTS_DATA,
-  commentsData
+  data
 })
 
 const toggleCommentsLoading = (flag) => ({

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, ScrollView, ActivityIndicator } from 'react-native'
+import { StyleSheet, View, ScrollView } from 'react-native'
 import { connect } from 'react-redux'
 import profileStyles from '../assets/styles/profileStyles'
 import SafeArea from '../components/common/SafeArea'
@@ -37,22 +37,6 @@ class PublicProfileScreen extends Component {
   render() {
     const { avatar_url, full_name, title, location, specialities, sub_specialities, conditions, interests, loading } = this.props.publicUser
 
-    if (full_name === 'Plexa Medbot') {
-      return (
-        <SafeArea>
-          {loading ? 
-            <View style={styles.container}>
-              <ActivityIndicator size='large' />
-            </View>
-            :
-            <AvatarBox 
-              avatar_url={avatar_url} 
-              full_name={full_name} />
-          }
-        </SafeArea>
-      )
-    }
-    
     return (
       <SafeArea>
         {loading ?
