@@ -19,10 +19,6 @@ const renderProfileDetails = (details) => {
   })
 }
 
-const addStyleForPostScreen = (type, style) => {
-  return type === PostTypes.standaloneScreen ? style : null
-}
-
 const getDescription = (description, fullView) => {
   return fullView ? description : truncate(description)
 }
@@ -31,6 +27,5 @@ export default {
   getInitials,
   truncate,
   renderProfileDetails,
-  addStyleForPostScreen,
   getDescription
 }

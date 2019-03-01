@@ -43,11 +43,7 @@ class ResearchFeedScreen extends Component {
           <FlatList 
             data={feedData}
             keyExtractor={item => item.id + ''}
-            renderItem={({ item, index }) => (
-              <Featured 
-                item={item}
-                index={index} />
-            )}
+            renderItem={({ item }) => <Featured item={item} />}
             refreshing={loading}
             ListFooterComponent={loading && <Loader />}
             onEndReached={this.addToFeed}

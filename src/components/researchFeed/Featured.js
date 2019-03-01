@@ -6,17 +6,24 @@ import { RegularText } from '../common/fonts'
 import { FEATURED } from '../../assets/styles/colors'
 
 class Featured extends Component {
-  getIndex = () => {
-    const { index } = this.props
-    
-    return index > 17 ? index % 18 : index
+  state = {
+    colorIndex: 0
+  }
+
+  getColorIndex = () => {
+    return Math.floor(Math.random() * (FEATURED.length - 1))
+  }
+
+  componentDidMount() {
+    this.setState({colorIndex: this.getColorIndex()})
   }
 
   render() {
     const { source_title, title, description } = this.props.item
+    const { colorIndex } = this.state
 
     return (
-      <View style={[styles.newsContainer, {backgroundColor: FEATURED[this.getIndex()].bg}]}>
+      <View style={[styles.newsContainer, {backgroundColor: FEATURED[colorIndex].bg}]}>
         <View style={styles.topBox}> 
           <View style={styles.iconBox}>
             <NewsIcon style={styles.icon} />
@@ -30,7 +37,7 @@ class Featured extends Component {
         <RegularText style={styles.newsTitle}>
           {title}
         </RegularText>
-        <View style={[styles.sourceContainer, {backgroundColor: FEATURED[this.getIndex()].source}]}>
+        <View style={[styles.sourceContainer, {backgroundColor: FEATURED[colorIndex].source}]}>
           <RegularText style={styles.sourceText}>
             {source_title}
           </RegularText>
@@ -87,11 +94,13 @@ const styles = StyleSheet.create({
 
   newsTitle: {
     fontSize: 26,
-    color: '#fff'
+    color: '#fff',
+    lineHeight: 23,
+    paddingTop: 5
   },
 
   sourceContainer: {
-    height: 40,
+    height: 45,
     backgroundColor: '#400846',
     justifyContent: 'center',
     alignItems: 'center',
@@ -99,7 +108,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     paddingTop: 5,
     marginBottom: 25,
-    marginTop: 15
+    marginTop: 12
   },
 
   sourceText: {
@@ -108,7 +117,9 @@ const styles = StyleSheet.create({
   },
 
   newsText: {
-    color: '#fff'
+    color: '#fff',
+    lineHeight: 13,
+    paddingBottom: 3
   }
 })
 
