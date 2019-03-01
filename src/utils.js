@@ -1,4 +1,4 @@
-import { MAX_CONTENT_LENGTH, PostTypes } from './constants'
+import { MAX_CONTENT_LENGTH } from './constants'
 
 const getInitials = (name) => {
   let initials = name.toUpperCase().split(/\s/).reduce((acc, cur) => acc += cur.slice(0,1), '')

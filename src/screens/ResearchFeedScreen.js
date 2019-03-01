@@ -29,7 +29,6 @@ class ResearchFeedScreen extends Component {
 
   addToFeed = () => {
     const { getResearchFeed, researchFeed: { page, loading } } = this.props
-
     !loading && getResearchFeed(page + 1)
   }
 
