@@ -77,7 +77,7 @@ class MixedFeedScreen extends Component {
               )}
               onEndReached={this.addToFeeds}
               onEndReachedThreshold={1} 
-              ListFooterComponent={feedLoading && loading && <Loader />}
+              ListFooterComponent={(feedLoading || loading) && <Loader />}
             />}
         </View>
       </SafeArea>
