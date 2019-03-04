@@ -28,11 +28,8 @@ class FeedScreen extends Component {
   }
 
   addToFeed = () => {
-    const { page, feedLoading }  = this.props.feed
-    nextPage = page + 1
-    if (!feedLoading) {
-      this.props.getFeed(nextPage)
-    } 
+    const { getFeed, feed: { page, feedLoading } }  = this.props.feed
+    !feedLoading && getFeed(page + 1)
   }
 
   render() {
