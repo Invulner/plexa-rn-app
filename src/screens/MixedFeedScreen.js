@@ -40,10 +40,14 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   const getMainFeed = (page) => dispatch(FeedOperations.getFeed(page))
   const getResearchFeed = (page) => dispatch(ResearchFeedOperations.getResearchFeed(page))
+  const refreshMainFeed = () => dispatch(FeedOperations.refreshFeed())
+  const refreshResearchFeed = () => dispatch(ResearchFeedOperations.refreshResearchFeed())
 
   return { 
     getMainFeed,
-    getResearchFeed
+    getResearchFeed,
+    refreshMainFeed,
+    refreshResearchFeed
   }
 }
 
@@ -60,6 +64,16 @@ class MixedFeedScreen extends Component {
     this.addToFeed(researchPage, researchLoading, getResearchFeed)
   } 
 
+  refresh = () => {
+    const { refreshMainFeed, refreshResearchFeed } = this.props
+    refreshMainFeed()
+    refreshResearchFeed()
+  }
+
+  componentDidMount() {
+    this.props.getMainFeed()
+  }
+
   render() {
     const mixedFeed = this.props.getMixedFeed()
     console.log(mixedFeed)
@@ -73,8 +87,15 @@ class MixedFeedScreen extends Component {
               data={mixedFeed}
               keyExtractor={item => item.id + ''}
               renderItem={({ item, index }) => (
-                (index + 1) % 6 === 0 ? <Featured item={item} /> : <FeedPost item={item} navigation={navigation} />
+                (index + 1) % 6 === 0 ? 
+                  <Featured item={item} /> 
+                  : 
+                  (<FeedPost 
+                    item={item} 
+                    navigation={navigation} />)
               )}
+              refreshing={feedLoading || loading}
+              onRefresh={this.refresh}
               onEndReached={this.addToFeeds}
               onEndReachedThreshold={1} 
               ListFooterComponent={(feedLoading || loading) && <Loader />}
