@@ -34,7 +34,9 @@ class LoginScreen extends Component {
   }
 
   isEmailValid() {
-    return this.state.email.length >= 0
+    const re = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
+
+    return re.test(this.state.email)
   }
 
   isPasswordValid() {
@@ -86,9 +88,9 @@ class LoginScreen extends Component {
           <TextInput
             style={styles.input}
             placeholder='Your e-mail'
-            textContentType='emailAddress'
             value={email}
             textContentType='emailAddress'
+            keyboardType='email-address'
             onChangeText={(value) => this.onEmailChange(value)} />
 
           <TextInput

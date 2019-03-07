@@ -59,10 +59,7 @@ class PostScreen extends Component {
             item={post}
             navigation={navigation} /> 
           {loading ?
-            <React.Fragment>
-              <View style={styles.paddingBox}/>  
-              <Loader />
-            </React.Fragment>
+            <Loader style={styles.loader} />
             :
             <React.Fragment>
               <FlatList 
@@ -92,8 +89,8 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: BG_COLOR
   },
-  paddingBox: {
-    height: 10
+  loader: {
+    paddingTop: 10
   }
 })
 
