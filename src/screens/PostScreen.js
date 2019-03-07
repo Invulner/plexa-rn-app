@@ -58,7 +58,7 @@ class PostScreen extends Component {
             fullView
             item={post}
             navigation={navigation} /> 
-          {loading ?
+          {loading && !items.length ?
             <Loader style={styles.loader} />
             :
             <React.Fragment>
@@ -78,7 +78,9 @@ class PostScreen extends Component {
           }
         </ScrollView>
         {enabled &&
-          <ReplyBox author={postAuthor} />
+          <ReplyBox 
+            author={postAuthor}
+            navigation={navigation} />
         }
       </SafeArea>
     )

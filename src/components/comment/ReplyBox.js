@@ -2,6 +2,14 @@ import React, { Component } from 'react'
 import { View, StyleSheet, Image, TextInput, TouchableOpacity } from 'react-native'
 import { BRAND_LIGHT } from '../../assets/styles/colors'
 import TopGreyLine from './TopGreyLine'
+import { connect } from 'react-redux'
+import CommentOperations from '../../operations/CommentsOperations'
+
+const mapDispatchToProps = (dispatch, { navigation }) => {
+  const postComment = (comment) => dispatch(CommentOperations.postComment(comment, navigation))
+
+  return { postComment }
+}
 
 class ReplyBox extends Component {
   state = {
@@ -15,6 +23,11 @@ class ReplyBox extends Component {
   isEmptyInput = () => {
     const { reply } = this.state
     return !!reply.length
+  }
+
+  onSubmit = () => {
+    this.props.postComment(this.state.reply)
+    this.setState({ reply: ''})
   }
   
   render() {
@@ -35,7 +48,9 @@ class ReplyBox extends Component {
                 style={styles.input}
                 value={reply} />
 
-                <TouchableOpacity style={styles.iconBox}>
+                <TouchableOpacity 
+                  style={styles.iconBox}
+                  onPress={this.onSubmit}>
                   <View style={[styles.icon, this.isEmptyInput() && styles.inputFocused]}>
                     <Image
                       style={styles.iconImage} 
@@ -101,4 +116,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default ReplyBox
+export default connect(null, mapDispatchToProps)(ReplyBox)
