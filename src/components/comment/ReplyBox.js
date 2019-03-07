@@ -30,14 +30,15 @@ class ReplyBox extends Component {
 
               <TextInput 
                 placeholder={placeholder}
+                multiline={true}
                 onChangeText={(reply) => this.onReplyChange(reply)}
                 style={styles.input}
                 value={reply} />
 
-                <TouchableOpacity>
-                  <View style={[styles.iconBox, this.isEmptyInput() && styles.inputFocused]}>
+                <TouchableOpacity style={styles.iconBox}>
+                  <View style={[styles.icon, this.isEmptyInput() && styles.inputFocused]}>
                     <Image
-                      style={styles.icon} 
+                      style={styles.iconImage} 
                       source={require('../../assets/icons/send-button.png')} />
                   </View>
                 </TouchableOpacity>
@@ -57,7 +58,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     backgroundColor: '#f2eee7',
     borderRadius: 7,
-    height: 40
+    minHeight: 40
   },
 
   container: {
@@ -66,10 +67,17 @@ const styles = StyleSheet.create({
   },
 
   input: {
-    fontSize: 16
+    fontSize: 16,
+    width: '85%'
   },
 
   iconBox: {
+    position: 'absolute',
+    top: 7,
+    right: 10
+  },
+
+  icon: {
     width: 25,
     height: 25,
     borderRadius: 25,
@@ -82,7 +90,7 @@ const styles = StyleSheet.create({
     backgroundColor: BRAND_LIGHT
   },
 
-  icon: {
+  iconImage: {
     resizeMode: 'contain',
     width: 15,
     marginTop: 3
