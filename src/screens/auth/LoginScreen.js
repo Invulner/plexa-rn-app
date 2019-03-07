@@ -34,7 +34,7 @@ class LoginScreen extends Component {
   }
 
   isEmailValid() {
-    const re = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/
+    const re = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
 
     return re.test(this.state.email)
   }
@@ -88,8 +88,9 @@ class LoginScreen extends Component {
           <TextInput
             style={styles.input}
             placeholder='Your e-mail'
-            textContentType='emailAddress'
             value={email}
+            textContentType='emailAddress'
+            keyboardType='email-address'
             onChangeText={(value) => this.onEmailChange(value)} />
 
           <TextInput

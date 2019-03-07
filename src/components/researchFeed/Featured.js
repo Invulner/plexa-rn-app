@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, StyleSheet, TouchableOpacity, Linking } from 'react-native'
 import { BRAND_LIGHT } from '../../assets/styles/colors'
 import NewsIcon from '../feed/NewsIcon'
 import { RegularText } from '../common/fonts'
@@ -13,7 +13,7 @@ class Featured extends Component {
   colorIndex = this.getColorIndex()
 
   render() {
-    const { source_title, title, description } = this.props.item
+    const { source_title, title, description, url } = this.props.item
     const colorIndex = this.colorIndex
 
     return (
@@ -28,9 +28,11 @@ class Featured extends Component {
             </RegularText>
           </TouchableOpacity>
         </View>
-        <RegularText style={styles.newsTitle}>
-          {title}
-        </RegularText>
+        <TouchableOpacity onPress={() => Linking.openURL(url)}>
+          <RegularText style={styles.newsTitle}>
+            {title}
+          </RegularText>
+        </TouchableOpacity>
         <View style={[styles.sourceContainer, {backgroundColor: FEATURED[colorIndex].source}]}>
           <RegularText style={styles.sourceText}>
             {source_title}

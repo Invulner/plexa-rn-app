@@ -1,9 +1,10 @@
 import React from 'react'
 import { ActivityIndicator, View, StyleSheet} from 'react-native'
 
-function Loader() {
+function Loader(props) {
+  const { style } = props
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, style]}>
       <ActivityIndicator size='large' />
     </View>
   )

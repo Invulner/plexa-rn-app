@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { ScrollView, StyleSheet, FlatList } from 'react-native'
+import { ScrollView, StyleSheet, FlatList, View } from 'react-native'
 import FeedPost from '../components/feed/FeedPost'
 import { connect } from 'react-redux'
 import { BG_COLOR } from '../assets/styles/colors'
@@ -59,7 +59,7 @@ class PostScreen extends Component {
             item={post}
             navigation={navigation} /> 
           {loading ?
-            <Loader />
+            <Loader style={styles.loader} />
             :
             <React.Fragment>
               <FlatList 
@@ -88,6 +88,9 @@ class PostScreen extends Component {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: BG_COLOR
+  },
+  loader: {
+    paddingTop: 10
   }
 })
 
