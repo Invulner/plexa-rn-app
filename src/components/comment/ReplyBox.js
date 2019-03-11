@@ -22,12 +22,16 @@ class ReplyBox extends Component {
 
   isEmptyInput = () => {
     const { reply } = this.state
-    return !!reply.length
+    const re = /^\s*$/
+
+    return !reply.length || re.test(reply)
   }
 
   onSubmit = () => {
-    this.props.postComment(this.state.reply)
-    this.setState({ reply: ''})
+    if (!this.isEmptyInput()) {
+      this.props.postComment(this.state.reply.trim())
+      this.setState({ reply: ''})
+    }
   }
   
   render() {
@@ -51,7 +55,7 @@ class ReplyBox extends Component {
                 <TouchableOpacity 
                   style={styles.iconBox}
                   onPress={this.onSubmit}>
-                  <View style={[styles.icon, this.isEmptyInput() && styles.inputFocused]}>
+                  <View style={[styles.icon, !this.isEmptyInput() && styles.inputFocused]}>
                     <Image
                       style={styles.iconImage} 
                       source={require('../../assets/icons/send-button.png')} />

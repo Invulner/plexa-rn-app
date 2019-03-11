@@ -11,19 +11,7 @@ import Loader from '../components/common/Loader'
 import TopGreyLine from '../components/comment/TopGreyLine'
 import CommentsActions from '../actions/CommentsActions'
 import SafeArea from '../components/common/SafeArea'
-import { createSelector } from 'reselect'
-
-const getSortedComments = createSelector(
-  state => state.comments.items,
-  (items) => items.sort(sortByTime)
-)
-
-const sortByTime = (a, b) => {
-  const date1 = new Date(a.created_at)
-  const date2 = new Date(b.created_at)
-
-  return (date1.getTime() - date2.getTime()) < 0 ? -1 : 1
-}
+import { getSortedComments } from '../selectors/Comments'
 
 const mapStateToProps = (state, { navigation }) => {
   const { feedData } = state.feed
@@ -59,18 +47,18 @@ class PostScreen extends Component {
     this.props.resetComments()
   }
 
-  componentDidUpdate(prevProps) {
-    const prevLenght = prevProps.items.length
-    const currentLength = this.props.items.length
+  // componentDidUpdate(prevProps) {
+  //   const prevLenght = prevProps.items.length
+  //   const currentLength = this.props.items.length
 
-    if (prevLenght !== 0 && prevLenght < currentLength) {
-      console.log(prevLenght !== 0 && prevLenght < currentLength)
-      console.log('prevLength: ' + prevLenght)
-      console.log('current Length: ' + currentLength)
-      // setTimeout(() => this.refs.list.scrollToEnd(), 100)
-      this.refs.list.scrollToEnd()
-    }
-  }
+  //   if (prevLenght !== 0 && prevLenght < currentLength) {
+  //     console.log(prevLenght !== 0 && prevLenght < currentLength)
+  //     console.log('prevLength: ' + prevLenght)
+  //     console.log('current Length: ' + currentLength)
+  //     // setTimeout(() => this.refs.list.scrollToEnd(), 100)
+  //     this.refs.list.scrollToEnd()
+  //   }
+  // }
 
   displayComments = () => {
     const { items } = this.props
@@ -94,6 +82,7 @@ class PostScreen extends Component {
     return (
       <SafeArea>
         <ScrollView
+          onContentSizeChange={() => this.refs.list.scrollToEnd()}
           ref='list' 
           style={styles.container}>
           <FeedPost 
