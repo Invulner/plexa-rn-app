@@ -44,6 +44,15 @@ function PostHead(props) {
       name={full_name} />
   )
 
+  const displayTime = () => {
+    const second = 1000
+    
+    if (Date.now() - new Date(created_at).getTime() < second) 
+      return '1s' 
+    else 
+      return ta.ago(created_at, true)
+  }
+
   return (
     <View style={styles.userContainer}>
       {renderTouchableBlock(avatar)}
@@ -52,7 +61,7 @@ function PostHead(props) {
           {renderTouchableBlock(name)}
           <View style={styles.dotImage} />
           <RegularText style={styles.hoursAgo}>
-            {ta.ago(created_at, true)}
+            {displayTime()}
           </RegularText>
         </View>
         <RegularText>
