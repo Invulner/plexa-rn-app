@@ -31,8 +31,7 @@ const postComment = (comment, navigation) => {
       api.post(`${API_URL}/stories/${postId}/answers`, param)
         .then(response => {
           console.log(response)
-          const item = {...response.data, content: comment}
-          dispatch(CommentsActions.addComment(item))
+          dispatch(CommentsActions.addComment(response.data))
         })
         .catch(error => console.log(error))
     })
