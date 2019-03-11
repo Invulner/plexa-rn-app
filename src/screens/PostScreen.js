@@ -47,18 +47,14 @@ class PostScreen extends Component {
     this.props.resetComments()
   }
 
-  // componentDidUpdate(prevProps) {
-  //   const prevLenght = prevProps.items.length
-  //   const currentLength = this.props.items.length
+  componentDidUpdate(prevProps) {
+    const prevLenght = prevProps.items.length
+    const currentLength = this.props.items.length
 
-  //   if (prevLenght !== 0 && prevLenght < currentLength) {
-  //     console.log(prevLenght !== 0 && prevLenght < currentLength)
-  //     console.log('prevLength: ' + prevLenght)
-  //     console.log('current Length: ' + currentLength)
-  //     // setTimeout(() => this.refs.list.scrollToEnd(), 100)
-  //     this.refs.list.scrollToEnd()
-  //   }
-  // }
+    if (prevLenght !== 0 && prevLenght < currentLength) {
+      this.scrollFlag = true
+    }
+  }
 
   displayComments = () => {
     const { items } = this.props
@@ -74,6 +70,12 @@ class PostScreen extends Component {
       )
   }
 
+  scrollFlag = false
+
+  toScroll = () => {
+    this.scrollFlag && this.refs.list.scrollToEnd()
+  }
+
   render() {
     const { navigation, items, loading, post, enabled } = this.props
     const postAuthor = post.author.full_name
@@ -82,7 +84,7 @@ class PostScreen extends Component {
     return (
       <SafeArea>
         <ScrollView
-          onContentSizeChange={() => this.refs.list.scrollToEnd()}
+          onContentSizeChange={this.toScroll}
           ref='list' 
           style={styles.container}>
           <FeedPost 
