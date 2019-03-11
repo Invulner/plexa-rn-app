@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { ScrollView, StyleSheet, FlatList } from 'react-native'
+import { ScrollView, StyleSheet } from 'react-native'
 import FeedPost from '../components/feed/FeedPost'
 import { connect } from 'react-redux'
 import { BG_COLOR } from '../assets/styles/colors'
@@ -59,37 +59,58 @@ class PostScreen extends Component {
     this.props.resetComments()
   }
 
+  componentDidUpdate(prevProps) {
+    const prevLenght = prevProps.items.length
+    const currentLength = this.props.items.length
+
+    if (prevLenght !== 0 && prevLenght < currentLength) {
+      console.log(prevLenght !== 0 && prevLenght < currentLength)
+      console.log('prevLength: ' + prevLenght)
+      console.log('current Length: ' + currentLength)
+      // setTimeout(() => this.refs.list.scrollToEnd(), 100)
+      this.refs.list.scrollToEnd()
+    }
+  }
+
+  displayComments = () => {
+    const { items } = this.props
+
+    if (items.length) 
+      return items.map(item => <Comment item={item} key={item.id} />)
+    else 
+      return (
+        <React.Fragment>
+          <TopGreyLine />
+          <CommentsPlaceholder message={'No comments'} />
+        </React.Fragment>
+      )
+  }
+
   render() {
     const { navigation, items, loading, post, enabled } = this.props
     const postAuthor = post.author.full_name
+    console.log('render()')
 
     return (
       <SafeArea>
-        <ScrollView 
+        <ScrollView
+          ref='list' 
           style={styles.container}>
           <FeedPost 
             fullView
             item={post}
-            navigation={navigation} /> 
+            navigation={navigation} />
           {loading && !items.length ?
             <Loader style={styles.loader} />
             :
             <React.Fragment>
-              <FlatList 
-                data={items}
-                keyExtractor={item => item.id + ''}
-                renderItem={({ item }) => <Comment item={item} />}
-                ListEmptyComponent={(
-                  <React.Fragment>
-                    <TopGreyLine />
-                    <CommentsPlaceholder message={'No comments'} />
-                  </React.Fragment>)} />
+              {this.displayComments()}
               {!enabled &&
                 <CommentsPlaceholder message={'Author has disabled commenting'}/>
               }
             </React.Fragment>
           }
-        </ScrollView>
+          </ScrollView>
         {enabled &&
           <ReplyBox 
             author={postAuthor}
