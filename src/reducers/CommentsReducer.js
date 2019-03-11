@@ -14,6 +14,8 @@ const CommentsReducer = (state = initialState, action) => {
       return {...state, loading: action.flag}
     case types.RESET_COMMENTS_DATA:
       return initialState
+    case types.ADD_COMMENT:
+      return {...state, items: [...state.items, action.item]}
     default: 
       return state
   }
