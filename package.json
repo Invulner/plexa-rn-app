@@ -21,6 +21,7 @@
     "redux": "^4.0.1",
     "redux-devtools-extension": "^2.13.7",
     "redux-thunk": "^2.3.0",
+    "reselect": "^4.0.0",
     "time-ago": "^0.2.1"
   },
   "devDependencies": {

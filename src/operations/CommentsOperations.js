@@ -20,6 +20,25 @@ const getComments = (navigation) => {
   }
 }
 
+const postComment = (comment, navigation) => {
+  return dispatch => {
+
+    const fallBackId = 1093
+    const postId = navigation.getParam('postId', fallBackId)
+    const param = {content: comment}
+
+    getAxiosInstance().then(api => {
+      api.post(`${API_URL}/stories/${postId}/answers`, param)
+        .then(response => {
+          console.log(response)
+          dispatch(CommentsActions.addComment(response.data))
+        })
+        .catch(error => console.log(error))
+    })
+  }
+}
+
 export default {
-  getComments
+  getComments,
+  postComment
 }

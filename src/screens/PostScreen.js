@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { ScrollView, StyleSheet, FlatList, View } from 'react-native'
+import { ScrollView, StyleSheet } from 'react-native'
 import FeedPost from '../components/feed/FeedPost'
 import { connect } from 'react-redux'
 import { BG_COLOR } from '../assets/styles/colors'
@@ -11,16 +11,17 @@ import Loader from '../components/common/Loader'
 import TopGreyLine from '../components/comment/TopGreyLine'
 import CommentsActions from '../actions/CommentsActions'
 import SafeArea from '../components/common/SafeArea'
+import { getSortedComments } from '../selectors/Comments'
 
 const mapStateToProps = (state, { navigation }) => {
   const { feedData } = state.feed
-  const { items, loading, enabled } = state.comments
+  const { loading, enabled } = state.comments
   //As well as profile id from public operations, fallBackId is chosen by convinience
   const fallBackId = 1093
   const post = feedData.filter(post => post.id === navigation.getParam('postId', fallBackId))[0]
 
   return { 
-    items,
+    items: getSortedComments(state),
     loading,
     post,
     enabled
@@ -38,6 +39,26 @@ const mapDispatchToProps = (dispatch, { navigation }) => {
 }
 
 class PostScreen extends Component {
+  scrollFlag = false
+
+  scrollToEnd = () => {
+    this.scrollFlag && this.refs.list.scrollToEnd()
+  }
+
+  renderComments = () => {
+    const { items } = this.props
+
+    if (items.length) 
+      return items.map(item => <Comment item={item} key={item.id} />)
+    else 
+      return (
+        <React.Fragment>
+          <TopGreyLine />
+          <CommentsPlaceholder message={'No comments'} />
+        </React.Fragment>
+      )
+  }
+
   componentDidMount() {
     this.props.getComments()
   }
@@ -46,31 +67,34 @@ class PostScreen extends Component {
     this.props.resetComments()
   }
 
+  componentDidUpdate(prevProps) {
+    const prevLenght = prevProps.items.length
+    const currentLength = this.props.items.length
+
+    if (prevLenght !== 0 && prevLenght < currentLength) {
+      this.scrollFlag = true
+    }
+  }
+
   render() {
     const { navigation, items, loading, post, enabled } = this.props
     const postAuthor = post.author.full_name
 
     return (
       <SafeArea>
-        <ScrollView 
+        <ScrollView
+          onContentSizeChange={this.scrollToEnd}
+          ref='list' 
           style={styles.container}>
           <FeedPost 
             fullView
             item={post}
-            navigation={navigation} /> 
-          {loading ?
+            navigation={navigation} />
+          {loading && !items.length ?
             <Loader style={styles.loader} />
             :
             <React.Fragment>
-              <FlatList 
-                data={items}
-                keyExtractor={item => item.id + ''}
-                renderItem={({ item }) => <Comment item={item} />}
-                ListEmptyComponent={(
-                  <React.Fragment>
-                    <TopGreyLine />
-                    <CommentsPlaceholder message={'No comments'} />
-                  </React.Fragment>)} />
+              {this.renderComments()}
               {!enabled &&
                 <CommentsPlaceholder message={'Author has disabled commenting'}/>
               }
@@ -78,7 +102,9 @@ class PostScreen extends Component {
           }
         </ScrollView>
         {enabled &&
-          <ReplyBox author={postAuthor} />
+          <ReplyBox 
+            author={postAuthor}
+            navigation={navigation} />
         }
       </SafeArea>
     )

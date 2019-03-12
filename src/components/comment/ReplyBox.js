@@ -2,6 +2,14 @@ import React, { Component } from 'react'
 import { View, StyleSheet, Image, TextInput, TouchableOpacity } from 'react-native'
 import { BRAND_LIGHT } from '../../assets/styles/colors'
 import TopGreyLine from './TopGreyLine'
+import { connect } from 'react-redux'
+import CommentOperations from '../../operations/CommentsOperations'
+
+const mapDispatchToProps = (dispatch, { navigation }) => {
+  const postComment = (comment) => dispatch(CommentOperations.postComment(comment, navigation))
+
+  return { postComment }
+}
 
 class ReplyBox extends Component {
   state = {
@@ -14,7 +22,15 @@ class ReplyBox extends Component {
 
   isEmptyInput = () => {
     const { reply } = this.state
-    return !!reply.length
+
+    return !reply.trim().length
+  }
+
+  onSubmit = () => {
+    if (!this.isEmptyInput()) {
+      this.props.postComment(this.state.reply.trim())
+      this.setState({ reply: ''})
+    }
   }
   
   render() {
@@ -30,14 +46,17 @@ class ReplyBox extends Component {
 
               <TextInput 
                 placeholder={placeholder}
+                multiline={true}
                 onChangeText={(reply) => this.onReplyChange(reply)}
                 style={styles.input}
                 value={reply} />
 
-                <TouchableOpacity>
-                  <View style={[styles.iconBox, this.isEmptyInput() && styles.inputFocused]}>
+                <TouchableOpacity 
+                  style={styles.iconBox}
+                  onPress={this.onSubmit}>
+                  <View style={[styles.icon, !this.isEmptyInput() && styles.inputFocused]}>
                     <Image
-                      style={styles.icon} 
+                      style={styles.iconImage} 
                       source={require('../../assets/icons/send-button.png')} />
                   </View>
                 </TouchableOpacity>
@@ -57,7 +76,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     backgroundColor: '#f2eee7',
     borderRadius: 7,
-    height: 40
+    minHeight: 40
   },
 
   container: {
@@ -66,10 +85,17 @@ const styles = StyleSheet.create({
   },
 
   input: {
-    fontSize: 16
+    fontSize: 16,
+    width: '85%'
   },
 
   iconBox: {
+    position: 'absolute',
+    top: 7,
+    right: 10
+  },
+
+  icon: {
     width: 25,
     height: 25,
     borderRadius: 25,
@@ -82,7 +108,7 @@ const styles = StyleSheet.create({
     backgroundColor: BRAND_LIGHT
   },
 
-  icon: {
+  iconImage: {
     resizeMode: 'contain',
     width: 15,
     marginTop: 3
@@ -93,4 +119,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default ReplyBox
+export default connect(null, mapDispatchToProps)(ReplyBox)

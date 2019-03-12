@@ -14,8 +14,14 @@ const resetCommentsData = () => ({
   type: types.RESET_COMMENTS_DATA
 })
 
+const addComment = (item) => ({
+  type: types.ADD_COMMENT,
+  item
+})
+
 export default {
   saveCommentsData,
   toggleCommentsLoading,
-  resetCommentsData
+  resetCommentsData,
+  addComment
 }

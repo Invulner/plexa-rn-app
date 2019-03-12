@@ -7,7 +7,7 @@ import { withNavigation } from 'react-navigation'
 import ta from 'time-ago'
 
 function PostHead(props) {
-  const { navigation, created_at, author } = props
+  const { navigation, created_at, author, isComment } = props
   const { avatar_url, full_name, title, id } = author
   
   const handlePress = () => {
@@ -41,8 +41,18 @@ function PostHead(props) {
   const avatar = (
     <ProfileAvatar 
       url={avatar_url}
-      name={full_name} />
+      name={full_name}
+      isComment={isComment} />
   )
+
+  const calculateTime = () => {
+    const second = 1000
+    
+    if (Date.now() - new Date(created_at).getTime() < second) 
+      return '1s' 
+    else 
+      return ta.ago(created_at, true)
+  }
 
   return (
     <View style={styles.userContainer}>
@@ -52,7 +62,7 @@ function PostHead(props) {
           {renderTouchableBlock(name)}
           <View style={styles.dotImage} />
           <RegularText style={styles.hoursAgo}>
-            {ta.ago(created_at, true)}
+            {calculateTime()}
           </RegularText>
         </View>
         <RegularText>

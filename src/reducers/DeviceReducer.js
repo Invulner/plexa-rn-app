@@ -9,7 +9,10 @@ const initialState = {
 const DeviceReducer = (state = initialState, action) => {
   switch(action.type) {
     case types.SAVE_DEVICE_INFO:
-      return {...state, ...action.data}
+      return {
+        ...state, 
+        ...action.data
+      }
     default:
       return state
   }
