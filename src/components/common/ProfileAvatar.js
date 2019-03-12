@@ -6,14 +6,14 @@ import utils from '../../utils'
 import profileStyles from '../../assets/styles/profileStyles'
 
 function ProfileAvatar(props) {
-  const { url, name } = props
+  const { url, name, isComment } = props
 
   return (
-    <View style={styles.avatarPlaceholder}>
+    <View style={[styles.avatarPlaceholder, isComment && styles.commentAvatar]}>
       {url ? 
         <Image 
           source={{uri: url}}
-          style={styles.avatarImage} />
+          style={[styles.avatarImage, isComment && styles.commentAvatar]} />
         :
         <RegularText style={profileStyles.initials}>
           {utils.getInitials(name)}
@@ -37,6 +37,11 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     resizeMode: 'contain'
+  },
+
+  commentAvatar: {
+    width: 60,
+    height: 60
   }
 })
 

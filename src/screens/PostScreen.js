@@ -45,7 +45,7 @@ class PostScreen extends Component {
     this.scrollFlag && this.refs.list.scrollToEnd()
   }
 
-  displayComments = () => {
+  renderComments = () => {
     const { items } = this.props
 
     if (items.length) 
@@ -94,7 +94,7 @@ class PostScreen extends Component {
             <Loader style={styles.loader} />
             :
             <React.Fragment>
-              {this.displayComments()}
+              {this.renderComments()}
               {!enabled &&
                 <CommentsPlaceholder message={'Author has disabled commenting'}/>
               }

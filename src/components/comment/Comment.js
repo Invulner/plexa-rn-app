@@ -15,7 +15,8 @@ function Comment(props) {
       <View style={styles.container}>
         <PostHead 
           created_at={created_at} 
-          author={author} />
+          author={author}
+          isComment />
         <RegularText style={feedStyles.linkCaption}>              
           {content}
         </RegularText>

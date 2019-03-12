@@ -8,13 +8,28 @@ const initialState = {
 const FeedReducer = (state = initialState, action) => {
   switch(action.type) {
     case types.SAVE_FEED_DATA:
-      return {...state, feedData: [...state.feedData, ...action.feedData]}
+      return {
+        ...state, 
+        feedData: [
+          ...state.feedData, 
+          ...action.feedData
+        ]
+      }
     case types.TOGGLE_FEED_DATA_LOADING:
-      return {...state, feedLoading: action.flag}
+      return {
+        ...state, 
+        feedLoading: action.flag
+      }
     case types.UPDATE_FEED_PAGE:
-      return {...state, page: action.page}
+      return {
+        ...state, 
+        page: action.page
+      }
     case types.REFRESH_FEED:
-      return {...state, feedData: action.refreshedFeedData}
+      return {
+        ...state, 
+        feedData: action.refreshedFeedData
+      }
     case types.RESET_FEED: 
       return initialState
     default:
