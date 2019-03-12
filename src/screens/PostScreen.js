@@ -39,6 +39,26 @@ const mapDispatchToProps = (dispatch, { navigation }) => {
 }
 
 class PostScreen extends Component {
+  scrollFlag = false
+
+  scrollToEnd = () => {
+    this.scrollFlag && this.refs.list.scrollToEnd()
+  }
+
+  displayComments = () => {
+    const { items } = this.props
+
+    if (items.length) 
+      return items.map(item => <Comment item={item} key={item.id} />)
+    else 
+      return (
+        <React.Fragment>
+          <TopGreyLine />
+          <CommentsPlaceholder message={'No comments'} />
+        </React.Fragment>
+      )
+  }
+
   componentDidMount() {
     this.props.getComments()
   }
@@ -56,35 +76,14 @@ class PostScreen extends Component {
     }
   }
 
-  displayComments = () => {
-    const { items } = this.props
-
-    if (items.length) 
-      return items.map(item => <Comment item={item} key={item.id} />)
-    else 
-      return (
-        <React.Fragment>
-          <TopGreyLine />
-          <CommentsPlaceholder message={'No comments'} />
-        </React.Fragment>
-      )
-  }
-
-  scrollFlag = false
-
-  toScroll = () => {
-    this.scrollFlag && this.refs.list.scrollToEnd()
-  }
-
   render() {
     const { navigation, items, loading, post, enabled } = this.props
     const postAuthor = post.author.full_name
-    console.log('render()')
 
     return (
       <SafeArea>
         <ScrollView
-          onContentSizeChange={this.toScroll}
+          onContentSizeChange={this.scrollToEnd}
           ref='list' 
           style={styles.container}>
           <FeedPost 
@@ -101,7 +100,7 @@ class PostScreen extends Component {
               }
             </React.Fragment>
           }
-          </ScrollView>
+        </ScrollView>
         {enabled &&
           <ReplyBox 
             author={postAuthor}

@@ -22,9 +22,8 @@ class ReplyBox extends Component {
 
   isEmptyInput = () => {
     const { reply } = this.state
-    const re = /^\s*$/
 
-    return !reply.length || re.test(reply)
+    return !reply.trim().length
   }
 
   onSubmit = () => {
