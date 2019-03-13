@@ -7,28 +7,15 @@ import CommentsOperations from '../../operations/CommentsOperations'
 import FeedOperations from '../../operations/FeedOperations'
 
 const mapStateToProps = (state, { id, isComment }) => {
-  let item
-  let index
-
-  if (isComment) {
-    const { items } = state.comments
-    item = items.filter(item => item.id === id)[0]
-    index = items.findIndex(item => item.id === id)
-  } else {
-    const { feedData } = state.feed
-    item = feedData.filter(item => item.id === id)[0]
-    index = feedData.findIndex(item => item.id === id)
-  }
-
-  return { 
-    item,
-    index
-  }
+  const items = isComment ? state.comments.items : state.feed.feedData
+  const item = items.filter(item => item.id === id)[0]
+  
+  return { item }
 }
 
 const mapDispatchToProps = (dispatch) => {
-  const likeComment = (flag, item, index) => dispatch(CommentsOperations.updateLike(flag, item, index))
-  const likePost = (flag, item, index) => dispatch(FeedOperations.updateLike(flag, item, index))
+  const likeComment = (flag, item) => dispatch(CommentsOperations.updateLike(flag, item))
+  const likePost = (flag, item) => dispatch(FeedOperations.updateLike(flag, item))
 
   return { 
     likeComment,
@@ -42,12 +29,12 @@ class Social extends Component {
   }
 
   handleLike = () => {
-    const { item, index, liked } = this.props
+    const { item, liked } = this.props
 
     if (this.isComment())
-      this.props.likeComment(!liked, item, index)
+      this.props.likeComment(!liked, item)
     else 
-      this.props.likePost(!liked, item, index)
+      this.props.likePost(!liked, item)
   }
 
   getIcon = () => {

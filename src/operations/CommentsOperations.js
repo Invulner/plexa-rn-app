@@ -38,7 +38,7 @@ const postComment = (comment, navigation) => {
   }
 }
 
-const updateLike = (flag, item, index) => {
+const updateLike = (flag, item) => {
   return dispatch => {
     const param = {
       like: flag
@@ -52,8 +52,8 @@ const updateLike = (flag, item, index) => {
             liked: response.data.liked,
             likes_count: response.data.likes_count
           } 
-          dispatch(CommentsActions.updateCommentLike(payload, index))})
-          .catch(error => console.log('Like error: ', error))
+          dispatch(CommentsActions.updateCommentLike(payload, item.id))})
+        .catch(error => console.log('Like error: ', error))
     })
   }
 }

@@ -33,9 +33,8 @@ const CommentsReducer = (state = initialState, action) => {
       return {
         ...state,
         items: [
-          ...state.items.slice(0, action.index),
-          action.item,
-          ...state.items.slice(action.index + 1)
+          ...state.items.filter(item => item.id !== action.id),
+          action.item
         ]
       }
     default: 

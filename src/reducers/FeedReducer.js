@@ -36,9 +36,8 @@ const FeedReducer = (state = initialState, action) => {
       return {
         ...state,
         feedData: [
-          ...state.feedData.slice(0, action.index),
-          action.item,
-          ...state.feedData.slice(action.index + 1)
+          ...state.feedData.filter(item => item.id !== action.id),
+          action.item
         ]
       }
     default:
