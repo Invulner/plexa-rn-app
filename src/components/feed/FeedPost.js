@@ -63,7 +63,7 @@ class FeedPost extends Component {
 
   render() {
     const { navigation, fullView, item } = this.props
-    const { id: postId, created_at, likes_count, answers_count, image_urls, author } = item
+    const { id: postId, created_at, likes_count, answers_count, image_urls, author, liked } = item
 
     return (
       <TouchableWithoutFeedback onPress={() => navigation.navigate('Post', {postId})}>
@@ -83,9 +83,11 @@ class FeedPost extends Component {
               {this.renderAttachedBlock()}
             </View>
           
-          <Social 
+          <Social
+            liked={liked} 
             likesCount={likes_count}
-            answersCount={answers_count} />  
+            answersCount={answers_count}
+            id={postId} />  
         </View>
       </TouchableWithoutFeedback>
     )

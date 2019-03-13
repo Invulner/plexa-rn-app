@@ -24,10 +24,17 @@ const resetFeed = () => ({
   type: types.RESET_FEED
 })
 
+const updatePostLike = (item, index) => ({
+  type: types.UPDATE_POST_LIKE,
+  item, 
+  index
+})
+
 export default {
   saveFeedData,
   toggleFeedDataLoading,
   updateFeedPage,
   refreshFeed,
-  resetFeed
+  resetFeed,
+  updatePostLike
 }

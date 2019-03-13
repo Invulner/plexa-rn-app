@@ -1,30 +1,85 @@
-import React from 'react'
-import { Image, View, StyleSheet } from 'react-native'
+import React, { Component } from 'react'
+import { Image, View, StyleSheet, TouchableWithoutFeedback } from 'react-native'
 import { LightText } from '../common/fonts'
+import { likeIcons } from '../../constants'
+import { connect } from 'react-redux'
+import CommentsOperations from '../../operations/CommentsOperations'
+import FeedOperations from '../../operations/FeedOperations'
 
-function Social(props) {
-  const { likesCount, answersCount } = props
+const mapStateToProps = (state, { id, isComment }) => {
+  let item
+  let index
 
-  return (
-    <View style={styles.socialContainer}>
-      <Image 
-        source={require('../../assets/icons/like-icon.png')}
-        style={styles.icon} />
-      <LightText style={styles.likeCounter}>
-        {likesCount}
-      </LightText>
-      {!!answersCount &&
-        <View style={styles.commentsContainer}>
+  if (isComment) {
+    const { items } = state.comments
+    item = items.filter(item => item.id === id)[0]
+    index = items.findIndex(item => item.id === id)
+  } else {
+    const { feedData } = state.feed
+    item = feedData.filter(item => item.id === id)[0]
+    index = feedData.findIndex(item => item.id === id)
+  }
+
+  return { 
+    item,
+    index
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  const likeComment = (flag, item, index) => dispatch(CommentsOperations.updateLike(flag, item, index))
+  const likePost = (flag, item, index) => dispatch(FeedOperations.updateLike(flag, item, index))
+
+  return { 
+    likeComment,
+    likePost
+  }
+}
+
+class Social extends Component {
+  isComment = () => {
+    return !!this.props.isComment 
+  }
+
+  handleLike = () => {
+    const { item, index, liked } = this.props
+
+    if (this.isComment())
+      this.props.likeComment(!liked, item, index)
+    else 
+      this.props.likePost(!liked, item, index)
+  }
+
+  getIcon = () => {
+    return this.props.liked ? 'liked' : 'unliked'
+  }
+
+  render() {
+    const { answersCount, likesCount } = this.props
+  
+    return (
+      <View style={styles.socialContainer}>
+        <TouchableWithoutFeedback onPress={this.handleLike}>
           <Image 
-            source={require('../../assets/icons/comments.png')}
+            source={likeIcons[this.getIcon()]}
             style={styles.icon} />
-          <LightText>
-            {answersCount}
-          </LightText>
-        </View>
-      }
-    </View>
-  )
+        </TouchableWithoutFeedback>
+        <LightText style={styles.likeCounter}>
+          {likesCount}
+        </LightText>
+        {!!answersCount &&
+          <View style={styles.commentsContainer}>
+            <Image 
+              source={require('../../assets/icons/comments.png')}
+              style={styles.icon} />
+            <LightText>
+              {answersCount}
+            </LightText>
+          </View>
+        }
+      </View>
+    )
+  }
 }
 
 const styles = StyleSheet.create({
@@ -53,4 +108,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default Social
+export default connect(mapStateToProps, mapDispatchToProps)(Social)

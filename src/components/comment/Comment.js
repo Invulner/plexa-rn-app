@@ -7,7 +7,7 @@ import Social from '../common/Social'
 import TopGreyLine from './TopGreyLine'
 
 function Comment(props) {
-  const { created_at, author, content, likes_count } = props.item
+  const { created_at, author, content, likes_count, id, liked } = props.item
 
   return (
     <React.Fragment>
@@ -20,7 +20,11 @@ function Comment(props) {
         <RegularText style={feedStyles.linkCaption}>              
           {content}
         </RegularText>
-        <Social likesCount={likes_count} />  
+        <Social 
+          liked={liked}
+          likesCount={likes_count}
+          isComment
+          id={id} />  
       </View>
     </React.Fragment>
   )

@@ -29,6 +29,15 @@ const CommentsReducer = (state = initialState, action) => {
           action.item
         ]
       }
+    case types.UPDATE_COMMENT_LIKE: 
+      return {
+        ...state,
+        items: [
+          ...state.items.slice(0, action.index),
+          action.item,
+          ...state.items.slice(action.index + 1)
+        ]
+      }
     default: 
       return state
   }

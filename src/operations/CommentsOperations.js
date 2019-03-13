@@ -38,7 +38,28 @@ const postComment = (comment, navigation) => {
   }
 }
 
+const updateLike = (flag, item, index) => {
+  return dispatch => {
+    const param = {
+      like: flag
+    }
+
+    getAxiosInstance().then(api => {
+      api.post(`${API_URL}/answers/${item.id}/like`, param)
+        .then(response => {
+          const payload = {
+            ...item,
+            liked: response.data.liked,
+            likes_count: response.data.likes_count
+          } 
+          dispatch(CommentsActions.updateCommentLike(payload, index))})
+          .catch(error => console.log('Like error: ', error))
+    })
+  }
+}
+
 export default {
   getComments,
-  postComment
+  postComment,
+  updateLike
 }

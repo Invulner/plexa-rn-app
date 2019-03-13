@@ -32,6 +32,15 @@ const FeedReducer = (state = initialState, action) => {
       }
     case types.RESET_FEED: 
       return initialState
+    case types.UPDATE_POST_LIKE:
+      return {
+        ...state,
+        feedData: [
+          ...state.feedData.slice(0, action.index),
+          action.item,
+          ...state.feedData.slice(action.index + 1)
+        ]
+      }
     default:
       return state
   }

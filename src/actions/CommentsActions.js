@@ -19,9 +19,16 @@ const addComment = (item) => ({
   item
 })
 
+const updateCommentLike = (item, index) => ({
+  type: types.UPDATE_COMMENT_LIKE,
+  item,
+  index
+})
+
 export default {
   saveCommentsData,
   toggleCommentsLoading,
   resetCommentsData,
-  addComment
+  addComment,
+  updateCommentLike
 }
