@@ -23,7 +23,7 @@ function Comment(props) {
         <Social 
           liked={liked}
           likesCount={likes_count}
-          isComment
+          isComment={true}
           id={id} />  
       </View>
     </React.Fragment>

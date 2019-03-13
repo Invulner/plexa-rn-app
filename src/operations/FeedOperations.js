@@ -57,8 +57,7 @@ const updateLike = (flag, item) => {
         .then(response => {
           const payload = {
             ...item,
-            liked: response.data.liked,
-            likes_count: response.data.likes_count
+            ...response.data
           } 
           dispatch(FeedActions.updatePostLike(payload, item.id))})
         .catch(error => console.log('Like error: ', error))
