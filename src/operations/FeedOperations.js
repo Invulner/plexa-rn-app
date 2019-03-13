@@ -52,7 +52,7 @@ const updateLike = (flag, item, index) => {
       like: flag
     }
 
-    getAxiosInstance().then(api => {
+    return getAxiosInstance().then(api => {
       api.post(`${API_URL}/stories/${item.id}/like`, param)
         .then(response => {
           const payload = {
