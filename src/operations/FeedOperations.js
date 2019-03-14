@@ -46,7 +46,27 @@ const refreshFeed = () => {
   }
 }
 
+const updateLike = (flag, item) => {
+  return dispatch => {
+    const param = {
+      like: flag
+    }
+
+    return getAxiosInstance().then(api => {
+      api.post(`${API_URL}/stories/${item.id}/like`, param)
+        .then(response => {
+          const payload = {
+            ...item,
+            ...response.data
+          } 
+          dispatch(FeedActions.updatePostLike(payload))})
+        .catch(error => console.log('Like error: ', error))
+    })
+  }
+}
+
 export default {
   getFeed,
-  refreshFeed
+  refreshFeed,
+  updateLike
 }

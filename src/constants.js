@@ -19,3 +19,8 @@ export const tabIcons = {
   'messages': require('./assets/icons/message-inactive.png'),
   'profile': require('./assets/icons/profile-inactive.png')
 }
+
+export const likeIcons = {
+  liked: require('./assets/icons/like-icon-liked.png'),
+  unliked: require('./assets/icons/like-icon.png')
+}

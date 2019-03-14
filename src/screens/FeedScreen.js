@@ -19,9 +19,7 @@ const mapDispatchToProps = (dispatch) => {
 const mapStateToProps = (state) => {
   const { feed } = state
 
-  return { 
-    feed 
-  }
+  return { feed }
 }
 
 class FeedScreen extends Component {

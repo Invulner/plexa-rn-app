@@ -12,7 +12,6 @@ const getComments = (navigation) => {
 
       api.get(`${API_URL}/stories/${postId}/answers`)
         .then(response => {
-          console.log(response.data)
           dispatch(CommentsActions.saveCommentsData(response.data))
           dispatch(CommentsActions.toggleCommentsLoading(false))
         }).catch(error => console.log('Request error: ', error))
@@ -30,7 +29,6 @@ const postComment = (comment, navigation) => {
     getAxiosInstance().then(api => {
       api.post(`${API_URL}/stories/${postId}/answers`, param)
         .then(response => {
-          console.log(response)
           dispatch(CommentsActions.addComment(response.data))
         })
         .catch(error => console.log(error))
@@ -38,7 +36,27 @@ const postComment = (comment, navigation) => {
   }
 }
 
+const updateLike = (flag, item) => {
+  return dispatch => {
+    const param = {
+      like: flag
+    }
+
+    return getAxiosInstance().then(api => {
+      api.post(`${API_URL}/answers/${item.id}/like`, param)
+        .then(response => {
+          const payload = {
+            ...item,
+            ...response.data
+          } 
+          dispatch(CommentsActions.updateCommentLike(payload))})
+        .catch(error => console.log('Like error: ', error))
+    })
+  }
+}
+
 export default {
   getComments,
-  postComment
+  postComment,
+  updateLike
 }
