@@ -24,13 +24,34 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 class Social extends Component {
+  state = {
+    liked: this.props.liked,
+    likes: this.props.likesCount
+  }
+
+  getUiFeedback = () => {
+    this.setState(prevState => {
+      if (prevState.liked) 
+        return {
+          liked: false,
+          likes: prevState.likes - 1
+        }
+      else 
+        return {
+          liked: true,
+          likes: prevState.likes + 1
+        }
+    })
+  }
+
   isComment = () => {
     return !!this.props.isComment 
   }
 
   handleLike = () => {
     const { item, liked } = this.props
-
+    this.getUiFeedback()
+    
     if (this.isComment())
       this.props.likeComment(!liked, item)
     else 
@@ -38,11 +59,20 @@ class Social extends Component {
   }
 
   getIcon = () => {
-    return this.props.liked ? 'liked' : 'unliked'
+    return this.state.liked ? 'liked' : 'unliked'
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.liked !== this.props.liked)
+      this.setState({
+        liked: this.props.liked,
+        likes: this.props.likesCount
+      })
   }
 
   render() {
     const { answersCount, likesCount } = this.props
+    const { likes } = this.state
   
     return (
       <View style={styles.socialContainer}>
@@ -52,7 +82,7 @@ class Social extends Component {
             style={styles.icon} />
         </TouchableWithoutFeedback>
         <LightText style={styles.likeCounter}>
-          {likesCount}
+          {likes}
         </LightText>
         {!!answersCount &&
           <View style={styles.commentsContainer}>
