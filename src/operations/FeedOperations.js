@@ -59,7 +59,7 @@ const updateLike = (flag, item) => {
             ...item,
             ...response.data
           } 
-          dispatch(FeedActions.updatePostLike(payload, item.id))})
+          dispatch(FeedActions.updatePostLike(payload))})
         .catch(error => console.log('Like error: ', error))
     })
   }

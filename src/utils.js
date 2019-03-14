@@ -30,18 +30,10 @@ const sortByTime = (a, b) => {
   return (date1.getTime() - date2.getTime()) < 0 ? -1 : 1
 }
 
-const sortReversed = (a, b) => {
-  const date1 = new Date(a.created_at)
-  const date2 = new Date(b.created_at)
-
-  return (date1.getTime() - date2.getTime()) < 0 ? 1 : -1
-}
-
 export default {
   getInitials,
   truncate,
   renderProfileDetails,
   getDescription,
-  sortByTime,
-  sortReversed
+  sortByTime
 }

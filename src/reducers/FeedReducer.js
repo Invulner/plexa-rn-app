@@ -33,11 +33,14 @@ const FeedReducer = (state = initialState, action) => {
     case types.RESET_FEED: 
       return initialState
     case types.UPDATE_POST_LIKE:
+      const index = state.feedData.findIndex(item => item.id === action.item.id)
+      
       return {
         ...state,
         feedData: [
-          ...state.feedData.filter(item => item.id !== action.id),
-          action.item
+          ...state.feedData.slice(0, index),
+          action.item,
+          ...state.feedData.slice(index + 1)
         ]
       }
     default:

@@ -49,7 +49,7 @@ const updateLike = (flag, item) => {
             ...item,
             ...response.data
           } 
-          dispatch(CommentsActions.updateCommentLike(payload, item.id))})
+          dispatch(CommentsActions.updateCommentLike(payload))})
         .catch(error => console.log('Like error: ', error))
     })
   }

@@ -5,7 +5,6 @@ import FeedPost from '../components/feed/FeedPost'
 import FeedOperations from '../operations/FeedOperations'
 import { connect } from 'react-redux'
 import Loader from '../components/common/Loader'
-import { getSortedPosts } from '../selectors/Feed'
 
 const mapDispatchToProps = (dispatch) => {
   const getFeed = (page) => dispatch(FeedOperations.getFeed(page))
@@ -18,13 +17,9 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 const mapStateToProps = (state) => {
-  const { page, feedLoading } = state.feed
+  const { feed } = state
 
-  return { 
-    feedData: getSortedPosts(state),
-    page,
-    feedLoading
-  }
+  return { feed }
 }
 
 class FeedScreen extends Component {
@@ -33,7 +28,7 @@ class FeedScreen extends Component {
   }
 
   addToFeed = () => {
-    const { page, feedLoading }  = this.props
+    const { page, feedLoading }  = this.props.feed
     nextPage = page + 1
     if (!feedLoading) {
       this.props.getFeed(nextPage)
@@ -41,7 +36,7 @@ class FeedScreen extends Component {
   }
 
   render() {
-    const { navigation, refreshFeed, feedData, feedLoading } = this.props
+    const { navigation, refreshFeed, feed: { feedData, feedLoading } } = this.props
 
     return (
       <SafeArea>

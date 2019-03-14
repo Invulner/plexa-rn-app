@@ -30,11 +30,14 @@ const CommentsReducer = (state = initialState, action) => {
         ]
       }
     case types.UPDATE_COMMENT_LIKE: 
+      const index = state.items.findIndex(item => item.id === action.item.id)
+
       return {
         ...state,
         items: [
-          ...state.items.filter(item => item.id !== action.id),
-          action.item
+          ...state.items.slice(0, index),
+          action.item,
+          ...state.items.slice(index + 1)
         ]
       }
     default: 

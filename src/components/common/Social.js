@@ -24,38 +24,29 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 class Social extends Component {
-  state = {
-    liked: this.props.liked,
-    likes: this.props.likesCount
-  }
+  setPropsToState = () => {
+    const { liked, likesCount } = this.props
 
-  getUiFeedback = () => {
-    this.setState(prevState => {
-      if (prevState.liked) 
-        return {
-          liked: false,
-          likes: prevState.likes - 1
-        }
-      else 
-        return {
-          liked: true,
-          likes: prevState.likes + 1
-        }
-    })
+    return {
+      liked: liked,
+      likes: likesCount
+    }
   }
-
-  isComment = () => {
-    return !!this.props.isComment 
-  }
+  
+  state = this.setPropsToState()
 
   handleLike = () => {
-    const { item, liked } = this.props
-    this.getUiFeedback()
+    this.setState(prevState => ({
+      liked: !prevState.liked,
+      likes: prevState.liked ? prevState.likes - 1 : prevState.likes + 1
+    }), this.updateLike)
+  }
+
+  updateLike = () => {
+    const { isComment, likeComment, likePost, item } = this.props
+    const { liked } = this.state
     
-    if (this.isComment())
-      this.props.likeComment(!liked, item)
-    else 
-      this.props.likePost(!liked, item)
+    isComment ? likeComment(liked, item) : likePost(liked, item)
   }
 
   getIcon = () => {
@@ -63,15 +54,12 @@ class Social extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.liked !== this.props.liked)
-      this.setState({
-        liked: this.props.liked,
-        likes: this.props.likesCount
-      })
+    if (prevProps.liked !== this.props.liked) 
+      this.setState(this.setPropsToState())
   }
 
   render() {
-    const { answersCount, likesCount } = this.props
+    const { answersCount } = this.props
     const { likes } = this.state
   
     return (

@@ -19,10 +19,9 @@ const addComment = (item) => ({
   item
 })
 
-const updateCommentLike = (item, id) => ({
+const updateCommentLike = (item) => ({
   type: types.UPDATE_COMMENT_LIKE,
-  item,
-  id
+  item
 })
 
 export default {
