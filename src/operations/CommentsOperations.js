@@ -1,6 +1,7 @@
 import getAxiosInstance from '../config/axios'
 import { API_URL } from '../constants'
 import CommentsActions from '../actions/CommentsActions'
+import FeedActions from '../actions/FeedActions'
 
 const getComments = (navigation) => {
   return dispatch => {
@@ -19,17 +20,23 @@ const getComments = (navigation) => {
   }
 }
 
-const postComment = (comment, navigation) => {
+const postComment = (comment, navigation, post) => {
   return dispatch => {
 
     const fallBackId = 1093
     const postId = navigation.getParam('postId', fallBackId)
     const param = {content: comment}
+    const item = {
+      ...post,
+      answers_count: post.answers_count + 1
+    }
 
     getAxiosInstance().then(api => {
       api.post(`${API_URL}/stories/${postId}/answers`, param)
         .then(response => {
+          console.log(response)
           dispatch(CommentsActions.addComment(response.data))
+          dispatch(FeedActions.updateCommentsCounter(item))
         })
         .catch(error => console.log(error))
     })

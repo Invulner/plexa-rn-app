@@ -29,11 +29,17 @@ const updatePostLike = (item) => ({
   item
 })
 
+const updateCommentsCounter = (item) => ({
+  type: types.UPDATE_COMMENTS_COUNTER,
+  item
+})
+
 export default {
   saveFeedData,
   toggleFeedDataLoading,
   updateFeedPage,
   refreshFeed,
   resetFeed,
-  updatePostLike
+  updatePostLike,
+  updateCommentsCounter
 }
