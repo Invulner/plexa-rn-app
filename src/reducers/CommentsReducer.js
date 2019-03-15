@@ -1,9 +1,24 @@
 import types from '../types/comments'
+import utils from '../utils'
 
 const initialState = {
   items: [],
   loading: true,
   enabled: false
+}
+
+const updateCommentLike = (state, action) => {
+  const newItems = utils.updateItemById(state.items, action.id, item => {
+    const { likes_count, liked } = item
+    const newVals = {
+      liked: !liked,
+      likes_count: liked ? likes_count - 1 : likes_count + 1
+    }
+
+    return utils.updateObject(item, newVals)
+  })
+
+  return utils.updateObject(state, { items: newItems })
 }
 
 const CommentsReducer = (state = initialState, action) => {
@@ -30,20 +45,7 @@ const CommentsReducer = (state = initialState, action) => {
         ]
       }
     case types.UPDATE_COMMENT_LIKE: 
-      const index = state.items.findIndex(item => item.id === action.id)
-
-      return {
-        ...state,
-        items: [
-          ...state.items.slice(0, index),
-          {
-            ...state.items[index],
-            liked: !state.items[index].liked,
-            likes_count: state.items[index].liked ? state.items[index].likes_count - 1 : state.items[index].likes_count + 1
-          },
-          ...state.items.slice(index + 1)
-        ]
-      }
+      return updateCommentLike(state, action)
     default: 
       return state
   }

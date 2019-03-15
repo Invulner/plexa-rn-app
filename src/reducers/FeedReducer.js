@@ -1,8 +1,35 @@
 import types from '../types/feed'
+import utils from '../utils'
 
 const initialState = {
   feedData: [],
   feedLoading: true
+}
+
+const updateCommentsCounter = (state, action) => {
+  const newFeedData = utils.updateItemById(state.feedData, action.id, item => {
+    const newVal = {
+      answers_count: item.answers_count + 1
+    }
+
+    return utils.updateObject(item, newVal)
+  })
+
+  return utils.updateObject(state, { feedData: newFeedData })
+}
+
+const updatePostLike = (state, action) => {
+  const newFeedData = utils.updateItemById(state.feedData, action.id, item => {
+    const { likes_count, liked } = item
+    const newVals = {
+      liked: !liked,
+      likes_count: liked ? likes_count - 1 : likes_count + 1
+    }
+
+    return utils.updateObject(item, newVals)
+  })
+
+  return utils.updateObject(state, { feedData: newFeedData })
 }
 
 const FeedReducer = (state = initialState, action) => {
@@ -15,52 +42,34 @@ const FeedReducer = (state = initialState, action) => {
           ...action.feedData
         ]
       }
+
     case types.TOGGLE_FEED_DATA_LOADING:
       return {
         ...state, 
         feedLoading: action.flag
       }
+
     case types.UPDATE_FEED_PAGE:
       return {
         ...state, 
         page: action.page
       }
+
     case types.REFRESH_FEED:
       return {
         ...state, 
         feedData: action.refreshedFeedData
       }
+
     case types.RESET_FEED: 
       return initialState
-    case types.UPDATE_POST_LIKE:
-      const updateLikeIndex = state.feedData.findIndex(item => item.id === action.id)
-      
-      return {
-        ...state,
-        feedData: [
-          ...state.feedData.slice(0, updateLikeIndex),
-          {
-            ...state.feedData[updateLikeIndex],
-            liked: !state.feedData[updateLikeIndex].liked,
-            likes_count: state.feedData[updateLikeIndex].liked ? state.feedData[updateLikeIndex].likes_count - 1 : state.feedData[updateLikeIndex].likes_count + 1
-          },
-          ...state.feedData.slice(updateLikeIndex + 1)
-        ]
-      }
-    case types.UPDATE_COMMENTS_COUNTER:
-    const updateCommentsIndex = state.feedData.findIndex(item => item.id === action.id)
 
-    return {
-      ...state,
-      feedData: [
-      ...state.feedData.slice(0, updateCommentsIndex),
-      {
-        ...state.feedData[updateCommentsIndex],
-        answers_count: state.feedData[updateCommentsIndex].answers_count + 1
-      },
-      ...state.feedData.slice(updateCommentsIndex + 1)
-      ]
-    }
+    case types.UPDATE_POST_LIKE:
+      return updatePostLike(state, action)
+      
+    case types.UPDATE_COMMENTS_COUNTER:
+      return updateCommentsCounter(state, action)
+
     default:
       return state
   }
