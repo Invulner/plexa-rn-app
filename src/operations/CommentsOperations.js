@@ -20,43 +20,34 @@ const getComments = (navigation) => {
   }
 }
 
-const postComment = (comment, navigation, post) => {
+const postComment = (comment, navigation) => {
   return dispatch => {
 
     const fallBackId = 1093
     const postId = navigation.getParam('postId', fallBackId)
     const param = {content: comment}
-    const item = {
-      ...post,
-      answers_count: post.answers_count + 1
-    }
-
+    
     getAxiosInstance().then(api => {
       api.post(`${API_URL}/stories/${postId}/answers`, param)
         .then(response => {
           console.log(response)
           dispatch(CommentsActions.addComment(response.data))
-          dispatch(FeedActions.updateCommentsCounter(item))
+          dispatch(FeedActions.updateCommentsCounter(postId))
         })
         .catch(error => console.log(error))
     })
   }
 }
 
-const updateLike = (flag, item) => {
+const updateLike = (flag, id) => {
   return dispatch => {
     const param = {
       like: flag
     }
 
     return getAxiosInstance().then(api => {
-      api.post(`${API_URL}/answers/${item.id}/like`, param)
-        .then(response => {
-          const payload = {
-            ...item,
-            ...response.data
-          } 
-          dispatch(CommentsActions.updateCommentLike(payload))})
+      api.post(`${API_URL}/answers/${id}/like`, param)
+        .then(() => dispatch(CommentsActions.updateCommentLike(id)))
         .catch(error => console.log('Like error: ', error))
     })
   }

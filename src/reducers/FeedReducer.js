@@ -32,28 +32,35 @@ const FeedReducer = (state = initialState, action) => {
       }
     case types.RESET_FEED: 
       return initialState
-    case types.UPDATE_COMMENTS_COUNTER:
-      const index1 = state.feedData.findIndex(item => item.id === action.item.id)
-
-      return {
-        ...state,
-        feedData: [
-          ...state.feedData.slice(0, index1),
-          action.item,
-          ...state.feedData.slice(index1 + 1)
-        ]
-      }
     case types.UPDATE_POST_LIKE:
-      const index2 = state.feedData.findIndex(item => item.id === action.item.id)
+      const updateLikeIndex = state.feedData.findIndex(item => item.id === action.id)
       
       return {
         ...state,
         feedData: [
-          ...state.feedData.slice(0, index2),
-          action.item,
-          ...state.feedData.slice(index2 + 1)
+          ...state.feedData.slice(0, updateLikeIndex),
+          {
+            ...state.feedData[updateLikeIndex],
+            liked: !state.feedData[updateLikeIndex].liked,
+            likes_count: state.feedData[updateLikeIndex].liked ? state.feedData[updateLikeIndex].likes_count - 1 : state.feedData[updateLikeIndex].likes_count + 1
+          },
+          ...state.feedData.slice(updateLikeIndex + 1)
         ]
       }
+    case types.UPDATE_COMMENTS_COUNTER:
+    const updateCommentsIndex = state.feedData.findIndex(item => item.id === action.id)
+
+    return {
+      ...state,
+      feedData: [
+      ...state.feedData.slice(0, updateCommentsIndex),
+      {
+        ...state.feedData[updateCommentsIndex],
+        answers_count: state.feedData[updateCommentsIndex].answers_count + 1
+      },
+      ...state.feedData.slice(updateCommentsIndex + 1)
+      ]
+    }
     default:
       return state
   }

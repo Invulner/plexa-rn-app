@@ -103,7 +103,6 @@ class PostScreen extends Component {
         </ScrollView>
         {enabled &&
           <ReplyBox
-            post={post} 
             author={postAuthor}
             navigation={navigation} />
         }

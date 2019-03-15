@@ -24,14 +24,14 @@ const resetFeed = () => ({
   type: types.RESET_FEED
 })
 
-const updatePostLike = (item) => ({
+const updatePostLike = (id) => ({
   type: types.UPDATE_POST_LIKE,
-  item
+  id
 })
 
-const updateCommentsCounter = (item) => ({
+const updateCommentsCounter = (id) => ({
   type: types.UPDATE_COMMENTS_COUNTER,
-  item
+  id
 })
 
 export default {

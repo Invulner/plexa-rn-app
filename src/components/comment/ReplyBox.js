@@ -5,8 +5,8 @@ import TopGreyLine from './TopGreyLine'
 import { connect } from 'react-redux'
 import CommentOperations from '../../operations/CommentsOperations'
 
-const mapDispatchToProps = (dispatch, { navigation, post }) => {
-  const postComment = (comment) => dispatch(CommentOperations.postComment(comment, navigation, post))
+const mapDispatchToProps = (dispatch, { navigation }) => {
+  const postComment = (comment) => dispatch(CommentOperations.postComment(comment, navigation))
 
   return { postComment }
 }

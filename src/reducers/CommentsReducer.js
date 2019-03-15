@@ -30,13 +30,17 @@ const CommentsReducer = (state = initialState, action) => {
         ]
       }
     case types.UPDATE_COMMENT_LIKE: 
-      const index = state.items.findIndex(item => item.id === action.item.id)
+      const index = state.items.findIndex(item => item.id === action.id)
 
       return {
         ...state,
         items: [
           ...state.items.slice(0, index),
-          action.item,
+          {
+            ...state.items[index],
+            liked: !state.items[index].liked,
+            likes_count: state.items[index].liked ? state.items[index].likes_count - 1 : state.items[index].likes_count + 1
+          },
           ...state.items.slice(index + 1)
         ]
       }
