@@ -7,29 +7,31 @@ const initialState = {
 }
 
 const updateCommentsCounter = (state, action) => {
-  const newFeedData = utils.updateItemById(state.feedData, action.id, item => {
-    const newVal = {
-      answers_count: item.answers_count + 1
-    }
+  const item = utils.findItemById(state.feedData, action.id)
+  const newVal = {
+    answers_count: item.answers_count + 1
+  }
+  const newFeedData = utils.updateItemById(state.feedData, action.id, newVal)
 
-    return utils.updateObject(item, newVal)
-  })
-
-  return utils.updateObject(state, { feedData: newFeedData })
+  return {
+    ...state, 
+    feedData: newFeedData
+  }
 }
 
 const updatePostLike = (state, action) => {
-  const newFeedData = utils.updateItemById(state.feedData, action.id, item => {
-    const { likes_count, liked } = item
-    const newVals = {
-      liked: !liked,
-      likes_count: liked ? likes_count - 1 : likes_count + 1
-    }
+  const item = utils.findItemById(state.feedData, action.id)
+  const { liked, likes_count } = item
+  const newVals = {
+    liked: !liked,
+    likes_count: liked ? likes_count - 1 : likes_count + 1
+  }
+  const newFeedData = utils.updateItemById(state.feedData, action.id, newVals)
 
-    return utils.updateObject(item, newVals)
-  })
-
-  return utils.updateObject(state, { feedData: newFeedData })
+  return {
+    ...state,
+    feedData: newFeedData
+  }
 }
 
 const FeedReducer = (state = initialState, action) => {

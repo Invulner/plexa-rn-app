@@ -8,17 +8,18 @@ const initialState = {
 }
 
 const updateCommentLike = (state, action) => {
-  const newItems = utils.updateItemById(state.items, action.id, item => {
-    const { likes_count, liked } = item
-    const newVals = {
-      liked: !liked,
-      likes_count: liked ? likes_count - 1 : likes_count + 1
-    }
+  const item = utils.findItemById(state.items, action.id)
+  const { liked, likes_count } = item
+  const newVals = {
+    liked: !liked,
+    likes_count: liked ? likes_count - 1 : likes_count + 1
+  }
+  const newItems = utils.updateItemById(state.items, action.id, newVals)
 
-    return utils.updateObject(item, newVals)
-  })
-
-  return utils.updateObject(state, { items: newItems })
+  return {
+    ...state,
+    items: newItems
+  }
 }
 
 const CommentsReducer = (state = initialState, action) => {

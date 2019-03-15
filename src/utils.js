@@ -30,20 +30,18 @@ const sortByTime = (a, b) => {
   return (date1.getTime() - date2.getTime()) < 0 ? -1 : 1
 }
 
-const updateObject = (prevState, newVals) => {
-  return Object.assign({}, prevState, newVals)
+const updateItemById = (arr, id, newVals) => {
+  const index = arr.findIndex(item => item.id === id)
+  const newItem = { ...arr[index], ...newVals }
+  return [
+    ...arr.slice(0, index),
+    newItem,
+    ...arr.slice(index + 1)
+  ]
 }
 
-const updateItemById = (arr, id, cb) => {
-  const newArr = arr.map(item => {
-    if (item.id !== id)
-      return item
-
-    const newItem = cb(item)
-    return newItem
-  })
-
-  return newArr
+const findItemById = (arr, id) => {
+  return arr.filter(item => item.id === id)[0]
 }
 
 export default {
@@ -52,6 +50,6 @@ export default {
   renderProfileDetails,
   getDescription,
   sortByTime,
-  updateObject,
-  updateItemById
+  updateItemById,
+  findItemById
 }
