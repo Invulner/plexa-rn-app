@@ -14,8 +14,8 @@ const mapStateToProps = (state, { id, isComment }) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-  const likeComment = (flag, item) => dispatch(CommentsOperations.updateLike(flag, item))
-  const likePost = (flag, item) => dispatch(FeedOperations.updateLike(flag, item))
+  const likeComment = (flag, id) => dispatch(CommentsOperations.updateLike(flag, id))
+  const likePost = (flag, id) => dispatch(FeedOperations.updateLike(flag, id))
 
   return { 
     likeComment,
@@ -43,10 +43,10 @@ class Social extends Component {
   }
 
   updateLike = () => {
-    const { isComment, likeComment, likePost, item } = this.props
+    const { isComment, likeComment, likePost, id } = this.props
     const { liked } = this.state
     
-    isComment ? likeComment(liked, item) : likePost(liked, item)
+    isComment ? likeComment(liked, id) : likePost(liked, id)
   }
 
   getIcon = () => {

@@ -39,7 +39,7 @@ const mapDispatchToProps = (dispatch, { navigation }) => {
 }
 
 class PostScreen extends Component {
-  scrollFlag = false
+  scrollFlag = false 
 
   scrollToEnd = () => {
     this.scrollFlag && this.refs.list.scrollToEnd()
@@ -102,7 +102,7 @@ class PostScreen extends Component {
           }
         </ScrollView>
         {enabled &&
-          <ReplyBox 
+          <ReplyBox
             author={postAuthor}
             navigation={navigation} />
         }

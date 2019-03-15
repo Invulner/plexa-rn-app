@@ -30,10 +30,26 @@ const sortByTime = (a, b) => {
   return (date1.getTime() - date2.getTime()) < 0 ? -1 : 1
 }
 
+const updateItemById = (arr, id, newVals) => {
+  const index = arr.findIndex(item => item.id === id)
+  const newItem = { ...arr[index], ...newVals }
+  return [
+    ...arr.slice(0, index),
+    newItem,
+    ...arr.slice(index + 1)
+  ]
+}
+
+const findItemById = (arr, id) => {
+  return arr.filter(item => item.id === id)[0]
+}
+
 export default {
   getInitials,
   truncate,
   renderProfileDetails,
   getDescription,
-  sortByTime
+  sortByTime,
+  updateItemById,
+  findItemById
 }

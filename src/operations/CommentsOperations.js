@@ -1,6 +1,7 @@
 import getAxiosInstance from '../config/axios'
 import { API_URL } from '../constants'
 import CommentsActions from '../actions/CommentsActions'
+import FeedActions from '../actions/FeedActions'
 
 const getComments = (navigation) => {
   return dispatch => {
@@ -25,31 +26,28 @@ const postComment = (comment, navigation) => {
     const fallBackId = 1093
     const postId = navigation.getParam('postId', fallBackId)
     const param = {content: comment}
-
+    
     getAxiosInstance().then(api => {
       api.post(`${API_URL}/stories/${postId}/answers`, param)
         .then(response => {
+          console.log(response)
           dispatch(CommentsActions.addComment(response.data))
+          dispatch(FeedActions.updateCommentsCounter(postId))
         })
         .catch(error => console.log(error))
     })
   }
 }
 
-const updateLike = (flag, item) => {
+const updateLike = (flag, id) => {
   return dispatch => {
     const param = {
       like: flag
     }
 
     return getAxiosInstance().then(api => {
-      api.post(`${API_URL}/answers/${item.id}/like`, param)
-        .then(response => {
-          const payload = {
-            ...item,
-            ...response.data
-          } 
-          dispatch(CommentsActions.updateCommentLike(payload))})
+      api.post(`${API_URL}/answers/${id}/like`, param)
+        .then(() => dispatch(CommentsActions.updateCommentLike(id)))
         .catch(error => console.log('Like error: ', error))
     })
   }
