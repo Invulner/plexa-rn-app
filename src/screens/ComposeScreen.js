@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, TextInput, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native'
+import { View, TextInput, StyleSheet, TouchableOpacity, Image, ScrollView, Alert } from 'react-native'
 import { connect } from 'react-redux'
 import SafeArea from '../components/common/SafeArea'
 import ProfileAvatar from '../components/common/ProfileAvatar'
@@ -36,9 +36,8 @@ class ComposeScreen extends Component {
 
   onTopicPress = (item) => {
     this.setState(prevState => {
-      const isTopicChosen = !!prevState.topics.filter(topic => topic.id === item.id).length
-      
-      if (!isTopicChosen)
+
+      if (!prevState.topics.filter(topic => topic.id === item.id).length)
         return {
           topics: [
             ...prevState.topics,
@@ -58,9 +57,23 @@ class ComposeScreen extends Component {
     return !!topics.filter(topic => topic.id === id).length
   }
 
+  showHint = (key) => {
+    const hints = {
+      replies: {
+        title: 'Replies',
+        text: 'When enabled, other users are able to reply to your post. These replies are visible to others.'
+      },
+      privacy: {
+        title: 'Privacy',
+        text: 'When enabled your post will only show to other health providers. Disable to post also to patients.'
+      }
+    }
+    Alert.alert(hints[key].title, hints[key].text)
+  }
+
   renderTopics = () => {
     const { specialities, sub_specialities, conditions, interests } = this.props.user
-    let allTopics = [...specialities, ...sub_specialities, ...conditions, ...interests]
+    const allTopics = [...specialities, ...sub_specialities, ...conditions, ...interests]
     const sorted = allTopics.sort(this.sortAlphabetically)
     
     return sorted.map(item => {
@@ -142,11 +155,13 @@ class ComposeScreen extends Component {
             Replies
           </SemiboldText>
 
-          <View style={styles.questionBox}>
+          <TouchableOpacity 
+            style={styles.questionBox}
+            onPress={() => this.showHint('replies')}>
             <BoldText style={styles.question}>
               ?
             </BoldText>
-          </View>
+          </TouchableOpacity>
           <View style={styles.switchBox}>
             <Toggle />
           </View>
@@ -157,11 +172,13 @@ class ComposeScreen extends Component {
             Privacy
           </SemiboldText>
 
-          <View style={styles.questionBox}>
+          <TouchableOpacity 
+            style={styles.questionBox}
+            onPress={() => this.showHint('privacy')}>
             <BoldText style={styles.question}>
               ?
             </BoldText>
-          </View>
+          </TouchableOpacity>
           <View style={styles.switchBox}>
             <Toggle />
           </View>
