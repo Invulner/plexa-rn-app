@@ -3,22 +3,33 @@ import { StyleSheet, TouchableOpacity, Animated } from 'react-native'
 import { GRAY } from '../../assets/styles/colors'
 
 class Toggle extends Component {
+  knobOffset = 14
+
   state = {
-    isOn: false,
-    animatedValue: new Animated.Value(0),
+    isOn: this.props.isOn,
+    animatedValue: new Animated.Value(this.props.isOn ? this.knobOffset : 0),
   }
 
   animate = () => {
     const { animatedValue, isOn } = this.state
     Animated.timing(animatedValue, { 
-      toValue: isOn ? 14 : 0,
+      toValue: isOn ? this.knobOffset : 0,
       duration: 200
     }).start()
   }
 
-  toggleHandle = () => {
-    this.setState(prevState => ({ isOn: !prevState.isOn }), this.animate)
+  handlePress = () => {
+    this.setState(prevState => ({ isOn: !prevState.isOn }), () => {
+      this.animate()
+      this.props.onToggle(this.state.isOn)
+    })
   }
+
+  // componentDidUpdate(prevProps, prevState) {
+  //   if (prevProps.isOn !== this.props.isOn) {
+  //     this.setState({isOn: this.props.isOn}, this.animate)
+  //   }
+  // }
 
   render() {
     const { isOn, animatedValue } = this.state
@@ -26,7 +37,7 @@ class Toggle extends Component {
     return (
       <TouchableOpacity
         style={[styles.toggleOuter, isOn ? styles.isOn : styles.isOff]}
-        onPress={this.toggleHandle}
+        onPress={this.handlePress}
         activeOpacity={1}>
         <Animated.View style={[styles.knob, { transform: [{translateX: animatedValue}] }]} />
       </TouchableOpacity>

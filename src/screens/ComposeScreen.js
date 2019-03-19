@@ -7,6 +7,8 @@ import { RegularText, SemiboldText, BoldText } from '../components/common/fonts'
 import TopGreyLine from '../components/comment/TopGreyLine'
 import { BRAND_LIGHT, GRAY, BRAND_DARK } from '../assets/styles/colors'
 import Toggle from '../components/common/Toggle'
+import getAxiosInstance from '../config/axios'
+import { API_URL } from '../constants'
 
 const mapStateToProps = (state) => {
   const { user } = state
@@ -17,7 +19,9 @@ const mapStateToProps = (state) => {
 class ComposeScreen extends Component {
   state = {
     message: '',
-    topics: []
+    topicIDs: [],
+    commentsEnabled: true,
+    public: false
   }
 
   isEmptyInput = () => {
@@ -34,27 +38,45 @@ class ComposeScreen extends Component {
     return a.keyword < b.keyword ? -1 : 1
   }
 
-  onTopicPress = (item) => {
+  onTopicPress = (itemId) => {
     this.setState(prevState => {
 
-      if (!prevState.topics.filter(topic => topic.id === item.id).length)
+      if (!prevState.topicIDs.filter(id => id === itemId).length)
         return {
-          topics: [
-            ...prevState.topics,
-            item
+          topicIDs: [
+            ...prevState.topicIDs,
+            itemId
           ]
         }
       else 
         return {
-          topics: prevState.topics.filter(topic => topic.id !== item.id)
+          topicIDs: prevState.topicIDs.filter(id => id !== itemId)
         }
     })
   }
 
-  isTopicChosen = (id) => {
-    const { topics } = this.state
+  isTopicChosen = (itemId) => {
+    const { topicIDs } = this.state
 
-    return !!topics.filter(topic => topic.id === id).length
+    return !!topicIDs.filter(id => id === itemId).length
+  }
+
+  onSubmit = () => {
+    if(!this.isEmptyInput()) {
+      if (this.state.topicIDs.length) {
+        const params = {
+          content: this.state.message,
+          topic_ids: this.state.topicIDs
+        }
+        getAxiosInstance().then(api => {
+          api.post(`${API_URL}/stories`, params)
+          .then(res => console.log(res))
+        })
+      } else {
+        Alert.alert('Error', 'At least one topic have to be selected')
+      }
+
+    }
   }
 
   showHint = (key) => {
@@ -83,7 +105,7 @@ class ComposeScreen extends Component {
           activeOpacity={0.9}
           style={[styles.topic, this.isTopicChosen(item.id) && styles.topicActive]}
           key={item.id}
-          onPress={() => this.onTopicPress(item)}>
+          onPress={() => this.onTopicPress(item.id)}>
           <RegularText style={styles.topicText}>
             {item.keyword}
           </RegularText>
@@ -114,38 +136,39 @@ class ComposeScreen extends Component {
         <TopGreyLine boxStyle={styles.lineSolid} />
         <View style={styles.btnBox}>
 
-        <View style={styles.leftIconBox}>
-          <TouchableOpacity>
-            <Image
-              source={require('../assets/icons/photo-upload.png')}
-              style={styles.iconUpload} />
-          </TouchableOpacity>
+          <View style={styles.leftIconBox}>
+            <TouchableOpacity>
+              <Image
+                source={require('../assets/icons/photo-upload.png')}
+                style={styles.iconUpload} />
+            </TouchableOpacity>
 
-          <TouchableOpacity>
-            <Image
-              source={require('../assets/icons/link.png')}
-              style={styles.iconUpload} />
-          </TouchableOpacity>
+            <TouchableOpacity>
+              <Image
+                source={require('../assets/icons/link.png')}
+                style={styles.iconUpload} />
+            </TouchableOpacity>
 
-          <TouchableOpacity>
-            <Image
-              source={require('../assets/icons/location.png')}
-              style={styles.iconUpload} />
-          </TouchableOpacity>
+            <TouchableOpacity>
+              <Image
+                source={require('../assets/icons/location.png')}
+                style={styles.iconUpload} />
+            </TouchableOpacity>
 
-          <TouchableOpacity>
-            <Image
-              source={require('../assets/icons/users-group.png')}
-              style={styles.iconUpload} />
-          </TouchableOpacity>
-        </View>
+            <TouchableOpacity>
+              <Image
+                source={require('../assets/icons/users-group.png')}
+                style={styles.iconUpload} />
+            </TouchableOpacity>
+          </View>
 
-          <TouchableOpacity>
-            <View style={[styles.postBtn, !this.isEmptyInput() && styles.btnActive]}>
-              <RegularText style={styles.postText}>
-                Post
-              </RegularText>
-            </View>
+          <TouchableOpacity 
+            style={[styles.postBtn, !this.isEmptyInput() && styles.btnActive]}
+            onPress={this.onSubmit}
+            disabled={this.isEmptyInput()}>
+            <RegularText style={styles.postText}>
+              Post
+            </RegularText>
           </TouchableOpacity>
         </View>
         <TopGreyLine boxStyle={styles.lineSolid} />
@@ -163,7 +186,9 @@ class ComposeScreen extends Component {
             </BoldText>
           </TouchableOpacity>
           <View style={styles.switchBox}>
-            <Toggle />
+            <Toggle
+              onToggle={(value) => this.setState({ commentsEnabled: value})}
+              isOn />
           </View>
         </View>
 
@@ -180,7 +205,7 @@ class ComposeScreen extends Component {
             </BoldText>
           </TouchableOpacity>
           <View style={styles.switchBox}>
-            <Toggle />
+            <Toggle onToggle={(value) => this.setState({ public: value})} />
           </View>
         </View>
 
