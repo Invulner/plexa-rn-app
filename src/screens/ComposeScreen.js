@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, TextInput, StyleSheet, TouchableOpacity, Image } from 'react-native'
+import { View, TextInput, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native'
 import { connect } from 'react-redux'
 import SafeArea from '../components/common/SafeArea'
 import ProfileAvatar from '../components/common/ProfileAvatar'
@@ -16,7 +16,8 @@ const mapStateToProps = (state) => {
 
 class ComposeScreen extends Component {
   state = {
-    message: ''
+    message: '',
+    topics: []
   }
 
   isEmptyInput = () => {
@@ -33,6 +34,30 @@ class ComposeScreen extends Component {
     return a.keyword < b.keyword ? -1 : 1
   }
 
+  onTopicPress = (item) => {
+    this.setState(prevState => {
+      const isTopicChosen = !!prevState.topics.filter(topic => topic.id === item.id).length
+      
+      if (!isTopicChosen)
+        return {
+          topics: [
+            ...prevState.topics,
+            item
+          ]
+        }
+      else 
+        return {
+          topics: prevState.topics.filter(topic => topic.id !== item.id)
+        }
+    })
+  }
+
+  isTopicChosen = (id) => {
+    const { topics } = this.state
+
+    return !!topics.filter(topic => topic.id === id).length
+  }
+
   renderTopics = () => {
     const { specialities, sub_specialities, conditions, interests } = this.props.user
     let allTopics = [...specialities, ...sub_specialities, ...conditions, ...interests]
@@ -41,13 +66,15 @@ class ComposeScreen extends Component {
     return sorted.map(item => {
 
       return (
-        <View 
-          style={styles.topic}
-          key={item.id}>
+        <TouchableOpacity
+          activeOpacity={0.9}
+          style={[styles.topic, this.isTopicChosen(item.id) && styles.topicActive]}
+          key={item.id}
+          onPress={() => this.onTopicPress(item)}>
           <RegularText style={styles.topicText}>
             {item.keyword}
           </RegularText>
-        </View>
+        </TouchableOpacity>
       )
     })
   }
@@ -140,9 +167,11 @@ class ComposeScreen extends Component {
           </View>
         </View>
 
-        <View style={styles.topicsBox}>
-          {this.renderTopics()}
-        </View>
+        <ScrollView>
+          <View style={styles.topicsBox}>
+            {this.renderTopics()}
+          </View>  
+        </ScrollView>
 
       </SafeArea>
     )
@@ -267,6 +296,10 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginRight: 3,
     marginBottom: 3
+  },
+
+  topicActive: {
+    backgroundColor: BRAND_DARK
   },
 
   topicText: {
