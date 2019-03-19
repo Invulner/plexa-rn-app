@@ -17,7 +17,7 @@ class ReplyBox extends Component {
   }
 
   onReplyChange = (reply) => {
-    this.setState({reply})
+    this.setState({ reply })
   }
 
   isEmptyInput = () => {
