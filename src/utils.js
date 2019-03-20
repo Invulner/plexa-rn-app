@@ -44,6 +44,10 @@ const findItemById = (arr, id) => {
   return arr.filter(item => item.id === id)[0]
 }
 
+const sortAlphabetically = (a, b) => {
+  return a.keyword < b.keyword ? -1 : 1
+}
+
 export default {
   getInitials,
   truncate,
@@ -51,5 +55,6 @@ export default {
   getDescription,
   sortByTime,
   updateItemById,
-  findItemById
+  findItemById,
+  sortAlphabetically
 }

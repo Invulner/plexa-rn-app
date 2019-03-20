@@ -60,7 +60,7 @@ const updateLike = (flag, id) => {
   }
 }
 
-const savePost = (post, navigation, cb) => {
+const savePost = (post, toggleOverlay, navigateToFeed) => {
   return dispatch => {
 
     getAxiosInstance().then(api => {
@@ -68,8 +68,8 @@ const savePost = (post, navigation, cb) => {
       .then(res => {
         console.log(res.data)
         dispatch(FeedActions.savePost(res.data))
-        cb()
-        navigation.navigate('Feed')
+        toggleOverlay()
+        navigateToFeed()
       }).catch(error => console.log('SAVE POST ERROR: ', error))
     })
   }

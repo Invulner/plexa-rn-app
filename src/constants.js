@@ -9,6 +9,7 @@ export const menuIcons = {
   'speciality': require('./assets/icons/specialties.png'),
   'location': require('./assets/icons/location-01.png')
 }
+
 export const tabIcons = {
   'feed-active': require('./assets/icons/feed.png'),
   'research-active': require('./assets/icons/research.png'),
@@ -23,4 +24,15 @@ export const tabIcons = {
 export const likeIcons = {
   liked: require('./assets/icons/like-icon-liked.png'),
   unliked: require('./assets/icons/like-icon.png')
+}
+
+export const hints = {
+  replies: {
+    title: 'Replies',
+    text: 'When enabled, other users are able to reply to your post. These replies are visible to others.'
+  },
+  privacy: {
+    title: 'Privacy',
+    text: 'When enabled your post will only show to other health providers. Disable to post also to patients.'
+  }
 }

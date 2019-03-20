@@ -42,7 +42,7 @@ function PostHead(props) {
     <ProfileAvatar 
       url={avatar_url}
       name={full_name}
-      isComment={isComment} />
+      size={isComment ? 'medium' : 'default'} />
   )
 
   const calculateTime = () => {

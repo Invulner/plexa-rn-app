@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, TextInput, StyleSheet, TouchableOpacity, Image, ScrollView, Alert } from 'react-native'
+import { View, TextInput, StyleSheet, TouchableOpacity, Image, ScrollView, Alert, Switch } from 'react-native'
 import { connect } from 'react-redux'
 import SafeArea from '../components/common/SafeArea'
 import ProfileAvatar from '../components/common/ProfileAvatar'
@@ -9,15 +9,21 @@ import { BRAND_LIGHT, GRAY, BRAND_DARK } from '../assets/styles/colors'
 import Toggle from '../components/common/Toggle'
 import FeedOperations from '../operations/FeedOperations'
 import Spinner from 'react-native-loading-spinner-overlay'
+import { hints } from '../constants'
+import { getSortedTopics } from '../selectors/Topics'
 
 const mapStateToProps = (state) => {
-  const { user } = state
+  const { full_name: name, avatar_url: url } = state.user
 
-  return { user }
+  return {
+    name,
+    url,
+    topics: getSortedTopics(state)
+  }
 }
 
-const mapDispatchToProps = (dispatch, { navigation }) => {
-  const savePost = (post, cb) => dispatch(FeedOperations.savePost(post, navigation, cb))
+const mapDispatchToProps = (dispatch) => {
+  const savePost = (post, toggleOverlay, navigateToFeed) => dispatch(FeedOperations.savePost(post, toggleOverlay, navigateToFeed))
 
   return { savePost }
 }
@@ -39,10 +45,6 @@ class ComposeScreen extends Component {
 
   handleChangeText = (message) => {
     this.setState({ message })
-  }
-
-  sortAlphabetically = (a, b) => {
-    return a.keyword < b.keyword ? -1 : 1
   }
 
   onTopicPress = (itemId) => {
@@ -72,10 +74,18 @@ class ComposeScreen extends Component {
     this.setState(prevState => ({ spinner: !prevState.spinner }))
   }
 
+  navigateToFeed = () => {
+    this.props.navigation.navigate('Feed')
+  }
+
+  validateTopics = () => {
+    return !!this.state.topicIDs.length
+  }
+
   onSubmit = () => {
     if(!this.isEmptyInput()) {
 
-      if (this.state.topicIDs.length) {
+      if (this.validateTopics()) {
         const { message, topicIDs, commentsEnabled, isPublic } = this.state
         const post = {
           content: message,
@@ -85,33 +95,19 @@ class ComposeScreen extends Component {
         }
 
         this.toggleOverlay()
-        this.props.savePost(post, this.toggleOverlay)
+        this.props.savePost(post, this.toggleOverlay, this.navigateToFeed)
       } else {
         Alert.alert('Error', 'At least one topic has to be selected')
       }
     }
   }
 
-  showHint = (key) => {
-    const hints = {
-      replies: {
-        title: 'Replies',
-        text: 'When enabled, other users are able to reply to your post. These replies are visible to others.'
-      },
-      privacy: {
-        title: 'Privacy',
-        text: 'When enabled your post will only show to other health providers. Disable to post also to patients.'
-      }
-    }
+  showHint = (key) => { 
     Alert.alert(hints[key].title, hints[key].text)
   }
 
   renderTopics = () => {
-    const { specialities, sub_specialities, conditions, interests } = this.props.user
-    const allTopics = [...specialities, ...sub_specialities, ...conditions, ...interests]
-    const sorted = allTopics.sort(this.sortAlphabetically)
-    
-    return sorted.map(item => {
+    return this.props.topics.map(item => {
 
       return (
         <TouchableOpacity
@@ -128,8 +124,8 @@ class ComposeScreen extends Component {
   }
 
   render() {
-    const { full_name: name, avatar_url: url } = this.props.user
-    const { message, spinner } = this.state
+    const { name, url } = this.props
+    const { message, spinner, commentsEnabled, isPublic } = this.state
 
     return (
       <SafeArea>
@@ -145,7 +141,7 @@ class ComposeScreen extends Component {
           <ProfileAvatar
             url={url}
             name={name}
-            newPost={true} />
+            size={'small'} />
         </View>
         <TopGreyLine boxStyle={styles.lineSolid} />
         <View style={styles.btnBox}>
@@ -200,9 +196,9 @@ class ComposeScreen extends Component {
             </BoldText>
           </TouchableOpacity>
           <View style={styles.switchBox}>
-            <Toggle
-              onToggle={value => this.setState({ commentsEnabled: value})}
-              isOn />
+            <Switch 
+              onValueChange={value => this.setState({ commentsEnabled: value})}
+              value={commentsEnabled} />
           </View>
         </View>
 
@@ -219,7 +215,9 @@ class ComposeScreen extends Component {
             </BoldText>
           </TouchableOpacity>
           <View style={styles.switchBox}>
-            <Toggle onToggle={value => this.setState({ isPublic: value})} />
+            <Switch
+              onValueChange={value => this.setState({ isPublic: value})}
+              value={isPublic} />
           </View>
         </View>
 
@@ -307,7 +305,7 @@ const styles = StyleSheet.create({
 
   privacyBox: {
     ...controls,
-    marginTop: 3,
+    marginTop: 15,
     marginBottom: 20
   },
 
@@ -315,7 +313,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: GRAY,
     marginRight: 7,
-    marginTop: 2
+    marginTop: 8
   },
 
   questionBox: {
@@ -324,7 +322,8 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     backgroundColor: GRAY,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    marginTop: 6
   },
 
   question: {
