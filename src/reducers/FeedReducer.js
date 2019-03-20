@@ -63,6 +63,15 @@ const FeedReducer = (state = initialState, action) => {
         feedData: action.refreshedFeedData
       }
 
+    case types.SAVE_POST:
+      return {
+        ...state,
+        feedData: [
+          action.post,
+          ...state.feedData
+        ]
+      }
+
     case types.RESET_FEED: 
       return initialState
 

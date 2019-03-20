@@ -7,8 +7,8 @@ import { RegularText, SemiboldText, BoldText } from '../components/common/fonts'
 import TopGreyLine from '../components/comment/TopGreyLine'
 import { BRAND_LIGHT, GRAY, BRAND_DARK } from '../assets/styles/colors'
 import Toggle from '../components/common/Toggle'
-import getAxiosInstance from '../config/axios'
-import { API_URL } from '../constants'
+import FeedOperations from '../operations/FeedOperations'
+import Spinner from 'react-native-loading-spinner-overlay'
 
 const mapStateToProps = (state) => {
   const { user } = state
@@ -16,12 +16,19 @@ const mapStateToProps = (state) => {
   return { user }
 }
 
+const mapDispatchToProps = (dispatch, { navigation }) => {
+  const savePost = (post, cb) => dispatch(FeedOperations.savePost(post, navigation, cb))
+
+  return { savePost }
+}
+
 class ComposeScreen extends Component {
   state = {
     message: '',
     topicIDs: [],
     commentsEnabled: true,
-    public: false
+    isPublic: false,
+    spinner: false
   }
 
   isEmptyInput = () => {
@@ -61,21 +68,26 @@ class ComposeScreen extends Component {
     return !!topicIDs.filter(id => id === itemId).length
   }
 
+  toggleOverlay = () => {
+    this.setState(prevState => ({ spinner: !prevState.spinner }))
+  }
+
   onSubmit = () => {
     if(!this.isEmptyInput()) {
-      if (this.state.topicIDs.length) {
-        const params = {
-          content: this.state.message,
-          topic_ids: this.state.topicIDs
-        }
-        getAxiosInstance().then(api => {
-          api.post(`${API_URL}/stories`, params)
-          .then(res => console.log(res))
-        })
-      } else {
-        Alert.alert('Error', 'At least one topic have to be selected')
-      }
 
+      if (this.state.topicIDs.length) {
+        const { message, topicIDs, commentsEnabled, isPublic } = this.state
+        const post = {
+          content: message,
+          topic_ids: topicIDs,
+          comments_enabled: commentsEnabled,
+          public: isPublic
+        }
+        this.toggleOverlay()
+        this.props.savePost(post, this.toggleOverlay)
+      } else {
+        Alert.alert('Error', 'At least one topic has to be selected')
+      }
     }
   }
 
@@ -116,10 +128,11 @@ class ComposeScreen extends Component {
 
   render() {
     const { full_name: name, avatar_url: url } = this.props.user
-    const { message } = this.state
+    const { message, spinner } = this.state
 
     return (
       <SafeArea>
+        <Spinner visible={spinner} />
         <View style={styles.inputBox}>
           <TextInput
             placeholder='Enter your message ...'
@@ -187,7 +200,7 @@ class ComposeScreen extends Component {
           </TouchableOpacity>
           <View style={styles.switchBox}>
             <Toggle
-              onToggle={(value) => this.setState({ commentsEnabled: value})}
+              onToggle={value => this.setState({ commentsEnabled: value})}
               isOn />
           </View>
         </View>
@@ -205,7 +218,7 @@ class ComposeScreen extends Component {
             </BoldText>
           </TouchableOpacity>
           <View style={styles.switchBox}>
-            <Toggle onToggle={(value) => this.setState({ public: value})} />
+            <Toggle onToggle={value => this.setState({ isPublic: value})} />
           </View>
         </View>
 
@@ -350,4 +363,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect(mapStateToProps, null)(ComposeScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(ComposeScreen)
