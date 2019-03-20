@@ -83,6 +83,7 @@ class ComposeScreen extends Component {
           comments_enabled: commentsEnabled,
           public: isPublic
         }
+
         this.toggleOverlay()
         this.props.savePost(post, this.toggleOverlay)
       } else {
@@ -149,7 +150,7 @@ class ComposeScreen extends Component {
         <TopGreyLine boxStyle={styles.lineSolid} />
         <View style={styles.btnBox}>
 
-          <View style={styles.leftIconBox}>
+          {/* <View style={styles.leftIconBox}>
             <TouchableOpacity>
               <Image
                 source={require('../assets/icons/photo-upload.png')}
@@ -173,7 +174,7 @@ class ComposeScreen extends Component {
                 source={require('../assets/icons/users-group.png')}
                 style={styles.iconUpload} />
             </TouchableOpacity>
-          </View>
+          </View> */}
 
           <TouchableOpacity 
             style={[styles.postBtn, !this.isEmptyInput() && styles.btnActive]}
@@ -256,7 +257,9 @@ const styles = StyleSheet.create({
 
   btnBox: {
     alignItems: 'center',
-    justifyContent: 'space-between',
+    //The following line should take precedence when activating commented buttons.
+    // justifyContent: 'space-between',
+    justifyContent: 'flex-end',
     flexDirection: 'row',
     paddingHorizontal: 10,
     height: 50,
