@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
-import { View, TextInput, StyleSheet, TouchableOpacity, Image, Alert } from 'react-native'
+import { View, StyleSheet, TouchableOpacity, Image, Alert } from 'react-native'
 import { connect } from 'react-redux'
 import SafeArea from '../components/common/SafeArea'
-import ProfileAvatar from '../components/common/ProfileAvatar'
 import { RegularText } from '../components/common/fonts'
 import GreyLine from '../components/comment/GreyLine'
 import { BRAND_LIGHT } from '../assets/styles/colors'
@@ -10,15 +9,7 @@ import FeedOperations from '../operations/FeedOperations'
 import Spinner from 'react-native-loading-spinner-overlay'
 import Topics from '../components/compose/Topics'
 import Controls from '../components/compose/Controls'
-
-const mapStateToProps = (state) => {
-  const { full_name: name, avatar_url: url } = state.user
-
-  return {
-    name,
-    url
-  }
-}
+import Message from '../components/compose/Message'
 
 const mapDispatchToProps = (dispatch) => {
   const savePost = (post, cb) => dispatch(FeedOperations.savePost(post, cb))
@@ -85,26 +76,14 @@ class ComposeScreen extends Component {
   }
 
   render() {
-    const { name, url } = this.props
-    const { message, spinner } = this.state
+    const { spinner, message } = this.state
 
     return (
       <SafeArea>
         <Spinner visible={spinner} />
-        <View style={styles.inputBox}>
-          <TextInput
-            placeholder='Enter your message ...'
-            style={styles.input}
-            multiline={true}
-            value={message}
-            onChangeText={message => this.onTextChange(message)} />
-
-          <ProfileAvatar
-            url={url}
-            name={name}
-            size={'small'} />
-        </View>
+        <Message value={message} onTextChange={message => this.setState({ message })} />
         <GreyLine boxStyle={styles.lineSolid} />
+        
         <View style={styles.btnBox}>
 
           {/* <----------------- Commented buttons go here -----------------> */}
@@ -121,31 +100,13 @@ class ComposeScreen extends Component {
         <GreyLine boxStyle={[styles.lineSolid, { marginBottom: 20 }]} />
 
         <Controls onToggle={controls => this.setState({ controls })} />
-
         <Topics onTopicPress={topicIDs => this.setState({ topicIDs })} />
-
       </SafeArea>
     )
   }
 }
 
 const styles = StyleSheet.create({
-  inputBox: {
-    paddingTop: 20,
-    paddingLeft: 10,
-    flexDirection: 'row',
-    width: '100%',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    minHeight: 325
-  },
-
-  input: {
-    fontSize: 20,
-    width: '80%',
-    alignSelf: 'stretch'
-  },
-
   btnBox: {
     alignItems: 'center',
     //The following line should take precedence when activating commented buttons.
@@ -192,7 +153,7 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(ComposeScreen)
+export default connect(null, mapDispatchToProps)(ComposeScreen)
 
 {/* <View style={styles.leftIconBox}>
             <TouchableOpacity>
