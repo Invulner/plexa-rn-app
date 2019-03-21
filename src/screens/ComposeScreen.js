@@ -1,15 +1,15 @@
 import React, { Component } from 'react'
-import { View, TextInput, StyleSheet, TouchableOpacity, Image, Alert, Switch } from 'react-native'
+import { View, TextInput, StyleSheet, TouchableOpacity, Image, Alert } from 'react-native'
 import { connect } from 'react-redux'
 import SafeArea from '../components/common/SafeArea'
 import ProfileAvatar from '../components/common/ProfileAvatar'
-import { RegularText, SemiboldText, BoldText } from '../components/common/fonts'
+import { RegularText } from '../components/common/fonts'
 import GreyLine from '../components/comment/GreyLine'
-import { BRAND_LIGHT, GRAY, BRAND_DARK } from '../assets/styles/colors'
+import { BRAND_LIGHT } from '../assets/styles/colors'
 import FeedOperations from '../operations/FeedOperations'
 import Spinner from 'react-native-loading-spinner-overlay'
-import { hints } from '../constants'
 import Topics from '../components/compose/Topics'
+import Controls from '../components/compose/Controls'
 
 const mapStateToProps = (state) => {
   const { full_name: name, avatar_url: url } = state.user
@@ -30,9 +30,11 @@ class ComposeScreen extends Component {
   state = {
     message: '',
     topicIDs: [],
-    commentsEnabled: true,
-    isPublic: true,
-    spinner: false
+    spinner: false,
+    controls: {
+      commentsEnabled: true,
+      isPublic: true
+    }
   }
 
   isEmptyInput = () => {
@@ -61,7 +63,7 @@ class ComposeScreen extends Component {
     if(!this.isEmptyInput()) {
 
       if (this.isTopicSelected()) {
-        const { message, topicIDs, commentsEnabled, isPublic } = this.state
+        const { message, topicIDs, controls: { commentsEnabled, isPublic } }  = this.state
         const post = {
           content: message,
           topic_ids: topicIDs,
@@ -80,50 +82,6 @@ class ComposeScreen extends Component {
         Alert.alert('Error', 'At least one topic has to be selected')
       }
     }
-  }
-
-  showHint = (key) => { 
-    Alert.alert(hints[key].title, hints[key].text)
-  }
-
-  renderControls = () => {
-    const controls = [
-      {
-        label: 'Replies',
-        param: 'commentsEnabled'
-      },
-      {
-        label: 'Privacy',
-        param: 'isPublic'
-      }
-    ]
-
-    return controls.map((item, index) => {
-
-      return (
-        <View 
-          style={styles.controlBox}
-          key={index}>
-          <SemiboldText style={styles.label}>
-            {item.label}
-          </SemiboldText>
-
-          <TouchableOpacity 
-            style={styles.questionBox}
-            onPress={() => this.showHint(item.label.toLowerCase())}>
-            <BoldText style={styles.question}>
-              ?
-            </BoldText>
-          </TouchableOpacity>
-          <View style={styles.switchBox}>
-            <Switch 
-              onValueChange={value => this.setState({ [item.param]: value})}
-              value={this.state[item.param]}
-              style={styles.switch} />
-          </View>
-        </View>
-      )
-    })
   }
 
   render() {
@@ -149,31 +107,7 @@ class ComposeScreen extends Component {
         <GreyLine boxStyle={styles.lineSolid} />
         <View style={styles.btnBox}>
 
-          {/* <View style={styles.leftIconBox}>
-            <TouchableOpacity>
-              <Image
-                source={require('../assets/icons/photo-upload.png')}
-                style={styles.iconUpload} />
-            </TouchableOpacity>
-
-            <TouchableOpacity>
-              <Image
-                source={require('../assets/icons/link.png')}
-                style={styles.iconUpload} />
-            </TouchableOpacity>
-
-            <TouchableOpacity>
-              <Image
-                source={require('../assets/icons/location.png')}
-                style={styles.iconUpload} />
-            </TouchableOpacity>
-
-            <TouchableOpacity>
-              <Image
-                source={require('../assets/icons/users-group.png')}
-                style={styles.iconUpload} />
-            </TouchableOpacity>
-          </View> */}
+          {/* <----------------- Commented buttons go here -----------------> */}
 
           <TouchableOpacity 
             style={[styles.postBtn, !this.isEmptyInput() && styles.btnActive]}
@@ -186,7 +120,7 @@ class ComposeScreen extends Component {
         </View>
         <GreyLine boxStyle={[styles.lineSolid, { marginBottom: 20 }]} />
 
-        {this.renderControls()}
+        <Controls onToggle={controls => this.setState({ controls })} />
 
         <Topics onTopicPress={topicIDs => this.setState({ topicIDs })} />
 
@@ -208,7 +142,8 @@ const styles = StyleSheet.create({
 
   input: {
     fontSize: 20,
-    width: '80%'
+    width: '80%',
+    alignSelf: 'stretch'
   },
 
   btnBox: {
@@ -254,44 +189,33 @@ const styles = StyleSheet.create({
 
   btnActive: {
     backgroundColor: BRAND_LIGHT
-  },
-
-  controlBox: {
-    flexDirection: 'row',
-    paddingHorizontal: 10
-  },
-
-  label: {
-    fontSize: 20,
-    marginRight: 7,
-    marginTop: 8
-  },
-
-  questionBox: {
-    width: 20,
-    height: 20,
-    borderRadius: 20,
-    backgroundColor: GRAY,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 6
-  },
-
-  question: {
-    color: '#fff',
-    fontSize: 20,
-    marginTop: 2
-  },
-
-  switchBox: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    flexDirection: 'row'
-  },
-
-  switch: {
-    transform: [{ scale: 0.6 }]
   }
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(ComposeScreen)
+
+{/* <View style={styles.leftIconBox}>
+            <TouchableOpacity>
+              <Image
+                source={require('../assets/icons/photo-upload.png')}
+                style={styles.iconUpload} />
+            </TouchableOpacity>
+
+            <TouchableOpacity>
+              <Image
+                source={require('../assets/icons/link.png')}
+                style={styles.iconUpload} />
+            </TouchableOpacity>
+
+            <TouchableOpacity>
+              <Image
+                source={require('../assets/icons/location.png')}
+                style={styles.iconUpload} />
+            </TouchableOpacity>
+
+            <TouchableOpacity>
+              <Image
+                source={require('../assets/icons/users-group.png')}
+                style={styles.iconUpload} />
+            </TouchableOpacity>
+          </View> */}
