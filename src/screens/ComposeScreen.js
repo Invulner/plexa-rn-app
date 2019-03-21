@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
-import { View, TextInput, StyleSheet, TouchableOpacity, Image, ScrollView, Alert, Switch } from 'react-native'
+import { View, TextInput, StyleSheet, TouchableOpacity, Image, Alert, Switch } from 'react-native'
 import { connect } from 'react-redux'
 import SafeArea from '../components/common/SafeArea'
 import ProfileAvatar from '../components/common/ProfileAvatar'
 import { RegularText, SemiboldText, BoldText } from '../components/common/fonts'
-import TopGreyLine from '../components/comment/TopGreyLine'
+import GreyLine from '../components/comment/GreyLine'
 import { BRAND_LIGHT, GRAY, BRAND_DARK } from '../assets/styles/colors'
 import FeedOperations from '../operations/FeedOperations'
 import Spinner from 'react-native-loading-spinner-overlay'
@@ -102,7 +102,7 @@ class ComposeScreen extends Component {
 
       return (
         <View 
-          style={styles.repliesBox}
+          style={styles.controlBox}
           key={index}>
           <SemiboldText style={styles.label}>
             {item.label}
@@ -118,7 +118,8 @@ class ComposeScreen extends Component {
           <View style={styles.switchBox}>
             <Switch 
               onValueChange={value => this.setState({ [item.param]: value})}
-              value={this.state[item.param]} />
+              value={this.state[item.param]}
+              style={styles.switch} />
           </View>
         </View>
       )
@@ -127,7 +128,7 @@ class ComposeScreen extends Component {
 
   render() {
     const { name, url } = this.props
-    const { message, spinner, commentsEnabled, isPublic } = this.state
+    const { message, spinner } = this.state
 
     return (
       <SafeArea>
@@ -145,7 +146,7 @@ class ComposeScreen extends Component {
             name={name}
             size={'small'} />
         </View>
-        <TopGreyLine boxStyle={styles.lineSolid} />
+        <GreyLine boxStyle={styles.lineSolid} />
         <View style={styles.btnBox}>
 
           {/* <View style={styles.leftIconBox}>
@@ -183,7 +184,7 @@ class ComposeScreen extends Component {
             </RegularText>
           </TouchableOpacity>
         </View>
-        <TopGreyLine boxStyle={styles.lineSolid} />
+        <GreyLine boxStyle={[styles.lineSolid, { marginBottom: 20 }]} />
 
         {this.renderControls()}
 
@@ -192,11 +193,6 @@ class ComposeScreen extends Component {
       </SafeArea>
     )
   }
-}
-
-const controls = {
-  flexDirection: 'row',
-  paddingHorizontal: 10
 }
 
 const styles = StyleSheet.create({
@@ -260,20 +256,13 @@ const styles = StyleSheet.create({
     backgroundColor: BRAND_LIGHT
   },
 
-  repliesBox: {
-    ...controls,
-    marginTop: 20
-  },
-
-  privacyBox: {
-    ...controls,
-    marginTop: 15,
-    marginBottom: 20
+  controlBox: {
+    flexDirection: 'row',
+    paddingHorizontal: 10
   },
 
   label: {
     fontSize: 20,
-    color: GRAY,
     marginRight: 7,
     marginTop: 8
   },
@@ -298,6 +287,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-end',
     flexDirection: 'row'
+  },
+
+  switch: {
+    transform: [{ scale: 0.6 }]
   }
 })
 

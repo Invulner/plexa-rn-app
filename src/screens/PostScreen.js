@@ -8,7 +8,7 @@ import Comment from '../components/comment/Comment'
 import CommentsPlaceholder from '../components/comment/CommentsPlaceholder'
 import ReplyBox from '../components/comment/ReplyBox'
 import Loader from '../components/common/Loader'
-import TopGreyLine from '../components/comment/TopGreyLine'
+import GreyLine from '../components/comment/GreyLine'
 import CommentsActions from '../actions/CommentsActions'
 import SafeArea from '../components/common/SafeArea'
 import { getSortedComments } from '../selectors/Comments'
@@ -53,7 +53,7 @@ class PostScreen extends Component {
     else 
       return (
         <React.Fragment>
-          <TopGreyLine />
+          <GreyLine />
           <CommentsPlaceholder message={'No comments'} />
         </React.Fragment>
       )
