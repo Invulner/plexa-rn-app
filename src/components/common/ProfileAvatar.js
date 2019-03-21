@@ -9,11 +9,11 @@ function ProfileAvatar(props) {
   const { url, name, size } = props
 
   return (
-    <View style={[styles.avatarPlaceholder, styles[size]]}>
+    <View style={[styles.avatarPlaceholder, styles[`avatarImage_${size}`]]}>
       {url ? 
         <Image 
           source={{uri: url}}
-          style={[styles.avatarImage, styles[size]]} />
+          style={[styles.avatarImage, styles[`avatarImage_${size}`]]} />
         :
         <RegularText style={profileStyles.initials}>
           {utils.getInitials(name)}
@@ -35,17 +35,17 @@ const styles = StyleSheet.create({
     resizeMode: 'contain'
   },
 
-  default: {
+  avatarImage_default: {
     width: 80,
     height: 80,
   },
 
-  medium: {
+  avatarImage_medium: {
     width: 60,
     height: 60
   },
 
-  small: {
+  avatarImage_small: {
     width: 50,
     height: 50
   }

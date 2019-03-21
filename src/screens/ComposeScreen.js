@@ -9,20 +9,19 @@ import { BRAND_LIGHT, GRAY, BRAND_DARK } from '../assets/styles/colors'
 import FeedOperations from '../operations/FeedOperations'
 import Spinner from 'react-native-loading-spinner-overlay'
 import { hints } from '../constants'
-import { getSortedTopics } from '../selectors/Topics'
+import Topics from '../components/compose/Topics'
 
 const mapStateToProps = (state) => {
   const { full_name: name, avatar_url: url } = state.user
 
   return {
     name,
-    url,
-    topics: getSortedTopics(state)
+    url
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
-  const savePost = (post, toggleOverlay, navigateToFeed) => dispatch(FeedOperations.savePost(post, toggleOverlay, navigateToFeed))
+  const savePost = (post, cb) => dispatch(FeedOperations.savePost(post, cb))
 
   return { savePost }
 }
@@ -32,7 +31,7 @@ class ComposeScreen extends Component {
     message: '',
     topicIDs: [],
     commentsEnabled: true,
-    isPublic: false,
+    isPublic: true,
     spinner: false
   }
 
@@ -42,31 +41,8 @@ class ComposeScreen extends Component {
     return !message.trim().length
   }
 
-  handleChangeText = (message) => {
+  onTextChange = (message) => {
     this.setState({ message })
-  }
-
-  onTopicPress = (itemId) => {
-    this.setState(prevState => {
-
-      if (!prevState.topicIDs.filter(id => id === itemId).length)
-        return {
-          topicIDs: [
-            ...prevState.topicIDs,
-            itemId
-          ]
-        }
-      else 
-        return {
-          topicIDs: prevState.topicIDs.filter(id => id !== itemId)
-        }
-    })
-  }
-
-  isTopicChosen = (itemId) => {
-    const { topicIDs } = this.state
-
-    return !!topicIDs.filter(id => id === itemId).length
   }
 
   toggleOverlay = () => {
@@ -77,14 +53,14 @@ class ComposeScreen extends Component {
     this.props.navigation.navigate('Feed')
   }
 
-  validateTopics = () => {
+  isTopicSelected = () => {
     return !!this.state.topicIDs.length
   }
 
   onSubmit = () => {
     if(!this.isEmptyInput()) {
 
-      if (this.validateTopics()) {
+      if (this.isTopicSelected()) {
         const { message, topicIDs, commentsEnabled, isPublic } = this.state
         const post = {
           content: message,
@@ -93,8 +69,13 @@ class ComposeScreen extends Component {
           public: isPublic
         }
 
+        const cb = () => {
+          this.toggleOverlay()
+          this.navigateToFeed()
+        }
+
         this.toggleOverlay()
-        this.props.savePost(post, this.toggleOverlay, this.navigateToFeed)
+        this.props.savePost(post, cb)
       } else {
         Alert.alert('Error', 'At least one topic has to be selected')
       }
@@ -105,19 +86,41 @@ class ComposeScreen extends Component {
     Alert.alert(hints[key].title, hints[key].text)
   }
 
-  renderTopics = () => {
-    return this.props.topics.map(item => {
+  renderControls = () => {
+    const controls = [
+      {
+        label: 'Replies',
+        param: 'commentsEnabled'
+      },
+      {
+        label: 'Privacy',
+        param: 'isPublic'
+      }
+    ]
+
+    return controls.map((item, index) => {
 
       return (
-        <TouchableOpacity
-          activeOpacity={0.9}
-          style={[styles.topic, this.isTopicChosen(item.id) && styles.topicActive]}
-          key={item.id}
-          onPress={() => this.onTopicPress(item.id)}>
-          <RegularText style={styles.topicText}>
-            {item.keyword}
-          </RegularText>
-        </TouchableOpacity>
+        <View 
+          style={styles.repliesBox}
+          key={index}>
+          <SemiboldText style={styles.label}>
+            {item.label}
+          </SemiboldText>
+
+          <TouchableOpacity 
+            style={styles.questionBox}
+            onPress={() => this.showHint(item.label.toLowerCase())}>
+            <BoldText style={styles.question}>
+              ?
+            </BoldText>
+          </TouchableOpacity>
+          <View style={styles.switchBox}>
+            <Switch 
+              onValueChange={value => this.setState({ [item.param]: value})}
+              value={this.state[item.param]} />
+          </View>
+        </View>
       )
     })
   }
@@ -135,7 +138,7 @@ class ComposeScreen extends Component {
             style={styles.input}
             multiline={true}
             value={message}
-            onChangeText={message => this.handleChangeText(message)} />
+            onChangeText={message => this.onTextChange(message)} />
 
           <ProfileAvatar
             url={url}
@@ -182,49 +185,9 @@ class ComposeScreen extends Component {
         </View>
         <TopGreyLine boxStyle={styles.lineSolid} />
 
-        <View style={styles.repliesBox}>
-          <SemiboldText style={styles.label}>
-            Replies
-          </SemiboldText>
+        {this.renderControls()}
 
-          <TouchableOpacity 
-            style={styles.questionBox}
-            onPress={() => this.showHint('replies')}>
-            <BoldText style={styles.question}>
-              ?
-            </BoldText>
-          </TouchableOpacity>
-          <View style={styles.switchBox}>
-            <Switch 
-              onValueChange={value => this.setState({ commentsEnabled: value})}
-              value={commentsEnabled} />
-          </View>
-        </View>
-
-        <View style={styles.privacyBox}>
-          <SemiboldText style={styles.label}>
-            Privacy
-          </SemiboldText>
-
-          <TouchableOpacity 
-            style={styles.questionBox}
-            onPress={() => this.showHint('privacy')}>
-            <BoldText style={styles.question}>
-              ?
-            </BoldText>
-          </TouchableOpacity>
-          <View style={styles.switchBox}>
-            <Switch
-              onValueChange={value => this.setState({ isPublic: value})}
-              value={isPublic} />
-          </View>
-        </View>
-
-        <ScrollView>
-          <View style={styles.topicsBox}>
-            {this.renderTopics()}
-          </View>  
-        </ScrollView>
+        <Topics onTopicPress={topicIDs => this.setState({ topicIDs })} />
 
       </SafeArea>
     )
@@ -335,32 +298,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-end',
     flexDirection: 'row'
-  },
-
-  topicsBox: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    paddingHorizontal: 10,
-    justifyContent: 'flex-start'
-  },
-
-  topic: {
-    justifyContent: 'center',
-    paddingHorizontal: 4,
-    backgroundColor: BRAND_LIGHT,
-    height: 25,
-    borderRadius: 5,
-    marginRight: 3,
-    marginBottom: 3
-  },
-
-  topicActive: {
-    backgroundColor: BRAND_DARK
-  },
-
-  topicText: {
-    color: '#fff',
-    marginTop: 5
   }
 })
 

@@ -9,6 +9,6 @@ export const getSortedTopics = createSelector(
   (specialities, sub_specialities, conditions, interests) => {
     const allTopics = [...specialities, ...sub_specialities, ...conditions, ...interests]
 
-    return allTopics.sort(utils.sortAlphabetically)
+    return allTopics.sort(utils.sortByField('keyword'))
   }
 )
