@@ -43,14 +43,12 @@ class Social extends Component {
     }), this.updateLike)
   }
 
-  debounced = utils.debounce(this.onLikePress, 2000)
-
-  updateLike = () => {
+  updateLike = utils.debounce(() => {
     const { isComment, likeComment, likePost, id } = this.props
     const { liked } = this.state
     
     isComment ? likeComment(liked, id) : likePost(liked, id)
-  }
+  }, 2500)
 
   getIcon = () => {
     return this.state.liked ? 'liked' : 'unliked'
@@ -67,7 +65,7 @@ class Social extends Component {
   
     return (
       <View style={styles.socialContainer}>
-        <TouchableWithoutFeedback onPress={this.debounced}>
+        <TouchableWithoutFeedback onPress={this.onLikePress}>
           <Image 
             source={likeIcons[this.getIcon()]}
             style={styles.icon} />
