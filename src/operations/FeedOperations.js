@@ -60,8 +60,23 @@ const updateLike = (flag, id) => {
   }
 }
 
+const savePost = (post, cb) => {
+  return dispatch => {
+
+    getAxiosInstance().then(api => {
+      api.post(`${API_URL}/stories`, post)
+      .then(res => {
+        console.log(res.data)
+        dispatch(FeedActions.savePost(res.data))
+        cb()
+      }).catch(error => console.log('SAVE POST ERROR: ', error))
+    })
+  }
+}
+
 export default {
   getFeed,
   refreshFeed,
-  updateLike
+  updateLike,
+  savePost
 }

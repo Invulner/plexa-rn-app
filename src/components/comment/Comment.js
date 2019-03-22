@@ -4,14 +4,14 @@ import { feedStyles } from '../../assets/styles/feed/feedStyles'
 import PostHead from '../common/PostHead'
 import { RegularText } from '../common/fonts'
 import Social from '../common/Social'
-import TopGreyLine from './TopGreyLine'
+import GreyLine from './GreyLine'
 
 function Comment(props) {
   const { created_at, author, content, likes_count, id, liked } = props.item
 
   return (
     <React.Fragment>
-      <TopGreyLine />
+      <GreyLine />
       <View style={styles.container}>
         <PostHead 
           created_at={created_at} 

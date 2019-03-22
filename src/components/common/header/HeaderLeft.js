@@ -10,7 +10,7 @@ class FeedHeaderLeft extends Component {
       <View style={styles.container}>
         <TouchableOpacity 
           style={styles.addPostButton} 
-          onPress={() => console.log('add post')}>
+          onPress={() => navigation.navigate('Compose')}>
           <Image 
             style={styles.addPostIcon}
             source={require('../../../assets/icons/add-post.png')} />
@@ -29,8 +29,8 @@ const styles = StyleSheet.create({
   },
   
   addPostIcon: {
-    width: 32,
-    height: 32
+    width: 27,
+    height: 27
   },
   
   addPostButton: {

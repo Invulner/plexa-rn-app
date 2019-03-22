@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { View, StyleSheet, Image, TextInput, TouchableOpacity } from 'react-native'
 import { BRAND_LIGHT } from '../../assets/styles/colors'
-import TopGreyLine from './TopGreyLine'
+import GreyLine from './GreyLine'
 import { connect } from 'react-redux'
 import CommentOperations from '../../operations/CommentsOperations'
 
@@ -17,7 +17,7 @@ class ReplyBox extends Component {
   }
 
   onReplyChange = (reply) => {
-    this.setState({reply})
+    this.setState({ reply })
   }
 
   isEmptyInput = () => {
@@ -39,7 +39,7 @@ class ReplyBox extends Component {
 
     return (
       <React.Fragment>
-          <TopGreyLine boxStyle={styles.lineBox}/>
+          <GreyLine boxStyle={styles.lineBox}/>
   
           <View style={styles.container}>
             <View style={styles.inputBox}>

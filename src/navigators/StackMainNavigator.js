@@ -8,6 +8,7 @@ import TermsOfService from '../screens/terms/TermsOfService'
 import HeaderLogo from '../components/common/header/HeaderLogo'
 import PublicProfileScreen from '../screens/PublicProfileScreen'
 import PostScreen from '../screens/PostScreen'
+import ComposeScreen from '../screens/ComposeScreen'
 
 const MainStack = createStackNavigator({
   MainSwitch: {
@@ -39,6 +40,12 @@ const MainStack = createStackNavigator({
     screen: PostScreen,
     navigationOptions: () => ({
       headerTitle: HeaderLogo
+    })
+  },
+  Compose: {
+    screen: ComposeScreen,
+    navigationOptions: () => ({
+      headerTitle: <HeaderTitle title={'New post'} />
     })
   }
 }, {

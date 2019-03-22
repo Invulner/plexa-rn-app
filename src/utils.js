@@ -44,6 +44,12 @@ const findItemById = (arr, id) => {
   return arr.filter(item => item.id === id)[0]
 }
 
+const sortByField = (field) => {
+  return (a, b) => {
+    return  a[field] == b[field] ? 0 : a[field] < b[field] ? -1 : 1
+  }
+}
+
 export default {
   getInitials,
   truncate,
@@ -51,5 +57,6 @@ export default {
   getDescription,
   sortByTime,
   updateItemById,
-  findItemById
+  findItemById,
+  sortByField
 }

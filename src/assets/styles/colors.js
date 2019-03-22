@@ -4,6 +4,7 @@ export const BRAND_DARK = '#7e7864'
 export const PREVIEW_LIGHT = '#00a453'
 export const PREVIEW_DARK = '#085d24'
 export const AVATAR_BG = '#d3a400'
+export const GRAY = '#989898'
 export const FEATURED = [
   {
     bg: '#f0bf02',

@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
 
-function TopGreyLine(props) {
+function GreyLine(props) {
   return (
     <View style={[styles.lineBox, props.boxStyle]}>
       <View style={styles.greyLine} />
@@ -24,4 +24,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default TopGreyLine
+export default GreyLine

@@ -34,6 +34,11 @@ const updateCommentsCounter = (id) => ({
   id
 })
 
+const savePost = (post) => ({
+  type: types.SAVE_POST,
+  post
+})
+
 export default {
   saveFeedData,
   toggleFeedDataLoading,
@@ -41,5 +46,6 @@ export default {
   refreshFeed,
   resetFeed,
   updatePostLike,
-  updateCommentsCounter
+  updateCommentsCounter,
+  savePost
 }
