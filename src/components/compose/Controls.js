@@ -76,7 +76,8 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 20,
     marginRight: 7,
-    marginTop: 8
+    marginTop: 8,
+    color: '#4c4c4c'
   },
 
   questionBox: {

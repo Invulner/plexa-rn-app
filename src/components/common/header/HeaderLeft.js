@@ -29,8 +29,8 @@ const styles = StyleSheet.create({
   },
   
   addPostIcon: {
-    width: 32,
-    height: 32
+    width: 27,
+    height: 27
   },
   
   addPostButton: {

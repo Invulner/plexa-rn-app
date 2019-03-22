@@ -34,10 +34,6 @@ class ComposeScreen extends Component {
     return !message.trim().length
   }
 
-  onTextChange = (message) => {
-    this.setState({ message })
-  }
-
   toggleOverlay = () => {
     this.setState(prevState => ({ spinner: !prevState.spinner }))
   }
