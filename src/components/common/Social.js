@@ -5,6 +5,7 @@ import { likeIcons } from '../../constants'
 import { connect } from 'react-redux'
 import CommentsOperations from '../../operations/CommentsOperations'
 import FeedOperations from '../../operations/FeedOperations'
+import utils from '../../utils'
 
 const mapStateToProps = (state, { id, isComment }) => {
   const items = isComment ? state.comments.items : state.feed.feedData
@@ -35,19 +36,19 @@ class Social extends Component {
   
   state = this.setPropsToState()
 
-  handleLike = () => {
+  onLikePress = () => {
     this.setState(prevState => ({
       liked: !prevState.liked,
       likes: prevState.liked ? prevState.likes - 1 : prevState.likes + 1
     }), this.updateLike)
   }
 
-  updateLike = () => {
+  updateLike = utils.debounce(() => {
     const { isComment, likeComment, likePost, id } = this.props
     const { liked } = this.state
     
     isComment ? likeComment(liked, id) : likePost(liked, id)
-  }
+  }, 2500)
 
   getIcon = () => {
     return this.state.liked ? 'liked' : 'unliked'
@@ -64,12 +65,12 @@ class Social extends Component {
   
     return (
       <View style={styles.socialContainer}>
-        <TouchableWithoutFeedback onPress={this.handleLike}>
+        <TouchableWithoutFeedback onPress={this.onLikePress}>
           <Image 
             source={likeIcons[this.getIcon()]}
             style={styles.icon} />
         </TouchableWithoutFeedback>
-        <LightText style={styles.likeCounter}>
+        <LightText>
           {likes}
         </LightText>
         {!!answersCount &&
@@ -105,11 +106,9 @@ const styles = StyleSheet.create({
 
   commentsContainer: {
     flexDirection: 'row', 
-    alignItems: 'center'
-  },
-
-  likeCounter: {
-    marginRight: 30
+    alignItems: 'center',
+    position: 'absolute',
+    left: 70
   }
 })
 
