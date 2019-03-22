@@ -47,37 +47,36 @@ class ComposeScreen extends Component {
   }
 
   onSubmit = () => {
-    if(!this.isEmptyInput()) {
-
-      if (this.isTopicSelected()) {
-        const { message, topicIDs, controls: { commentsEnabled, isPublic } }  = this.state
-        const post = {
-          content: message,
-          topic_ids: topicIDs,
-          comments_enabled: commentsEnabled,
-          public: isPublic
-        }
-
-        const cb = () => {
-          this.toggleOverlay()
-          this.navigateToFeed()
-        }
-
-        this.toggleOverlay()
-        this.props.savePost(post, cb)
-      } else {
-        Alert.alert('Error', 'At least one topic has to be selected')
+    if (this.isTopicSelected()) {
+      const { message, topicIDs, controls: { commentsEnabled, isPublic } }  = this.state
+      const post = {
+        content: message,
+        topic_ids: topicIDs,
+        comments_enabled: commentsEnabled,
+        public: isPublic
       }
+
+      const cb = () => {
+        this.toggleOverlay()
+        this.navigateToFeed()
+      }
+
+      this.toggleOverlay()
+      this.props.savePost(post, cb)
+    } else {
+      Alert.alert('Error', 'At least one topic has to be selected')
     }
   }
 
   render() {
-    const { spinner, message } = this.state
+    const { spinner, message, controls } = this.state
 
     return (
       <SafeArea>
         <Spinner visible={spinner} />
-        <Message value={message} onTextChange={message => this.setState({ message })} />
+        <Message 
+          value={message} 
+          onTextChange={message => this.setState({ message })} />
         <GreyLine boxStyle={styles.lineSolid} />
         
         <View style={styles.btnBox}>
@@ -95,7 +94,9 @@ class ComposeScreen extends Component {
         </View>
         <GreyLine boxStyle={[styles.lineSolid, { marginBottom: 20 }]} />
 
-        <Controls onToggle={controls => this.setState({ controls })} />
+        <Controls 
+          values={controls}
+          onToggle={controls => this.setState({ controls })} />
         <Topics onTopicPress={topicIDs => this.setState({ topicIDs })} />
       </SafeArea>
     )

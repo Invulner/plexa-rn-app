@@ -5,10 +5,16 @@ import { hints } from '../../constants'
 import { GRAY } from '../../assets/styles/colors'
 
 class Controls extends Component {
-  state = {
-    commentsEnabled: true,
-    isPublic: true
+  mapPropsToState = () => {
+    const { commentsEnabled, isPublic } = this.props.values
+
+    return {
+      commentsEnabled,
+      isPublic
+    }
   }
+
+  state = this.mapPropsToState()
 
   showHint = (key) => { 
     Alert.alert(hints[key].title, hints[key].text)
