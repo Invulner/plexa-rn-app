@@ -56,11 +56,13 @@ class ComposeScreen extends Component {
   onSubmit = () => {
     if (this.isTopicSelected()) {
       const { message, topicIDs, controls: { commentsEnabled, isPublic } }  = this.state
+      const { link_url } = this.props.post
       const post = {
         content: message,
         topic_ids: topicIDs,
         comments_enabled: commentsEnabled,
-        public: isPublic
+        public: isPublic,
+        link_url
       }
 
       const cb = () => {
@@ -103,7 +105,7 @@ class ComposeScreen extends Component {
           <TouchableOpacity 
             style={[styles.postBtn, !this.isEmptyInput() && styles.btnActive]}
             onPress={this.onSubmit}
-            disabled={this.isEmptyInput()}>
+            disabled={!link_url && this.isEmptyInput()}>
             <RegularText style={styles.postText}>
               Post
             </RegularText>
