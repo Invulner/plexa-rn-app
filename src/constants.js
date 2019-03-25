@@ -40,10 +40,10 @@ export const hints = {
 export const postIcons = {
   'link-active': require('./assets/icons/link-active.png'),
   link: require('./assets/icons/link.png'),
-  'photoUpload-active': require('./assets/icons/photo-upload-active.png'),
-  photoUpload: require('./assets/icons/photo-upload.png'),
+  'photo-active': require('./assets/icons/photo-upload-active.png'),
+  photo: require('./assets/icons/photo-upload.png'),
   'location-active': require('./assets/icons/location-active.png'),
   location: require('./assets/icons/location.png'),
-  'usersGroup-active': require('./assets/icons/users-group-active.png'),
-  usersGroup: require('./assets/icons/users-group.png')
+  'users-active': require('./assets/icons/users-group-active.png'),
+  users: require('./assets/icons/users-group.png')
 }

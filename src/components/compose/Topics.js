@@ -4,39 +4,36 @@ import { connect } from 'react-redux'
 import { getSortedTopics } from '../../selectors/Topics'
 import { BRAND_DARK, BRAND_LIGHT } from '../../assets/styles/colors'
 import { RegularText } from '../common/fonts'
+import PostActions from '../../actions/PostActions'
 
 const mapStateToProps = (state) => {
+  const { topic_ids } = state.post
+
   return {  
-    topics: getSortedTopics(state)
+    topics: getSortedTopics(state),
+    topic_ids
   }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  const toggleId = (id) => dispatch(PostActions.saveTopicIDs(id))
+
+  return { toggleId }
 }
 
 class Topics extends Component {
   state = {
-    topicIDs: []
+    topic_ids: []
   }
 
   isTopicChosen = (itemId) => {
-    const { topicIDs } = this.state
+    const { topic_ids } = this.props
 
-    return !!topicIDs.includes(itemId)
+    return !!topic_ids.includes(itemId)
   }
 
   onTopicPress = (itemId) => {
-    this.setState(prevState => {
-
-      if (!prevState.topicIDs.includes(itemId))
-        return {
-          topicIDs: [
-            ...prevState.topicIDs,
-            itemId
-          ]
-        }
-      else 
-        return {
-          topicIDs: prevState.topicIDs.filter(id => id !== itemId)
-        }
-    }, () => this.props.onTopicPress(this.state.topicIDs))
+    this.props.toggleId(itemId)
   }
 
   renderTopics = () => {
@@ -96,4 +93,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect(mapStateToProps, null)(Topics)
+export default connect(mapStateToProps, mapDispatchToProps)(Topics)

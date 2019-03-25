@@ -44,26 +44,26 @@ class AddLinkScreen extends Component {
             value={link}
             onChangeText={link => this.setState({ link })} />
         </View>
-          <View style={styles.btnBox}>
+        <View style={styles.btnBox}>
 
-            <TouchableOpacity 
-              style={[styles.btn, styles.btnClear]}
-              onPress={this.onInputClear}>
-              <RegularText style={styles.btnText}>
-                Clear
-              </RegularText>
-            </TouchableOpacity>
+          <TouchableOpacity 
+            style={[styles.btn, styles.btnClear]}
+            onPress={this.onInputClear}>
+            <RegularText style={styles.btnText}>
+              Clear
+            </RegularText>
+          </TouchableOpacity>
 
-            <TouchableOpacity 
-              style={[styles.btn, styles.btnAttach]}
-              disabled={this.isEmptyInput()}
-              onPress={this.onSubmit}>
-              <RegularText style={styles.btnText}>
-                Attach
-              </RegularText>
-            </TouchableOpacity>
+          <TouchableOpacity 
+            style={[styles.btn, styles.btnAttach]}
+            disabled={this.isEmptyInput()}
+            onPress={this.onSubmit}>
+            <RegularText style={styles.btnText}>
+              Attach
+            </RegularText>
+          </TouchableOpacity>
 
-          </View>
+        </View>
       </SafeArea>
     )
   }

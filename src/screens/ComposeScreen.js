@@ -92,18 +92,18 @@ class ComposeScreen extends Component {
         <View style={styles.btnBox}>
 
           <View style={styles.leftIconBox}>
-            <AttachBtn iconType={'photoUpload'} />
+            <AttachBtn iconType={'photo'} />
             <AttachBtn 
               active={!!link_url}
               route={'AddLink'}
               iconType={'link'} />
 
-            <AttachBtn iconType={'usersGroup'} />
-            <AttachBtn iconType={'photoUpload'} />
+            <AttachBtn iconType={'location'} />
+            <AttachBtn iconType={'users'} />
           </View>
 
           <TouchableOpacity 
-            style={[styles.postBtn, !this.isEmptyInput() && styles.btnActive]}
+            style={[styles.postBtn, (!this.isEmptyInput() || link_url) && styles.btnActive]}
             onPress={this.onSubmit}
             disabled={!link_url && this.isEmptyInput()}>
             <RegularText style={styles.postText}>
@@ -116,7 +116,7 @@ class ComposeScreen extends Component {
         <Controls 
           values={controls}
           onToggle={controls => this.setState({ controls })} />
-        <Topics onTopicPress={topicIDs => this.setState({ topicIDs })} />
+        <Topics />
       </SafeArea>
     )
   }

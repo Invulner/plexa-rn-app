@@ -1,5 +1,7 @@
 const SAVE_LINK_URL = 'SAVE_LINK_URL'
+const SAVE_TOPIC_IDS = 'SAVE_TOPIC_IDS'
 
 export default {
-  SAVE_LINK_URL
+  SAVE_LINK_URL,
+  SAVE_TOPIC_IDS
 }
