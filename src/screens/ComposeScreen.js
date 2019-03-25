@@ -10,6 +10,13 @@ import Spinner from 'react-native-loading-spinner-overlay'
 import Topics from '../components/compose/Topics'
 import Controls from '../components/compose/Controls'
 import Message from '../components/compose/Message'
+import { postIcons } from '../constants'
+
+const mapStateToProps = (state) => {
+  const { post } = state
+
+  return { post }
+}
 
 const mapDispatchToProps = (dispatch) => {
   const savePost = (post, cb) => dispatch(FeedOperations.savePost(post, cb))
@@ -25,8 +32,13 @@ class ComposeScreen extends Component {
     controls: {
       commentsEnabled: true,
       isPublic: true
-    },
-    link_url: ''
+    }
+  }
+
+  getLinkIcon = () => {
+    const { link_url } = this.props.post
+
+    return link_url ? postIcons['link-active'] : postIcons.link
   }
 
   isEmptyInput = () => {
@@ -92,7 +104,7 @@ class ComposeScreen extends Component {
 
             <TouchableOpacity onPress={() => navigate('AddLink')}>
               <Image
-                source={require('../assets/icons/link.png')}
+                source={this.getLinkIcon()}
                 style={styles.iconUpload} />
             </TouchableOpacity>
 
@@ -174,4 +186,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect(null, mapDispatchToProps)(ComposeScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(ComposeScreen)

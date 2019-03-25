@@ -36,3 +36,8 @@ export const hints = {
     text: 'When enabled your post will only show to other health providers. Disable to post also to patients.'
   }
 }
+
+export const postIcons = {
+  'link-active': require('./assets/icons/link-active.png'),
+  link: require('./assets/icons/link.png')
+}
