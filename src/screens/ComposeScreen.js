@@ -10,7 +10,7 @@ import Spinner from 'react-native-loading-spinner-overlay'
 import Topics from '../components/compose/Topics'
 import Controls from '../components/compose/Controls'
 import Message from '../components/compose/Message'
-import { postIcons } from '../constants'
+import AttachBtn from '../components/compose/AttachBtn'
 
 const mapStateToProps = (state) => {
   const { post } = state
@@ -33,12 +33,6 @@ class ComposeScreen extends Component {
       commentsEnabled: true,
       isPublic: true
     }
-  }
-
-  getLinkIcon = () => {
-    const { link_url } = this.props.post
-
-    return link_url ? postIcons['link-active'] : postIcons.link
   }
 
   isEmptyInput = () => {
@@ -83,7 +77,7 @@ class ComposeScreen extends Component {
 
   render() {
     const { spinner, message, controls } = this.state
-    const { navigate } = this.props.navigation
+    const { link_url } = this.props.post
 
     return (
       <SafeArea>
@@ -96,29 +90,14 @@ class ComposeScreen extends Component {
         <View style={styles.btnBox}>
 
           <View style={styles.leftIconBox}>
-            <TouchableOpacity>
-              <Image
-                source={require('../assets/icons/photo-upload.png')}
-                style={styles.iconUpload} />
-            </TouchableOpacity>
+            <AttachBtn iconType={'photoUpload'} />
+            <AttachBtn 
+              active={!!link_url}
+              route={'AddLink'}
+              iconType={'link'} />
 
-            <TouchableOpacity onPress={() => navigate('AddLink')}>
-              <Image
-                source={this.getLinkIcon()}
-                style={styles.iconUpload} />
-            </TouchableOpacity>
-
-            <TouchableOpacity>
-              <Image
-                source={require('../assets/icons/location.png')}
-                style={styles.iconUpload} />
-            </TouchableOpacity>
-
-            <TouchableOpacity>
-              <Image
-                source={require('../assets/icons/users-group.png')}
-                style={styles.iconUpload} />
-            </TouchableOpacity>
+            <AttachBtn iconType={'usersGroup'} />
+            <AttachBtn iconType={'photoUpload'} />
           </View>
 
           <TouchableOpacity 
@@ -167,12 +146,6 @@ const styles = StyleSheet.create({
 
   lineSolid: {
     paddingHorizontal: 0
-  },
-
-  iconUpload: {
-    width: 23,
-    height: 23,
-    resizeMode: 'contain'
   },
 
   leftIconBox: {
