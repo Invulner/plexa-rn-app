@@ -5,6 +5,7 @@ import FeedReducer from './FeedReducer'
 import PublicUserReducer from './PublicUserReducer'
 import CommentsReducer from './CommentsReducer'
 import ResearchFeedReducer from './ResearchFeedReducer'
+import PostReducer from './PostReducer'
 
 const rootReducer = combineReducers({
   device: DeviceReducer,
@@ -12,7 +13,8 @@ const rootReducer = combineReducers({
   feed: FeedReducer,
   publicUser: PublicUserReducer,
   comments: CommentsReducer,
-  researchFeed: ResearchFeedReducer
+  researchFeed: ResearchFeedReducer,
+  post: PostReducer
 })
 
 export default rootReducer

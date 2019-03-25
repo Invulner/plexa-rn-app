@@ -25,7 +25,8 @@ class ComposeScreen extends Component {
     controls: {
       commentsEnabled: true,
       isPublic: true
-    }
+    },
+    link_url: ''
   }
 
   isEmptyInput = () => {
@@ -70,6 +71,7 @@ class ComposeScreen extends Component {
 
   render() {
     const { spinner, message, controls } = this.state
+    const { navigate } = this.props.navigation
 
     return (
       <SafeArea>
@@ -81,7 +83,31 @@ class ComposeScreen extends Component {
         
         <View style={styles.btnBox}>
 
-          {/* <----------------- Commented buttons go here -----------------> */}
+          <View style={styles.leftIconBox}>
+            <TouchableOpacity>
+              <Image
+                source={require('../assets/icons/photo-upload.png')}
+                style={styles.iconUpload} />
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => navigate('AddLink')}>
+              <Image
+                source={require('../assets/icons/link.png')}
+                style={styles.iconUpload} />
+            </TouchableOpacity>
+
+            <TouchableOpacity>
+              <Image
+                source={require('../assets/icons/location.png')}
+                style={styles.iconUpload} />
+            </TouchableOpacity>
+
+            <TouchableOpacity>
+              <Image
+                source={require('../assets/icons/users-group.png')}
+                style={styles.iconUpload} />
+            </TouchableOpacity>
+          </View>
 
           <TouchableOpacity 
             style={[styles.postBtn, !this.isEmptyInput() && styles.btnActive]}
@@ -106,9 +132,7 @@ class ComposeScreen extends Component {
 const styles = StyleSheet.create({
   btnBox: {
     alignItems: 'center',
-    //The following line should take precedence when activating commented buttons.
-    // justifyContent: 'space-between',
-    justifyContent: 'flex-end',
+    justifyContent: 'space-between',
     flexDirection: 'row',
     paddingHorizontal: 10,
     height: 50,
@@ -151,29 +175,3 @@ const styles = StyleSheet.create({
 })
 
 export default connect(null, mapDispatchToProps)(ComposeScreen)
-
-{/* <View style={styles.leftIconBox}>
-            <TouchableOpacity>
-              <Image
-                source={require('../assets/icons/photo-upload.png')}
-                style={styles.iconUpload} />
-            </TouchableOpacity>
-
-            <TouchableOpacity>
-              <Image
-                source={require('../assets/icons/link.png')}
-                style={styles.iconUpload} />
-            </TouchableOpacity>
-
-            <TouchableOpacity>
-              <Image
-                source={require('../assets/icons/location.png')}
-                style={styles.iconUpload} />
-            </TouchableOpacity>
-
-            <TouchableOpacity>
-              <Image
-                source={require('../assets/icons/users-group.png')}
-                style={styles.iconUpload} />
-            </TouchableOpacity>
-          </View> */}
