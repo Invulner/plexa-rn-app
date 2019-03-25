@@ -27,11 +27,8 @@ const PostReducer = (state = initialState, action) => {
     case types.SAVE_TOPIC_IDS: 
       return getTopicIDs(state, action)
 
-    case types.SAVE_PARAM:
-      return {
-        ...state, 
-        ...action.param
-      }
+    case types.SAVE_CONTENT: 
+      return {...state, content: action.content}
 
     default: 
       return state

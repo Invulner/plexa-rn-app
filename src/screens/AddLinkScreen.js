@@ -28,6 +28,7 @@ class AddLinkScreen extends Component {
   onSubmit = () => {
     const { navigation, saveLink } = this.props
     const { link } = this.state
+    
     saveLink(link)
     navigation.navigate('Compose')
   }

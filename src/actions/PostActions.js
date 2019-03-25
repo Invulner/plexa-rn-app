@@ -5,18 +5,18 @@ const saveLinkUrl = (link) => ({
   link
 })
 
-const saveParam = (param) => ({
-  type: types.SAVE_PARAM,
-  param
-})
-
 const saveTopicIDs = (id) => ({
   type: types.SAVE_TOPIC_IDS,
   id
 })
 
+const saveContent = (content) => ({
+  type: types.SAVE_CONTENT,
+  content
+})
+
 export default {
   saveLinkUrl,
-  saveParam,
-  saveTopicIDs
+  saveTopicIDs,
+  saveContent
 }

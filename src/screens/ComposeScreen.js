@@ -26,8 +26,6 @@ const mapDispatchToProps = (dispatch) => {
 
 class ComposeScreen extends Component {
   state = {
-    message: '',
-    topicIDs: [],
     spinner: false,
     controls: {
       commentsEnabled: true,
@@ -36,9 +34,7 @@ class ComposeScreen extends Component {
   }
 
   isEmptyInput = () => {
-    const { message } = this.state
-
-    return !message.trim().length
+    return !this.props.post.content
   }
 
   toggleOverlay = () => {
@@ -78,15 +74,13 @@ class ComposeScreen extends Component {
   }
 
   render() {
-    const { spinner, message, controls } = this.state
+    const { spinner, controls } = this.state
     const { link_url } = this.props.post
 
     return (
       <SafeArea>
         <Spinner visible={spinner} />
-        <Message 
-          value={message} 
-          onTextChange={message => this.setState({ message })} />
+        <Message />
         <GreyLine boxStyle={styles.lineSolid} />
         
         <View style={styles.btnBox}>
