@@ -52,6 +52,7 @@ class AddLinkScreen extends Component {
         <View style={styles.container}>
           <TextInput 
             style={styles.input}
+            multiline={true}
             placeholder='Type a link here'
             value={link_url}
             onChangeText={link => this.setState({ link_url: link })} />

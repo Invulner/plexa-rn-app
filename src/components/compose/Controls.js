@@ -26,26 +26,9 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 class Controls extends Component {
-  // mapPropsToState = () => {
-  //   const { commentsEnabled, isPublic } = this.props.values
-
-  //   return {
-  //     commentsEnabled,
-  //     isPublic
-  //   }
-  // }
-
-  // state = this.mapPropsToState()
-
   showHint = (key) => { 
     Alert.alert(hints[key].title, hints[key].text)
   }
-
-  // onToggleSwitch = (key, value) => {
-  //   this.setState({ [key]: value}, () => {
-  //     this.props.onToggle(this.state)
-  //   })
-  // }
 
   render() {
     const { comments_enabled, toggleComments, isPublic, toggleVisibility } = this.props

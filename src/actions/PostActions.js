@@ -1,12 +1,12 @@
 import types from '../types/post'
 
 const saveLink = (link) => ({
-  type: types.SAVE_LINK_URL,
+  type: types.SAVE_LINK,
   link
 })
 
 const clearLink = () => ({
-  type: types.CLEAR_LINK_URL
+  type: types.CLEAR_LINK
 })
 
 const saveTopicIDs = (id) => ({
