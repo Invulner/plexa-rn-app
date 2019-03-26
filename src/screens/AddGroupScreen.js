@@ -18,7 +18,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-  const saveGroup = id => dispatch(PostActions.saveGroup(id))
+  const saveGroup = (id) => dispatch(PostActions.saveGroup(id))
   const deleteGroup = () => dispatch(PostActions.deleteGroup())
 
   return { 
@@ -28,8 +28,26 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 class AddGroupScreen extends Component {
+  navigateToComposeScreen = () => {
+    this.props.navigation.navigate('Compose')
+  }
+
+  onGroupPress = (id) => {
+    const { saveGroup} = this.props
+
+    saveGroup(id)
+    this.navigateToComposeScreen()
+  }
+
+  onNoGroupPress = () => {
+    const { deleteGroup } = this.props
+
+    deleteGroup()
+    this.navigateToComposeScreen()
+  }
+
   renderGroups = () => {
-    const { groups, saveGroup, group_id } = this.props
+    const { groups, group_id } = this.props
 
     return groups.map(item => {
 
@@ -37,7 +55,7 @@ class AddGroupScreen extends Component {
         <View key={item.id}>
           <TouchableOpacity 
             style={styles.groupBox}
-            onPress={() => saveGroup(item.id)}>
+            onPress={() => this.onGroupPress(item.id)}>
             <RegularText style={[styles.groupText, group_id === item.id && styles.groupSelected]}>
               {item.name}
             </RegularText>
@@ -53,7 +71,7 @@ class AddGroupScreen extends Component {
       <SafeArea>   
         <TouchableOpacity 
           style={styles.groupBox}
-          onPress={this.props.deleteGroup}>
+          onPress={this.onNoGroupPress}>
           <RegularText style={styles.groupText}>
             No Group
           </RegularText>
