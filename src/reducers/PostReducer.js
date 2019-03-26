@@ -26,7 +26,7 @@ const PostReducer = (state = initialState, action) => {
     case types.SAVE_LINK_URL:
       return {...state, link_url: action.link}
 
-    case types.CLEAR_LINK_URL: 
+    case types.CLEAR_LINK_URL:
       return {...state, link_url: ''}
 
     case types.SAVE_TOPIC_IDS: 

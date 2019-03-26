@@ -1,8 +1,12 @@
 import types from '../types/post'
 
-const saveLinkUrl = (link) => ({
+const saveLink = (link) => ({
   type: types.SAVE_LINK_URL,
   link
+})
+
+const clearLink = () => ({
+  type: types.CLEAR_LINK_URL
 })
 
 const saveTopicIDs = (id) => ({
@@ -13,10 +17,6 @@ const saveTopicIDs = (id) => ({
 const saveContent = (content) => ({
   type: types.SAVE_CONTENT,
   content
-})
-
-const clearLink = () => ({
-  type: types.SAVE_LINK_URL
 })
 
 const toggleComments = (flag) => ({
@@ -30,7 +30,7 @@ const toggleVisibility = (flag) => ({
 })
 
 export default {
-  saveLinkUrl,
+  saveLink,
   saveTopicIDs,
   saveContent,
   clearLink,

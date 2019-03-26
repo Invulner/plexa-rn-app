@@ -6,37 +6,46 @@ import { RegularText } from '../components/common/fonts'
 import { BRAND_LIGHT, RED } from '../assets/styles/colors'
 import PostActions from '../actions/PostActions'
 
+const mapStateToProps = (state) => {
+  const { link_url } = state.post
+
+  return { link_url }
+}
+
 const mapDispatchToProps = (dispatch) => {
-  const saveLink = (link) => dispatch(PostActions.saveLinkUrl(link))
+  const saveLink = (link) => dispatch(PostActions.saveLink(link))
   const clearLink = () => dispatch(PostActions.clearLink())
 
-  return { saveLink, clearLink }
+  return { 
+    saveLink, 
+    clearLink 
+  }
 }
 
 class AddLinkScreen extends Component {
   state = {
-    link: ''
+    link_url: this.props.link_url
   }
 
   onInputClear = () => {
-    this.setState({ link: '' })
+    this.setState({ link_url: '' })
     this.props.clearLink()
   }
 
   isEmptyInput = () => {
-    return !this.state.link.trim()
+    return !this.state.link_url.trim()
   }
 
   onSubmit = () => {
     const { navigation, saveLink } = this.props
-    const { link } = this.state
+    const { link_url } = this.state
     
-    saveLink(link)
+    saveLink(link_url)
     navigation.navigate('Compose')
   }
 
   render() {
-    const { link } = this.state
+    const { link_url } = this.state
 
     return (
       <SafeArea>
@@ -44,8 +53,8 @@ class AddLinkScreen extends Component {
           <TextInput 
             style={styles.input}
             placeholder='Type a link here'
-            value={link}
-            onChangeText={link => this.setState({ link })} />
+            value={link_url}
+            onChangeText={link => this.setState({ link_url: link })} />
         </View>
         <View style={styles.btnBox}>
 
@@ -113,4 +122,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect(null, mapDispatchToProps)(AddLinkScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(AddLinkScreen)
