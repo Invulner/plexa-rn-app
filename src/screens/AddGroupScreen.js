@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, TouchableOpacity, View, Image } from 'react-native'
 import SafeArea from '../components/common/SafeArea'
 import { RegularText } from '../components/common/fonts'
 import GreyLine from '../components/common/GreyLine'
@@ -46,6 +46,12 @@ class AddGroupScreen extends Component {
     this.navigateToComposeScreen()
   }
 
+  icon = (
+    <Image 
+      style={styles.icon}
+      source={require('../assets/icons/checked.png')} />
+  )
+
   renderGroups = () => {
     const { groups, group_id } = this.props
 
@@ -53,13 +59,16 @@ class AddGroupScreen extends Component {
 
       return (
         <View key={item.id}>
-          <TouchableOpacity 
-            style={styles.groupBox}
-            onPress={() => this.onGroupPress(item.id)}>
-            <RegularText style={[styles.groupText, group_id === item.id && styles.groupSelected]}>
-              {item.name}
-            </RegularText>
-          </TouchableOpacity>
+          <View style={styles.groupBox}>
+            <TouchableOpacity
+              style={styles.btn}
+              onPressIn={() => this.onGroupPress(item.id)}>
+              <RegularText style={styles.groupText}>
+                {item.name}
+              </RegularText>
+            </TouchableOpacity>
+            {group_id === item.id && this.icon}
+          </View>
           <GreyLine boxStyle={styles.lineSolid}/>
         </View>
       )
@@ -67,15 +76,20 @@ class AddGroupScreen extends Component {
   }
 
   render() {
+    const { group_id } = this.props
+
     return (
-      <SafeArea>   
-        <TouchableOpacity 
-          style={styles.groupBox}
-          onPress={this.onNoGroupPress}>
-          <RegularText style={styles.groupText}>
-            No Group
-          </RegularText>
-        </TouchableOpacity>
+      <SafeArea> 
+        <View style={styles.groupBox}>
+          <TouchableOpacity
+            style={styles.btn}  
+            onPressIn={this.onNoGroupPress}>
+            <RegularText style={styles.groupText}>
+              No Group
+            </RegularText>
+          </TouchableOpacity>
+          {!group_id && this.icon}
+        </View>
         <GreyLine boxStyle={styles.lineSolid}/>
         {this.renderGroups()}
       </SafeArea>
@@ -88,10 +102,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 0
   },
 
+  btn: {
+    flex: 1
+  },
+
   groupBox: {
     height: 50,
     paddingHorizontal: 10,
-    justifyContent: 'center'
+    flexDirection: 'row',
+    alignItems: 'center'
   },
 
   groupText: {
@@ -102,6 +121,12 @@ const styles = StyleSheet.create({
 
   groupSelected: {
     color: BRAND_DARK
+  },
+
+  icon: {
+    width: 20,
+    height: 20,
+    resizeMode: 'contain'
   }
 })
 
