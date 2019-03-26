@@ -41,6 +41,9 @@ const PostReducer = (state = initialState, action) => {
     case types.TOGGLE_VISIBILITY: 
       return {...state, public: action.flag}
 
+    case types.RESET: 
+      return initialState
+
     default: 
       return state
   }

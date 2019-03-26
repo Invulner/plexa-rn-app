@@ -29,11 +29,16 @@ const toggleVisibility = (flag) => ({
   flag
 })
 
+const reset = () => ({
+  type: types.RESET
+})
+
 export default {
   saveLink,
   saveTopicIDs,
   saveContent,
   clearLink,
   toggleComments,
-  toggleVisibility
+  toggleVisibility,
+  reset
 }
