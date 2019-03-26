@@ -42,20 +42,14 @@ class ComposeScreen extends Component {
   }
 
   isTopicSelected = () => {
-    return !!this.state.topicIDs.length
+    return !!this.props.post.topic_ids.length
   }
 
   onSubmit = () => {
     if (this.isTopicSelected()) {
-      const { message, topicIDs, controls: { commentsEnabled, isPublic } }  = this.state
-      const { link_url } = this.props.post
-      const post = {
-        content: message,
-        topic_ids: topicIDs,
-        comments_enabled: commentsEnabled,
-        public: isPublic,
-        link_url
-      }
+      const { post } = this.props
+      const { link_url, ...rest } = post
+      const data = link_url ? post : rest
 
       const cb = () => {
         this.toggleOverlay()
@@ -63,7 +57,7 @@ class ComposeScreen extends Component {
       }
 
       this.toggleOverlay()
-      this.props.savePost(post, cb)
+      this.props.savePost(data, cb)
     } else {
       Alert.alert('Error', 'At least one topic has to be selected')
     }
