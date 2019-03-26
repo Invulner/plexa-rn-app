@@ -1,7 +1,6 @@
 import getAxiosInstance from '../config/axios'
 import { API_URL } from '../constants'
 import FeedActions from '../actions/FeedActions'
-import PostActions from '../actions/PostActions'
 
 const fetchFeed = (saveOption, page = 1) => {
   return dispatch => {
@@ -70,7 +69,6 @@ const savePost = (post, cb) => {
         console.log(res.data)
         dispatch(FeedActions.savePost(res.data))
         cb()
-        dispatch(PostActions.reset())
       }).catch(error => console.log('SAVE POST ERROR: ', error))
     })
   }

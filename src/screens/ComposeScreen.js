@@ -11,6 +11,7 @@ import Topics from '../components/compose/Topics'
 import Controls from '../components/compose/Controls'
 import Message from '../components/compose/Message'
 import AttachBtn from '../components/compose/AttachBtn'
+import PostActions from '../actions/PostActions'
 
 const mapStateToProps = (state) => {
   const { post } = state
@@ -20,8 +21,12 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   const savePost = (post, cb) => dispatch(FeedOperations.savePost(post, cb))
+  const reset = () => dispatch(PostActions.reset())
 
-  return { savePost }
+  return { 
+    savePost,
+    reset
+  }
 }
 
 class ComposeScreen extends Component {
@@ -48,12 +53,13 @@ class ComposeScreen extends Component {
   onSubmit = () => {
     if (this.isTopicSelected()) {
       const { post } = this.props
-      const { link_url, ...rest } = post
-      const data = link_url ? post : rest
+      const { link_url, content, ...rest } = post
+      const data = link_url ? { ...post, content: content.trim() } : {...rest, content: content.trim()}
 
       const cb = () => {
         this.toggleOverlay()
         this.navigateToFeed()
+        this.props.reset()
       }
 
       this.toggleOverlay()

@@ -17,11 +17,11 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   const toggleComments = (flag) => dispatch(PostActions.toggleComments(flag))
-  const toggleVisibility = (flag) => dispatch(PostActions.toggleVisibility(flag))
+  const togglePrivacy = (flag) => dispatch(PostActions.togglePrivacy(flag))
 
   return {
     toggleComments,
-    toggleVisibility
+    togglePrivacy
   }
 }
 
@@ -31,7 +31,7 @@ class Controls extends Component {
   }
 
   render() {
-    const { comments_enabled, toggleComments, isPublic, toggleVisibility } = this.props
+    const { comments_enabled, toggleComments, isPublic, togglePrivacy } = this.props
 
     return (
       <React.Fragment>
@@ -69,7 +69,7 @@ class Controls extends Component {
           </TouchableOpacity>
           <View style={styles.switchBox}>
             <Switch 
-              onValueChange={flag => toggleVisibility(flag)}
+              onValueChange={flag => togglePrivacy(flag)}
               value={isPublic}
               style={styles.switch} />
           </View>

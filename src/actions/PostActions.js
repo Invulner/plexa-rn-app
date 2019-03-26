@@ -9,8 +9,8 @@ const clearLink = () => ({
   type: types.CLEAR_LINK
 })
 
-const saveTopicIDs = (id) => ({
-  type: types.SAVE_TOPIC_IDS,
+const toggleTopic = (id) => ({
+  type: types.TOGGLE_TOPIC,
   id
 })
 
@@ -24,8 +24,8 @@ const toggleComments = (flag) => ({
   flag
 })
 
-const toggleVisibility = (flag) => ({
-  type: types.TOGGLE_VISIBILITY,
+const togglePrivacy = (flag) => ({
+  type: types.TOGGLE_PRIVACY,
   flag
 })
 
@@ -35,10 +35,10 @@ const reset = () => ({
 
 export default {
   saveLink,
-  saveTopicIDs,
+  toggleTopic,
   saveContent,
   clearLink,
   toggleComments,
-  toggleVisibility,
+  togglePrivacy,
   reset
 }

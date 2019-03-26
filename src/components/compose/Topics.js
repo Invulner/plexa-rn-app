@@ -16,9 +16,9 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-  const toggleId = (id) => dispatch(PostActions.saveTopicIDs(id))
+  const toggleTopic = (id) => dispatch(PostActions.toggleTopic(id))
 
-  return { toggleId }
+  return { toggleTopic }
 }
 
 class Topics extends Component {
@@ -33,7 +33,7 @@ class Topics extends Component {
   }
 
   onTopicPress = (itemId) => {
-    this.props.toggleId(itemId)
+    this.props.toggleTopic(itemId)
   }
 
   renderTopics = () => {

@@ -35,7 +35,7 @@ const PostReducer = (state = initialState, action) => {
         link_url: ''
       }
 
-    case types.SAVE_TOPIC_IDS: 
+    case types.TOGGLE_TOPIC: 
       return getTopicIDs(state, action)
 
     case types.SAVE_CONTENT: 
