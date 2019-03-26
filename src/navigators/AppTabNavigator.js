@@ -4,9 +4,10 @@ import ResearchFeedScreen from '../screens/ResearchFeedScreen'
 import MessagesScreen from '../screens/MessagesScreen'
 import CustomTabBar from '../components/tabBar/CustomTabBar'
 import FeedScreen from '../screens/FeedScreen'
+import AddGroupScreen from '../screens/AddGroupScreen';
 
 const AppTabNavigator = createMaterialTopTabNavigator({
-  Feed: FeedScreen,
+  Feed: AddGroupScreen,
   ResearchFeed: ResearchFeedScreen,
   Messages: MessagesScreen,
   Profile: ProfileScreen,

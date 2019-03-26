@@ -3,7 +3,7 @@ import { View, StyleSheet, TouchableOpacity, Alert } from 'react-native'
 import { connect } from 'react-redux'
 import SafeArea from '../components/common/SafeArea'
 import { RegularText } from '../components/common/fonts'
-import GreyLine from '../components/comment/GreyLine'
+import GreyLine from '../components/common/GreyLine'
 import { BRAND_LIGHT } from '../assets/styles/colors'
 import FeedOperations from '../operations/FeedOperations'
 import Spinner from 'react-native-loading-spinner-overlay'
@@ -90,7 +90,9 @@ class ComposeScreen extends Component {
               iconType={'link'} />
 
             <AttachBtn iconType={'location'} />
-            <AttachBtn iconType={'users'} />
+            <AttachBtn 
+              iconType={'users'}
+              route={'AddGroup'} />
           </View>
 
           <TouchableOpacity 

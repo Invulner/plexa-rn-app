@@ -9,7 +9,8 @@ import HeaderLogo from '../components/common/header/HeaderLogo'
 import PublicProfileScreen from '../screens/PublicProfileScreen'
 import PostScreen from '../screens/PostScreen'
 import ComposeScreen from '../screens/ComposeScreen'
-import AddLinkScreen from '../screens/AddLinkScreen';
+import AddLinkScreen from '../screens/AddLinkScreen'
+import AddGroupScreen from '../screens/AddGroupScreen'
 
 const MainStack = createStackNavigator({
   MainSwitch: {
@@ -53,6 +54,12 @@ const MainStack = createStackNavigator({
     screen: AddLinkScreen,
     navigationOptions: () => ({
       headerTitle: <HeaderTitle title={'Add Link'} />
+    })
+  },
+  AddGroup: {
+    screen: AddGroupScreen,
+    navigationOptions: () => ({
+      headerTitle: <HeaderTitle title={'Select group'} />
     })
   }
 }, {
