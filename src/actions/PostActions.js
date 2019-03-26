@@ -33,6 +33,15 @@ const resetPost = () => ({
   type: types.RESET_POST
 })
 
+const saveGroup = (id) => ({
+  type: types.SAVE_GROUP,
+  id
+})
+
+const deleteGroup = () => ({
+  type: types.DELETE_GROUP
+})
+
 export default {
   saveLink,
   toggleTopic,
@@ -40,5 +49,7 @@ export default {
   clearLink,
   toggleComments,
   togglePrivacy,
-  resetPost
+  resetPost,
+  saveGroup,
+  deleteGroup
 }

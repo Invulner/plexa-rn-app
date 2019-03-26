@@ -4,22 +4,41 @@ import SafeArea from '../components/common/SafeArea'
 import { RegularText } from '../components/common/fonts'
 import GreyLine from '../components/common/GreyLine'
 import { connect } from 'react-redux'
-import { DARK_GRAY } from '../assets/styles/colors'
+import { DARK_GRAY, BRAND_DARK } from '../assets/styles/colors'
+import PostActions from '../actions/PostActions'
 
 const mapStateToProps = (state) => {
   const { groups } = state.user
+  const { group_id } = state.post
 
-  return { groups }
+  return { 
+    groups,
+    group_id
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  const saveGroup = id => dispatch(PostActions.saveGroup(id))
+  const deleteGroup = () => dispatch(PostActions.deleteGroup())
+
+  return { 
+    saveGroup,
+    deleteGroup
+  }
 }
 
 class AddGroupScreen extends Component {
   renderGroups = () => {
-    return this.props.groups.map(item => {
+    const { groups, saveGroup, group_id } = this.props
+
+    return groups.map(item => {
 
       return (
         <View key={item.id}>
-          <TouchableOpacity style={styles.groupBox}>
-            <RegularText style={styles.groupText}>
+          <TouchableOpacity 
+            style={styles.groupBox}
+            onPress={() => saveGroup(item.id)}>
+            <RegularText style={[styles.groupText, group_id === item.id && styles.groupSelected]}>
               {item.name}
             </RegularText>
           </TouchableOpacity>
@@ -32,7 +51,9 @@ class AddGroupScreen extends Component {
   render() {
     return (
       <SafeArea>   
-        <TouchableOpacity style={styles.groupBox}>
+        <TouchableOpacity 
+          style={styles.groupBox}
+          onPress={this.props.deleteGroup}>
           <RegularText style={styles.groupText}>
             No Group
           </RegularText>
@@ -59,7 +80,11 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginTop: 10,
     color: DARK_GRAY
+  },
+
+  groupSelected: {
+    color: BRAND_DARK
   }
 })
 
-export default connect(mapStateToProps, null)(AddGroupScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(AddGroupScreen)

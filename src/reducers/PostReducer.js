@@ -5,7 +5,8 @@ const initialState = {
   topic_ids: [],
   content: '',
   comments_enabled: true,
-  public: true
+  public: true,
+  group_id: ''
 }
 
 const getTopicIDs = (state, action) => {
@@ -54,6 +55,18 @@ const PostReducer = (state = initialState, action) => {
       return {
         ...state, 
         public: action.flag
+      }
+
+    case types.SAVE_GROUP:
+      return {
+        ...state,
+        group_id: action.id
+      }
+
+    case types.DELETE_GROUP: 
+      return {
+        ...state,
+        group_id: ''
       }
 
     case types.RESET_POST: 
