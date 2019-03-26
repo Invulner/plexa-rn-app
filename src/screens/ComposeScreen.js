@@ -21,11 +21,11 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   const savePost = (post, cb) => dispatch(FeedOperations.savePost(post, cb))
-  const reset = () => dispatch(PostActions.reset())
+  const resetPost = () => dispatch(PostActions.resetPost())
 
   return { 
     savePost,
-    reset
+    resetPost
   }
 }
 
@@ -54,12 +54,13 @@ class ComposeScreen extends Component {
     if (this.isTopicSelected()) {
       const { post } = this.props
       const { link_url, content, ...rest } = post
-      const data = link_url ? { ...post, content: content.trim() } : {...rest, content: content.trim()}
+      const obj = link_url ? post : rest
+      const data = {  ...obj, content: content.trim() }
 
       const cb = () => {
         this.toggleOverlay()
         this.navigateToFeed()
-        this.props.reset()
+        this.props.resetPost()
       }
 
       this.toggleOverlay()

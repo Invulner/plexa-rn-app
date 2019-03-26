@@ -29,8 +29,8 @@ const togglePrivacy = (flag) => ({
   flag
 })
 
-const reset = () => ({
-  type: types.RESET
+const resetPost = () => ({
+  type: types.RESET_POST
 })
 
 export default {
@@ -40,5 +40,5 @@ export default {
   clearLink,
   toggleComments,
   togglePrivacy,
-  reset
+  resetPost
 }

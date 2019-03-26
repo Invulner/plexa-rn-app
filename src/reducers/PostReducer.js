@@ -56,7 +56,7 @@ const PostReducer = (state = initialState, action) => {
         public: action.flag
       }
 
-    case types.RESET: 
+    case types.RESET_POST: 
       return initialState
 
     default: 
