@@ -1,32 +1,38 @@
 import React, { Component } from 'react'
 import { View, Switch, TouchableOpacity, StyleSheet, Alert } from 'react-native'
+import { connect } from 'react-redux'
 import { SemiboldText, BoldText } from '../common/fonts'
 import { hints } from '../../constants'
 import { GRAY } from '../../assets/styles/colors'
+import PostActions from '../../actions/PostActions'
+
+const mapStateToProps = (state) => {
+  const { comments_enabled, public: isPublic } = state.post
+
+  return {
+    comments_enabled,
+    isPublic
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  const toggleComments = (flag) => dispatch(PostActions.toggleComments(flag))
+  const togglePrivacy = (flag) => dispatch(PostActions.togglePrivacy(flag))
+
+  return {
+    toggleComments,
+    togglePrivacy
+  }
+}
 
 class Controls extends Component {
-  mapPropsToState = () => {
-    const { commentsEnabled, isPublic } = this.props.values
-
-    return {
-      commentsEnabled,
-      isPublic
-    }
-  }
-
-  state = this.mapPropsToState()
-
   showHint = (key) => { 
     Alert.alert(hints[key].title, hints[key].text)
   }
 
-  onToggleSwitch = (key, value) => {
-    this.setState({ [key]: value}, () => {
-      this.props.onToggle(this.state)
-    })
-  }
-
   render() {
+    const { comments_enabled, toggleComments, isPublic, togglePrivacy } = this.props
+
     return (
       <React.Fragment>
         <View style={styles.controlBox}>
@@ -43,8 +49,8 @@ class Controls extends Component {
           </TouchableOpacity>
           <View style={styles.switchBox}>
             <Switch 
-              onValueChange={value => this.onToggleSwitch('commentsEnabled', value)}
-              value={this.state.commentsEnabled}
+              onValueChange={flag => toggleComments(flag)}
+              value={comments_enabled}
               style={styles.switch} />
           </View>
         </View>
@@ -63,8 +69,8 @@ class Controls extends Component {
           </TouchableOpacity>
           <View style={styles.switchBox}>
             <Switch 
-              onValueChange={value => this.onToggleSwitch('isPublic', value)}
-              value={this.state.isPublic}
+              onValueChange={flag => togglePrivacy(flag)}
+              value={isPublic}
               style={styles.switch} />
           </View>
         </View>
@@ -113,4 +119,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default Controls
+export default connect(mapStateToProps, mapDispatchToProps)(Controls)

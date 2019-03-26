@@ -48,7 +48,7 @@ class Social extends Component {
     const { liked } = this.state
     
     isComment ? likeComment(liked, id) : likePost(liked, id)
-  }, 2500)
+  }, 1000)
 
   getIcon = () => {
     return this.state.liked ? 'liked' : 'unliked'

@@ -2,19 +2,28 @@ import React, { Component } from 'react'
 import { View, TextInput, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
 import ProfileAvatar from '../common/ProfileAvatar'
+import PostActions from '../../actions/PostActions'
 
 const mapStateToProps = (state) => {
-  const { full_name: name, avatar_url: url } = state.user
+  const { full_name: name, avatar_url } = state.user
+  const { content } = state.post
 
   return {
     name,
-    url
+    avatar_url,
+    content
   }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  const saveContent = (content) => dispatch(PostActions.saveContent(content))
+
+  return { saveContent }
 }
 
 class Message extends Component {
   render() {
-    const { name, url, value } = this.props
+    const { name, avatar_url, content, saveContent } = this.props
 
     return (
       <View style={styles.inputBox}>
@@ -22,11 +31,11 @@ class Message extends Component {
           placeholder='Enter your message ...'
           style={styles.input}
           multiline={true}
-          value={value}
-          onChangeText={message => this.props.onTextChange(message)} />
+          value={content}
+          onChangeText={content => saveContent(content)} />
 
         <ProfileAvatar
-          url={url}
+          url={avatar_url}
           name={name}
           size={'small'} />
       </View>
@@ -52,4 +61,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect(mapStateToProps, null)(Message)
+export default connect(mapStateToProps, mapDispatchToProps)(Message)
