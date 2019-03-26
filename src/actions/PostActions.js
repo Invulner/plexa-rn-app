@@ -15,8 +15,25 @@ const saveContent = (content) => ({
   content
 })
 
+const clearLink = () => ({
+  type: types.SAVE_LINK_URL
+})
+
+const toggleComments = (flag) => ({
+  type: types.TOGGLE_COMMENTS,
+  flag
+})
+
+const toggleVisibility = (flag) => ({
+  type: types.TOGGLE_VISIBILITY,
+  flag
+})
+
 export default {
   saveLinkUrl,
   saveTopicIDs,
-  saveContent
+  saveContent,
+  clearLink,
+  toggleComments,
+  toggleVisibility
 }

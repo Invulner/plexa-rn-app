@@ -8,8 +8,9 @@ import PostActions from '../actions/PostActions'
 
 const mapDispatchToProps = (dispatch) => {
   const saveLink = (link) => dispatch(PostActions.saveLinkUrl(link))
+  const clearLink = () => dispatch(PostActions.clearLink())
 
-  return { saveLink }
+  return { saveLink, clearLink }
 }
 
 class AddLinkScreen extends Component {
@@ -19,10 +20,11 @@ class AddLinkScreen extends Component {
 
   onInputClear = () => {
     this.setState({ link: '' })
+    this.props.clearLink()
   }
 
   isEmptyInput = () => {
-    return !this.state.link.trim().length
+    return !this.state.link.trim()
   }
 
   onSubmit = () => {

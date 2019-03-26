@@ -3,7 +3,9 @@ import types from '../types/post'
 const initialState = {
   link_url: '',
   topic_ids: [],
-  content: ''
+  content: '',
+  comments_enabled: true,
+  public: true
 }
 
 const getTopicIDs = (state, action) => {
@@ -24,11 +26,20 @@ const PostReducer = (state = initialState, action) => {
     case types.SAVE_LINK_URL:
       return {...state, link_url: action.link}
 
+    case types.CLEAR_LINK_URL: 
+      return {...state, link_url: ''}
+
     case types.SAVE_TOPIC_IDS: 
       return getTopicIDs(state, action)
 
     case types.SAVE_CONTENT: 
       return {...state, content: action.content}
+
+    case types.TOGGLE_COMMENTS:
+      return {...state, comments_enabled: action.flag}
+
+    case types.TOGGLE_VISIBILITY: 
+      return {...state, public: action.flag}
 
     default: 
       return state

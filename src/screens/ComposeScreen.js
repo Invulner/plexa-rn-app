@@ -26,11 +26,7 @@ const mapDispatchToProps = (dispatch) => {
 
 class ComposeScreen extends Component {
   state = {
-    spinner: false,
-    controls: {
-      commentsEnabled: true,
-      isPublic: true
-    }
+    spinner: false
   }
 
   isEmptyInput = () => {
@@ -74,7 +70,7 @@ class ComposeScreen extends Component {
   }
 
   render() {
-    const { spinner, controls } = this.state
+    const { spinner } = this.state
     const { link_url } = this.props.post
 
     return (
@@ -107,9 +103,7 @@ class ComposeScreen extends Component {
         </View>
         <GreyLine boxStyle={[styles.lineSolid, { marginBottom: 20 }]} />
 
-        <Controls 
-          values={controls}
-          onToggle={controls => this.setState({ controls })} />
+        <Controls />
         <Topics />
       </SafeArea>
     )
