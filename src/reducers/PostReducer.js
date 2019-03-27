@@ -51,7 +51,7 @@ const PostReducer = (state = initialState, action) => {
         comments_enabled: action.flag
       }
 
-    case types.TOGGLE_VISIBILITY: 
+    case types.TOGGLE_PRIVACY: 
       return {
         ...state, 
         public: action.flag
