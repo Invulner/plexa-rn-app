@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, TouchableOpacity, Alert } from 'react-native'
+import { View, StyleSheet, TouchableOpacity, Alert, ImageBackground, Image } from 'react-native'
 import { connect } from 'react-redux'
 import SafeArea from '../components/common/SafeArea'
 import { RegularText } from '../components/common/fonts'
 import GreyLine from '../components/common/GreyLine'
-import { BRAND_LIGHT } from '../assets/styles/colors'
+import { BRAND_LIGHT, GRAY } from '../assets/styles/colors'
 import FeedOperations from '../operations/FeedOperations'
 import Spinner from 'react-native-loading-spinner-overlay'
 import Topics from '../components/compose/Topics'
@@ -12,6 +12,7 @@ import Controls from '../components/compose/Controls'
 import Message from '../components/compose/Message'
 import AttachBtn from '../components/compose/AttachBtn'
 import PostActions from '../actions/PostActions'
+import { ImagePicker, Permissions } from 'expo'
 
 const mapStateToProps = (state) => {
   const { post } = state
@@ -31,7 +32,20 @@ const mapDispatchToProps = (dispatch) => {
 
 class ComposeScreen extends Component {
   state = {
-    spinner: false
+    spinner: false,
+    imageURI: ''
+  }
+
+  attachImage = async () => {
+    const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL)
+
+    if (status === 'granted') {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: 'Images'
+      })
+      console.log(result)
+      this.setState({ imageURI: result.uri })
+    }
   }
 
   isEmptyInput = () => {
@@ -77,13 +91,31 @@ class ComposeScreen extends Component {
     return (
       <SafeArea>
         <Spinner visible={spinner} />
-        <Message />
+        <View style={{minHeight: 325, padding: 10, paddingTop: 20}}>
+          <Message />
+          {!!this.state.imageURI && 
+            <ImageBackground 
+              style={styles.attachedImage}
+              source={{uri: this.state.imageURI}}>
+              <TouchableOpacity
+                style={styles.iconBox} 
+                onPress={() => this.setState({imageURI: ''})}>
+                <Image 
+                  source={require('../assets/icons/delete.png')}
+                  style={styles.closeIcon} />
+              </TouchableOpacity>
+            </ImageBackground>
+          }
+        </View>
         <GreyLine boxStyle={styles.lineSolid} />
         
         <View style={styles.btnBox}>
 
           <View style={styles.leftIconBox}>
-            <AttachBtn iconType={'photo'} />
+            <AttachBtn 
+              iconType={'photo'}
+              onPress={this.attachImage} />
+
             <AttachBtn 
               active={!!link_url}
               route={'AddLink'}
@@ -151,6 +183,31 @@ const styles = StyleSheet.create({
 
   btnActive: {
     backgroundColor: BRAND_LIGHT
+  },
+
+  attachedImage: {
+    width: '100%',
+    minHeight: 100,
+    resizeMode: 'cover',
+    flex: 1
+  },
+
+  closeIcon: {
+    width: 7,
+    height: 7,
+    resizeMode: 'contain'
+  },
+
+  iconBox: {
+    position: 'absolute',
+    top: 10,
+    right: 10, 
+    width: 15, 
+    height: 15, 
+    borderRadius: 15, 
+    backgroundColor: GRAY,
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 })
 

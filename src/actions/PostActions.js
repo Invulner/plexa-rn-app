@@ -42,6 +42,11 @@ const deleteGroup = () => ({
   type: types.DELETE_GROUP
 })
 
+const setImage = (image_url) => ({
+  type: types.SET_IMAGE,
+  image_url
+})
+
 export default {
   saveLink,
   toggleTopic,
@@ -51,5 +56,6 @@ export default {
   togglePrivacy,
   resetPost,
   saveGroup,
-  deleteGroup
+  deleteGroup,
+  setImage
 }

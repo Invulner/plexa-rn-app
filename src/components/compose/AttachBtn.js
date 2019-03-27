@@ -4,14 +4,14 @@ import { postIcons } from '../../constants'
 import { withNavigation } from 'react-navigation'
 
 function AttachBtn(props) {
-  const { navigation, route, iconType, active } = props
+  const { navigation, route, iconType, active, onPress } = props
 
   const getSrc = () => {
     return active ? postIcons[`${iconType}-active`] : postIcons[iconType]
   }
 
   return (
-    <TouchableOpacity onPress={() => navigation.navigate(route)}>
+    <TouchableOpacity onPress={route ? () => navigation.navigate(route) : onPress}>
       <Image
         source={getSrc()}
         style={styles.iconUpload} />
