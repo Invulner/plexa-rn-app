@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { View, StyleSheet, Image, TextInput, TouchableOpacity } from 'react-native'
 import { BRAND_LIGHT } from '../../assets/styles/colors'
-import GreyLine from './GreyLine'
+import GreyLine from '../common/GreyLine'
 import { connect } from 'react-redux'
 import CommentOperations from '../../operations/CommentsOperations'
 

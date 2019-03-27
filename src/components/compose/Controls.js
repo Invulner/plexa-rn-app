@@ -3,7 +3,7 @@ import { View, Switch, TouchableOpacity, StyleSheet, Alert } from 'react-native'
 import { connect } from 'react-redux'
 import { SemiboldText, BoldText } from '../common/fonts'
 import { hints } from '../../constants'
-import { GRAY } from '../../assets/styles/colors'
+import { GRAY, DARK_GRAY } from '../../assets/styles/colors'
 import PostActions from '../../actions/PostActions'
 
 const mapStateToProps = (state) => {
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginRight: 7,
     marginTop: 8,
-    color: '#4c4c4c'
+    color: DARK_GRAY
   },
 
   questionBox: {

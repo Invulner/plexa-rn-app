@@ -4,7 +4,7 @@ import { feedStyles } from '../../assets/styles/feed/feedStyles'
 import PostHead from '../common/PostHead'
 import { RegularText } from '../common/fonts'
 import Social from '../common/Social'
-import GreyLine from './GreyLine'
+import GreyLine from '../common/GreyLine'
 
 function Comment(props) {
   const { created_at, author, content, likes_count, id, liked } = props.item
