@@ -4,7 +4,7 @@ import SafeArea from '../components/common/SafeArea'
 import { RegularText } from '../components/common/fonts'
 import GreyLine from '../components/common/GreyLine'
 import { connect } from 'react-redux'
-import { DARK_GRAY, BRAND_DARK } from '../assets/styles/colors'
+import { DARK_GRAY } from '../assets/styles/colors'
 import PostActions from '../actions/PostActions'
 
 const mapStateToProps = (state) => {
@@ -46,11 +46,13 @@ class AddGroupScreen extends Component {
     this.navigateToComposeScreen()
   }
 
-  icon = (
-    <Image 
-      style={styles.icon}
-      source={require('../assets/icons/checked.png')} />
-  )
+  renderIcon = () => {
+    return (
+      <Image 
+        style={styles.icon}
+        source={require('../assets/icons/checked.png')} />
+    )
+  }
 
   renderGroups = () => {
     const { groups, group_id } = this.props
@@ -67,7 +69,7 @@ class AddGroupScreen extends Component {
                 {item.name}
               </RegularText>
             </TouchableOpacity>
-            {group_id === item.id && this.icon}
+            {group_id === item.id && this.renderIcon()}
           </View>
           <GreyLine boxStyle={styles.lineSolid}/>
         </View>
@@ -88,7 +90,7 @@ class AddGroupScreen extends Component {
               No Group
             </RegularText>
           </TouchableOpacity>
-          {!group_id && this.icon}
+          {!group_id && this.renderIcon()}
         </View>
         <GreyLine boxStyle={styles.lineSolid}/>
         {this.renderGroups()}
@@ -117,10 +119,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginTop: 10,
     color: DARK_GRAY
-  },
-
-  groupSelected: {
-    color: BRAND_DARK
   },
 
   icon: {
