@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import SafeArea from '../components/common/SafeArea'
 import { RegularText } from '../components/common/fonts'
 import GreyLine from '../components/common/GreyLine'
-import { BRAND_LIGHT, GRAY } from '../assets/styles/colors'
+import { BRAND_LIGHT } from '../assets/styles/colors'
 import FeedOperations from '../operations/FeedOperations'
 import Spinner from 'react-native-loading-spinner-overlay'
 import Topics from '../components/compose/Topics'
@@ -79,6 +79,10 @@ class ComposeScreen extends Component {
     this.props.submitPostWithImage(image, post, cb)
   }
 
+  resetStateImg = () => {
+    this.setState({ imageURI: '' })
+  }
+
   onSubmit = () => {
     if (this.isTopicSelected()) {
       const { post, submitPost } = this.props
@@ -106,11 +110,11 @@ class ComposeScreen extends Component {
     return (
       <SafeArea>
         <Spinner visible={spinner} />
-        <View style={{minHeight: 325, padding: 10, paddingTop: 20}}>
+        <View style={styles.inputBox}>
           <Message />
           {!!imageURI && 
             <Photo 
-              onPress={() => this.setState({imageURI: ''})}
+              onClose={this.resetStateImg}
               imageSrc={imageURI} />
           }
         </View>
@@ -156,6 +160,13 @@ class ComposeScreen extends Component {
 }
 
 const styles = StyleSheet.create({
+  inputBox: {
+    minHeight: 325, 
+    paddingHorizontal: 20, 
+    paddingTop: 20, 
+    paddingBottom: 15
+  },
+
   btnBox: {
     alignItems: 'center',
     justifyContent: 'space-between',

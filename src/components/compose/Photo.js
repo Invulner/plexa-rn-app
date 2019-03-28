@@ -4,7 +4,7 @@ import { GRAY } from '../../assets/styles/colors'
 
 class Photo extends Component {
   render() {
-    const { onPress, imageSrc } = this.props
+    const { onClose, imageSrc } = this.props
 
     return (
       <ImageBackground 
@@ -12,7 +12,7 @@ class Photo extends Component {
         source={{uri: imageSrc}}>
         <TouchableOpacity
           style={styles.iconBox} 
-          onPress={onPress}>
+          onPress={onClose}>
           <Image 
             source={require('../../assets/icons/delete.png')}
             style={styles.closeIcon} />
