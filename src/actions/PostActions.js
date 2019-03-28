@@ -42,11 +42,6 @@ const deleteGroup = () => ({
   type: types.DELETE_GROUP
 })
 
-const setImage = (id) => ({
-  type: types.SET_IMAGE,
-  id
-})
-
 export default {
   saveLink,
   toggleTopic,
@@ -56,6 +51,5 @@ export default {
   togglePrivacy,
   resetPost,
   saveGroup,
-  deleteGroup,
-  setImage
+  deleteGroup
 }

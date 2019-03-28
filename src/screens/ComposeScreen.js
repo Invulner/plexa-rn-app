@@ -13,7 +13,6 @@ import Message from '../components/compose/Message'
 import AttachBtn from '../components/compose/AttachBtn'
 import PostActions from '../actions/PostActions'
 import { ImagePicker, Permissions } from 'expo'
-import PostOperations from '../operations/PostOperations'
 import Photo from '../components/compose/Photo'
 
 const mapStateToProps = (state) => {
@@ -23,14 +22,14 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-  const savePost = (post, cb) => dispatch(FeedOperations.savePost(post, cb))
+  const submitPost = (post, cb) => dispatch(FeedOperations.submitPost(post, cb))
   const resetPost = () => dispatch(PostActions.resetPost())
-  const postWithImage = (image, cb) => dispatch(PostOperations.postWithImage(image, cb))
+  const submitPostWithImage = (image, post, cb) => dispatch(FeedOperations.submitPostWithImage(image, post, cb))
 
   return { 
-    savePost,
+    submitPost,
     resetPost,
-    postWithImage
+    submitPostWithImage
   }
 }
 
@@ -68,38 +67,33 @@ class ComposeScreen extends Component {
     return !!this.props.post.topic_ids.length
   }
 
-  postWithImage = () => {
+  submitPostWithImage = (post, cb) => {
     const { imageURI } = this.state
-    const data = new FormData()
+    const image = new FormData()
 
-    data.append('image', {
+    image.append('image', {
       uri: imageURI,
       name: 'photo.jpg',
       type: 'image/jpg'
     })
-    this.props.postWithImage(data, this.makePost)
-    this.toggleOverlay()
-  }
-
-  makePost = () => {
-    const { post } = this.props
-    const { link_url, content, ...rest } = post
-    const obj = link_url ? post : rest
-    const data = {  ...obj, content: content.trim() }
-
-    const cb = () => {
-      this.toggleOverlay()
-      this.navigateToFeed()
-      this.props.resetPost()
-    }
-
-    !post.image_ids.length && this.toggleOverlay()
-    this.props.savePost(data, cb)
+    this.props.submitPostWithImage(image, post, cb)
   }
 
   onSubmit = () => {
     if (this.isTopicSelected()) {
-      this.state.imageURI ? this.postWithImage() : this.makePost()
+      const { post, submitPost } = this.props
+      const { link_url, content, ...rest } = post
+      const obj = link_url ? post : rest
+      const data = {  ...obj, content: content.trim() }
+
+      const cb = () => {
+        this.toggleOverlay()
+        this.navigateToFeed()
+        this.props.resetPost()
+      }
+
+      this.toggleOverlay()
+      this.state.imageURI ? this.submitPostWithImage(data, cb) : submitPost(data, cb)
     } else {
       Alert.alert('Error', 'At least one topic has to be selected')
     }

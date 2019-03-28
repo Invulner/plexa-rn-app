@@ -6,9 +6,7 @@ const initialState = {
   content: '',
   comments_enabled: true,
   public: true,
-  group_id: '',
-  image_ids: []
-  
+  group_id: ''
 }
 
 const getTopicIDs = (state, action) => {
@@ -69,14 +67,6 @@ const PostReducer = (state = initialState, action) => {
       return {
         ...state,
         group_id: ''
-      }
-    case types.SET_IMAGE:
-      return {
-        ...state,
-        image_ids: [
-          ...state.image_ids,
-          action.id
-        ]
       }
 
     case types.RESET_POST: 
