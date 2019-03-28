@@ -14,6 +14,7 @@ import AttachBtn from '../components/compose/AttachBtn'
 import PostActions from '../actions/PostActions'
 import { ImagePicker, Permissions } from 'expo'
 import PostOperations from '../operations/PostOperations'
+import Photo from '../components/compose/Photo'
 
 const mapStateToProps = (state) => {
   const { post } = state
@@ -114,17 +115,9 @@ class ComposeScreen extends Component {
         <View style={{minHeight: 325, padding: 10, paddingTop: 20}}>
           <Message />
           {!!imageURI && 
-            <ImageBackground 
-              style={styles.attachedImage}
-              source={{uri: imageURI}}>
-              <TouchableOpacity
-                style={styles.iconBox} 
-                onPress={() => this.setState({imageURI: ''})}>
-                <Image 
-                  source={require('../assets/icons/delete.png')}
-                  style={styles.closeIcon} />
-              </TouchableOpacity>
-            </ImageBackground>
+            <Photo 
+              onPress={() => this.setState({imageURI: ''})}
+              imageSrc={imageURI} />
           }
         </View>
         <GreyLine boxStyle={styles.lineSolid} />
@@ -204,31 +197,6 @@ const styles = StyleSheet.create({
 
   btnActive: {
     backgroundColor: BRAND_LIGHT
-  },
-
-  attachedImage: {
-    width: '100%',
-    minHeight: 100,
-    resizeMode: 'cover',
-    flex: 1
-  },
-
-  closeIcon: {
-    width: 7,
-    height: 7,
-    resizeMode: 'contain'
-  },
-
-  iconBox: {
-    position: 'absolute',
-    top: 10,
-    right: 10, 
-    width: 15, 
-    height: 15, 
-    borderRadius: 15, 
-    backgroundColor: GRAY,
-    justifyContent: 'center',
-    alignItems: 'center'
   }
 })
 
