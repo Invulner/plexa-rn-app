@@ -13,6 +13,8 @@ import Message from '../components/compose/Message'
 import AttachBtn from '../components/compose/AttachBtn'
 import PostActions from '../actions/PostActions'
 import { ImagePicker, Permissions } from 'expo'
+import getAxiosInstance from '../config/axios'
+import { API_URL } from '../constants'
 
 const mapStateToProps = (state) => {
   const { post } = state
@@ -33,7 +35,8 @@ const mapDispatchToProps = (dispatch) => {
 class ComposeScreen extends Component {
   state = {
     spinner: false,
-    imageURI: ''
+    imageURI: '',
+    imageFile: ''
   }
 
   attachImage = async () => {
@@ -41,10 +44,11 @@ class ComposeScreen extends Component {
 
     if (status === 'granted') {
       const result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: 'Images'
+        mediaTypes: 'Images',
+        exif: true
       })
       console.log(result)
-      this.setState({ imageURI: result.uri })
+      this.setState({ imageURI: result.uri, imageFile: result.exif })
     }
   }
 
@@ -62,6 +66,17 @@ class ComposeScreen extends Component {
 
   isTopicSelected = () => {
     return !!this.props.post.topic_ids.length
+  }
+
+  postImage = () => {
+    const data = new FormData()
+    data.append('image', this.state.imageURI)
+    // data.append('image_url', this.state.imageURI)
+
+    getAxiosInstance().then(api => {
+      api.post(`${API_URL}/stories/images`, data)
+      .then(res => console.log(res))
+    })
   }
 
   onSubmit = () => {
@@ -85,7 +100,7 @@ class ComposeScreen extends Component {
   }
 
   render() {
-    const { spinner } = this.state
+    const { spinner, imageURI } = this.state
     const { link_url, group_id } = this.props.post
 
     return (
@@ -93,10 +108,10 @@ class ComposeScreen extends Component {
         <Spinner visible={spinner} />
         <View style={{minHeight: 325, padding: 10, paddingTop: 20}}>
           <Message />
-          {!!this.state.imageURI && 
+          {!!imageURI && 
             <ImageBackground 
               style={styles.attachedImage}
-              source={{uri: this.state.imageURI}}>
+              source={{uri: imageURI}}>
               <TouchableOpacity
                 style={styles.iconBox} 
                 onPress={() => this.setState({imageURI: ''})}>
@@ -114,7 +129,8 @@ class ComposeScreen extends Component {
           <View style={styles.leftIconBox}>
             <AttachBtn 
               iconType={'photo'}
-              onPress={this.attachImage} />
+              onPress={this.attachImage}
+              active={imageURI} />
 
             <AttachBtn 
               active={!!link_url}
@@ -131,7 +147,7 @@ class ComposeScreen extends Component {
 
           <TouchableOpacity 
             style={[styles.postBtn, (!this.isEmptyInput() || link_url) && styles.btnActive]}
-            onPress={this.onSubmit}
+            onPress={this.postImage}
             disabled={!link_url && this.isEmptyInput()}>
             <RegularText style={styles.postText}>
               Post
