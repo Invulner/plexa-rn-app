@@ -34,16 +34,3 @@ const getAxiosInstance = async (optionalHeaders) => {
 }
 
 export default getAxiosInstance
-
-// data
-// :
-// Object
-// id
-// :
-// 120
-// preview_url
-// :
-// "https://plexa-images-staging2.s3.amazonaws.com/discuss/story_image/image/120/preview_RackMultipart20190328-19487-mn5n2x.jpg"
-// url
-// :
-// "https://plexa-images-staging2.s3.amazonaws.com/discuss/story_image/image/120/full_RackMultipart20190328-19487-mn5n2x.jpg"
