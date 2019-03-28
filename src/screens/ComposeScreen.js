@@ -13,8 +13,7 @@ import Message from '../components/compose/Message'
 import AttachBtn from '../components/compose/AttachBtn'
 import PostActions from '../actions/PostActions'
 import { ImagePicker, Permissions } from 'expo'
-import getAxiosInstance from '../config/axios'
-import { API_URL } from '../constants'
+import PostOperations from '../operations/PostOperations'
 
 const mapStateToProps = (state) => {
   const { post } = state
@@ -25,18 +24,19 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   const savePost = (post, cb) => dispatch(FeedOperations.savePost(post, cb))
   const resetPost = () => dispatch(PostActions.resetPost())
+  const postWithImage = (image, cb) => dispatch(PostOperations.postWithImage(image, cb))
 
   return { 
     savePost,
-    resetPost
+    resetPost,
+    postWithImage
   }
 }
 
 class ComposeScreen extends Component {
   state = {
     spinner: false,
-    imageURI: '',
-    imageFile: ''
+    imageURI: ''
   }
 
   attachImage = async () => {
@@ -45,10 +45,9 @@ class ComposeScreen extends Component {
     if (status === 'granted') {
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: 'Images',
-        exif: true
       })
       console.log(result)
-      this.setState({ imageURI: result.uri, imageFile: result.exif })
+      this.setState({ imageURI: result.uri })
     }
   }
 
@@ -68,32 +67,38 @@ class ComposeScreen extends Component {
     return !!this.props.post.topic_ids.length
   }
 
-  postImage = () => {
+  postWithImage = () => {
+    const { imageURI } = this.state
     const data = new FormData()
-    data.append('image', this.state.imageURI)
-    // data.append('image_url', this.state.imageURI)
 
-    getAxiosInstance().then(api => {
-      api.post(`${API_URL}/stories/images`, data)
-      .then(res => console.log(res))
+    data.append('image', {
+      uri: imageURI,
+      name: 'photo.jpg',
+      type: 'image/jpg'
     })
+    this.props.postWithImage(data, this.makePost)
+    this.toggleOverlay()
+  }
+
+  makePost = () => {
+    const { post } = this.props
+    const { link_url, content, ...rest } = post
+    const obj = link_url ? post : rest
+    const data = {  ...obj, content: content.trim() }
+
+    const cb = () => {
+      this.toggleOverlay()
+      this.navigateToFeed()
+      this.props.resetPost()
+    }
+
+    !post.image_ids.length && this.toggleOverlay()
+    this.props.savePost(data, cb)
   }
 
   onSubmit = () => {
     if (this.isTopicSelected()) {
-      const { post } = this.props
-      const { link_url, content, ...rest } = post
-      const obj = link_url ? post : rest
-      const data = {  ...obj, content: content.trim() }
-
-      const cb = () => {
-        this.toggleOverlay()
-        this.navigateToFeed()
-        this.props.resetPost()
-      }
-
-      this.toggleOverlay()
-      this.props.savePost(data, cb)
+      this.state.imageURI ? this.postWithImage() : this.makePost()
     } else {
       Alert.alert('Error', 'At least one topic has to be selected')
     }
@@ -147,7 +152,7 @@ class ComposeScreen extends Component {
 
           <TouchableOpacity 
             style={[styles.postBtn, (!this.isEmptyInput() || link_url) && styles.btnActive]}
-            onPress={this.postImage}
+            onPress={this.onSubmit}
             disabled={!link_url && this.isEmptyInput()}>
             <RegularText style={styles.postText}>
               Post

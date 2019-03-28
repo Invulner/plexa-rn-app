@@ -42,9 +42,9 @@ const deleteGroup = () => ({
   type: types.DELETE_GROUP
 })
 
-const setImage = (image_url) => ({
+const setImage = (id) => ({
   type: types.SET_IMAGE,
-  image_url
+  id
 })
 
 export default {
