@@ -58,13 +58,15 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     width: '100%',
     fontSize: 20,
-    marginBottom: 15
+    marginBottom: 15,
+    flex: 1
   },
 
   container: {
     paddingHorizontal: 10,
     paddingTop: 20,
-    minHeight: 120
+    minHeight: 120,
+    flex: 1
   }
 })
 
