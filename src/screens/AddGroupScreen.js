@@ -1,18 +1,18 @@
 import React, { Component } from 'react'
-import { StyleSheet, TouchableOpacity, View, Image } from 'react-native'
+import { StyleSheet, TouchableOpacity, View, Image, ScrollView } from 'react-native'
 import SafeArea from '../components/common/SafeArea'
 import { RegularText } from '../components/common/fonts'
 import GreyLine from '../components/common/GreyLine'
 import { connect } from 'react-redux'
 import { DARK_GRAY } from '../assets/styles/colors'
 import PostActions from '../actions/PostActions'
+import { getSortedGroups } from '../selectors/Groups'
 
 const mapStateToProps = (state) => {
-  const { groups } = state.user
   const { group_id } = state.post
 
-  return { 
-    groups,
+  return {
+    groups: getSortedGroups(state),
     group_id
   }
 }
@@ -21,7 +21,7 @@ const mapDispatchToProps = (dispatch) => {
   const saveGroup = (id) => dispatch(PostActions.saveGroup(id))
   const deleteGroup = () => dispatch(PostActions.deleteGroup())
 
-  return { 
+  return {
     saveGroup,
     deleteGroup
   }
@@ -48,7 +48,7 @@ class AddGroupScreen extends Component {
 
   renderIcon = () => {
     return (
-      <Image 
+      <Image
         style={styles.icon}
         source={require('../assets/icons/checked.png')} />
     )
@@ -64,7 +64,7 @@ class AddGroupScreen extends Component {
           <View style={styles.groupBox}>
             <TouchableOpacity
               style={styles.btn}
-              onPressIn={() => this.onGroupPress(item.id)}>
+              onPress={() => this.onGroupPress(item.id)}>
               <RegularText style={styles.groupText}>
                 {item.name}
               </RegularText>
@@ -81,19 +81,21 @@ class AddGroupScreen extends Component {
     const { group_id } = this.props
 
     return (
-      <SafeArea> 
-        <View style={styles.groupBox}>
-          <TouchableOpacity
-            style={styles.btn}  
-            onPressIn={this.onNoGroupPress}>
-            <RegularText style={styles.groupText}>
-              No Group
-            </RegularText>
-          </TouchableOpacity>
-          {!group_id && this.renderIcon()}
-        </View>
-        <GreyLine boxStyle={styles.lineSolid}/>
-        {this.renderGroups()}
+      <SafeArea>
+        <ScrollView>
+          <View style={styles.groupBox}>
+            <TouchableOpacity
+              style={styles.btn}
+              onPress={this.onNoGroupPress}>
+              <RegularText style={styles.groupText}>
+                No Group
+              </RegularText>
+            </TouchableOpacity>
+            {!group_id && this.renderIcon()}
+          </View>
+          <GreyLine boxStyle={styles.lineSolid}/>
+          {this.renderGroups()}
+        </ScrollView>
       </SafeArea>
     )
   }
