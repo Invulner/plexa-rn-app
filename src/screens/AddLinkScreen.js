@@ -31,7 +31,7 @@ class AddLinkScreen extends Component {
 
   componentDidMount() {
     this.props.navigation.setParams({
-      toggleLink: this.onSubmit
+      onDonePress: this.onSubmit
     })
   }
 

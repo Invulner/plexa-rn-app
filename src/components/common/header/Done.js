@@ -11,7 +11,7 @@ class Done extends Component {
     return (
       <TouchableOpacity
         style={styles.btn}
-        onPress={navigation.getParam('toggleLink')}>
+        onPress={navigation.getParam('onDonePress')}>
         <RegularText style={styles.text}>
           Done
         </RegularText>
