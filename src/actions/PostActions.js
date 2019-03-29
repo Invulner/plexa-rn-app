@@ -5,10 +5,6 @@ const saveLink = (link) => ({
   link
 })
 
-const clearLink = () => ({
-  type: types.CLEAR_LINK
-})
-
 const toggleTopic = (id) => ({
   type: types.TOGGLE_TOPIC,
   id
@@ -46,7 +42,6 @@ export default {
   saveLink,
   toggleTopic,
   saveContent,
-  clearLink,
   toggleComments,
   togglePrivacy,
   resetPost,
