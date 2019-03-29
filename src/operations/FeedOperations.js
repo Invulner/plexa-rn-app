@@ -60,7 +60,7 @@ const updateLike = (flag, id) => {
   }
 }
 
-const savePost = (post, cb) => {
+const submitPost = (post, cb) => {
   return dispatch => {
 
     getAxiosInstance().then(api => {
@@ -69,7 +69,28 @@ const savePost = (post, cb) => {
         console.log(res.data)
         dispatch(FeedActions.savePost(res.data))
         cb()
-      }).catch(error => console.log('SAVE POST ERROR: ', error))
+      }).catch(error => console.log('SUBMIT POST ERROR: ', error))
+    })
+  }
+}
+
+const submitPostWithImage = (image, post, cb) => {
+  return dispatch => {
+    const optionalHeaders = {
+      'Content-Type': 'multipart/form-data'
+    }
+
+    return getAxiosInstance(optionalHeaders).then(api => {
+      api.post(`${API_URL}/stories/images`, image)
+        .then(response => {
+          const newPost = {
+            ...post,
+            image_ids: [
+              response.data.id
+            ]
+          }
+          dispatch(submitPost(newPost, cb))
+        }).catch(error => console.log('SUBMIT IMAGE ERROR: ', error))
     })
   }
 }
@@ -78,5 +99,6 @@ export default {
   getFeed,
   refreshFeed,
   updateLike,
-  savePost
+  submitPost,
+  submitPostWithImage
 }

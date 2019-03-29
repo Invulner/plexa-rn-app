@@ -12,6 +12,8 @@ import Controls from '../components/compose/Controls'
 import Message from '../components/compose/Message'
 import AttachBtn from '../components/compose/AttachBtn'
 import PostActions from '../actions/PostActions'
+import { ImagePicker, Permissions } from 'expo'
+import Photo from '../components/compose/Photo'
 
 const mapStateToProps = (state) => {
   const { post } = state
@@ -20,18 +22,33 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-  const savePost = (post, cb) => dispatch(FeedOperations.savePost(post, cb))
+  const submitPost = (post, cb) => dispatch(FeedOperations.submitPost(post, cb))
   const resetPost = () => dispatch(PostActions.resetPost())
+  const submitPostWithImage = (image, post, cb) => dispatch(FeedOperations.submitPostWithImage(image, post, cb))
 
   return { 
-    savePost,
-    resetPost
+    submitPost,
+    resetPost,
+    submitPostWithImage
   }
 }
 
 class ComposeScreen extends Component {
   state = {
-    spinner: false
+    spinner: false,
+    imageURI: ''
+  }
+
+  attachImage = async () => {
+    const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL)
+
+    if (status === 'granted') {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: 'Images',
+      })
+      console.log(result)
+      this.setState({ imageURI: result.uri })
+    }
   }
 
   isEmptyInput = () => {
@@ -50,9 +67,25 @@ class ComposeScreen extends Component {
     return !!this.props.post.topic_ids.length
   }
 
+  submitPostWithImage = (post, cb) => {
+    const { imageURI } = this.state
+    const image = new FormData()
+
+    image.append('image', {
+      uri: imageURI,
+      name: 'photo.jpg',
+      type: 'image/jpg'
+    })
+    this.props.submitPostWithImage(image, post, cb)
+  }
+
+  resetStateImg = () => {
+    this.setState({ imageURI: '' })
+  }
+
   onSubmit = () => {
     if (this.isTopicSelected()) {
-      const { post } = this.props
+      const { post, submitPost } = this.props
       const { link_url, content, ...rest } = post
       const obj = link_url ? post : rest
       const data = {  ...obj, content: content.trim() }
@@ -64,26 +97,37 @@ class ComposeScreen extends Component {
       }
 
       this.toggleOverlay()
-      this.props.savePost(data, cb)
+      this.state.imageURI ? this.submitPostWithImage(data, cb) : submitPost(data, cb)
     } else {
       Alert.alert('Error', 'At least one topic has to be selected')
     }
   }
 
   render() {
-    const { spinner } = this.state
+    const { spinner, imageURI } = this.state
     const { link_url, group_id } = this.props.post
 
     return (
       <SafeArea>
         <Spinner visible={spinner} />
-        <Message />
+        <View style={styles.inputBox}>
+          <Message />
+          {!!imageURI && 
+            <Photo 
+              onClose={this.resetStateImg}
+              imageSrc={imageURI} />
+          }
+        </View>
         <GreyLine boxStyle={styles.lineSolid} />
         
         <View style={styles.btnBox}>
 
           <View style={styles.leftIconBox}>
-            <AttachBtn iconType={'photo'} />
+            <AttachBtn 
+              iconType={'photo'}
+              onPress={this.attachImage}
+              active={imageURI} />
+
             <AttachBtn 
               active={!!link_url}
               route={'AddLink'}
@@ -116,6 +160,13 @@ class ComposeScreen extends Component {
 }
 
 const styles = StyleSheet.create({
+  inputBox: {
+    minHeight: 325, 
+    paddingHorizontal: 20, 
+    paddingTop: 20, 
+    paddingBottom: 15
+  },
+
   btnBox: {
     alignItems: 'center',
     justifyContent: 'space-between',

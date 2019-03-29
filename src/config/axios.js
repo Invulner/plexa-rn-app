@@ -1,7 +1,7 @@
 import Axios from 'axios'
 import { AsyncStorage } from 'react-native'
 
-const getAxiosInstance = async () => {
+const getAxiosInstance = async (optionalHeaders = {}) => {
   try {
     let secretData = await AsyncStorage.getItem('secretData')
 
@@ -11,7 +11,8 @@ const getAxiosInstance = async () => {
         headers: {
           'Uid': secretData.uid,
           'Access-Token': secretData['access-token'],
-          'Client': secretData.client
+          'Client': secretData.client,
+          ...optionalHeaders
         }
       }
 
