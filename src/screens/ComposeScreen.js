@@ -21,7 +21,7 @@ const mapStateToProps = (state) => {
   return { post }
 }
 
-const mapDispatchToProps = (dispatch, { navigation }) => {
+const mapDispatchToProps = (dispatch) => {
   const submitPost = (post, cb) => dispatch(FeedOperations.submitPost(post, cb))
   const resetPost = () => dispatch(PostActions.resetPost())
   const submitPostWithImage = (image, post, cb) => dispatch(FeedOperations.submitPostWithImage(image, post, cb))
