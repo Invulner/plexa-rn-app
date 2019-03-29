@@ -8,7 +8,6 @@ import { DARK_GRAY } from '../assets/styles/colors'
 import PostActions from '../actions/PostActions'
 import { getSortedGroups } from '../selectors/Groups'
 import UserOperations from '../operations/UserOperations'
-import UserActions from '../actions/UserActions'
 import Loader from '../components/common/Loader'
 
 const mapStateToProps = (state) => {
@@ -25,14 +24,12 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch, { navigation }) => {
   const saveGroup = (id) => dispatch(PostActions.saveGroup(id))
   const deleteGroup = () => dispatch(PostActions.deleteGroup())
-  const toggleUserLoading = (flag) => dispatch(UserActions.toggleUserDataLoading(flag))
-  const getProfileData = (cb) => dispatch(UserOperations.getProfileData(navigation, cb))
+  const refreshUserProfile = () => dispatch(UserOperations.refreshUserProfile(navigation))
 
   return {
     saveGroup,
     deleteGroup,
-    getProfileData,
-    toggleUserLoading
+    refreshUserProfile
   }
 }
 
@@ -87,13 +84,7 @@ class AddGroupScreen extends Component {
   }
 
   componentDidMount() {
-    const { toggleUserLoading, getProfileData } = this.props
-    const cb = () => {
-      toggleUserLoading(false)
-    }
-
-    toggleUserLoading(true)
-    getProfileData(cb)
+    this.props.refreshUserProfile()
   }
 
   render() {
