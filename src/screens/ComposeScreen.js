@@ -21,12 +21,12 @@ const mapStateToProps = (state) => {
   return { post }
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch, { navigation }) => {
   const submitPost = (post, cb) => dispatch(FeedOperations.submitPost(post, cb))
   const resetPost = () => dispatch(PostActions.resetPost())
   const submitPostWithImage = (image, post, cb) => dispatch(FeedOperations.submitPostWithImage(image, post, cb))
 
-  return { 
+  return {
     submitPost,
     resetPost,
     submitPostWithImage
@@ -112,23 +112,23 @@ class ComposeScreen extends Component {
         <Spinner visible={spinner} />
         <View style={styles.inputBox}>
           <Message />
-          {!!imageURI && 
-            <Photo 
+          {!!imageURI &&
+            <Photo
               onClose={this.resetStateImg}
               imageSrc={imageURI} />
           }
         </View>
         <GreyLine boxStyle={styles.lineSolid} />
-        
+
         <View style={styles.btnBox}>
 
           <View style={styles.leftIconBox}>
-            <AttachBtn 
+            <AttachBtn
               iconType={'photo'}
               onPress={this.attachImage}
               active={imageURI} />
 
-            <AttachBtn 
+            <AttachBtn
               active={!!link_url}
               route={'AddLink'}
               iconType={'link'} />
@@ -136,12 +136,12 @@ class ComposeScreen extends Component {
             <AttachBtn iconType={'location'} />
 
             <AttachBtn
-              active={!!group_id} 
+              active={!!group_id}
               iconType={'users'}
               route={'AddGroup'} />
           </View>
 
-          <TouchableOpacity 
+          <TouchableOpacity
             style={[styles.postBtn, (!this.isEmptyInput() || link_url) && styles.btnActive]}
             onPress={this.onSubmit}
             disabled={!link_url && this.isEmptyInput()}>
@@ -161,9 +161,9 @@ class ComposeScreen extends Component {
 
 const styles = StyleSheet.create({
   inputBox: {
-    minHeight: 325, 
-    paddingHorizontal: 20, 
-    paddingTop: 20, 
+    minHeight: 325,
+    paddingHorizontal: 20,
+    paddingTop: 20,
     paddingBottom: 15
   },
 

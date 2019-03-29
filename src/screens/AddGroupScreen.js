@@ -7,23 +7,32 @@ import { connect } from 'react-redux'
 import { DARK_GRAY } from '../assets/styles/colors'
 import PostActions from '../actions/PostActions'
 import { getSortedGroups } from '../selectors/Groups'
+import UserOperations from '../operations/UserOperations'
+import UserActions from '../actions/UserActions'
+import Loader from '../components/common/Loader'
 
 const mapStateToProps = (state) => {
   const { group_id } = state.post
+  const { loading } = state.user
 
   return {
     groups: getSortedGroups(state),
-    group_id
+    group_id,
+    loading
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch, { navigation }) => {
   const saveGroup = (id) => dispatch(PostActions.saveGroup(id))
   const deleteGroup = () => dispatch(PostActions.deleteGroup())
+  const toggleUserLoading = (flag) => dispatch(UserActions.toggleUserDataLoading(flag))
+  const getProfileData = (cb) => dispatch(UserOperations.getProfileData(navigation, cb))
 
   return {
     saveGroup,
-    deleteGroup
+    deleteGroup,
+    getProfileData,
+    toggleUserLoading
   }
 }
 
@@ -77,25 +86,39 @@ class AddGroupScreen extends Component {
     })
   }
 
+  componentDidMount() {
+    const { toggleUserLoading, getProfileData } = this.props
+    const cb = () => {
+      toggleUserLoading(false)
+    }
+
+    toggleUserLoading(true)
+    getProfileData(cb)
+  }
+
   render() {
-    const { group_id } = this.props
+    const { group_id, loading } = this.props
 
     return (
       <SafeArea>
-        <ScrollView>
-          <View style={styles.groupBox}>
-            <TouchableOpacity
-              style={styles.btn}
-              onPress={this.onNoGroupPress}>
-              <RegularText style={styles.groupText}>
-                No Group
-              </RegularText>
-            </TouchableOpacity>
-            {!group_id && this.renderIcon()}
-          </View>
-          <GreyLine boxStyle={styles.lineSolid}/>
-          {this.renderGroups()}
-        </ScrollView>
+        {!!loading ?
+          <Loader />
+          :
+          <ScrollView>
+            <View style={styles.groupBox}>
+              <TouchableOpacity
+                style={styles.btn}
+                onPress={this.onNoGroupPress}>
+                <RegularText style={styles.groupText}>
+                  No Group
+                </RegularText>
+              </TouchableOpacity>
+              {!group_id && this.renderIcon()}
+            </View>
+            <GreyLine boxStyle={styles.lineSolid}/>
+            {this.renderGroups()}
+          </ScrollView>
+        }
       </SafeArea>
     )
   }
