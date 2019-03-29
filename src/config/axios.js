@@ -6,7 +6,7 @@ const getAxiosInstance = async (optionalHeaders = {}) => {
     let secretData = await AsyncStorage.getItem('secretData')
 
     if (secretData) {
-      secretData = JSON.parse(secretData)     
+      secretData = JSON.parse(secretData)
       const params = {
         headers: {
           'Uid': secretData.uid,

@@ -8,7 +8,7 @@ class Photo extends Component {
 
     return (
       <ImageBackground 
-        style={styles.attachedImage}
+        style={styles.img}
         source={{uri: imageSrc}}>
         <TouchableOpacity
           style={styles.iconBox} 
@@ -23,7 +23,7 @@ class Photo extends Component {
 }
 
 const styles = StyleSheet.create({
-  attachedImage: {
+  img: {
     width: '100%',
     minHeight: 100,
     resizeMode: 'cover',
