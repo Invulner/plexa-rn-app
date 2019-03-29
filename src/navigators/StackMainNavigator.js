@@ -11,6 +11,7 @@ import PostScreen from '../screens/PostScreen'
 import ComposeScreen from '../screens/ComposeScreen'
 import AddLinkScreen from '../screens/AddLinkScreen'
 import AddGroupScreen from '../screens/AddGroupScreen'
+import Done from '../components/common/header/Done'
 
 const MainStack = createStackNavigator({
   MainSwitch: {
@@ -53,7 +54,8 @@ const MainStack = createStackNavigator({
   AddLink: {
     screen: AddLinkScreen,
     navigationOptions: () => ({
-      headerTitle: <HeaderTitle title={'Add Link'} />
+      headerTitle: <HeaderTitle title={'Add Link'} />,
+      headerRight: <Done />
     })
   },
   AddGroup: {
