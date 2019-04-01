@@ -1,0 +1,5 @@
+const SAVE_LOCATIONS = 'SAVE_LOCATIONS'
+
+export default {
+  SAVE_LOCATIONS
+}
