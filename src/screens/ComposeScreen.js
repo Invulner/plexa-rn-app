@@ -105,7 +105,7 @@ class ComposeScreen extends Component {
 
   render() {
     const { spinner, imageURI } = this.state
-    const { link_url, group_id } = this.props.post
+    const { link_url, group_id, location_id } = this.props.post
 
     return (
       <SafeArea>
@@ -133,7 +133,10 @@ class ComposeScreen extends Component {
               route={'AddLink'}
               iconType={'link'} />
 
-            <AttachBtn iconType={'location'} />
+            <AttachBtn
+              active={!!location_id}
+              route={'AddLocation'}
+              iconType={'location'} />
 
             <AttachBtn
               active={!!group_id}

@@ -39,7 +39,7 @@ class AddGroupScreen extends Component {
   }
 
   onGroupPress = (id) => {
-    const { saveGroup} = this.props
+    const { saveGroup } = this.props
 
     saveGroup(id)
     this.navigateToComposeScreen()

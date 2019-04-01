@@ -64,6 +64,10 @@ const debounce = (fn, time) => {
   }
 }
 
+// renderUserDataList = (list, entity) => {
+//   return list.map()
+// }
+
 export default {
   getInitials,
   truncate,

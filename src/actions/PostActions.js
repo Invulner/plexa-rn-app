@@ -38,6 +38,15 @@ const deleteGroup = () => ({
   type: types.DELETE_GROUP
 })
 
+const saveLocation = (id) => ({
+  type: types.SAVE_LOCATION,
+  id
+})
+
+const deleteLocation = () => ({
+  type: types.DELETE_LOCATION
+})
+
 export default {
   saveLink,
   toggleTopic,
@@ -46,5 +55,7 @@ export default {
   togglePrivacy,
   resetPost,
   saveGroup,
-  deleteGroup
+  deleteGroup,
+  saveLocation,
+  deleteLocation
 }

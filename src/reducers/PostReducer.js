@@ -6,7 +6,8 @@ const initialState = {
   content: '',
   comments_enabled: true,
   public: true,
-  group_id: ''
+  group_id: '',
+  location_id: null
 }
 
 const getTopicIDs = (state, action) => {
@@ -60,7 +61,19 @@ const PostReducer = (state = initialState, action) => {
     case types.DELETE_GROUP:
       return {
         ...state,
-        group_id: ''
+        group_id: initialState.group_id
+      }
+
+    case types.SAVE_LOCATION:
+      return {
+        ...state,
+        location_id: action.id
+      }
+
+    case types.DELETE_LOCATION:
+      return {
+        ...state,
+        location_id: initialState.location_id
       }
 
     case types.RESET_POST:
