@@ -34,6 +34,15 @@ const getProfileData = (navigation, cb) => {
   }
 }
 
+const refreshUserProfile = (navigation) => {
+  return dispatch => {
+    const cb = () => dispatch(UserActions.toggleUserDataLoading(false))
+
+    dispatch(UserActions.toggleUserDataLoading(true))
+    dispatch(getProfileData(navigation, cb))
+  }
+}
+
 const clearUserSecretData = () => {
   AsyncStorage.removeItem('secretData', (error) => error ? console.log('ERROR: ', error) : null)
 }
@@ -54,7 +63,7 @@ const onLoginSuccess = (data, dispatch, navigation) => {
   dispatch(getProfileData(navigation))
 }
 
-const saveUserToAsyncStorage = (userSecretData) => { 
+const saveUserToAsyncStorage = (userSecretData) => {
   AsyncStorage.setItem('secretData', JSON.stringify(userSecretData), (error) =>  error ? console.log('ERROR: ', error) : null)
 }
 
@@ -80,5 +89,6 @@ const logout = (navigation) => {
 export default {
   auth,
   getProfileData,
-  logout
+  logout,
+  refreshUserProfile
 }

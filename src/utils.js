@@ -14,7 +14,7 @@ const renderProfileDetails = (details) => {
   return  details.map((item, index) => {
     if (index !== details.length - 1)
       return `${item.keyword}, `
-    else 
+    else
       return `${item.keyword}`
   })
 }
@@ -46,7 +46,10 @@ const findItemById = (arr, id) => {
 
 const sortByField = (field) => {
   return (a, b) => {
-    return  a[field] == b[field] ? 0 : a[field] < b[field] ? -1 : 1
+    const valA = a[field].toLowerCase()
+    const valB = b[field].toLowerCase()
+
+    return  valA == valB ? 0 : valA < valB ? -1 : 1
   }
 }
 
@@ -55,7 +58,7 @@ const debounce = (fn, time) => {
 
   return function() {
     const functionCall = () => fn.apply(this, arguments)
-    
+
     clearTimeout(timeout)
     timeout = setTimeout(functionCall, time)
   }
