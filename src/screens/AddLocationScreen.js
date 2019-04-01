@@ -1,12 +1,9 @@
 import React, { Component } from 'react'
-import { ScrollView, TouchableOpacity, StyleSheet, View, Image } from 'react-native'
+import { ScrollView } from 'react-native'
 import SafeArea from '../components/common/SafeArea'
-import Loader from '../components/common/Loader'
-import GreyLine from '../components/common/GreyLine'
-import { RegularText } from '../components/common/fonts'
 import { connect } from 'react-redux'
 import PostActions from '../actions/PostActions'
-import { DARK_GRAY } from '../assets/styles/colors'
+import UserListItem from '../components/compose/UserListItem'
 
 const mapStateToProps = (state) => {
   const { location } = state.user
@@ -47,39 +44,16 @@ class AddLocationScreen extends Component {
     this.navigateToComposeScreen()
   }
 
-  renderIcon = () => {
-    return (
-      <Image
-        style={styles.icon}
-        source={require('../assets/icons/checked.png')} />
-    )
-  }
-
-  renderLocation = () => {
+  renderLocations = () => {
     const { location, location_id } = this.props
 
-    return location.map(item => {
-
-      return (
-        <View key={item.id}>
-          <View style={styles.groupBox}>
-            <TouchableOpacity
-              style={styles.btn}
-              onPress={() => this.onLocationPress(item.id)}>
-              <RegularText style={styles.groupText}>
-                {item.name}
-              </RegularText>
-            </TouchableOpacity>
-            {location_id === item.id && this.renderIcon()}
-          </View>
-          <GreyLine boxStyle={styles.lineSolid}/>
-        </View>
-      )
-    })
-  }
-
-  componentDidMount() {
-    // this.props.refreshUserProfile()
+    return location.map(item => (
+      <UserListItem
+        name={item.name}
+        isChosen={location_id === item.id}
+        key={item.id}
+        onItemPress={() => this.onLocationPress(item.id)} />
+    ))
   }
 
   render() {
@@ -88,51 +62,15 @@ class AddLocationScreen extends Component {
     return (
       <SafeArea>
         <ScrollView>
-          <View style={styles.groupBox}>
-            <TouchableOpacity
-              style={styles.btn}
-              onPress={this.onAllLocationsPress}>
-              <RegularText style={styles.groupText}>
-                All Locations
-              </RegularText>
-            </TouchableOpacity>
-            {!location_id && this.renderIcon()}
-          </View>
-          <GreyLine boxStyle={styles.lineSolid}/>
-          {this.renderLocation()}
+          <UserListItem
+            name={'All Locations'}
+            isChosen={!location_id}
+            onItemPress={this.onAllLocationsPress} />
+          {this.renderLocations()}
         </ScrollView>
       </SafeArea>
     )
   }
 }
-
-const styles = StyleSheet.create({
-  lineSolid: {
-    paddingHorizontal: 0
-  },
-
-  btn: {
-    flex: 1
-  },
-
-  groupBox: {
-    height: 50,
-    paddingHorizontal: 10,
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-
-  groupText: {
-    fontSize: 18,
-    marginTop: 10,
-    color: DARK_GRAY
-  },
-
-  icon: {
-    width: 20,
-    height: 20,
-    resizeMode: 'contain'
-  }
-})
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddLocationScreen)
