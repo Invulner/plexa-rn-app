@@ -13,34 +13,36 @@ import LocationsActions from '../actions/LocationsActions'
 const mapStateToProps = (state) => {
   const { location } = state.user
   const { location_id } = state.post
-  const { items, loading } = state.locations
+  const { items, loading, savedLocation } = state.locations
 
   return {
     location,
     location_id,
     items,
-    loading
+    loading,
+    savedLocation
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
-  const saveLocation = (id) => dispatch(PostActions.saveLocation(id))
+  const saveLocationID = (id) => dispatch(PostActions.saveLocationID(id))
   const deleteLocation = () => dispatch(PostActions.deleteLocation())
   const getLocations = (param) => dispatch(LocationsOperations.getLocations(param))
   const resetLocations = () => dispatch(LocationsActions.resetLocations())
+  const saveLocationObj = (obj) => dispatch(LocationsActions.saveLocation(obj))
 
   return {
-    saveLocation,
+    saveLocationID,
     deleteLocation,
     getLocations,
-    resetLocations
+    resetLocations,
+    saveLocationObj
   }
 }
 
 class AddLocationScreen extends Component {
   state = {
-    input: '',
-    location: null
+    input: ''
   }
 
   navigateToComposeScreen = () => {
@@ -48,10 +50,10 @@ class AddLocationScreen extends Component {
   }
 
   onLocationPress = (item) => {
-    const { saveLocation, resetLocations } = this.props
+    const { saveLocationID, resetLocations, saveLocationObj } = this.props
 
-    saveLocation(item.id)
-    this.setState({ location: item }, () => console.log(this.state.location))
+    saveLocationID(item.id)
+    saveLocationObj(item)
     resetLocations()
     this.navigateToComposeScreen()
   }
@@ -69,6 +71,23 @@ class AddLocationScreen extends Component {
 
   getLocations = debounce(() => this.props.getLocations(this.state.input), 1000)
 
+  renderUserLocations = () => {
+    const { location_id, location, savedLocation } = this.props
+
+    const ifRenderSavedLocation = () => {
+      return savedLocation && !location.filter(item => item.id === location_id).length
+    }
+    let newArr = ifRenderSavedLocation() ? [savedLocation, ...location] : location
+
+    return newArr.map(item => (
+      <UserListItem
+        name={item.name}
+        isChosen={location_id === item.id}
+        key={item.id}
+        onItemPress={() => this.onLocationPress(item)} />
+    ))
+  }
+
   renderLocations = (locationsArr) => {
     const { location_id } = this.props
 
@@ -82,7 +101,7 @@ class AddLocationScreen extends Component {
   }
 
   render() {
-    const { location_id, location, items } = this.props
+    const { location_id, items } = this.props
 
     return (
       <SafeArea>
@@ -99,7 +118,7 @@ class AddLocationScreen extends Component {
                   name={'All Locations'}
                   isChosen={!location_id}
                   onItemPress={this.onAllLocationsPress} />
-                {this.renderLocations(location)}
+                {this.renderUserLocations()}
               </React.Fragment>
             }
         </ScrollView>

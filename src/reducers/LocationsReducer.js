@@ -2,7 +2,8 @@ import types from '../types/locations'
 
 const initialState = {
   items: [],
-  loading: true
+  loading: true,
+  savedLocation: null
 }
 
 const LocationReducer = (state = initialState, action) => {
@@ -23,6 +24,12 @@ const LocationReducer = (state = initialState, action) => {
       return {
         ...state,
         items: initialState.items
+      }
+
+    case types.SAVE_LOCATION:
+      return {
+        ...state,
+        savedLocation: action.item
       }
 
     default:
