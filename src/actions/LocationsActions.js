@@ -14,14 +14,19 @@ const resetLocations = () => ({
   type: types.RESET_LOCATIONS
 })
 
-const saveLocation = (item) => ({
-  type: types.SAVE_LOCATION,
+const saveLocationObj = (item) => ({
+  type: types.SAVE_LOCATION_OBJ,
   item
+})
+
+const deleteLocationObj = () => ({
+  type: types.DELETE_LOCATION_OBJ
 })
 
 export default {
   saveLocations,
   toggleLoading,
   resetLocations,
-  saveLocation
+  saveLocationObj,
+  deleteLocationObj
 }

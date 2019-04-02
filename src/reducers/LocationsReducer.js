@@ -26,10 +26,16 @@ const LocationReducer = (state = initialState, action) => {
         items: initialState.items
       }
 
-    case types.SAVE_LOCATION:
+    case types.SAVE_LOCATION_OBJ:
       return {
         ...state,
         savedLocation: action.item
+      }
+
+    case types.DELETE_LOCATION_OBJ:
+      return {
+        ...state,
+        savedLocation: initialState.savedLocation
       }
 
     default:

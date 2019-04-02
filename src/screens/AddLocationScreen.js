@@ -29,14 +29,16 @@ const mapDispatchToProps = (dispatch) => {
   const deleteLocationID = () => dispatch(PostActions.deleteLocationID())
   const getLocations = (param) => dispatch(LocationsOperations.getLocations(param))
   const resetLocations = () => dispatch(LocationsActions.resetLocations())
-  const saveLocationObj = (obj) => dispatch(LocationsActions.saveLocation(obj))
+  const saveLocationObj = (obj) => dispatch(LocationsActions.saveLocationObj(obj))
+  const deleteLocationObj = () => dispatch(LocationsActions.deleteLocationObj())
 
   return {
     saveLocationID,
     deleteLocationID,
     getLocations,
     resetLocations,
-    saveLocationObj
+    saveLocationObj,
+    deleteLocationObj
   }
 }
 
@@ -59,9 +61,10 @@ class AddLocationScreen extends Component {
   }
 
   onAllLocationsPress = () => {
-    const { deleteLocationID } = this.props
+    const { deleteLocationID, deleteLocationObj } = this.props
 
     deleteLocationID()
+    deleteLocationObj()
     this.navigateToComposeScreen()
   }
 
