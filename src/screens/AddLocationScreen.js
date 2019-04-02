@@ -8,6 +8,7 @@ import { BRAND_LIGHT } from '../assets/styles/colors'
 import LocationsOperations from '../operations/LocationsOperations'
 import debounce from 'lodash.debounce'
 import Loader from '../components/common/Loader'
+import LocationsActions from '../actions/LocationsActions'
 
 const mapStateToProps = (state) => {
   const { location } = state.user
@@ -26,11 +27,13 @@ const mapDispatchToProps = (dispatch) => {
   const saveLocation = (id) => dispatch(PostActions.saveLocation(id))
   const deleteLocation = () => dispatch(PostActions.deleteLocation())
   const getLocations = (param) => dispatch(LocationsOperations.getLocations(param))
+  const resetLocations = () => dispatch(LocationsActions.resetLocations())
 
   return {
     saveLocation,
     deleteLocation,
-    getLocations
+    getLocations,
+    resetLocations
   }
 }
 
@@ -45,10 +48,11 @@ class AddLocationScreen extends Component {
   }
 
   onLocationPress = (item) => {
-    const { saveLocation } = this.props
+    const { saveLocation, resetLocations } = this.props
 
     saveLocation(item.id)
     this.setState({ location: item }, () => console.log(this.state.location))
+    resetLocations()
     this.navigateToComposeScreen()
   }
 

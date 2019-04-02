@@ -19,6 +19,12 @@ const LocationReducer = (state = initialState, action) => {
         loading: action.flag
       }
 
+    case types.RESET_LOCATIONS:
+      return {
+        ...state,
+        items: initialState.items
+      }
+
     default:
       return state
   }
