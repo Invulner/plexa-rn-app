@@ -91,10 +91,10 @@ class AddLocationScreen extends Component {
     ))
   }
 
-  renderLocations = (locationsArr) => {
-    const { location_id } = this.props
+  renderRemoteLocations = () => {
+    const { location_id, items } = this.props
 
-    return locationsArr.map(item => (
+    return items.map(item => (
       <UserListItem
         name={item.name}
         isChosen={location_id === item.id}
@@ -103,26 +103,38 @@ class AddLocationScreen extends Component {
     ))
   }
 
+  renderLocationsLists = () => {
+    const { items, location_id } = this.props
+
+    if (items.length)
+      return this.renderRemoteLocations()
+    else
+      return (
+        <React.Fragment>
+          <UserListItem
+            name={'All Locations'}
+            isChosen={!location_id}
+            onItemPress={this.onAllLocationsPress} />
+          {this.renderUserLocations()}
+        </React.Fragment>
+      )
+  }
+
   render() {
-    const { location_id, items } = this.props
+    const { loading } = this.props
 
     return (
       <SafeArea>
         <ScrollView>
           <TextInput
+            placeholderTextColor={'#fff'}
             placeholder='Search for location ...'
             style={styles.searchField}
             onChangeText={this.onInputChange} />
-            {!!items.length ?
-              this.renderLocations(items)
+            {loading ?
+              <Loader style={styles.loader} />
               :
-              <React.Fragment>
-                <UserListItem
-                  name={'All Locations'}
-                  isChosen={!location_id}
-                  onItemPress={this.onAllLocationsPress} />
-                {this.renderUserLocations()}
-              </React.Fragment>
+              this.renderLocationsLists()
             }
         </ScrollView>
       </SafeArea>
@@ -137,6 +149,10 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#fff',
     backgroundColor: BRAND_LIGHT
+  },
+
+  loader: {
+    marginTop: 15
   }
 })
 

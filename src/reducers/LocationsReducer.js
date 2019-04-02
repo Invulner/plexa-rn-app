@@ -2,7 +2,7 @@ import types from '../types/locations'
 
 const initialState = {
   items: [],
-  loading: true,
+  loading: false,
   savedLocation: null
 }
 
