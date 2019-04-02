@@ -7,16 +7,18 @@ import UserListItem from '../components/compose/UserListItem'
 import { BRAND_LIGHT } from '../assets/styles/colors'
 import LocationsOperations from '../operations/LocationsOperations'
 import debounce from 'lodash.debounce'
+import Loader from '../components/common/Loader'
 
 const mapStateToProps = (state) => {
   const { location } = state.user
   const { location_id } = state.post
-  const { items } = state.locations
+  const { items, loading } = state.locations
 
   return {
     location,
     location_id,
-    items
+    items,
+    loading
   }
 }
 
@@ -34,17 +36,19 @@ const mapDispatchToProps = (dispatch) => {
 
 class AddLocationScreen extends Component {
   state = {
-    input: ''
+    input: '',
+    location: null
   }
 
   navigateToComposeScreen = () => {
     this.props.navigation.navigate('Compose')
   }
 
-  onLocationPress = (id) => {
+  onLocationPress = (item) => {
     const { saveLocation } = this.props
 
-    saveLocation(id)
+    saveLocation(item.id)
+    this.setState({ location: item }, () => console.log(this.state.location))
     this.navigateToComposeScreen()
   }
 
@@ -61,20 +65,20 @@ class AddLocationScreen extends Component {
 
   getLocations = debounce(() => this.props.getLocations(this.state.input), 1000)
 
-  renderLocations = () => {
-    const { location, location_id } = this.props
+  renderLocations = (locationsArr) => {
+    const { location_id } = this.props
 
-    return location.map(item => (
+    return locationsArr.map(item => (
       <UserListItem
         name={item.name}
         isChosen={location_id === item.id}
         key={item.id}
-        onItemPress={() => this.onLocationPress(item.id)} />
+        onItemPress={() => this.onLocationPress(item)} />
     ))
   }
 
   render() {
-    const { location_id } = this.props
+    const { location_id, location, items } = this.props
 
     return (
       <SafeArea>
@@ -83,11 +87,17 @@ class AddLocationScreen extends Component {
             placeholder='Search for location ...'
             style={styles.searchField}
             onChangeText={this.onInputChange} />
-          <UserListItem
-            name={'All Locations'}
-            isChosen={!location_id}
-            onItemPress={this.onAllLocationsPress} />
-          {this.renderLocations()}
+            {!!items.length ?
+              this.renderLocations(items)
+              :
+              <React.Fragment>
+                <UserListItem
+                  name={'All Locations'}
+                  isChosen={!location_id}
+                  onItemPress={this.onAllLocationsPress} />
+                {this.renderLocations(location)}
+              </React.Fragment>
+            }
         </ScrollView>
       </SafeArea>
     )

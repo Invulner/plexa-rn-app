@@ -5,6 +5,12 @@ const saveLocations = (locations) => ({
   locations
 })
 
+const toggleLoading = (flag) => ({
+  type: types.TOGGLE_LOADING,
+  flag
+})
+
 export default {
-  saveLocations
+  saveLocations,
+  toggleLoading
 }

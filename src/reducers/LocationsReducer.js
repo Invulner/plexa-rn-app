@@ -1,6 +1,9 @@
 import types from '../types/locations'
 
-const initialState = {}
+const initialState = {
+  items: [],
+  loading: true
+}
 
 const LocationReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -8,6 +11,12 @@ const LocationReducer = (state = initialState, action) => {
       return {
         ...state,
         items: action.locations
+      }
+
+    case types.TOGGLE_LOADING:
+      return {
+        ...state,
+        loading: action.flag
       }
 
     default:
