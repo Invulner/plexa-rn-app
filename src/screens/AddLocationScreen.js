@@ -26,14 +26,14 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   const saveLocationID = (id) => dispatch(PostActions.saveLocationID(id))
-  const deleteLocation = () => dispatch(PostActions.deleteLocation())
+  const deleteLocationID = () => dispatch(PostActions.deleteLocationID())
   const getLocations = (param) => dispatch(LocationsOperations.getLocations(param))
   const resetLocations = () => dispatch(LocationsActions.resetLocations())
   const saveLocationObj = (obj) => dispatch(LocationsActions.saveLocation(obj))
 
   return {
     saveLocationID,
-    deleteLocation,
+    deleteLocationID,
     getLocations,
     resetLocations,
     saveLocationObj
@@ -59,9 +59,9 @@ class AddLocationScreen extends Component {
   }
 
   onAllLocationsPress = () => {
-    const { deleteLocation } = this.props
+    const { deleteLocationID } = this.props
 
-    deleteLocation()
+    deleteLocationID()
     this.navigateToComposeScreen()
   }
 

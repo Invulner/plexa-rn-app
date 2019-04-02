@@ -43,8 +43,8 @@ const saveLocationID = (id) => ({
   id
 })
 
-const deleteLocation = () => ({
-  type: types.DELETE_LOCATION
+const deleteLocationID = () => ({
+  type: types.DELETE_LOCATION_ID
 })
 
 export default {
@@ -57,5 +57,5 @@ export default {
   saveGroup,
   deleteGroup,
   saveLocationID,
-  deleteLocation
+  deleteLocationID
 }

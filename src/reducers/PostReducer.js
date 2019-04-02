@@ -70,7 +70,7 @@ const PostReducer = (state = initialState, action) => {
         location_id: action.id
       }
 
-    case types.DELETE_LOCATION:
+    case types.DELETE_LOCATION_ID:
       return {
         ...state,
         location_id: initialState.location_id
