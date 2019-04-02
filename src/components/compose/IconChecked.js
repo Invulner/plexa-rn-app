@@ -4,8 +4,8 @@ import { Image, StyleSheet } from 'react-native'
 function IconChecked() {
   return (
     <Image
-        style={styles.icon}
-        source={require('../../assets/icons/checked.png')} />
+      style={styles.icon}
+      source={require('../../assets/icons/checked.png')} />
   )
 }
 

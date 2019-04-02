@@ -133,11 +133,12 @@ class AddLocationScreen extends Component {
         </React.Fragment>
       )
     } else {
-      if (items.length) {
+
+      if (items.length)
         return this.renderRemoteLocations()
-      } else {
+      else
         return this.renderNoResults()
-      }
+
     }
   }
 
