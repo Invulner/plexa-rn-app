@@ -1,7 +1,7 @@
 import types from '../types/locations'
 
 const initialState = {
-  items: [],
+  items: null,
   loading: false,
   savedLocation: null
 }

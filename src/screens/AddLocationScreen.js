@@ -9,6 +9,8 @@ import LocationsOperations from '../operations/LocationsOperations'
 import debounce from 'lodash.debounce'
 import Loader from '../components/common/Loader'
 import LocationsActions from '../actions/LocationsActions'
+import { RegularText } from '../components/common/fonts'
+import { GRAY } from '../assets/styles/colors'
 
 const mapStateToProps = (state) => {
   const { location } = state.user
@@ -69,7 +71,17 @@ class AddLocationScreen extends Component {
   }
 
   onInputChange = (input) => {
-    this.setState({ input }, this.getLocations)
+    this.setState({ input }, this.ifDebounce)
+  }
+
+  ifDebounce = () => {
+    if (!this.state.input.length) {
+      console.log(!this.state.input.length)
+      this.props.resetLocations()
+    } else {
+      console.log('debounced api call')
+      this.getLocations()
+    }
   }
 
   getLocations = debounce(() => this.props.getLocations(this.state.input), 1000)
@@ -103,12 +115,14 @@ class AddLocationScreen extends Component {
     ))
   }
 
+  renderNoResults = () => {
+    return <RegularText style={styles.noResults}>No results</RegularText>
+  }
+
   renderLocationsLists = () => {
     const { items, location_id } = this.props
 
-    if (items.length)
-      return this.renderRemoteLocations()
-    else
+    if (items === null) {
       return (
         <React.Fragment>
           <UserListItem
@@ -118,6 +132,18 @@ class AddLocationScreen extends Component {
           {this.renderUserLocations()}
         </React.Fragment>
       )
+    } else {
+      if (items.length) {
+        return this.renderRemoteLocations()
+      } else {
+        return this.renderNoResults()
+      }
+    }
+  }
+
+  componentDidUpdate() {
+    if (!this.state.input)
+      this.props.resetLocations()
   }
 
   render() {
@@ -153,6 +179,12 @@ const styles = StyleSheet.create({
 
   loader: {
     marginTop: 15
+  },
+
+  noResults: {
+    paddingTop: 10,
+    color: GRAY,
+    alignSelf: 'center'
   }
 })
 
