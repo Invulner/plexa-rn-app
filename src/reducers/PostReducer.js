@@ -64,13 +64,13 @@ const PostReducer = (state = initialState, action) => {
         group_id: initialState.group_id
       }
 
-    case types.SAVE_LOCATION_ID:
+    case types.SAVE_LOCATION:
       return {
         ...state,
         location_id: action.id
       }
 
-    case types.DELETE_LOCATION_ID:
+    case types.DELETE_LOCATION:
       return {
         ...state,
         location_id: initialState.location_id

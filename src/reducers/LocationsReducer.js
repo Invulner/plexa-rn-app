@@ -20,7 +20,7 @@ const LocationReducer = (state = initialState, action) => {
         loading: action.flag
       }
 
-    case types.RESET_LOCATIONS:
+    case types.DELETE_LOCATIONS:
       return {
         ...state,
         items: initialState.items

@@ -6,7 +6,7 @@ import PostActions from '../actions/PostActions'
 import { getSortedGroups } from '../selectors/Groups'
 import UserOperations from '../operations/UserOperations'
 import Loader from '../components/common/Loader'
-import UserListItem from '../components/compose/UserListItem'
+import ListItem from '../components/compose/ListItem'
 
 const mapStateToProps = (state) => {
   const { group_id } = state.post
@@ -54,7 +54,7 @@ class AddGroupScreen extends Component {
     const { groups, group_id } = this.props
 
     return groups.map(item => (
-      <UserListItem
+      <ListItem
         name={item.name}
         key={item.id}
         isChosen={group_id === item.id}
@@ -75,7 +75,7 @@ class AddGroupScreen extends Component {
           <Loader />
           :
           <ScrollView>
-            <UserListItem
+            <ListItem
               name={'No Group'}
               onItemPress={this.onNoGroupPress}
               isChosen={!group_id} />

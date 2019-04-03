@@ -10,8 +10,8 @@ const toggleLoading = (flag) => ({
   flag
 })
 
-const resetLocations = () => ({
-  type: types.RESET_LOCATIONS
+const deleteLocations = () => ({
+  type: types.DELETE_LOCATIONS
 })
 
 const saveLocationObj = (item) => ({
@@ -26,7 +26,7 @@ const deleteLocationObj = () => ({
 export default {
   saveLocations,
   toggleLoading,
-  resetLocations,
+  deleteLocations,
   saveLocationObj,
   deleteLocationObj
 }

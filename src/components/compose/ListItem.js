@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import GreyLine from '../common/GreyLine'
 import { RegularText } from '../common/fonts'
-import IconChecked from '../compose/IconChecked'
+import IconChecked from '../common/IconChecked'
 import { DARK_GRAY } from '../../assets/styles/colors'
 
 function UserListItem(props) {

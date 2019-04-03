@@ -38,13 +38,13 @@ const deleteGroup = () => ({
   type: types.DELETE_GROUP
 })
 
-const saveLocationID = (id) => ({
-  type: types.SAVE_LOCATION_ID,
+const saveLocation = (id) => ({
+  type: types.SAVE_LOCATION,
   id
 })
 
-const deleteLocationID = () => ({
-  type: types.DELETE_LOCATION_ID
+const deleteLocation = () => ({
+  type: types.DELETE_LOCATION
 })
 
 export default {
@@ -56,6 +56,6 @@ export default {
   resetPost,
   saveGroup,
   deleteGroup,
-  saveLocationID,
-  deleteLocationID
+  saveLocation,
+  deleteLocation
 }

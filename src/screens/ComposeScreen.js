@@ -14,6 +14,7 @@ import AttachBtn from '../components/compose/AttachBtn'
 import PostActions from '../actions/PostActions'
 import { ImagePicker, Permissions } from 'expo'
 import Photo from '../components/compose/Photo'
+import LocationsActions from '../actions/LocationsActions'
 
 const mapStateToProps = (state) => {
   const { post } = state
@@ -25,11 +26,13 @@ const mapDispatchToProps = (dispatch) => {
   const submitPost = (post, cb) => dispatch(FeedOperations.submitPost(post, cb))
   const resetPost = () => dispatch(PostActions.resetPost())
   const submitPostWithImage = (image, post, cb) => dispatch(FeedOperations.submitPostWithImage(image, post, cb))
+  const deleteLocationObj = () => dispatch(LocationsActions.deleteLocationObj())
 
   return {
     submitPost,
     resetPost,
-    submitPostWithImage
+    submitPostWithImage,
+    deleteLocationObj
   }
 }
 
@@ -85,7 +88,7 @@ class ComposeScreen extends Component {
 
   onSubmit = () => {
     if (this.isTopicSelected()) {
-      const { post, submitPost } = this.props
+      const { post, submitPost, resetPost, deleteLocationObj } = this.props
       const { link_url, content, ...rest } = post
       const obj = link_url ? post : rest
       const data = {  ...obj, content: content.trim() }
@@ -93,7 +96,8 @@ class ComposeScreen extends Component {
       const cb = () => {
         this.toggleOverlay()
         this.navigateToFeed()
-        this.props.resetPost()
+        resetPost()
+        deleteLocationObj()
       }
 
       this.toggleOverlay()

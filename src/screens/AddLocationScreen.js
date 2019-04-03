@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 import { ScrollView, TextInput, StyleSheet } from 'react-native'
 import SafeArea from '../components/common/SafeArea'
 import { connect } from 'react-redux'
-import PostActions from '../actions/PostActions'
-import UserListItem from '../components/compose/UserListItem'
+import ListItem from '../components/compose/ListItem'
 import { BRAND_LIGHT } from '../assets/styles/colors'
 import LocationsOperations from '../operations/LocationsOperations'
 import debounce from 'lodash.debounce'
@@ -27,20 +26,16 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-  const saveLocationID = (id) => dispatch(PostActions.saveLocationID(id))
-  const deleteLocationID = () => dispatch(PostActions.deleteLocationID())
-  const getLocations = (param) => dispatch(LocationsOperations.getLocations(param))
-  const resetLocations = () => dispatch(LocationsActions.resetLocations())
-  const saveLocationObj = (obj) => dispatch(LocationsActions.saveLocationObj(obj))
-  const deleteLocationObj = () => dispatch(LocationsActions.deleteLocationObj())
+  const getLocations = (q) => dispatch(LocationsOperations.getLocations(q))
+  const deleteLocations = () => dispatch(LocationsActions.deleteLocations())
+  const saveLocation = (obj) => dispatch(LocationsOperations.saveLocation(obj))
+  const deleteLocation = () => dispatch(LocationsOperations.deleteLocation())
 
   return {
-    saveLocationID,
-    deleteLocationID,
     getLocations,
-    resetLocations,
-    saveLocationObj,
-    deleteLocationObj
+    deleteLocations,
+    saveLocation,
+    deleteLocation
   }
 }
 
@@ -54,48 +49,40 @@ class AddLocationScreen extends Component {
   }
 
   onLocationPress = (item) => {
-    const { saveLocationID, resetLocations, saveLocationObj } = this.props
+    const { deleteLocations, saveLocation } = this.props
 
-    saveLocationID(item.id)
-    saveLocationObj(item)
-    resetLocations()
+    saveLocation(item)
+    deleteLocations()
     this.navigateToComposeScreen()
   }
 
   onAllLocationsPress = () => {
-    const { deleteLocationID, deleteLocationObj } = this.props
-
-    deleteLocationID()
-    deleteLocationObj()
+    this.props.deleteLocation()
     this.navigateToComposeScreen()
   }
 
   onInputChange = (input) => {
-    this.setState({ input }, this.ifDebounce)
+    this.setState({ input }, () => this.toggleLocations(input))
   }
 
-  ifDebounce = () => {
-    if (!this.state.input.length) {
-      console.log(!this.state.input.length)
-      this.props.resetLocations()
+  toggleLocations = (input) => {
+    if (!input) {
+      this.props.deleteLocations()
+      this.getLocations.cancel()
     } else {
-      console.log('debounced api call')
-      this.getLocations()
+      this.getLocations(input)
     }
   }
 
-  getLocations = debounce(() => this.props.getLocations(this.state.input), 1000)
+  getLocations = debounce((input) => this.props.getLocations(input), 1000)
 
   renderUserLocations = () => {
     const { location_id, location, savedLocation } = this.props
-
-    const ifRenderSavedLocation = () => {
-      return savedLocation && !location.filter(item => item.id === location_id).length
-    }
-    let newArr = ifRenderSavedLocation() ? [savedLocation, ...location] : location
+    const isSavedLocationExist = !!savedLocation && !location.filter(item => item.id === location_id).length
+    let newArr = isSavedLocationExist ? [savedLocation, ...location] : location
 
     return newArr.map(item => (
-      <UserListItem
+      <ListItem
         name={item.name}
         isChosen={location_id === item.id}
         key={item.id}
@@ -107,7 +94,7 @@ class AddLocationScreen extends Component {
     const { location_id, items } = this.props
 
     return items.map(item => (
-      <UserListItem
+      <ListItem
         name={item.name}
         isChosen={location_id === item.id}
         key={item.id}
@@ -125,7 +112,7 @@ class AddLocationScreen extends Component {
     if (items === null) {
       return (
         <React.Fragment>
-          <UserListItem
+          <ListItem
             name={'All Locations'}
             isChosen={!location_id}
             onItemPress={this.onAllLocationsPress} />
@@ -140,11 +127,6 @@ class AddLocationScreen extends Component {
         return this.renderNoResults()
 
     }
-  }
-
-  componentDidUpdate() {
-    if (!this.state.input)
-      this.props.resetLocations()
   }
 
   render() {
