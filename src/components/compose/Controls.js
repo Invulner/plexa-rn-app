@@ -26,7 +26,7 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 class Controls extends Component {
-  showHint = (key) => { 
+  showHint = (key) => {
     Alert.alert(hints[key].title, hints[key].text)
   }
 
@@ -40,7 +40,7 @@ class Controls extends Component {
             Replies
           </SemiboldText>
 
-          <TouchableOpacity 
+          <TouchableOpacity
             style={styles.questionBox}
             onPress={() => this.showHint('replies')}>
             <BoldText style={styles.question}>
@@ -48,7 +48,7 @@ class Controls extends Component {
             </BoldText>
           </TouchableOpacity>
           <View style={styles.switchBox}>
-            <Switch 
+            <Switch
               onValueChange={flag => toggleComments(flag)}
               value={comments_enabled}
               style={styles.switch} />
@@ -60,7 +60,7 @@ class Controls extends Component {
             Privacy
           </SemiboldText>
 
-          <TouchableOpacity 
+          <TouchableOpacity
             style={styles.questionBox}
             onPress={() => this.showHint('privacy')}>
             <BoldText style={styles.question}>
@@ -68,9 +68,9 @@ class Controls extends Component {
             </BoldText>
           </TouchableOpacity>
           <View style={styles.switchBox}>
-            <Switch 
+            <Switch
               onValueChange={flag => togglePrivacy(flag)}
-              value={isPublic}
+              value={!isPublic}
               style={styles.switch} />
           </View>
         </View>
