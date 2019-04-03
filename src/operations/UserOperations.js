@@ -5,7 +5,7 @@ import UserActions from '../actions/UserActions'
 import getAxiosInstance from '../config/axios'
 import PublicUserOperations from './PublicUserOperations'
 import FeedActions from '../actions/FeedActions'
-import ResearchFeedActions from '../actions/ResearchFeedActions';
+import ResearchFeedActions from '../actions/ResearchFeedActions'
 
 const auth = (credentials, navigation) => {
   return dispatch => {
