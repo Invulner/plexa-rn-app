@@ -69,8 +69,6 @@ class ProfileScreen extends Component {
             ABOUT
           </LightText>
 
-          {/* {this.renderTerms('Privacy Policy', 'Policy')}
-          {this.renderTerms('Terms of Service', 'Terms')} */}
           <Button
             onBtnPress={() => navigate('Policy')}
             title={'Privacy Policy'} />
@@ -80,14 +78,6 @@ class ProfileScreen extends Component {
           <Button
             onBtnPress={logout}
             title={'Sign out'} />
-
-          {/* <View style={profileStyles.detailBox}>
-            <LightText
-              style={profileStyles.text}
-              onPress={logout}>
-              Sign out
-            </LightText>
-          </View> */}
         </ScrollView>
       </SafeArea>
     )
