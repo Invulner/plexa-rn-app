@@ -86,9 +86,16 @@ class ComposeScreen extends Component {
     this.setState({ imageURI: '' })
   }
 
+  resetPost = () => {
+    const { resetPost, deleteLocationObj } = this.props
+
+    resetPost()
+    deleteLocationObj()
+  }
+
   onSubmit = () => {
     if (this.isTopicSelected()) {
-      const { post, submitPost, resetPost, deleteLocationObj } = this.props
+      const { post, submitPost } = this.props
       const { link_url, content, ...rest } = post
       const obj = link_url ? post : rest
       const data = {  ...obj, content: content.trim() }
@@ -96,8 +103,7 @@ class ComposeScreen extends Component {
       const cb = () => {
         this.toggleOverlay()
         this.navigateToFeed()
-        resetPost()
-        deleteLocationObj()
+        this.resetPost()
       }
 
       this.toggleOverlay()

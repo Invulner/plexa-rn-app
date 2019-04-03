@@ -5,12 +5,13 @@ import { likeIcons } from '../../constants'
 import { connect } from 'react-redux'
 import CommentsOperations from '../../operations/CommentsOperations'
 import FeedOperations from '../../operations/FeedOperations'
-import utils from '../../utils'
+// import utils from '../../utils'
+import debounce from 'lodash.debounce'
 
 const mapStateToProps = (state, { id, isComment }) => {
   const items = isComment ? state.comments.items : state.feed.feedData
   const item = items.filter(item => item.id === id)[0]
-  
+
   return { item }
 }
 
@@ -18,7 +19,7 @@ const mapDispatchToProps = (dispatch) => {
   const likeComment = (flag, id) => dispatch(CommentsOperations.updateLike(flag, id))
   const likePost = (flag, id) => dispatch(FeedOperations.updateLike(flag, id))
 
-  return { 
+  return {
     likeComment,
     likePost
   }
@@ -33,7 +34,7 @@ class Social extends Component {
       likes: likesCount
     }
   }
-  
+
   state = this.setPropsToState()
 
   onLikePress = () => {
@@ -43,10 +44,10 @@ class Social extends Component {
     }), this.updateLike)
   }
 
-  updateLike = utils.debounce(() => {
+  updateLike = debounce(() => {
     const { isComment, likeComment, likePost, id } = this.props
     const { liked } = this.state
-    
+
     isComment ? likeComment(liked, id) : likePost(liked, id)
   }, 1000)
 
@@ -55,18 +56,18 @@ class Social extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.liked !== this.props.liked) 
+    if (prevProps.liked !== this.props.liked)
       this.setState(this.setPropsToState())
   }
 
   render() {
     const { answersCount } = this.props
     const { likes } = this.state
-  
+
     return (
       <View style={styles.socialContainer}>
         <TouchableWithoutFeedback onPress={this.onLikePress}>
-          <Image 
+          <Image
             source={likeIcons[this.getIcon()]}
             style={styles.icon} />
         </TouchableWithoutFeedback>
@@ -75,7 +76,7 @@ class Social extends Component {
         </LightText>
         {!!answersCount &&
           <View style={styles.commentsContainer}>
-            <Image 
+            <Image
               source={require('../../assets/icons/comments.png')}
               style={styles.icon} />
             <LightText>
@@ -105,7 +106,7 @@ const styles = StyleSheet.create({
   },
 
   commentsContainer: {
-    flexDirection: 'row', 
+    flexDirection: 'row',
     alignItems: 'center',
     position: 'absolute',
     left: 70

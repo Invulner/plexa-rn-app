@@ -6,7 +6,6 @@ import { API_URL } from '../constants'
 const getLocations = (q) => {
   return dispatch => {
     dispatch(LocationsActions.toggleLoading(true))
-    console.log(q)
 
     return getAxiosInstance().then(api => {
       api.get(`${API_URL}/locations/search?term=${q}`)
