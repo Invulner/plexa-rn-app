@@ -7,6 +7,7 @@ import profileStyles from '../assets/styles/profileStyles'
 import UserOperations from '../operations/UserOperations'
 import AvatarBox from '../components/profile/AvatarBox'
 import DetailsBox from '../components/profile/DetailsBox'
+import Button from '../components/profile/Button'
 
 const mapStateToProps = (state) => {
   const { full_name, avatar_url, specialities, interests } = state.user
@@ -39,7 +40,7 @@ class ProfileScreen extends Component {
   }
 
   render() {
-    const { full_name, avatar_url, specialities, interests, logout } = this.props
+    const { full_name, avatar_url, specialities, interests, logout, navigation: { navigate } } = this.props
 
     return (
       <SafeArea>
@@ -68,16 +69,25 @@ class ProfileScreen extends Component {
             ABOUT
           </LightText>
 
-          {this.renderTerms('Privacy Policy', 'Policy')}
-          {this.renderTerms('Terms of Service', 'Terms')}
+          {/* {this.renderTerms('Privacy Policy', 'Policy')}
+          {this.renderTerms('Terms of Service', 'Terms')} */}
+          <Button
+            onBtnPress={() => navigate('Policy')}
+            title={'Privacy Policy'} />
+          <Button
+            onBtnPress={() => navigate('Terms')}
+            title={'Terms of Service'} />
+          <Button
+            onBtnPress={logout}
+            title={'Sign out'} />
 
-          <View style={profileStyles.detailBox}>
+          {/* <View style={profileStyles.detailBox}>
             <LightText
               style={profileStyles.text}
               onPress={logout}>
               Sign out
             </LightText>
-          </View>
+          </View> */}
         </ScrollView>
       </SafeArea>
     )
