@@ -12,6 +12,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "expo": "^31.0.2",
+    "lodash.debounce": "^4.0.8",
     "react": "16.5.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-31.0.0.tar.gz",
     "react-native-action-sheet": "^2.1.0",

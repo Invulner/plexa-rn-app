@@ -12,6 +12,7 @@ import ComposeScreen from '../screens/ComposeScreen'
 import AddLinkScreen from '../screens/AddLinkScreen'
 import AddGroupScreen from '../screens/AddGroupScreen'
 import Done from '../components/common/header/Done'
+import AddLocationScreen from '../screens/AddLocationScreen'
 
 const MainStack = createStackNavigator({
   MainSwitch: {
@@ -62,6 +63,12 @@ const MainStack = createStackNavigator({
     screen: AddGroupScreen,
     navigationOptions: () => ({
       headerTitle: <HeaderTitle title={'Select group'} />
+    })
+  },
+  AddLocation: {
+    screen: AddLocationScreen,
+    navigationOptions: () => ({
+      headerTitle: <HeaderTitle title={'Target Location'} />
     })
   }
 }, {

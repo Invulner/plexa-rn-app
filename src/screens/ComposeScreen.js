@@ -14,6 +14,7 @@ import AttachBtn from '../components/compose/AttachBtn'
 import PostActions from '../actions/PostActions'
 import { ImagePicker, Permissions } from 'expo'
 import Photo from '../components/compose/Photo'
+import LocationsActions from '../actions/LocationsActions'
 
 const mapStateToProps = (state) => {
   const { post } = state
@@ -25,11 +26,13 @@ const mapDispatchToProps = (dispatch) => {
   const submitPost = (post, cb) => dispatch(FeedOperations.submitPost(post, cb))
   const resetPost = () => dispatch(PostActions.resetPost())
   const submitPostWithImage = (image, post, cb) => dispatch(FeedOperations.submitPostWithImage(image, post, cb))
+  const deleteLocationObj = () => dispatch(LocationsActions.deleteLocationObj())
 
   return {
     submitPost,
     resetPost,
-    submitPostWithImage
+    submitPostWithImage,
+    deleteLocationObj
   }
 }
 
@@ -83,6 +86,13 @@ class ComposeScreen extends Component {
     this.setState({ imageURI: '' })
   }
 
+  resetPost = () => {
+    const { resetPost, deleteLocationObj } = this.props
+
+    resetPost()
+    deleteLocationObj()
+  }
+
   onSubmit = () => {
     if (this.isTopicSelected()) {
       const { post, submitPost } = this.props
@@ -93,7 +103,7 @@ class ComposeScreen extends Component {
       const cb = () => {
         this.toggleOverlay()
         this.navigateToFeed()
-        this.props.resetPost()
+        this.resetPost()
       }
 
       this.toggleOverlay()
@@ -105,7 +115,7 @@ class ComposeScreen extends Component {
 
   render() {
     const { spinner, imageURI } = this.state
-    const { link_url, group_id } = this.props.post
+    const { link_url, group_id, location_id } = this.props.post
 
     return (
       <SafeArea>
@@ -133,7 +143,10 @@ class ComposeScreen extends Component {
               route={'AddLink'}
               iconType={'link'} />
 
-            <AttachBtn iconType={'location'} />
+            <AttachBtn
+              active={!!location_id}
+              route={'AddLocation'}
+              iconType={'location'} />
 
             <AttachBtn
               active={!!group_id}
