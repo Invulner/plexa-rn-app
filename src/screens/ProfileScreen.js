@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { View, ScrollView, TouchableOpacity } from 'react-native'
+import { ScrollView } from 'react-native'
 import SafeArea from '../components/common/SafeArea'
 import { LightText } from '../components/common/fonts'
 import profileStyles from '../assets/styles/profileStyles'
@@ -27,18 +27,6 @@ const mapDispatchToProps = (dispatch, { navigation }) => {
 }
 
 class ProfileScreen extends Component {
-  renderTerms = (title, route) => {
-    return (
-      <View style={profileStyles.detailBox}>
-        <TouchableOpacity onPress={() => this.props.navigation.navigate(route)}>
-          <LightText style={profileStyles.text}>
-            {title}
-          </LightText>
-        </TouchableOpacity>
-      </View>
-    )
-  }
-
   render() {
     const { full_name, avatar_url, specialities, interests, logout, navigation: { navigate } } = this.props
 
