@@ -14,23 +14,25 @@ const updateCommentsCounter = (state, action) => {
   const newFeedData = utils.updateItemById(state.feedData, action.id, newVal)
 
   return {
-    ...state, 
+    ...state,
     feedData: newFeedData
   }
 }
 
 const updatePostLike = (state, action) => {
-  const item = utils.findItemById(state.feedData, action.id)
-  const { liked, likes_count } = item
-  const newVals = {
-    liked: !liked,
-    likes_count: liked ? likes_count - 1 : likes_count + 1
-  }
-  const newFeedData = utils.updateItemById(state.feedData, action.id, newVals)
+  if (action.data) {
+    const newVals = {
+      liked: action.data.liked,
+      likes_count: action.data.likes_count
+    }
+    const newFeedData = utils.updateItemById(state.feedData, action.id, newVals)
 
-  return {
-    ...state,
-    feedData: newFeedData
+      return {
+        ...state,
+        feedData: newFeedData
+      }
+  } else {
+    return state
   }
 }
 
@@ -38,28 +40,28 @@ const FeedReducer = (state = initialState, action) => {
   switch(action.type) {
     case types.SAVE_FEED_DATA:
       return {
-        ...state, 
+        ...state,
         feedData: [
-          ...state.feedData, 
+          ...state.feedData,
           ...action.feedData
         ]
       }
 
     case types.TOGGLE_FEED_DATA_LOADING:
       return {
-        ...state, 
+        ...state,
         feedLoading: action.flag
       }
 
     case types.UPDATE_FEED_PAGE:
       return {
-        ...state, 
+        ...state,
         page: action.page
       }
 
     case types.REFRESH_FEED:
       return {
-        ...state, 
+        ...state,
         feedData: action.refreshedFeedData
       }
 
@@ -72,12 +74,12 @@ const FeedReducer = (state = initialState, action) => {
         ]
       }
 
-    case types.RESET_FEED: 
+    case types.RESET_FEED:
       return initialState
 
     case types.UPDATE_POST_LIKE:
       return updatePostLike(state, action)
-      
+
     case types.UPDATE_COMMENTS_COUNTER:
       return updateCommentsCounter(state, action)
 

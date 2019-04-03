@@ -5,7 +5,6 @@ import { likeIcons } from '../../constants'
 import { connect } from 'react-redux'
 import CommentsOperations from '../../operations/CommentsOperations'
 import FeedOperations from '../../operations/FeedOperations'
-// import utils from '../../utils'
 import debounce from 'lodash.debounce'
 
 const mapStateToProps = (state, { id, isComment }) => {

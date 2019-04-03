@@ -26,7 +26,7 @@ const postComment = (comment, navigation) => {
     const fallBackId = 1093
     const postId = navigation.getParam('postId', fallBackId)
     const param = {content: comment}
-    
+
     getAxiosInstance().then(api => {
       api.post(`${API_URL}/stories/${postId}/answers`, param)
         .then(response => {
@@ -47,7 +47,7 @@ const updateLike = (flag, id) => {
 
     return getAxiosInstance().then(api => {
       api.post(`${API_URL}/answers/${id}/like`, param)
-        .then(() => dispatch(CommentsActions.updateCommentLike(id)))
+        .then(response => dispatch(CommentsActions.updateCommentLike(id, response.data)))
         .catch(error => console.log('Like error: ', error))
     })
   }

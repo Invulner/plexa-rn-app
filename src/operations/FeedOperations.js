@@ -54,8 +54,8 @@ const updateLike = (flag, id) => {
 
     return getAxiosInstance().then(api => {
       api.post(`${API_URL}/stories/${id}/like`, param)
-        .then(() => dispatch(FeedActions.updatePostLike(id)))
-        .catch(error => console.log('Like error: ', error))
+        .then(response => dispatch(FeedActions.updatePostLike(id, response.data)))
+        .catch(error => console.log('LIKE ERROR: ', error))
     })
   }
 }

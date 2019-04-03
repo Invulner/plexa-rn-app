@@ -8,17 +8,19 @@ const initialState = {
 }
 
 const updateCommentLike = (state, action) => {
-  const item = utils.findItemById(state.items, action.id)
-  const { liked, likes_count } = item
-  const newVals = {
-    liked: !liked,
-    likes_count: liked ? likes_count - 1 : likes_count + 1
-  }
-  const newItems = utils.updateItemById(state.items, action.id, newVals)
+  if (action.data) {
+    const newVals = {
+      liked: action.data.liked,
+      likes_count: action.data.likes_count
+    }
+    const newItems = utils.updateItemById(state.items, action.id, newVals)
 
-  return {
-    ...state,
-    items: newItems
+      return {
+        ...state,
+        items: newItems
+      }
+  } else {
+    return state
   }
 }
 
@@ -26,28 +28,28 @@ const CommentsReducer = (state = initialState, action) => {
   switch (action.type) {
     case types.SAVE_COMMENTS_DATA:
       return {
-        ...state, 
-        items: action.data.answers, 
+        ...state,
+        items: action.data.answers,
         enabled: action.data.comments_enabled
       }
     case types.TOGGLE_COMMENTS_LOADING:
       return {
-        ...state, 
+        ...state,
         loading: action.flag
       }
     case types.RESET_COMMENTS_DATA:
       return initialState
     case types.ADD_COMMENT:
       return {
-        ...state, 
+        ...state,
         items: [
-          ...state.items, 
+          ...state.items,
           action.item
         ]
       }
-    case types.UPDATE_COMMENT_LIKE: 
+    case types.UPDATE_COMMENT_LIKE:
       return updateCommentLike(state, action)
-    default: 
+    default:
       return state
   }
 }
