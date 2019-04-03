@@ -5,6 +5,7 @@ import UserActions from '../actions/UserActions'
 import getAxiosInstance from '../config/axios'
 import PublicUserOperations from './PublicUserOperations'
 import FeedActions from '../actions/FeedActions'
+import ResearchFeedActions from '../actions/ResearchFeedActions';
 
 const auth = (credentials, navigation) => {
   return dispatch => {
@@ -82,6 +83,7 @@ const logout = (navigation) => {
     clearUserSecretData()
     dispatch(UserActions.clearUserData())
     dispatch(FeedActions.resetFeed())
+    dispatch(ResearchFeedActions.resetResearchFeed())
     dispatch(PublicUserOperations.clearPublicUserData())
   }
 }
