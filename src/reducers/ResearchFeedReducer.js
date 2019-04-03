@@ -10,26 +10,35 @@ const ResearchFeedReducer = (state = initialState, action) => {
   switch (action.type) {
     case types.SAVE_RESEARCH_FEED_DATA:
       return {
-        ...state, 
+        ...state,
         feedData: [
-          ...state.feedData, 
+          ...state.feedData,
           ...action.feedData
         ]
       }
+
     case types.TOGGLE_RESEARCH_FEED_LOADING:
       return {
-        ...state, 
+        ...state,
         loading: action.flag
       }
+
     case types.UPDATE_RESEARCH_FEED_PAGE:
       return {
-        ...state, 
+        ...state,
         page: action.page
       }
+
     case types.REFRESH_RESEARCH_FEED:
       return {
-        ...state, 
+        ...state,
         feedData: action.feedData
+      }
+
+    case types.RESET_RESEARCH_FEED:
+      return {
+        ...state,
+        feedData: initialState.feedData
       }
     default:
       return state

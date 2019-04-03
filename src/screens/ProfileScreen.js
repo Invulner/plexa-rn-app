@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { View, ScrollView } from 'react-native'
+import { View, ScrollView, TouchableOpacity } from 'react-native'
 import SafeArea from '../components/common/SafeArea'
 import { LightText } from '../components/common/fonts'
 import profileStyles from '../assets/styles/profileStyles'
@@ -26,15 +26,27 @@ const mapDispatchToProps = (dispatch, { navigation }) => {
 }
 
 class ProfileScreen extends Component {
+  renderTerms = (title, route) => {
+    return (
+      <View style={profileStyles.detailBox}>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate(route)}>
+          <LightText style={profileStyles.text}>
+            {title}
+          </LightText>
+        </TouchableOpacity>
+      </View>
+    )
+  }
+
   render() {
-    const { full_name, avatar_url, specialities, interests, navigation, logout } = this.props
+    const { full_name, avatar_url, specialities, interests, logout } = this.props
 
     return (
       <SafeArea>
         <ScrollView>
           {full_name && avatar_url &&
-            <AvatarBox 
-              full_name={full_name} 
+            <AvatarBox
+              full_name={full_name}
               avatar_url={avatar_url} />
           }
 
@@ -42,13 +54,13 @@ class ProfileScreen extends Component {
             MEDICAL PRACTICE
           </LightText>
           {specialities && !!specialities.length &&
-            <DetailsBox 
-              detailTitle={'Speciality'} 
+            <DetailsBox
+              detailTitle={'Speciality'}
               detail={specialities} />
           }
           {interests && !!interests.length &&
-            <DetailsBox 
-              detailTitle={'Areas of interest'} 
+            <DetailsBox
+              detailTitle={'Areas of interest'}
               detail={interests} />
           }
 
@@ -56,24 +68,11 @@ class ProfileScreen extends Component {
             ABOUT
           </LightText>
 
-          <View style={profileStyles.detailBox}>
-            <LightText 
-              style={profileStyles.text}
-              onPress={() => navigation.navigate('Policy')}>
-              Privacy Policy
-            </LightText>
-          </View>
+          {this.renderTerms('Privacy Policy', 'Policy')}
+          {this.renderTerms('Terms of Service', 'Terms')}
 
           <View style={profileStyles.detailBox}>
-            <LightText 
-              style={profileStyles.text}
-              onPress={() => navigation.navigate('Terms')}>
-              Terms of Service
-            </LightText>
-          </View>
-
-          <View style={profileStyles.detailBox}>
-            <LightText 
+            <LightText
               style={profileStyles.text}
               onPress={logout}>
               Sign out
