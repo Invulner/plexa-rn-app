@@ -5,7 +5,7 @@ const initialState = {
   topic_ids: [],
   content: '',
   comments_enabled: true,
-  public: true,
+  public: false,
   group_id: '',
   location_id: null
 }
@@ -49,7 +49,7 @@ const PostReducer = (state = initialState, action) => {
     case types.TOGGLE_PRIVACY:
       return {
         ...state,
-        public: action.flag
+        public: !action.flag
       }
 
     case types.SAVE_GROUP:
