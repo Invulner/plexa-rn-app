@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { ScrollView, View } from 'react-native'
+import { ScrollView } from 'react-native'
 import SafeArea from '../components/common/SafeArea'
-import { LightText, SemiboldText } from '../components/common/fonts'
-import profileStyles from '../assets/styles/profileStyles'
 import UserOperations from '../operations/UserOperations'
 import AvatarBox from '../components/profile/AvatarBox'
 import DetailsBox from '../components/profile/DetailsBox'
 import Button from '../components/profile/Button'
 import utils from '../utils'
+import Heading from '../components/profile/Heading'
+import ProfileUpperBox from '../components/profile/ProfileUpperBox'
 
 const mapStateToProps = (state) => {
   const { user } = state
@@ -48,47 +48,18 @@ class ProfileScreen extends Component {
               avatar_url={avatar_url} />
           }
 
-          <LightText style={profileStyles.heading}>
-            PROFILE
-          </LightText>
+          <Heading heading={'profile'} />
+          <ProfileUpperBox
+              title={'Type'}
+              data={title} />
+          <ProfileUpperBox
+            title={'Location'}
+            data={utils.getLocation(location)} />
 
-          <View style={profileStyles.profileDetailBox}>
-            <SemiboldText style={profileStyles.text}>
-              Type
-            </SemiboldText>
-            <LightText style={profileStyles.profileDetails}>
-              {title}
-            </LightText>
-          </View>
-
-          <View style={profileStyles.profileDetailBox}>
-            <SemiboldText style={profileStyles.text}>
-              Location
-            </SemiboldText>
-            <LightText style={profileStyles.profileDetails}>
-              {utils.getLocation(location)}
-            </LightText>
-          </View>
-
-          <LightText style={profileStyles.heading}>
-            MEDICAL PRACTICE
-          </LightText>
-          {/* {specialities && !!specialities.length &&
-            <DetailsBox
-              title={'Speciality'}
-              list={specialities} />
-          }
-          {interests && !!interests.length &&
-            <DetailsBox
-              title={'Areas of interest'}
-              list={interests} />
-          } */}
+          <Heading heading={'medical practice'} />
           {this.renderMedicalPractice()}
 
-          <LightText style={profileStyles.heading}>
-            ABOUT
-          </LightText>
-
+          <Heading heading={'about'} />
           <Button
             onBtnPress={() => navigate('Policy')}
             title={'Privacy Policy'} />

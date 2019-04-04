@@ -9,6 +9,8 @@ import DetailsBox from '../components/profile/DetailsBox'
 import Loader from '../components/common/Loader'
 import utils from '../utils'
 import PublicUserOperations from '../operations/PublicUserOperations'
+import Heading from '../components/profile/Heading'
+import ProfileUpperBox from '../components/profile/ProfileUpperBox'
 
 const mapStateToProps = (state) => {
   const { publicUser } = state
@@ -23,10 +25,6 @@ const mapDispatchToProps = (dispatch, { navigation }) => {
 }
 
 class PublicProfileScreen extends Component {
-  componentDidMount() {
-    this.props.getPublicUserProfile()
-  }
-
   renderMedicalPractice = () => {
     return utils.getMedicalPractice(this.props.publicUser).map(obj => {
 
@@ -37,6 +35,10 @@ class PublicProfileScreen extends Component {
           key={obj.title} />
         )
     })
+  }
+
+  componentDidMount() {
+    this.props.getPublicUserProfile()
   }
 
   render() {
@@ -52,52 +54,16 @@ class PublicProfileScreen extends Component {
               avatar_url={avatar_url}
               full_name={full_name} />
 
-            <LightText style={profileStyles.heading}>
-              PROFILE
-            </LightText>
+            <Heading heading={'profile'} />
+            <ProfileUpperBox
+              title={'Type'}
+              data={title} />
+            <ProfileUpperBox
+              title={'Location'}
+              data={utils.getLocation(location)} />
 
-            <View style={profileStyles.profileDetailBox}>
-              <SemiboldText style={profileStyles.text}>
-                Type
-              </SemiboldText>
-              <LightText style={profileStyles.profileDetails}>
-                {title}
-              </LightText>
-            </View>
-
-            <View style={profileStyles.profileDetailBox}>
-              <SemiboldText style={profileStyles.text}>
-                Location
-              </SemiboldText>
-              <LightText style={profileStyles.profileDetails}>
-                {utils.getLocation(location)}
-              </LightText>
-            </View>
-
-            <LightText style={profileStyles.heading}>
-              MEDICAL PRACTICE
-            </LightText>
+            <Heading heading={'medical practice'} />
             {this.renderMedicalPractice()}
-            {/* {!!specialities.length &&
-              <DetailsBox
-                title={'Speciality'}
-                list={specialities} />
-            }
-            {!!sub_specialities.length &&
-              <DetailsBox
-                title={'Sub-speciality'}
-                list={sub_specialities} />
-            }
-            {!!conditions.length &&
-              <DetailsBox
-                title={'Conditions of interest'}
-                list={conditions} />
-            }
-            {!!interests.length &&
-              <DetailsBox
-                title={'Areas of interest'}
-                list={interests} />
-            } */}
           </ScrollView>
         }
       </SafeArea>
