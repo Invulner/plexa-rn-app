@@ -12,15 +12,16 @@ import GreyLine from '../components/common/GreyLine'
 import CommentsActions from '../actions/CommentsActions'
 import SafeArea from '../components/common/SafeArea'
 import { getSortedComments } from '../selectors/Comments'
+import utils from '../utils'
 
 const mapStateToProps = (state, { navigation }) => {
   const { feedData } = state.feed
   const { loading, enabled } = state.comments
   //As well as profile id from public operations, fallBackId is chosen by convinience
   const fallBackId = 1093
-  const post = feedData.filter(post => post.id === navigation.getParam('postId', fallBackId))[0]
+  const post = utils.findItemById(feedData, navigation.getParam('postId', fallBackId))
 
-  return { 
+  return {
     items: getSortedComments(state),
     loading,
     post,
@@ -32,14 +33,14 @@ const mapDispatchToProps = (dispatch, { navigation }) => {
   const getComments = () => dispatch(CommentsOperations.getComments(navigation))
   const resetComments = () => dispatch(CommentsActions.resetCommentsData())
 
-  return { 
+  return {
     getComments,
     resetComments
   }
 }
 
 class PostScreen extends Component {
-  scrollFlag = false 
+  scrollFlag = false
 
   scrollToEnd = () => {
     this.scrollFlag && this.refs.list.scrollToEnd()
@@ -48,9 +49,9 @@ class PostScreen extends Component {
   renderComments = () => {
     const { items } = this.props
 
-    if (items.length) 
+    if (items.length)
       return items.map(item => <Comment item={item} key={item.id} />)
-    else 
+    else
       return (
         <React.Fragment>
           <GreyLine />
@@ -84,9 +85,9 @@ class PostScreen extends Component {
       <SafeArea>
         <ScrollView
           onContentSizeChange={this.scrollToEnd}
-          ref='list' 
+          ref='list'
           style={styles.container}>
-          <FeedPost 
+          <FeedPost
             fullView
             item={post}
             navigation={navigation} />
@@ -115,6 +116,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: BG_COLOR
   },
+
   loader: {
     paddingTop: 10
   }

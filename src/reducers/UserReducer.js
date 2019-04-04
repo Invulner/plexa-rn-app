@@ -6,16 +6,19 @@ const UserReducer = (state = initialState, action) => {
   switch(action.type) {
     case types.SAVE_USER_DATA:
       return {
-        ...state, 
+        ...state,
         ...action.userData
       }
+
     case types.TOGGLE_USER_DATA_LOADING:
       return {
-        ...state, 
+        ...state,
         loading: action.flag
       }
-    case types.CLEAR_USER_DATA: 
+
+    case types.CLEAR_USER_DATA:
       return initialState
+
     default:
       return state
   }

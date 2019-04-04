@@ -32,32 +32,32 @@ class FeedPost extends Component {
     return <LinkPreview item={item} fullView={fullView} />
   }
 
-  renderAttachedBlock = () => { 
+  renderAttachedBlock = () => {
     switch(this.props.item.news_kind) {
       case 'research':
         return this.renderResearch()
       case 'news':
         return this.renderNews()
       case null:
-        if (this.areAnyLinkDetails()) 
+        if (this.areAnyLinkDetails())
           return this.renderLinkDetails()
-        else 
+        else
           return null
       default:
-        return null  
+        return null
     }
   }
 
   renderContent = () => {
     const { fullView, item: { content } } = this.props
 
-    if (content) 
+    if (content)
       return (
-          <RegularText style={feedStyles.linkCaption}>              
+          <RegularText style={feedStyles.linkCaption}>
             {fullView ? content : utils.truncate(content)}
           </RegularText>
       )
-    else 
+    else
       return null
   }
 
@@ -69,25 +69,25 @@ class FeedPost extends Component {
       <TouchableWithoutFeedback onPress={() => navigation.navigate('Post', {postId})}>
         <View style={[feedStyles.postContainer, fullView && styles.fullViewContainer]}>
 
-          <PostHead 
-            author={author} 
+          <PostHead
+            author={author}
             created_at={created_at} />
 
             <View>
               {this.renderContent()}
               {!!image_urls.length &&
-                <Image 
+                <Image
                   source={{uri: image_urls[0].preview_url}}
                   style={styles.linkImage} />
               }
               {this.renderAttachedBlock()}
             </View>
-          
+
           <Social
-            liked={liked} 
+            liked={liked}
             likesCount={likes_count}
             answersCount={answers_count}
-            id={postId} />  
+            id={postId} />
         </View>
       </TouchableWithoutFeedback>
     )

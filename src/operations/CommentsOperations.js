@@ -15,6 +15,7 @@ const getComments = (navigation) => {
         .then(response => {
           dispatch(CommentsActions.saveCommentsData(response.data))
           dispatch(CommentsActions.toggleCommentsLoading(false))
+          dispatch(FeedActions.updateCommentsCounter(postId, response.data.answers.length))
         }).catch(error => console.log('Request error: ', error))
     }).catch(error => console.log('Axios config error: ', error))
   }
@@ -25,12 +26,12 @@ const postComment = (comment, navigation) => {
 
     const fallBackId = 1093
     const postId = navigation.getParam('postId', fallBackId)
-    const param = {content: comment}
+    const param = { content: comment }
 
     getAxiosInstance().then(api => {
       api.post(`${API_URL}/stories/${postId}/answers`, param)
         .then(response => {
-          console.log(response)
+          console.log(response.data)
           dispatch(CommentsActions.addComment(response.data))
           dispatch(FeedActions.updateCommentsCounter(postId))
         })

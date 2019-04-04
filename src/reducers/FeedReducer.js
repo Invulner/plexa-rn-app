@@ -8,9 +8,7 @@ const initialState = {
 
 const updateCommentsCounter = (state, action) => {
   const item = utils.findItemById(state.feedData, action.id)
-  const newVal = {
-    answers_count: item.answers_count + 1
-  }
+  const newVal = { answers_count: action.counter || item.answers_count + 1 }
   const newFeedData = utils.updateItemById(state.feedData, action.id, newVal)
 
   return {
