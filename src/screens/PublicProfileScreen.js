@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, ScrollView } from 'react-native'
+import { View, ScrollView } from 'react-native'
 import { connect } from 'react-redux'
 import profileStyles from '../assets/styles/profileStyles'
 import SafeArea from '../components/common/SafeArea'
@@ -9,6 +9,8 @@ import DetailsBox from '../components/profile/DetailsBox'
 import Loader from '../components/common/Loader'
 import utils from '../utils'
 import PublicUserOperations from '../operations/PublicUserOperations'
+import Heading from '../components/profile/Heading'
+import UserDataBox from '../components/profile/UserDataBox'
 
 const mapStateToProps = (state) => {
   const { publicUser } = state
@@ -23,11 +25,16 @@ const mapDispatchToProps = (dispatch, { navigation }) => {
 }
 
 class PublicProfileScreen extends Component {
-  getLocation = (location) => { 
-    let locationArr = location.filter((item, index) => index !== 1).map(item => item.name)
-    let locationString = `${locationArr[1]}, ${locationArr[0]}`
+  renderMedicalPractice = () => {
+    return utils.getMedicalPractice(this.props.publicUser).map(obj => {
 
-    return utils.truncate(locationString, 20)
+      return (
+        <DetailsBox
+          title={obj.title}
+          list={obj.list}
+          key={obj.title} />
+        )
+    })
   }
 
   componentDidMount() {
@@ -35,7 +42,7 @@ class PublicProfileScreen extends Component {
   }
 
   render() {
-    const { avatar_url, full_name, title, location, specialities, sub_specialities, conditions, interests, loading } = this.props.publicUser
+    const { avatar_url, full_name, title, location, loading } = this.props.publicUser
 
     return (
       <SafeArea>
@@ -43,67 +50,25 @@ class PublicProfileScreen extends Component {
           <Loader />
           :
           <ScrollView>
-            <AvatarBox 
-              avatar_url={avatar_url} 
+            <AvatarBox
+              avatar_url={avatar_url}
               full_name={full_name} />
 
-            <LightText style={profileStyles.heading}>
-              PROFILE
-            </LightText>
-          
-              <View style={profileStyles.profileDetailBox}>
-                <SemiboldText style={profileStyles.text}>
-                  Type
-                </SemiboldText>
-                <LightText style={styles.profileDetails}>
-                  {title}
-                </LightText>
-              </View>
+            <Heading heading={'profile'} />
+            <UserDataBox
+              title={'Type'}
+              data={title} />
+            <UserDataBox
+              title={'Location'}
+              data={utils.getLocation(location)} />
 
-              <View style={profileStyles.profileDetailBox}>
-                <SemiboldText style={profileStyles.text}>
-                  Location
-                </SemiboldText>
-                <LightText style={styles.profileDetails}>
-                  {this.getLocation(location)}
-                </LightText>
-              </View>
-
-            <LightText style={profileStyles.heading}>
-              MEDICAL PRACTICE
-            </LightText>
-            {!!specialities.length &&
-              <DetailsBox 
-              detailTitle={'Speciality'} 
-              detail={specialities} />
-            }
-            {!!sub_specialities.length &&
-              <DetailsBox 
-              detailTitle={'Sub-speciality'} 
-              detail={sub_specialities} />
-            }
-            {!!conditions.length &&
-              <DetailsBox 
-              detailTitle={'Conditions of interest'} 
-              detail={conditions} />
-            }
-            {!!interests.length && 
-              <DetailsBox 
-              detailTitle={'Areas of interest'} 
-              detail={interests} />
-            }
+            <Heading heading={'medical practice'} />
+            {this.renderMedicalPractice()}
           </ScrollView>
         }
       </SafeArea>
     )
   }
 }
-
-const styles = StyleSheet.create({
-  profileDetails: {
-    ...profileStyles.text,
-    marginLeft: 'auto'
-  }
-})
 
 export default connect(mapStateToProps, mapDispatchToProps)(PublicProfileScreen)

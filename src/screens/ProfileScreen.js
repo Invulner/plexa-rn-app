@@ -2,22 +2,18 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { ScrollView } from 'react-native'
 import SafeArea from '../components/common/SafeArea'
-import { LightText } from '../components/common/fonts'
-import profileStyles from '../assets/styles/profileStyles'
 import UserOperations from '../operations/UserOperations'
 import AvatarBox from '../components/profile/AvatarBox'
 import DetailsBox from '../components/profile/DetailsBox'
 import Button from '../components/profile/Button'
+import utils from '../utils'
+import Heading from '../components/profile/Heading'
+import UserDataBox from '../components/profile/UserDataBox'
 
 const mapStateToProps = (state) => {
-  const { full_name, avatar_url, specialities, interests } = state.user
+  const { user } = state
 
-  return {
-    full_name,
-    avatar_url,
-    specialities,
-    interests
-  }
+  return { user }
 }
 
 const mapDispatchToProps = (dispatch, { navigation }) => {
@@ -27,8 +23,21 @@ const mapDispatchToProps = (dispatch, { navigation }) => {
 }
 
 class ProfileScreen extends Component {
+  renderMedicalPractice = () => {
+      return utils.getMedicalPractice(this.props.user).map(obj => {
+
+        return (
+          <DetailsBox
+            title={obj.title}
+            list={obj.list}
+            key={obj.title} />
+          )
+      })
+  }
+
   render() {
-    const { full_name, avatar_url, specialities, interests, logout, navigation: { navigate } } = this.props
+    const { navigation: { navigate }, user } = this.props
+    const { full_name, avatar_url, title, location, logout } = user
 
     return (
       <SafeArea>
@@ -39,24 +48,18 @@ class ProfileScreen extends Component {
               avatar_url={avatar_url} />
           }
 
-          <LightText style={profileStyles.heading}>
-            MEDICAL PRACTICE
-          </LightText>
-          {specialities && !!specialities.length &&
-            <DetailsBox
-              detailTitle={'Speciality'}
-              detail={specialities} />
-          }
-          {interests && !!interests.length &&
-            <DetailsBox
-              detailTitle={'Areas of interest'}
-              detail={interests} />
-          }
+          <Heading heading={'profile'} />
+          <UserDataBox
+              title={'Type'}
+              data={title} />
+          <UserDataBox
+            title={'Location'}
+            data={utils.getLocation(location)} />
 
-          <LightText style={profileStyles.heading}>
-            ABOUT
-          </LightText>
+          <Heading heading={'medical practice'} />
+          {this.renderMedicalPractice()}
 
+          <Heading heading={'about'} />
           <Button
             onBtnPress={() => navigate('Policy')}
             title={'Privacy Policy'} />

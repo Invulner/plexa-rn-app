@@ -5,15 +5,15 @@ import { SemiboldText, LightText } from '../../components/common/fonts'
 import utils from '../../utils'
 
 function DetailsBox(props) {
-  const { detail, detailTitle } = props
+  const { list, title } = props
 
   return (
     <View style={profileStyles.detailBox}>
       <SemiboldText style={profileStyles.text}>
-        {detailTitle}
+        {title}
       </SemiboldText>
       <LightText style={profileStyles.text}>
-        {utils.renderProfileDetails(detail)}
+        {utils.renderProfileDetails(list)}
       </LightText>
     </View>
   )

@@ -7,6 +7,11 @@ const detailBox = {
   paddingTop: 15
 }
 
+const text = {
+  fontSize: 20,
+  marginBottom: 10
+}
+
 const profileStyles = StyleSheet.create({
   userImage: {
     width: 60,
@@ -24,7 +29,7 @@ const profileStyles = StyleSheet.create({
   userName: {
     fontSize: 22,
     marginLeft: 10,
-    marginTop: 10 
+    marginTop: 10
   },
 
   heading: {
@@ -41,15 +46,17 @@ const profileStyles = StyleSheet.create({
     flexDirection: 'row'
   },
 
-  text: {
-    fontSize: 20,
-    marginBottom: 10
-  },
+  text: text,
 
   initials: {
     color: '#fff',
     fontSize: 26,
     paddingTop: 10
+  },
+
+  profileDetails: {
+    ...text,
+    marginLeft: 'auto'
   }
 })
 
