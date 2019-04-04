@@ -30,9 +30,10 @@ const updatePostLike = (id, data) => ({
   data
 })
 
-const updateCommentsCounter = (id) => ({
+const updateCommentsCounter = (id, counter) => ({
   type: types.UPDATE_COMMENTS_COUNTER,
-  id
+  id,
+  counter
 })
 
 const savePost = (post) => ({
