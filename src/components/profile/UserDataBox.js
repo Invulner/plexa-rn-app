@@ -3,7 +3,7 @@ import { View } from 'react-native'
 import { SemiboldText, LightText } from '../../components/common/fonts'
 import profileStyles from '../../assets/styles/profileStyles'
 
-function ProfileUpperBox(props) {
+function UserDataBox(props) {
   const { title, data } = props
 
   return (
@@ -18,4 +18,4 @@ function ProfileUpperBox(props) {
   )
 }
 
-export default ProfileUpperBox
+export default UserDataBox

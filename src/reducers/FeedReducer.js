@@ -8,7 +8,7 @@ const initialState = {
 
 const updateCommentsCounter = (state, action) => {
   const item = utils.findItemById(state.feedData, action.id)
-  const counter = action.counter === undefined ? item.answers_count + 1 : action.counter
+  const counter = isNaN(action.counter) ? item.answers_count + 1 : action.counter
   const newVal = { answers_count: counter }
   const newFeedData = utils.updateItemById(state.feedData, action.id, newVal)
 

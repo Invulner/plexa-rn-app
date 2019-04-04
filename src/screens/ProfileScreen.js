@@ -8,7 +8,7 @@ import DetailsBox from '../components/profile/DetailsBox'
 import Button from '../components/profile/Button'
 import utils from '../utils'
 import Heading from '../components/profile/Heading'
-import ProfileUpperBox from '../components/profile/ProfileUpperBox'
+import UserDataBox from '../components/profile/UserDataBox'
 
 const mapStateToProps = (state) => {
   const { user } = state
@@ -49,10 +49,10 @@ class ProfileScreen extends Component {
           }
 
           <Heading heading={'profile'} />
-          <ProfileUpperBox
+          <UserDataBox
               title={'Type'}
               data={title} />
-          <ProfileUpperBox
+          <UserDataBox
             title={'Location'}
             data={utils.getLocation(location)} />
 

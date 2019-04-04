@@ -41,7 +41,7 @@ const updateItemById = (arr, id, newVals) => {
 }
 
 const findItemById = (arr, id) => {
-  return arr.filter(item => item.id === id)[0]
+  return arr.find(item => item.id === id)
 }
 
 const sortByField = (field) => {
@@ -54,8 +54,9 @@ const sortByField = (field) => {
 }
 
 getLocation = (location) => {
-  let locationArr = location.filter((item, index) => index !== 1).map(item => item.name)
-  let locationString = `${locationArr[1]}, ${locationArr[0]}`
+  const country = location.find(item => item.kind === 'country').name
+  const city = location.find(item => item.kind === 'city').name
+  const locationString = `${city}, ${country}`
 
   return truncate(locationString, 20)
 }
@@ -81,7 +82,7 @@ getMedicalPractice = (user) => {
     }
   ]
 
-  return  allPractice.filter(obj => obj.list && obj.list.length)
+  return allPractice.filter(obj => obj.list && obj.list.length)
 }
 
 export default {

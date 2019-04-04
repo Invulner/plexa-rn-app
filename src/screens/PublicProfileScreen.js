@@ -10,7 +10,7 @@ import Loader from '../components/common/Loader'
 import utils from '../utils'
 import PublicUserOperations from '../operations/PublicUserOperations'
 import Heading from '../components/profile/Heading'
-import ProfileUpperBox from '../components/profile/ProfileUpperBox'
+import UserDataBox from '../components/profile/UserDataBox'
 
 const mapStateToProps = (state) => {
   const { publicUser } = state
@@ -55,10 +55,10 @@ class PublicProfileScreen extends Component {
               full_name={full_name} />
 
             <Heading heading={'profile'} />
-            <ProfileUpperBox
+            <UserDataBox
               title={'Type'}
               data={title} />
-            <ProfileUpperBox
+            <UserDataBox
               title={'Location'}
               data={utils.getLocation(location)} />
 
