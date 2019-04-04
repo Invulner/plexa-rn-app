@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, ScrollView } from 'react-native'
+import { View, ScrollView } from 'react-native'
 import { connect } from 'react-redux'
 import profileStyles from '../assets/styles/profileStyles'
 import SafeArea from '../components/common/SafeArea'
@@ -23,19 +23,24 @@ const mapDispatchToProps = (dispatch, { navigation }) => {
 }
 
 class PublicProfileScreen extends Component {
-  getLocation = (location) => { 
-    let locationArr = location.filter((item, index) => index !== 1).map(item => item.name)
-    let locationString = `${locationArr[1]}, ${locationArr[0]}`
-
-    return utils.truncate(locationString, 20)
-  }
-
   componentDidMount() {
     this.props.getPublicUserProfile()
   }
 
+  renderMedicalPractice = () => {
+    return utils.getMedicalPractice(this.props.publicUser).map(obj => {
+
+      return (
+        <DetailsBox
+          title={obj.title}
+          list={obj.list}
+          key={obj.title} />
+        )
+    })
+  }
+
   render() {
-    const { avatar_url, full_name, title, location, specialities, sub_specialities, conditions, interests, loading } = this.props.publicUser
+    const { avatar_url, full_name, title, location, loading } = this.props.publicUser
 
     return (
       <SafeArea>
@@ -43,67 +48,61 @@ class PublicProfileScreen extends Component {
           <Loader />
           :
           <ScrollView>
-            <AvatarBox 
-              avatar_url={avatar_url} 
+            <AvatarBox
+              avatar_url={avatar_url}
               full_name={full_name} />
 
             <LightText style={profileStyles.heading}>
               PROFILE
             </LightText>
-          
-              <View style={profileStyles.profileDetailBox}>
-                <SemiboldText style={profileStyles.text}>
-                  Type
-                </SemiboldText>
-                <LightText style={styles.profileDetails}>
-                  {title}
-                </LightText>
-              </View>
 
-              <View style={profileStyles.profileDetailBox}>
-                <SemiboldText style={profileStyles.text}>
-                  Location
-                </SemiboldText>
-                <LightText style={styles.profileDetails}>
-                  {this.getLocation(location)}
-                </LightText>
-              </View>
+            <View style={profileStyles.profileDetailBox}>
+              <SemiboldText style={profileStyles.text}>
+                Type
+              </SemiboldText>
+              <LightText style={profileStyles.profileDetails}>
+                {title}
+              </LightText>
+            </View>
+
+            <View style={profileStyles.profileDetailBox}>
+              <SemiboldText style={profileStyles.text}>
+                Location
+              </SemiboldText>
+              <LightText style={profileStyles.profileDetails}>
+                {utils.getLocation(location)}
+              </LightText>
+            </View>
 
             <LightText style={profileStyles.heading}>
               MEDICAL PRACTICE
             </LightText>
-            {!!specialities.length &&
-              <DetailsBox 
-              detailTitle={'Speciality'} 
-              detail={specialities} />
+            {this.renderMedicalPractice()}
+            {/* {!!specialities.length &&
+              <DetailsBox
+                title={'Speciality'}
+                list={specialities} />
             }
             {!!sub_specialities.length &&
-              <DetailsBox 
-              detailTitle={'Sub-speciality'} 
-              detail={sub_specialities} />
+              <DetailsBox
+                title={'Sub-speciality'}
+                list={sub_specialities} />
             }
             {!!conditions.length &&
-              <DetailsBox 
-              detailTitle={'Conditions of interest'} 
-              detail={conditions} />
+              <DetailsBox
+                title={'Conditions of interest'}
+                list={conditions} />
             }
-            {!!interests.length && 
-              <DetailsBox 
-              detailTitle={'Areas of interest'} 
-              detail={interests} />
-            }
+            {!!interests.length &&
+              <DetailsBox
+                title={'Areas of interest'}
+                list={interests} />
+            } */}
           </ScrollView>
         }
       </SafeArea>
     )
   }
 }
-
-const styles = StyleSheet.create({
-  profileDetails: {
-    ...profileStyles.text,
-    marginLeft: 'auto'
-  }
-})
 
 export default connect(mapStateToProps, mapDispatchToProps)(PublicProfileScreen)

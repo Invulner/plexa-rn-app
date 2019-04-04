@@ -53,6 +53,37 @@ const sortByField = (field) => {
   }
 }
 
+getLocation = (location) => {
+  let locationArr = location.filter((item, index) => index !== 1).map(item => item.name)
+  let locationString = `${locationArr[1]}, ${locationArr[0]}`
+
+  return truncate(locationString, 20)
+}
+
+getMedicalPractice = (user) => {
+  const { specialities, sub_specialities, conditions, interests } = user
+  const allPractice = [
+    {
+      title: 'Speciality',
+      list: specialities
+    },
+    {
+      title: 'Sub-speciality',
+      list: sub_specialities
+    },
+    {
+      title: 'Conditions of interest',
+      list: conditions
+    },
+    {
+      title: 'Areas of interest',
+      list: interests
+    }
+  ]
+
+  return  allPractice.filter(obj => obj.list && obj.list.length)
+}
+
 export default {
   getInitials,
   truncate,
@@ -61,5 +92,7 @@ export default {
   sortByTime,
   updateItemById,
   findItemById,
-  sortByField
+  sortByField,
+  getLocation,
+  getMedicalPractice
 }
