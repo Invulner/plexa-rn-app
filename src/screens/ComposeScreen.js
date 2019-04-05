@@ -121,7 +121,7 @@ class ComposeScreen extends Component {
       <SafeArea>
         <Spinner visible={spinner} />
         <View style={styles.inputBox}>
-          <ScrollView style={{flex: 1}}>
+          <ScrollView>
             <Message noImage={!imageURI} />
             {!!imageURI &&
               <Photo
