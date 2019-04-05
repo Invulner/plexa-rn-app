@@ -22,7 +22,7 @@ class Message extends Component {
     return (
         <TextInput
           placeholder='Enter your message ...'
-          style={[styles.input, noImage && { height: 285 }]}
+          style={[styles.input, noImage && { minHeight: 285 }]}
           multiline={true}
           value={content}
           scrollEnabled={false}
