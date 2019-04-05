@@ -17,14 +17,15 @@ const mapDispatchToProps = (dispatch) => {
 
 class Message extends Component {
   render() {
-    const { content, saveContent } = this.props
+    const { content, saveContent, noImage } = this.props
 
     return (
         <TextInput
           placeholder='Enter your message ...'
-          style={styles.input}
+          style={[styles.input, noImage && { minHeight: 285 }]}
           multiline={true}
           value={content}
+          scrollEnabled={false}
           onChangeText={content => saveContent(content)} />
     )
   }
@@ -34,7 +35,8 @@ const styles = StyleSheet.create({
   input: {
     fontSize: 20,
     minHeight: 50,
-    marginBottom: 10
+    paddingBottom: 10,
+    paddingHorizontal: 20
   }
 })
 

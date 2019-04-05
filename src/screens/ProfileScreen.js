@@ -36,8 +36,8 @@ class ProfileScreen extends Component {
   }
 
   render() {
-    const { navigation: { navigate }, user } = this.props
-    const { full_name, avatar_url, title, location, logout } = user
+    const { navigation: { navigate }, user, logout } = this.props
+    const { full_name, avatar_url, title, location } = user
 
     return (
       <SafeArea>
@@ -50,11 +50,13 @@ class ProfileScreen extends Component {
 
           <Heading heading={'profile'} />
           <UserDataBox
-              title={'Type'}
-              data={title} />
-          <UserDataBox
-            title={'Location'}
-            data={utils.getLocation(location)} />
+            title={'Type'}
+            data={title} />
+          {!!location &&
+            <UserDataBox
+              title={'Location'}
+              data={utils.getLocation(location)} />
+          }
 
           <Heading heading={'medical practice'} />
           {this.renderMedicalPractice()}

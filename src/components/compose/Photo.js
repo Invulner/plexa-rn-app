@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { ImageBackground, TouchableOpacity, Image, StyleSheet } from 'react-native'
+import { ImageBackground, TouchableOpacity, Image, StyleSheet, View } from 'react-native'
 import { GRAY } from '../../assets/styles/colors'
 
 class Photo extends Component {
@@ -7,26 +7,33 @@ class Photo extends Component {
     const { onClose, imageSrc } = this.props
 
     return (
-      <ImageBackground 
-        style={styles.img}
-        source={{uri: imageSrc}}>
-        <TouchableOpacity
-          style={styles.iconBox} 
-          onPress={onClose}>
-          <Image 
-            source={require('../../assets/icons/delete.png')}
-            style={styles.closeIcon} />
-        </TouchableOpacity>
-      </ImageBackground>
+      <View style={styles.imgBox}>
+        <ImageBackground 
+          style={styles.img}
+          source={{uri: imageSrc}}>
+          <TouchableOpacity
+            style={styles.iconBox} 
+            onPress={onClose}>
+            <Image 
+              source={require('../../assets/icons/delete.png')}
+              style={styles.closeIcon} />
+          </TouchableOpacity>
+        </ImageBackground>
+      </View>
     )
   }
 }
 
 const styles = StyleSheet.create({
-  img: {
+  imgBox: {
+    paddingHorizontal: 20,  
     width: '100%',
-    minHeight: 100,
+    height: 250
+  },
+
+  img: {
     resizeMode: 'cover',
+    width: '100%',
     flex: 1
   },
 
