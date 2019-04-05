@@ -55,7 +55,7 @@ class ComposeScreen extends Component {
   }
 
   isEmptyInput = () => {
-    return !this.props.post.content.length || !/\S/.test(this.props.post.content)
+    return !this.props.post.content.trim().length
   }
 
   toggleOverlay = () => {
@@ -121,12 +121,14 @@ class ComposeScreen extends Component {
       <SafeArea>
         <Spinner visible={spinner} />
         <View style={styles.inputBox}>
-            <Message isFullSpace={!imageURI} />
+          <ScrollView>
+            <Message noImage={!imageURI} />
             {!!imageURI &&
               <Photo
                 onClose={this.resetStateImg}
                 imageSrc={imageURI} />
             }
+          </ScrollView>
         </View>
 
         <GreyLine boxStyle={styles.lineSolid} />

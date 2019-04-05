@@ -16,32 +16,16 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 class Message extends Component {
-  state = {
-    contentHeight: 0
-  }
-
-  onContentSizeChange = ({ nativeEvent: { contentSize: { width, height } } }) => {
-    this.setState({ contentHeight: height })
-  }
-
-  setHeight = () => {
-    const { contentHeight } = this.state
-    const paddings = 15
-    const maxHeightWithImage = 140
-
-    return contentHeight > maxHeightWithImage ? maxHeightWithImage + paddings : contentHeight + paddings
-  }
-
   render() {
-    const { content, saveContent , isFullSpace } = this.props
+    const { content, saveContent, noImage } = this.props
 
     return (
         <TextInput
           placeholder='Enter your message ...'
-          style={[styles.input, {height: this.setHeight()}, isFullSpace && {flex: 1}]}
+          style={[styles.input, noImage && { height: 285 }]}
           multiline={true}
           value={content}
-          onContentSizeChange={this.onContentSizeChange}
+          scrollEnabled={false}
           onChangeText={content => saveContent(content)} />
     )
   }

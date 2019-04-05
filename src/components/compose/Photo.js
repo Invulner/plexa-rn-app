@@ -28,12 +28,12 @@ const styles = StyleSheet.create({
   imgBox: {
     paddingHorizontal: 20,  
     width: '100%',
-    minHeight: 100,
-    flex: 1
+    height: 250
   },
 
   img: {
     resizeMode: 'cover',
+    width: '100%',
     flex: 1
   },
 
