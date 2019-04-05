@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, TouchableOpacity, Alert } from 'react-native'
+import { View, StyleSheet, TouchableOpacity, Alert, ScrollView } from 'react-native'
 import { connect } from 'react-redux'
 import SafeArea from '../components/common/SafeArea'
 import { RegularText } from '../components/common/fonts'
@@ -55,7 +55,7 @@ class ComposeScreen extends Component {
   }
 
   isEmptyInput = () => {
-    return !this.props.post.content
+    return !this.props.post.content.length || !/\S/.test(this.props.post.content)
   }
 
   toggleOverlay = () => {
@@ -121,13 +121,14 @@ class ComposeScreen extends Component {
       <SafeArea>
         <Spinner visible={spinner} />
         <View style={styles.inputBox}>
-          <Message />
-          {!!imageURI &&
-            <Photo
-              onClose={this.resetStateImg}
-              imageSrc={imageURI} />
-          }
+            <Message isFullSpace={!imageURI} />
+            {!!imageURI &&
+              <Photo
+                onClose={this.resetStateImg}
+                imageSrc={imageURI} />
+            }
         </View>
+
         <GreyLine boxStyle={styles.lineSolid} />
 
         <View style={styles.btnBox}>
@@ -174,8 +175,7 @@ class ComposeScreen extends Component {
 
 const styles = StyleSheet.create({
   inputBox: {
-    minHeight: 325,
-    paddingHorizontal: 20,
+    height: 300,
     paddingTop: 20,
     paddingBottom: 15
   },
