@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
 
   img: {
     width: screenWidth, 
-    height: 200, 
+    height: 300, 
     resizeMode: 'cover'
   }
 })
