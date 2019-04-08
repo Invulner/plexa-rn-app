@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Image, StyleSheet, TouchableWithoutFeedback, Modal, TouchableOpacity, Dimensions } from 'react-native'
+import { View, Image, StyleSheet, TouchableWithoutFeedback, TouchableOpacity } from 'react-native'
 import { RegularText } from '../common/fonts'
 import Research from './Research'
 import LinkPreview from './LinkPreview'
@@ -8,19 +8,16 @@ import { feedStyles } from '../../assets/styles/feed/feedStyles'
 import utils from '../../utils'
 import News from './News'
 import PostHead from '../common/PostHead'
-import AutoHeightImage from 'react-native-auto-height-image'
-
-const screenWidth = Dimensions.get('screen').width
+import ImagePopUp from './ImagePopUp';
 
 class FeedPost extends Component {
   state = {
     modal: false
   }
 
-  toggleModal = () => {
-    this.setState(prevState => ({ modal: !prevState.modal }))
+  onModalToggle = () => {
+    this.setState(prevState => ({ modal: !prevState.modal}))
   }
-
   areAnyLinkDetails = () => {
     return Object.getOwnPropertyNames(this.props.item.link_details).length !== 0
   }
@@ -75,26 +72,16 @@ class FeedPost extends Component {
   render() {
     const { navigation, fullView, item } = this.props
     const { id: postId, created_at, likes_count, answers_count, image_urls, author, liked } = item
-    const opacity = 0.8
 
     return (
       <TouchableWithoutFeedback onPress={() => navigation.navigate('Post', {postId})}>
         <View style={[feedStyles.postContainer, fullView && styles.fullViewContainer]}>
-        {!fullView && !!image_urls.length &&
-          <Modal        
-            animationType="fade"
-            transparent={false}
-            visible={this.state.modal}>
-            <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#000'}}>
-              <TouchableOpacity 
-                onPress={this.toggleModal}
-                activeOpacity={opacity}>
-                <AutoHeightImage source={{uri: image_urls[0].url}} width={screenWidth} />
-              </TouchableOpacity>
-            </View>
-          </Modal>
+        {!!image_urls.length &&
+          <ImagePopUp
+            onModalToggle={this.onModalToggle}
+            visible={this.state.modal}
+            image_urls={image_urls} />
         }
-
           <PostHead
             author={author}
             created_at={created_at} />
@@ -103,8 +90,8 @@ class FeedPost extends Component {
               {this.renderContent()}
               {!!image_urls.length &&
                 <TouchableOpacity 
-                  onPress={this.toggleModal}
-                  activeOpacity={opacity}>
+                  onPress={this.onModalToggle}
+                  activeOpacity={0.8}>
                   <Image
                     source={{uri: image_urls[0].preview_url}}
                     style={styles.linkImage} />
