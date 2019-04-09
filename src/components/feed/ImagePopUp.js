@@ -17,17 +17,19 @@ class ImagePopUp extends Component {
 
   componentDidMount() {
     Image.getSize(this.props.imageURL, (width, height) => {
-      const calcWidth = screenHeight * width / height
-      const calcHeight = screenWidth * height / width
+      const ratio = width / height
+      const calcWidth = screenHeight * ratio
+      const calcHeight = screenWidth / ratio
       const imageBiggerThanScreen = width > screenWidth && height > screenHeight
-      const imageHorizontal = width > height
-      const imageVertical = height > width
       const imageWiderThanScreen = width > screenWidth
       const imageHigherThanScreen = height > screenHeight
 
-      if (imageBiggerThanScreen && imageHorizontal) {
+      if (imageBiggerThanScreen && ratio === 1) {
+        this.setImageSize(screenWidth, screenWidth)
+      }
+      else if (imageBiggerThanScreen && ratio > 1) {
         this.setImageSize(screenWidth, calcHeight)
-      } else if (imageBiggerThanScreen && imageVertical) {
+      } else if (imageBiggerThanScreen && ratio < 1) {
 
         if (calcWidth > screenWidth)
           this.setImageSize(screenWidth, calcHeight)
