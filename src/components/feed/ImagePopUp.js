@@ -6,8 +6,20 @@ import Loader from '../common/Loader'
 const screenWidth = Dimensions.get('screen').width
 
 class ImagePopUp extends Component {
+  state = {
+    imgHeight: 0
+  }
+
+  componentDidMount() {
+    Image.getSize(this.props.imageURL, (width, height) => {
+      const imgHeight = (height * screenWidth) / width
+      this.setState({ imgHeight })
+    })
+  }
+
   render() {
-    const { image_urls, visible, onModalToggle } = this.props
+    const { imageURL, visible, onModalToggle } = this.props
+    const { imgHeight } = this.state
 
     return (
       <Modal        
@@ -19,9 +31,9 @@ class ImagePopUp extends Component {
             onPress={onModalToggle}
             activeOpacity={0.8}>
             <Image 
-              source={{uri: image_urls[0].url}}
+              source={{uri: imageURL}}
               indicator={Loader}
-              style={styles.img} />
+              style={{...styles.img, height: imgHeight}} />
           </TouchableOpacity>
         </View>
       </Modal>
@@ -38,9 +50,8 @@ const styles = StyleSheet.create({
   },
 
   img: {
-    width: screenWidth, 
-    height: 300, 
-    resizeMode: 'cover'
+    width: screenWidth,
+    resizeMode: 'contain'
   }
 })
 
