@@ -11,14 +11,35 @@ class ImagePopUp extends Component {
     imgWidth: 0
   }
 
+  setImageSize = (imgWidth, imgHeight) => {
+    this.setState({ imgWidth, imgHeight })
+  }
+
   componentDidMount() {
     Image.getSize(this.props.imageURL, (width, height) => {
-      if (width > screenWidth && height > screenHeight && width > height || width > screenWidth) {
-        this.setState({ imgWidth: screenWidth, imgHeight: height * screenWidth / width })
-      } else if (height > screenHeight && width > screenWidth && height > width || height > screenHeight) {
-        this.setState({ imgHeight: screenHeight, imgWidth: screenWidth * height / width})
+      const calcWidth = screenHeight * width / height
+      const calcHeight = screenWidth * height / width
+      const imageBiggerThanScreen = width > screenWidth && height > screenHeight
+      const imageHorizontal = width > height
+      const imageVertical = height > width
+      const imageWiderThanScreen = width > screenWidth
+      const imageHigherThanScreen = height > screenHeight
+
+      if (imageBiggerThanScreen && imageHorizontal) {
+        this.setImageSize(screenWidth, calcHeight)
+      } else if (imageBiggerThanScreen && imageVertical) {
+
+        if (calcWidth > screenWidth)
+          this.setImageSize(screenWidth, calcHeight)
+        else 
+          this.setImageSize(calcWidth, screenHeight)
+
+      } else if (imageWiderThanScreen) {
+        this.setImageSize(screenWidth, calcHeight)
+      } else if (imageHigherThanScreen) {
+        this.setImageSize(calcWidth, screenHeight)
       } else {
-        this.setState({ imgWidth: width, imgHeight: height })
+        this.setImageSize(width, height)
       }
     })
   }
