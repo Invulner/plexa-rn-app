@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Image, StyleSheet, TouchableWithoutFeedback } from 'react-native'
+import { View, Image, StyleSheet, TouchableWithoutFeedback, TouchableOpacity } from 'react-native'
 import { RegularText } from '../common/fonts'
 import Research from './Research'
 import LinkPreview from './LinkPreview'
@@ -8,8 +8,17 @@ import { feedStyles } from '../../assets/styles/feed/feedStyles'
 import utils from '../../utils'
 import News from './News'
 import PostHead from '../common/PostHead'
+import ImagePopUp from './ImagePopUp'
 
 class FeedPost extends Component {
+  state = {
+    modal: false
+  }
+
+  onModalToggle = () => {
+    this.setState(prevState => ({ modal: !prevState.modal }))
+  }
+
   areAnyLinkDetails = () => {
     return Object.getOwnPropertyNames(this.props.item.link_details).length !== 0
   }
@@ -68,20 +77,29 @@ class FeedPost extends Component {
     return (
       <TouchableWithoutFeedback onPress={() => navigation.navigate('Post', {postId})}>
         <View style={[feedStyles.postContainer, fullView && styles.fullViewContainer]}>
-
+          {!!image_urls.length &&
+            <ImagePopUp
+              onModalToggle={this.onModalToggle}
+              visible={this.state.modal}
+              imageURL={image_urls[0].url} />
+          }
           <PostHead
             author={author}
             created_at={created_at} />
 
-            <View>
-              {this.renderContent()}
-              {!!image_urls.length &&
+          <View>
+            {this.renderContent()}
+            {!!image_urls.length &&
+              <TouchableOpacity 
+                onPress={this.onModalToggle}
+                activeOpacity={0.8}>
                 <Image
                   source={{uri: image_urls[0].preview_url}}
                   style={styles.linkImage} />
-              }
-              {this.renderAttachedBlock()}
-            </View>
+              </TouchableOpacity>
+            }
+            {this.renderAttachedBlock()}
+          </View>
 
           <Social
             liked={liked}
