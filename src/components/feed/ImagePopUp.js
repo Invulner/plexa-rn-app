@@ -3,23 +3,29 @@ import { TouchableOpacity, View, StyleSheet, Dimensions, Modal } from 'react-nat
 import Image from 'react-native-image-progress'
 import Loader from '../common/Loader'
 
-const screenWidth = Dimensions.get('screen').width
+const { width: screenWidth, height: screenHeight } = Dimensions.get('screen')
 
 class ImagePopUp extends Component {
   state = {
-    imgHeight: 0
+    imgHeight: 0,
+    imgWidth: 0
   }
 
   componentDidMount() {
     Image.getSize(this.props.imageURL, (width, height) => {
-      const imgHeight = (height * screenWidth) / width
-      this.setState({ imgHeight })
+      if (width > screenWidth && height > screenHeight && width > height || width > screenWidth) {
+        this.setState({ imgWidth: screenWidth, imgHeight: height * screenWidth / width })
+      } else if (height > screenHeight && width > screenWidth && height > width || height > screenHeight) {
+        this.setState({ imgHeight: screenHeight, imgWidth: screenWidth * height / width})
+      } else {
+        this.setState({ imgWidth: width, imgHeight: height })
+      }
     })
   }
 
   render() {
     const { imageURL, visible, onModalToggle } = this.props
-    const { imgHeight } = this.state
+    const { imgHeight, imgWidth } = this.state
 
     return (
       <Modal        
@@ -33,7 +39,7 @@ class ImagePopUp extends Component {
             <Image 
               source={{uri: imageURL}}
               indicator={Loader}
-              style={{...styles.img, height: imgHeight}} />
+              style={{...styles.img, height: imgHeight, width: imgWidth}} />
           </TouchableOpacity>
         </View>
       </Modal>
@@ -50,7 +56,6 @@ const styles = StyleSheet.create({
   },
 
   img: {
-    width: screenWidth,
     resizeMode: 'contain'
   }
 })
