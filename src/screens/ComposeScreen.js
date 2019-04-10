@@ -96,8 +96,16 @@ class ComposeScreen extends Component {
   onSubmit = () => {
     if (this.isTopicSelected()) {
       const { post, submitPost } = this.props
-      const { link_url, content, ...rest } = post
-      const obj = link_url ? post : rest
+      const { link_url, news_id, content, ...rest } = post
+      let obj
+
+      if (link_url) 
+        obj = { ...rest, link_url }
+      else if (link_url && news_id)
+        obj = post
+      else 
+        obj = rest
+
       const data = {  ...obj, content: content.trim() }
 
       const cb = () => {
