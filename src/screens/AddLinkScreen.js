@@ -28,7 +28,7 @@ class AddLinkScreen extends Component {
     const { navigation, saveLink, news_id } = this.props
     const { link_url } = this.state
     
-    link_url ? saveLink(link_url, news_id) : saveLink(link_url)
+    link_url ? saveLink(link_url, news_id) : saveLink(link_url, null)
     navigation.navigate('Compose')
   }
 
