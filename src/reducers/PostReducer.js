@@ -7,7 +7,8 @@ const initialState = {
   comments_enabled: true,
   public: false,
   group_id: '',
-  location_id: null
+  location_id: null,
+  news_id: null
 }
 
 const getTopicIDs = (state, action) => {
@@ -28,7 +29,8 @@ const PostReducer = (state = initialState, action) => {
     case types.SAVE_LINK:
       return {
         ...state,
-        link_url: action.link
+        link_url: action.link,
+        news_id: action.news_id
       }
 
     case types.TOGGLE_TOPIC:

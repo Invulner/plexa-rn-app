@@ -5,13 +5,16 @@ import SafeArea from '../components/common/SafeArea'
 import PostActions from '../actions/PostActions'
 
 const mapStateToProps = (state) => {
-  const { link_url } = state.post
+  const { link_url, news_id } = state.post
 
-  return { link_url }
+  return { 
+    link_url,
+    news_id
+  }
 }
 
 const mapDispatchToProps = (dispatch) => {
-  const saveLink = (link) => dispatch(PostActions.saveLink(link))
+  const saveLink = (link, news_id) => dispatch(PostActions.saveLink(link, news_id))
 
   return { saveLink }
 }
@@ -22,10 +25,10 @@ class AddLinkScreen extends Component {
   }
 
   onSubmit = () => {
-    const { navigation, saveLink } = this.props
+    const { navigation, saveLink, news_id } = this.props
     const { link_url } = this.state
-
-    saveLink(link_url)
+    
+    link_url ? saveLink(link_url, news_id) : saveLink(link_url, null)
     navigation.navigate('Compose')
   }
 

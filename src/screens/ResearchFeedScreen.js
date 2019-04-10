@@ -33,7 +33,7 @@ class ResearchFeedScreen extends Component {
   }
 
   render() {
-    const { refreshResearchFeed, researchFeed: { loading, feedData } } = this.props
+    const { refreshResearchFeed, researchFeed: { loading, feedData }, navigation } = this.props
 
     return (
       <SafeArea>
@@ -43,7 +43,10 @@ class ResearchFeedScreen extends Component {
           <FlatList 
             data={feedData}
             keyExtractor={item => item.id + ''}
-            renderItem={({ item }) => <Featured item={item} />}
+            renderItem={({ item }) => (
+              <Featured 
+                item={item} 
+                navigation={navigation} />)}
             refreshing={loading}
             ListFooterComponent={loading && <Loader />}
             onEndReached={this.addToFeed}

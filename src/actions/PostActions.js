@@ -1,8 +1,9 @@
 import types from '../types/post'
 
-const saveLink = (link) => ({
+const saveLink = (link, news_id = null) => ({
   type: types.SAVE_LINK,
-  link
+  link,
+  news_id
 })
 
 const toggleTopic = (id) => ({

@@ -4,6 +4,14 @@ import { BRAND_LIGHT } from '../../assets/styles/colors'
 import NewsIcon from '../feed/NewsIcon'
 import { RegularText } from '../common/fonts'
 import { FEATURED } from '../../assets/styles/colors'
+import { connect } from 'react-redux'
+import PostActions from '../../actions/PostActions'
+
+const mapDispatchToProps = (dispatch) => {
+  const saveLink = (link, news_id) => dispatch(PostActions.saveLink(link, news_id))
+
+  return { saveLink }
+}
 
 class Featured extends Component {
   getColorIndex = () => {
@@ -12,17 +20,26 @@ class Featured extends Component {
 
   colorIndex = this.getColorIndex()
 
+  onPostPress = () => {
+    const { navigation: { navigate }, item: { id, url }, saveLink } = this.props
+
+    saveLink(url, id)
+    navigate('Compose')
+  }
+
   render() {
     const { source_title, title, description, url } = this.props.item
     const colorIndex = this.colorIndex
 
     return (
-      <View style={[styles.newsContainer, {backgroundColor: FEATURED[colorIndex].bg}]}>
+      <View style={[styles.newsContainer, { backgroundColor: FEATURED[colorIndex].bg }]}>
         <View style={styles.topBox}> 
           <View style={styles.iconBox}>
             <NewsIcon style={styles.icon} />
           </View>
-          <TouchableOpacity style={styles.btn}>
+          <TouchableOpacity 
+            style={styles.btn}
+            onPress={this.onPostPress}>
             <RegularText style={styles.btnText}>
               Post this
             </RegularText>
@@ -33,7 +50,7 @@ class Featured extends Component {
             {title}
           </RegularText>
         </TouchableOpacity>
-        <View style={[styles.sourceContainer, {backgroundColor: FEATURED[colorIndex].source}]}>
+        <View style={[styles.sourceContainer, { backgroundColor: FEATURED[colorIndex].source }]}>
           <RegularText style={styles.sourceText}>
             {source_title}
           </RegularText>
@@ -110,7 +127,7 @@ const styles = StyleSheet.create({
   sourceText: {
     color: '#fff',
     fontSize: 16
-  },
+},
 
   newsText: {
     color: '#fff',
@@ -119,4 +136,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default Featured
+export default connect(null, mapDispatchToProps)(Featured)
