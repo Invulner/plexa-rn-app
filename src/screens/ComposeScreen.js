@@ -99,14 +99,14 @@ class ComposeScreen extends Component {
       const { link_url, news_id, content, ...rest } = post
       let obj
 
-      if (link_url) 
-        obj = { ...rest, link_url }
-      else if (link_url && news_id)
+      if (link_url && news_id) 
         obj = post
+      else if (link_url)
+        obj = { ...rest, link_url }
       else 
         obj = rest
 
-      const data = {  ...obj, content: content.trim() }
+      const data = { ...obj, content: content.trim() }
 
       const cb = () => {
         this.toggleOverlay()
