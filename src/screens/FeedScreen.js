@@ -27,6 +27,15 @@ class FeedScreen extends Component {
     this.props.getFeed()
   }
 
+  componentDidUpdate() {
+    const { navigation, feed: { feedLoading, feedData } }  = this.props
+    const parent = navigation.dangerouslyGetParent()
+
+    !feedLoading && feedData.length && parent.setParams({ 
+      scrollToTop: () => this.refs.feedList.scrollToOffset({ offset: 0 })
+    })
+  }
+
   addToFeed = () => {
     const { page, feedLoading }  = this.props.feed
     nextPage = page + 1
@@ -43,16 +52,17 @@ class FeedScreen extends Component {
         {feedLoading && !feedData.length ?
           <Loader />
           :
-          <FlatList 
+          <FlatList
+            ref='feedList'
             data={feedData}
             keyExtractor={item => item.id + ''}
             renderItem={({ item }) => (
               <FeedPost  
                 item={item} 
                 navigation={navigation} />)} 
-            onEndReached={() => this.addToFeed()} 
+            onEndReached={this.addToFeed} 
             onEndReachedThreshold={1}
-            onRefresh={() => refreshFeed()}
+            onRefresh={refreshFeed}
             refreshing={feedLoading}
             ListFooterComponent={feedLoading && <Loader />} />
         }
