@@ -5,6 +5,7 @@ import FeedPost from '../components/feed/FeedPost'
 import FeedOperations from '../operations/FeedOperations'
 import { connect } from 'react-redux'
 import Loader from '../components/common/Loader'
+import { NavigationEvents } from 'react-navigation'
 
 const mapDispatchToProps = (dispatch) => {
   const getFeed = (page) => dispatch(FeedOperations.getFeed(page))
@@ -23,16 +24,24 @@ const mapStateToProps = (state) => {
 }
 
 class FeedScreen extends Component {
-  componentDidMount() {
-    this.props.getFeed()
+  getParentNavigation = () => {
+    return this.props.navigation.dangerouslyGetParent()
   }
 
-  componentDidUpdate() {
-    const { navigation, feed: { feedLoading, feedData } }  = this.props
-    const parent = navigation.dangerouslyGetParent()
+  onLogoPress = () => {
+    this.refs.feedList.scrollToOffset({ offset: 0 })
+    this.props.refreshFeed()
+  }
 
-    !feedLoading && feedData.length && parent.setParams({ 
-      scrollToTop: () => this.refs.feedList.scrollToOffset({ offset: 0 })
+  resetOnLogoPress = () => {
+    this.getParentNavigation().setParams({ 
+      onLogoPress: null
+    })
+  }
+
+  setOnLogoPress = () => {
+    this.getParentNavigation().setParams({ 
+      onLogoPress: this.onLogoPress
     })
   }
 
@@ -44,11 +53,19 @@ class FeedScreen extends Component {
     } 
   }
 
+  componentDidMount() {
+    this.props.getFeed()
+  }
+
   render() {
     const { navigation, refreshFeed, feed: { feedData, feedLoading } } = this.props
 
     return (
       <SafeArea>
+        <NavigationEvents
+          onDidFocus={this.setOnLogoPress}
+          onDidBlur={this.resetOnLogoPress}
+        />
         {feedLoading && !feedData.length ?
           <Loader />
           :

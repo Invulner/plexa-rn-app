@@ -12,15 +12,15 @@ const mapDispatchToProps = (dispatch) => {
 function HeaderLogo(props) {
   const { navigation, refreshFeed } = props
   const { index } = navigation.state
-  const scrollToTop = navigation.getParam('scrollToTop')
+  const onFeedLogoPress = navigation.getParam('onLogoPress')
 
   const onLogoPress = () => {
-    if (index === 0) {
-      scrollToTop()
-      refreshFeed()
-    } else {
-      navigation.navigate('Feed')
-    } 
+    onFeedLogoPress ? onFeedLogoPress() : navigation.navigate('Feed')
+    // if (index === 0) {
+    //   onFeedLogoPress()
+    // } else {
+    //   navigation.navigate('Feed')
+    // } 
   }
 
   return (
