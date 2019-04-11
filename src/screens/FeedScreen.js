@@ -5,6 +5,7 @@ import FeedPost from '../components/feed/FeedPost'
 import FeedOperations from '../operations/FeedOperations'
 import { connect } from 'react-redux'
 import Loader from '../components/common/Loader'
+import { NavigationEvents } from 'react-navigation'
 
 const mapDispatchToProps = (dispatch) => {
   const getFeed = (page) => dispatch(FeedOperations.getFeed(page))
@@ -23,8 +24,25 @@ const mapStateToProps = (state) => {
 }
 
 class FeedScreen extends Component {
-  componentDidMount() {
-    this.props.getFeed()
+  getParentNavigation = () => {
+    return this.props.navigation.dangerouslyGetParent()
+  }
+
+  onLogoPress = () => {
+    this.refs.feedList.scrollToOffset({ offset: 0 })
+    this.props.refreshFeed()
+  }
+
+  resetOnLogoPress = () => {
+    this.getParentNavigation().setParams({ 
+      onLogoPress: null
+    })
+  }
+
+  setOnLogoPress = () => {
+    this.getParentNavigation().setParams({ 
+      onLogoPress: this.onLogoPress
+    })
   }
 
   addToFeed = () => {
@@ -35,24 +53,33 @@ class FeedScreen extends Component {
     } 
   }
 
+  componentDidMount() {
+    this.props.getFeed()
+  }
+
   render() {
     const { navigation, refreshFeed, feed: { feedData, feedLoading } } = this.props
 
     return (
       <SafeArea>
+        <NavigationEvents
+          onDidFocus={this.setOnLogoPress}
+          onDidBlur={this.resetOnLogoPress}
+        />
         {feedLoading && !feedData.length ?
           <Loader />
           :
-          <FlatList 
+          <FlatList
+            ref='feedList'
             data={feedData}
             keyExtractor={item => item.id + ''}
             renderItem={({ item }) => (
               <FeedPost  
                 item={item} 
                 navigation={navigation} />)} 
-            onEndReached={() => this.addToFeed()} 
+            onEndReached={this.addToFeed} 
             onEndReachedThreshold={1}
-            onRefresh={() => refreshFeed()}
+            onRefresh={refreshFeed}
             refreshing={feedLoading}
             ListFooterComponent={feedLoading && <Loader />} />
         }

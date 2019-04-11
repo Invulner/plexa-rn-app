@@ -3,8 +3,15 @@ import { Image, TouchableOpacity } from 'react-native'
 import { withNavigation } from 'react-navigation'
 
 function HeaderLogo(props) {
+  const { navigation } = props
+  const onFeedLogoPress = navigation.getParam('onLogoPress')
+
+  const onLogoPress = () => {
+    onFeedLogoPress ? onFeedLogoPress() : navigation.navigate('Feed')
+  }
+
   return (
-    <TouchableOpacity onPress={() => props.navigation.navigate('Feed')}>
+    <TouchableOpacity onPress={onLogoPress}>
       <Image 
         source={require('../../../assets/images/logo-min.png')}
         style={{width: 40, height: 40}} />
