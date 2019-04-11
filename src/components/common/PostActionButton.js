@@ -18,7 +18,6 @@ class PostActionButton extends Component {
       'Cancel'
     ]
 
-
     const cancelIndex = btnsIOS.length - 1
 
     ActionSheet.showActionSheetWithOptions({
