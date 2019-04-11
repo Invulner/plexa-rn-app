@@ -1,5 +1,6 @@
 import React from 'react'
 import { Image, TouchableOpacity } from 'react-native'
+import { withNavigation } from 'react-navigation'
 
 function HeaderLogo(props) {
   const { navigation } = props
@@ -18,4 +19,4 @@ function HeaderLogo(props) {
   )
 }
 
-export default HeaderLogo
+export default withNavigation(HeaderLogo)
