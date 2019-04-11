@@ -15,16 +15,18 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 class PostActionButton extends Component {
-  hidePost = () => {
-    const { hidePost, postId } = this.props
-    
-    hidePost(postId)
-  }
+  onBtnPress = (buttonIndex) => {
+    const { hidePost, reportPost, postId, isMedbot } = this.props
 
-  reportPost = () => {
-    const { reportPost, postId } = this.props
-
-    reportPost(postId)
+    switch(buttonIndex) {
+      case 0:
+        return isMedbot ? hidePost(postId) : console.log('block user')
+      case 1:
+        return hidePost(postId)
+      case 2:
+        return reportPost(postId)
+    }
+    console.log(buttonIndex)
   }
 
   callActionsSheet = () => {
@@ -48,15 +50,7 @@ class PostActionButton extends Component {
       options: (Platform.OS == 'ios') ? btnsIOS : btnsAndroid,
       cancelButtonIndex: cancelIndex,
       tintColor: 'blue'
-    }, (buttonIndex) => {
-      switch(buttonIndex) {
-        case 1:
-          return this.hidePost()
-        case 2:
-          return this.reportPost()
-      }
-      console.log('button clicked :', buttonIndex)
-    })
+    }, this.onBtnPress)
   }
 
   render() {
