@@ -1,13 +1,5 @@
 import React from 'react'
 import { Image, TouchableOpacity } from 'react-native'
-import { connect } from 'react-redux'
-import FeedOperations from '../../../operations/FeedOperations'
-
-const mapDispatchToProps = (dispatch) => {
-  const refreshFeed = () => dispatch(FeedOperations.refreshFeed())
-
-  return { refreshFeed }
-}
 
 function HeaderLogo(props) {
   const { navigation } = props
@@ -26,4 +18,4 @@ function HeaderLogo(props) {
   )
 }
 
-export default connect(null, mapDispatchToProps)(HeaderLogo)
+export default HeaderLogo
