@@ -4,12 +4,15 @@ import ActionSheet from 'react-native-action-sheet'
 
 class PostActionButton extends Component {
   callActionsSheet = () => {
-    const btnsAndroid = [
+    const btnsCommon = [
       'Send message',
       'Hide post',
       'Report',
       'Block user'
     ]
+    const btnsMedbot = ['Hide post']
+
+    const btnsAndroid = this.props.isMedbot ? btnsMedbot : btnsCommon
     const btnsIOS = [
       ...btnsAndroid,
       'Cancel'
