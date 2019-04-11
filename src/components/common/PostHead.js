@@ -69,7 +69,7 @@ function PostHead(props) {
           {title}
         </RegularText>
       </View>
-      <PostActionButton />   
+      <PostActionButton isMedbot={isMedbot()} />   
     </View>
   )
 }
