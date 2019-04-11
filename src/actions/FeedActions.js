@@ -41,8 +41,13 @@ const savePost = (post) => ({
   post
 })
 
-hidePost = (id) => ({
+const hidePost = (id) => ({
   type: types.HIDE_POST,
+  id
+})
+
+const reportPost = (id) => ({
+  type: types.REPORT_POST,
   id
 })
 
@@ -55,5 +60,6 @@ export default {
   updatePostLike,
   updateCommentsCounter,
   savePost,
-  hidePost
+  hidePost,
+  reportPost
 }

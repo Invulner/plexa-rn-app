@@ -6,10 +6,11 @@ import FeedOperations from '../../operations/FeedOperations'
 
 const mapDispatchToProps = (dispatch) => {
   const hidePost = (postId) => dispatch(FeedOperations.hidePost(postId))
+  const reportPost = (postId) => dispatch(FeedOperations.reportPost(postId))
 
   return {
-    hidePost
-    //reportPost...
+    hidePost,
+    reportPost
   }
 }
 
@@ -18,6 +19,12 @@ class PostActionButton extends Component {
     const { hidePost, postId } = this.props
     
     hidePost(postId)
+  }
+
+  reportPost = () => {
+    const { reportPost, postId } = this.props
+
+    reportPost(postId)
   }
 
   callActionsSheet = () => {
@@ -44,9 +51,11 @@ class PostActionButton extends Component {
     }, (buttonIndex) => {
       switch(buttonIndex) {
         case 1:
-          this.hidePost()
+          return this.hidePost()
+        case 2:
+          return this.reportPost()
       }
-      // console.log('button clicked :', buttonIndex)
+      console.log('button clicked :', buttonIndex)
     })
   }
 

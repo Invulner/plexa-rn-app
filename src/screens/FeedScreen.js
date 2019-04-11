@@ -30,6 +30,8 @@ class FeedScreen extends Component {
 
     if (item.hidden) 
       return <PostPlaceholder option={'hidden'} />
+    else if (item.reported)
+      return <PostPlaceholder option={'reported'} />
     else
       return (
         <FeedPost  
