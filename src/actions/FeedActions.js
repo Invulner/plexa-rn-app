@@ -41,6 +41,11 @@ const savePost = (post) => ({
   post
 })
 
+hidePost = (id) => ({
+  type: types.HIDE_POST,
+  id
+})
+
 export default {
   saveFeedData,
   toggleFeedDataLoading,
@@ -49,5 +54,6 @@ export default {
   resetFeed,
   updatePostLike,
   updateCommentsCounter,
-  savePost
+  savePost,
+  hidePost
 }

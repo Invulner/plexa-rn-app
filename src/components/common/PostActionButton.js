@@ -1,8 +1,25 @@
 import React, { Component } from 'react'
 import { Image, StyleSheet, TouchableOpacity, Platform } from 'react-native'
 import ActionSheet from 'react-native-action-sheet'
+import { connect } from 'react-redux'
+import FeedOperations from '../../operations/FeedOperations'
+
+const mapDispatchToProps = (dispatch) => {
+  const hidePost = (postId) => dispatch(FeedOperations.hidePost(postId))
+
+  return {
+    hidePost
+    //reportPost...
+  }
+}
 
 class PostActionButton extends Component {
+  hidePost = () => {
+    const { hidePost, postId } = this.props
+    
+    hidePost(postId)
+  }
+
   callActionsSheet = () => {
     const btnsCommon = [
       'Send message',
@@ -25,7 +42,11 @@ class PostActionButton extends Component {
       cancelButtonIndex: cancelIndex,
       tintColor: 'blue'
     }, (buttonIndex) => {
-      console.log('button clicked :', buttonIndex)
+      switch(buttonIndex) {
+        case 1:
+          this.hidePost()
+      }
+      // console.log('button clicked :', buttonIndex)
     })
   }
 
@@ -55,4 +76,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default PostActionButton
+export default connect(null, mapDispatchToProps)(PostActionButton)

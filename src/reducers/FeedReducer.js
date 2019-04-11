@@ -6,6 +6,16 @@ const initialState = {
   feedLoading: true
 }
 
+const hidePost = (state, action) => {
+  const newVals = { hidden: true }
+  const newFeedData = utils.updateItemById(state.feedData, action.id, newVals)
+
+  return {
+    ...state,
+    feedData: newFeedData
+  }
+}
+
 const updateCommentsCounter = (state, action) => {
   const item = utils.findItemById(state.feedData, action.id)
   const counter = isNaN(action.counter) ? item.answers_count + 1 : action.counter
@@ -81,6 +91,9 @@ const FeedReducer = (state = initialState, action) => {
 
     case types.UPDATE_COMMENTS_COUNTER:
       return updateCommentsCounter(state, action)
+
+    case types.HIDE_POST:
+      return hidePost(state, action)
 
     default:
       return state
