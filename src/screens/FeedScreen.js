@@ -101,7 +101,3 @@ class FeedScreen extends Component {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(FeedScreen)
-// ({ item }) => (
-//   <FeedPost  
-//     item={item} 
-//     navigation={navigation} />)

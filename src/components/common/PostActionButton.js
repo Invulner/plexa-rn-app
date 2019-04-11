@@ -26,7 +26,6 @@ class PostActionButton extends Component {
       case 2:
         return reportPost(postId)
     }
-    console.log(buttonIndex)
   }
 
   callActionsSheet = () => {
