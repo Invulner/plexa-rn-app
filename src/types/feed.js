@@ -9,6 +9,7 @@ const SAVE_POST = 'SAVE_POST'
 const HIDE_POST = 'HIDE_POST'
 const REPORT_POST = 'REPORT_POST'
 const BLOCK_USER = 'BLOCK_USER'
+const DELETE_POST = 'DELETE_POST'
 
 export default {
   SAVE_FEED_DATA,
@@ -21,5 +22,6 @@ export default {
   SAVE_POST,
   HIDE_POST,
   REPORT_POST,
-  BLOCK_USER
+  BLOCK_USER,
+  DELETE_POST
 }

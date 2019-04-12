@@ -56,6 +56,11 @@ const blockUser = (id) => ({
   id
 })
 
+const deletePost = (id) => ({
+  type: types.DELETE_POST,
+  id
+})
+
 export default {
   saveFeedData,
   toggleFeedDataLoading,
@@ -67,5 +72,6 @@ export default {
   savePost,
   hidePost,
   reportPost,
-  blockUser
+  blockUser,
+  deletePost
 }

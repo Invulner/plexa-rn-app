@@ -134,6 +134,19 @@ const blockUser = (userId) => {
   }
 }
 
+const deletePost = (postId) => {
+  return dispatch => {
+    
+    return getAxiosInstance().then(api => {
+      api.delete(`${API_URL}/stories/${postId}`)
+        .then(response => {
+          console.log(response)
+          response.data.deleted && dispatch(FeedActions.deletePost(postId))
+        })
+    })
+  }
+}
+
 export default {
   getFeed,
   refreshFeed,
@@ -142,5 +155,6 @@ export default {
   submitPostWithImage,
   hidePost,
   reportPost,
-  blockUser
+  blockUser,
+  deletePost
 }

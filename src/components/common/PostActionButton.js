@@ -4,30 +4,53 @@ import ActionSheet from 'react-native-action-sheet'
 import { connect } from 'react-redux'
 import FeedOperations from '../../operations/FeedOperations'
 
+const mapStateToProps = (state) => {
+  const userId = state.user.id
+
+  return { userId }
+}
+
 const mapDispatchToProps = (dispatch) => {
   const hidePost = (postId) => dispatch(FeedOperations.hidePost(postId))
   const reportPost = (postId) => dispatch(FeedOperations.reportPost(postId))
-  const blockUser = (userId) => dispatch(FeedOperations.blockUser(userId))
+  const blockUser = (authorId) => dispatch(FeedOperations.blockUser(authorId))
+  const deletePost = (postId) => dispatch(FeedOperations.deletePost(postId))
 
   return {
     hidePost,
     reportPost,
-    blockUser
+    blockUser,
+    deletePost
   }
 }
 
 class PostActionButton extends Component {
+  isOwnPost = () => {
+    const { userId, authorId } = this.props
+
+    return userId === authorId
+  }
+
   onAlertOKPress = (option) => {
-    const { blockUser, hidePost, reportPost, postId, userId } = this.props
+    const { deletePost, blockUser, hidePost, reportPost, postId, authorId } = this.props
 
     switch (option) {
       case 'hide':
         return hidePost(postId)
       case 'report':
         return reportPost(postId)
+      case 'block':
+        return blockUser(authorId)
+      case 'delete':
+        return deletePost(postId)
       default:
-        return blockUser(userId)
+        console.log('Wrong option or no option passed')
     }
+  }
+
+  editPost = () => {
+    const { navigate } = this.props.navigation
+    console.log('navigate to edit post')
   }
 
   showAlert = (option) => { 
@@ -52,13 +75,13 @@ class PostActionButton extends Component {
 
     switch(buttonIndex) {
       case 0:
-        return isMedbot ? this.showAlert('hide') : console.log('send message')
+        return isMedbot ? this.showAlert('hide') : (this.isOwnPost() ? this.editPost() : console.log('send message'))
       case 1:
-        return this.showAlert('hide')
+        return this.isOwnPost() ? this.showAlert('delete') : this.showAlert('hide')
       case 2:
-        return this.showAlert('report')
+        return (this.isOwnPost() || isMedbot) ? null : this.showAlert('report')
       case 3:
-        return this.showAlert()
+        return this.showAlert('block')
     }
   }
 
@@ -70,8 +93,12 @@ class PostActionButton extends Component {
       'Block user'
     ]
     const btnsMedbot = ['Hide post']
+    const btnsUser = [
+      'Edit',
+      'Delete'
+    ]
 
-    const btnsAndroid = this.props.isMedbot ? btnsMedbot : btnsCommon
+    const btnsAndroid = this.props.isMedbot ? btnsMedbot : (this.isOwnPost() ? btnsUser : btnsCommon)
     const btnsIOS = [
       ...btnsAndroid,
       'Cancel'
@@ -112,4 +139,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect(null, mapDispatchToProps)(PostActionButton)
+export default connect(mapStateToProps, mapDispatchToProps)(PostActionButton)
