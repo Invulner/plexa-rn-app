@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { TouchableOpacity, View, StyleSheet, Dimensions, Modal } from 'react-native'
+import { TouchableOpacity, StyleSheet, Dimensions, Modal } from 'react-native'
 import Image from 'react-native-image-progress'
 import Loader from '../common/Loader'
 
@@ -58,7 +58,7 @@ class ImagePopUp extends Component {
         <TouchableOpacity
           style={styles.container}
           onPress={onModalToggle}
-          activeOpacity={0.8}>
+          activeOpacity={1}>
           <Image 
             source={{uri: imageURL}}
             indicator={Loader}
