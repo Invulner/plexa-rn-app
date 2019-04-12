@@ -56,7 +56,8 @@ class ImagePopUp extends Component {
         transparent={false}
         visible={visible}>
         <View style={styles.container}>
-          <TouchableOpacity 
+          <TouchableOpacity
+            style={styles.btn}
             onPress={onModalToggle}
             activeOpacity={0.8}>
             <Image 
@@ -76,6 +77,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center', 
     alignItems: 'center', 
     backgroundColor: '#000'
+  },
+
+  btn: {
+    flex: 1
   },
 
   img: {
