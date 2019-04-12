@@ -6,6 +6,15 @@ const initialState = {
   feedLoading: true
 }
 
+const blockUser = (state, action) => {
+  const newFeedData = state.feedData.filter(item => item.author.id !== action.id)
+
+  return {
+    ...state,
+    feedData: newFeedData
+  }
+}
+
 const concealPost = (state, action, option) => {
   const newVals = option ? { hidden: true } : { reported: true }
   const newFeedData = utils.updateItemById(state.feedData, action.id, newVals)
@@ -97,6 +106,9 @@ const FeedReducer = (state = initialState, action) => {
 
     case types.REPORT_POST:
       return concealPost(state, action)
+
+    case types.BLOCK_USER:
+      return blockUser(state, action)
 
     default:
       return state
