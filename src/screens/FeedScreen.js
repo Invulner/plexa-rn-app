@@ -36,7 +36,8 @@ class FeedScreen extends Component {
       return (
         <FeedPost  
           item={item} 
-          navigation={navigation} />)
+          navigation={navigation} />
+      )
   }
 
   getParentNavigation = () => {

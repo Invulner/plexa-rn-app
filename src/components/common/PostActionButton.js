@@ -18,12 +18,14 @@ class PostActionButton extends Component {
   onAlertOKPress = (option) => {
     const { hidePost, reportPost, postId } = this.props
 
-    if (option === 'hide')
-      hidePost(postId)
-    else if (option === 'report')
-      reportPost(postId)
-    else
-      console.log('block user')
+    switch (option) {
+      case 'hide':
+        return hidePost(postId)
+      case 'report':
+        return reportPost(postId)
+      default:
+        return console.log('block user')
+    }
   }
 
   showAlert = (option) => { 

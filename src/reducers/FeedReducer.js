@@ -6,18 +6,8 @@ const initialState = {
   feedLoading: true
 }
 
-const reportPost = (state, action) => {
-  const newVals = { reported: true }
-  const newFeedData = utils.updateItemById(state.feedData, action.id, newVals)
-
-  return {
-    ...state,
-    feedData: newFeedData
-  }
-}
-
-const hidePost = (state, action) => {
-  const newVals = { hidden: true }
+const concealPost = (state, action, option) => {
+  const newVals = option ? { hidden: true } : { reported: true }
   const newFeedData = utils.updateItemById(state.feedData, action.id, newVals)
 
   return {
@@ -103,10 +93,10 @@ const FeedReducer = (state = initialState, action) => {
       return updateCommentsCounter(state, action)
 
     case types.HIDE_POST:
-      return hidePost(state, action)
+      return concealPost(state, action, 'hide')
 
     case types.REPORT_POST:
-      return reportPost(state, action)
+      return concealPost(state, action)
 
     default:
       return state
