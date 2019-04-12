@@ -16,7 +16,19 @@ const blockUser = (state, action) => {
 }
 
 const concealPost = (state, action, option) => {
-  const newVals = option ? { hidden: true } : { reported: true }
+  let newVals
+
+  switch (option) {
+    case 'hide':
+      newVals = { hidden: true }
+      break
+    case 'report':
+      newVals = { reported: true }
+      break
+    default:
+      console.log('Wrong option or now option passed')
+  }
+  
   const newFeedData = utils.updateItemById(state.feedData, action.id, newVals)
 
   return {
@@ -105,7 +117,7 @@ const FeedReducer = (state = initialState, action) => {
       return concealPost(state, action, 'hide')
 
     case types.REPORT_POST:
-      return concealPost(state, action)
+      return concealPost(state, action, 'report')
 
     case types.BLOCK_USER:
       return blockUser(state, action)
