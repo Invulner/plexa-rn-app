@@ -7,11 +7,11 @@ import { withNavigation } from 'react-navigation'
 import ta from 'time-ago'
 
 function PostHead(props) {
-  const { navigation, created_at, author, isComment } = props
+  const { navigation, created_at, author, isComment, postId } = props
   const { avatar_url, full_name, title, id } = author
   
   const handlePress = () => {
-    return isMedbot() ? null : navigation.navigate('PublicProfile', {id})
+    return isMedbot() ? null : navigation.navigate('PublicProfile', { id })
   }
 
   const getBtnOpacity = () => {
@@ -69,7 +69,9 @@ function PostHead(props) {
           {title}
         </RegularText>
       </View>
-      <PostActionButton isMedbot={isMedbot()} />   
+      <PostActionButton 
+        isMedbot={isMedbot()} 
+        postId={postId} />   
     </View>
   )
 }

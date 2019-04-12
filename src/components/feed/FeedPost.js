@@ -75,7 +75,7 @@ class FeedPost extends Component {
     const { id: postId, created_at, likes_count, answers_count, image_urls, author, liked } = item
 
     return (
-      <TouchableWithoutFeedback onPress={() => navigation.navigate('Post', {postId})}>
+      <TouchableWithoutFeedback onPress={() => navigation.navigate('Post', { postId })}>
         <View style={[feedStyles.postContainer, fullView && styles.fullViewContainer]}>
           {!!image_urls.length &&
             <ImagePopUp
@@ -85,7 +85,8 @@ class FeedPost extends Component {
           }
           <PostHead
             author={author}
-            created_at={created_at} />
+            created_at={created_at}
+            postId={postId} />
 
           <View>
             {this.renderContent()}

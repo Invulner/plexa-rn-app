@@ -95,10 +95,38 @@ const submitPostWithImage = (image, post, cb) => {
   }
 }
 
+const hidePost = (postId) => {
+  return dispatch => {
+
+    return getAxiosInstance().then(api => {
+      api.post(`${API_URL}/stories/${postId}/hide`)
+        .then(response => {
+          console.log(response.data)
+          response.data.hidden && dispatch(FeedActions.hidePost(postId))
+        })
+    })
+  }
+}
+
+const reportPost = (postId) => {
+  return dispatch => {
+
+    return getAxiosInstance().then(api => {
+      api.post(`${API_URL}/stories/${postId}/report`)
+        .then(response => {
+          console.log(response.data)
+          response.data.reported && dispatch(FeedActions.reportPost(postId))
+        })
+    })
+  }
+}
+
 export default {
   getFeed,
   refreshFeed,
   updateLike,
   submitPost,
-  submitPostWithImage
+  submitPostWithImage,
+  hidePost,
+  reportPost
 }

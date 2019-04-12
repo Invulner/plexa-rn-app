@@ -7,6 +7,7 @@ export const AVATAR_BG = '#d3a400'
 export const GRAY = '#989898'
 export const DARK_GRAY = '#4c4c4c'
 export const RED = '#c84638'
+export const ACTIVE_ICON_FILL = '#494639'
 export const FEATURED = [
   {
     bg: '#f0bf02',

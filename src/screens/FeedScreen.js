@@ -6,6 +6,7 @@ import FeedOperations from '../operations/FeedOperations'
 import { connect } from 'react-redux'
 import Loader from '../components/common/Loader'
 import { NavigationEvents } from 'react-navigation'
+import PostPlaceholder from '../components/feed/PostPlaceholder'
 
 const mapDispatchToProps = (dispatch) => {
   const getFeed = (page) => dispatch(FeedOperations.getFeed(page))
@@ -24,6 +25,21 @@ const mapStateToProps = (state) => {
 }
 
 class FeedScreen extends Component {
+  renderItem = ({ item }) => {
+    const { navigation } = this.props
+
+    if (item.hidden) 
+      return <PostPlaceholder option={'hidden'} />
+    else if (item.reported)
+      return <PostPlaceholder option={'reported'} />
+    else
+      return (
+        <FeedPost  
+          item={item} 
+          navigation={navigation} />
+      )
+  }
+
   getParentNavigation = () => {
     return this.props.navigation.dangerouslyGetParent()
   }
@@ -58,7 +74,7 @@ class FeedScreen extends Component {
   }
 
   render() {
-    const { navigation, refreshFeed, feed: { feedData, feedLoading } } = this.props
+    const { refreshFeed, feed: { feedData, feedLoading } } = this.props
 
     return (
       <SafeArea>
@@ -73,10 +89,7 @@ class FeedScreen extends Component {
             ref='feedList'
             data={feedData}
             keyExtractor={item => item.id + ''}
-            renderItem={({ item }) => (
-              <FeedPost  
-                item={item} 
-                navigation={navigation} />)} 
+            renderItem={this.renderItem} 
             onEndReached={this.addToFeed} 
             onEndReachedThreshold={1}
             onRefresh={refreshFeed}
