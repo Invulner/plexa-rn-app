@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Image, StyleSheet, TouchableOpacity, Platform } from 'react-native'
+import { Image, StyleSheet, TouchableOpacity, Platform, Alert } from 'react-native'
 import ActionSheet from 'react-native-action-sheet'
 import { connect } from 'react-redux'
 import FeedOperations from '../../operations/FeedOperations'
@@ -15,16 +15,46 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 class PostActionButton extends Component {
+  onAlertOKPress = (option) => {
+    const { hidePost, reportPost, postId } = this.props
+
+    if (option === 'hide')
+      hidePost(postId)
+    else if (option === 'report')
+      reportPost(postId)
+    else
+      console.log('block user')
+  }
+
+  showAlert = (option) => { 
+    const title = 'Are you sure?'
+    const message = `After pressing OK you won't see this any more`
+    const config = [
+      {
+        text: 'Cancel',
+        style: 'cancel'
+      },
+      {
+        text: 'OK',
+        onPress: () => this.onAlertOKPress(option)
+      }
+    ]
+
+    Alert.alert(title, message, config)
+  }
+
   onBtnPress = (buttonIndex) => {
-    const { hidePost, reportPost, postId, isMedbot } = this.props
+    const { isMedbot } = this.props
 
     switch(buttonIndex) {
       case 0:
-        return isMedbot ? hidePost(postId) : console.log('block user')
+        return isMedbot ? this.showAlert('hide') : console.log('send message')
       case 1:
-        return hidePost(postId)
+        return this.showAlert('hide')
       case 2:
-        return reportPost(postId)
+        return this.showAlert('report')
+      case 3:
+        return this.showAlert()
     }
   }
 
