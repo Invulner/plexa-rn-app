@@ -55,17 +55,15 @@ class ImagePopUp extends Component {
         animationType="fade"
         transparent={false}
         visible={visible}>
-        <View style={styles.container}>
-          <TouchableOpacity
-            style={styles.btn}
-            onPress={onModalToggle}
-            activeOpacity={0.8}>
-            <Image 
-              source={{uri: imageURL}}
-              indicator={Loader}
-              style={{...styles.img, height: imgHeight, width: imgWidth}} />
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity
+          style={styles.container}
+          onPress={onModalToggle}
+          activeOpacity={0.8}>
+          <Image 
+            source={{uri: imageURL}}
+            indicator={Loader}
+            style={{...styles.img, height: imgHeight, width: imgWidth}} />
+        </TouchableOpacity>
       </Modal>
     )
   }
@@ -77,10 +75,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center', 
     alignItems: 'center', 
     backgroundColor: '#000'
-  },
-
-  btn: {
-    flex: 1
   },
 
   img: {
