@@ -7,16 +7,18 @@ import FeedOperations from '../../operations/FeedOperations'
 const mapDispatchToProps = (dispatch) => {
   const hidePost = (postId) => dispatch(FeedOperations.hidePost(postId))
   const reportPost = (postId) => dispatch(FeedOperations.reportPost(postId))
+  const blockUser = (userId) => dispatch(FeedOperations.blockUser(userId))
 
   return {
     hidePost,
-    reportPost
+    reportPost,
+    blockUser
   }
 }
 
 class PostActionButton extends Component {
   onAlertOKPress = (option) => {
-    const { hidePost, reportPost, postId } = this.props
+    const { blockUser, hidePost, reportPost, postId, userId } = this.props
 
     switch (option) {
       case 'hide':
@@ -24,7 +26,7 @@ class PostActionButton extends Component {
       case 'report':
         return reportPost(postId)
       default:
-        return console.log('block user')
+        return blockUser(userId)
     }
   }
 

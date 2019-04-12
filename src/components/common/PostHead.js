@@ -71,7 +71,8 @@ function PostHead(props) {
       </View>
       <PostActionButton 
         isMedbot={isMedbot()} 
-        postId={postId} />   
+        postId={postId}
+        userId={id} />   
     </View>
   )
 }

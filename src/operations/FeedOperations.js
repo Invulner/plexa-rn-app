@@ -121,6 +121,19 @@ const reportPost = (postId) => {
   }
 }
 
+const blockUser = (userId) => {
+  return dispatch => {
+    
+    return getAxiosInstance().then(api => {
+      api.post(`${API_URL}/profiles/${userId}/block`)
+        .then(response => {
+          console.log(response.data)
+          response.data.blocked && dispatch(FeedActions.blockUser(userId))
+        })
+    })
+  }
+}
+
 export default {
   getFeed,
   refreshFeed,
@@ -128,5 +141,6 @@ export default {
   submitPost,
   submitPostWithImage,
   hidePost,
-  reportPost
+  reportPost,
+  blockUser
 }

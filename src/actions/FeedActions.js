@@ -51,6 +51,11 @@ const reportPost = (id) => ({
   id
 })
 
+const blockUser = (id) => ({
+  type: types.BLOCK_USER,
+  id
+})
+
 export default {
   saveFeedData,
   toggleFeedDataLoading,
@@ -61,5 +66,6 @@ export default {
   updateCommentsCounter,
   savePost,
   hidePost,
-  reportPost
+  reportPost,
+  blockUser
 }
