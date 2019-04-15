@@ -77,9 +77,9 @@ class PostActionButton extends Component {
       case 0:
         return isMedbot ? this.showAlert('hide') : (this.isOwnPost() ? this.editPost() : console.log('send message'))
       case 1:
-        return this.isOwnPost() ? this.showAlert('delete') : this.showAlert('hide')
+        return isMedbot ? null : (this.isOwnPost() ? this.showAlert('delete') : this.showAlert('hide'))
       case 2:
-        return (this.isOwnPost() || isMedbot) ? null : this.showAlert('report')
+        return this.isOwnPost() ? null : this.showAlert('report')
       case 3:
         return this.showAlert('block')
     }
