@@ -154,6 +154,7 @@ const submitPostUpdate = (postId, post, cb) => {
       api.put(`${API_URL}/stories/${postId}`, post)
         .then(response => {
           console.log(response.data)
+          dispatch(FeedActions.updatePost(response.data))
           cb()
         })
     })

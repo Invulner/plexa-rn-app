@@ -61,6 +61,11 @@ const deletePost = (id) => ({
   id
 })
 
+const updatePost = (post) => ({
+  type: types.UPDATE_POST,
+  post
+})
+
 export default {
   saveFeedData,
   toggleFeedDataLoading,
@@ -73,5 +78,6 @@ export default {
   hidePost,
   reportPost,
   blockUser,
-  deletePost
+  deletePost,
+  updatePost
 }

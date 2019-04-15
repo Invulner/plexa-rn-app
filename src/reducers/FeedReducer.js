@@ -69,6 +69,15 @@ const updatePostLike = (state, action) => {
   }
 }
 
+const updatePost = (state, action) => {
+  const newFeedData = utils.updateItemById(state.feedData, action.post.id, action.post)
+
+  return {
+    ...state,
+    feedData: newFeedData
+  }
+}
+
 const FeedReducer = (state = initialState, action) => {
   switch(action.type) {
     case types.SAVE_FEED_DATA:
@@ -127,6 +136,9 @@ const FeedReducer = (state = initialState, action) => {
 
     case types.DELETE_POST:
       return concealPost(state, action, 'delete')
+
+    case types.UPDATE_POST:
+      return updatePost(state, action)
 
     default:
       return state
