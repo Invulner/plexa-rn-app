@@ -111,14 +111,19 @@ class ComposeScreen extends Component {
       const cb = () => {
         this.toggleOverlay()
         this.navigateToFeed()
-        this.resetPost()
       }
 
       this.toggleOverlay()
+      
       this.state.imageURI ? this.submitPostWithImage(data, cb) : submitPost(data, cb)
     } else {
       Alert.alert('Error', 'At least one topic has to be selected')
     }
+  }
+
+  componentWillUnmount() {
+    this.resetPost()
+    this.props.navigation.setParams({ isModified: false })
   }
 
   render() {

@@ -9,9 +9,9 @@ const getPost = (id, navigation) => {
       api.get(`${API_URL}/stories/${id}`)
         .then(response => {
           console.log(response.data)
-          dispatch(PostActions.rewritePost(response.data))
-          navigation.navigate('Compose')
-        })
+          dispatch(PostActions.savePostToModify(response.data))
+          navigation.navigate('Compose', { isModified: true })
+        }).catch(error => console.log('ERROR: ', error))
     })
   }
 }

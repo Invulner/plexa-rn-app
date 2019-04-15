@@ -48,8 +48,8 @@ const deleteLocation = () => ({
   type: types.DELETE_LOCATION
 })
 
-const rewritePost = (post) => ({
-  type: types.REWRITE_POST,
+const savePostToModify = (post) => ({
+  type: types.SAVE_POST_TO_MODIFY,
   post
 })
 
@@ -64,5 +64,5 @@ export default {
   deleteGroup,
   saveLocation,
   deleteLocation,
-  rewritePost
+  savePostToModify
 }

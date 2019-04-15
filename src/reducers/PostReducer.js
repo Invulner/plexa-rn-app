@@ -11,10 +11,11 @@ const initialState = {
   news_id: null
 }
 
-const rewritePost = (state, action) => {
+const savePostToModify = (state, action) => {
   const { link_url, topics, content, comments_enabled, public: isPublic, group, location, news_id } = action.post
   const topic_ids = topics.map(topic => topic.id)
-  const location_id = location.find((item, index, array) => index === array.length - 1).id
+  const location_id = location ? location.find((item, index, array) => index === array.length - 1).id : initialState.location_id
+  const group_id = group ? group.id : initialState.group_id
 
   return {
     link_url,
@@ -22,7 +23,7 @@ const rewritePost = (state, action) => {
     content,
     comments_enabled,
     public: isPublic,
-    group_id: group.id,
+    group_id,
     location_id,
     news_id
   }
@@ -98,8 +99,8 @@ const PostReducer = (state = initialState, action) => {
     case types.RESET_POST:
       return initialState
 
-    case types.REWRITE_POST:
-      return rewritePost(state, action)
+    case types.SAVE_POST_TO_MODIFY:
+      return savePostToModify(state, action)
 
     default:
       return state
