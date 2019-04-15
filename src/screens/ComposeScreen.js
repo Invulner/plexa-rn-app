@@ -27,12 +27,14 @@ const mapDispatchToProps = (dispatch) => {
   const resetPost = () => dispatch(PostActions.resetPost())
   const submitPostWithImage = (image, post, cb) => dispatch(FeedOperations.submitPostWithImage(image, post, cb))
   const deleteLocationObj = () => dispatch(LocationsActions.deleteLocationObj())
+  const submitPostUpdate = (id, post, cb) => dispatch(FeedOperations.submitPostUpdate(id, post, cb))
 
   return {
     submitPost,
     resetPost,
     submitPostWithImage,
-    deleteLocationObj
+    deleteLocationObj,
+    submitPostUpdate
   }
 }
 
@@ -95,7 +97,7 @@ class ComposeScreen extends Component {
 
   onSubmit = () => {
     if (this.isTopicSelected()) {
-      const { post, submitPost } = this.props
+      const { post, submitPost, navigation,submitPostUpdate } = this.props
       const { link_url, news_id, content, ...rest } = post
       let obj
 
@@ -107,6 +109,7 @@ class ComposeScreen extends Component {
         obj = rest
 
       const data = { ...obj, content: content.trim() }
+      const postId = navigation.getParam('postId')
 
       const cb = () => {
         this.toggleOverlay()
@@ -115,7 +118,11 @@ class ComposeScreen extends Component {
 
       this.toggleOverlay()
       
-      this.state.imageURI ? this.submitPostWithImage(data, cb) : submitPost(data, cb)
+      if(postId) {
+        this.state.imageURI ? console.log('submit post request with image') : submitPostUpdate(postId, data, cb)
+      } else {
+        this.state.imageURI ? this.submitPostWithImage(data, cb) : submitPost(data, cb)
+      }
     } else {
       Alert.alert('Error', 'At least one topic has to be selected')
     }
@@ -123,7 +130,7 @@ class ComposeScreen extends Component {
 
   componentWillUnmount() {
     this.resetPost()
-    this.props.navigation.setParams({ isModified: false })
+    this.props.navigation.setParams({ postId: null })
   }
 
   render() {

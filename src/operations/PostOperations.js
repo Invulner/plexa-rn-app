@@ -10,7 +10,7 @@ const getPost = (id, navigation) => {
         .then(response => {
           console.log(response.data)
           dispatch(PostActions.savePostToModify(response.data))
-          navigation.navigate('Compose', { isModified: true })
+          navigation.navigate('Compose', { postId: id })
         }).catch(error => console.log('ERROR: ', error))
     })
   }

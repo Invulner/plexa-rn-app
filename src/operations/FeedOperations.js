@@ -147,6 +147,19 @@ const deletePost = (postId) => {
   }
 }
 
+const submitPostUpdate = (postId, post, cb) => {
+  return dispatch => {
+
+    return getAxiosInstance().then(api => {
+      api.put(`${API_URL}/stories/${postId}`, post)
+        .then(response => {
+          console.log(response.data)
+          cb()
+        })
+    })
+  }
+}
+
 export default {
   getFeed,
   refreshFeed,
@@ -156,5 +169,6 @@ export default {
   hidePost,
   reportPost,
   blockUser,
-  deletePost
+  deletePost,
+  submitPostUpdate
 }
