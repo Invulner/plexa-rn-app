@@ -3,6 +3,7 @@ import { Image, StyleSheet, TouchableOpacity, Platform, Alert } from 'react-nati
 import ActionSheet from 'react-native-action-sheet'
 import { connect } from 'react-redux'
 import FeedOperations from '../../operations/FeedOperations'
+import PostOperations from '../../operations/PostOperations'
 
 const mapStateToProps = (state) => {
   const userId = state.user.id
@@ -10,17 +11,19 @@ const mapStateToProps = (state) => {
   return { userId }
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch, { navigation }) => {
   const hidePost = (postId) => dispatch(FeedOperations.hidePost(postId))
   const reportPost = (postId) => dispatch(FeedOperations.reportPost(postId))
   const blockUser = (authorId) => dispatch(FeedOperations.blockUser(authorId))
   const deletePost = (postId) => dispatch(FeedOperations.deletePost(postId))
+  const getPost = (id) => dispatch(PostOperations.getPost(id, navigation))
 
   return {
     hidePost,
     reportPost,
     blockUser,
-    deletePost
+    deletePost,
+    getPost
   }
 }
 
@@ -49,8 +52,9 @@ class PostActionButton extends Component {
   }
 
   editPost = () => {
-    const { navigate } = this.props.navigation
-    console.log('navigate to edit post')
+    const { getPost, postId } = this.props
+
+    getPost(postId)
   }
 
   showAlert = (option) => { 

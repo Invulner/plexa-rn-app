@@ -11,6 +11,23 @@ const initialState = {
   news_id: null
 }
 
+const rewritePost = (state, action) => {
+  const { link_url, topics, content, comments_enabled, public: isPublic, group, location, news_id } = action.post
+  const topic_ids = topics.map(topic => topic.id)
+  const location_id = location.find((item, index, array) => index === array.length - 1).id
+
+  return {
+    link_url,
+    topic_ids,
+    content,
+    comments_enabled,
+    public: isPublic,
+    group_id: group.id,
+    location_id,
+    news_id
+  }
+}
+
 const getTopicIDs = (state, action) => {
   if (state.topic_ids.includes(action.id))
     return {
@@ -80,6 +97,9 @@ const PostReducer = (state = initialState, action) => {
 
     case types.RESET_POST:
       return initialState
+
+    case types.REWRITE_POST:
+      return rewritePost(state, action)
 
     default:
       return state
