@@ -127,6 +127,10 @@ class ComposeScreen extends Component {
     deleteLocationObj()
   }
 
+  isImageExist = () => {
+    return !!this.state.imageURI
+  }
+
   onSubmit = () => {
     if (this.isTopicSelected()) {
       const { post, submitPost, navigation,submitPostUpdate } = this.props
@@ -151,9 +155,9 @@ class ComposeScreen extends Component {
       this.toggleOverlay()
       
       if(postId) {
-        this.state.imageURI ? this.submitPostUpdateWithImage(postId, data, cb) : submitPostUpdate(postId, data, cb)
+        this.isImageExist() ? this.submitPostUpdateWithImage(postId, data, cb) : submitPostUpdate(postId, data, cb)
       } else {
-        this.state.imageURI ? this.submitPostWithImage(data, cb) : submitPost(data, cb)
+        this.isImageExist() ? this.submitPostWithImage(data, cb) : submitPost(data, cb)
       }
     } else {
       Alert.alert('Error', 'At least one topic has to be selected')
