@@ -122,8 +122,8 @@ const reportPost = (postId) => {
 }
 
 const blockUser = (userId) => {
-  return dispatch => {
-    
+  return dispatch => { 
+
     return getAxiosInstance().then(api => {
       api.post(`${API_URL}/profiles/${userId}/block`)
         .then(response => {
@@ -149,7 +149,7 @@ const deletePost = (postId) => {
 
 const submitPostUpdate = (postId, post, cb) => {
   return dispatch => {
-    console.log('Feed operations submitPostUpdate post: ', post)
+    console.log('Feed operations: submitPostUpdate  ', post)
     return getAxiosInstance().then(api => {
       api.put(`${API_URL}/stories/${postId}`, post)
         .then(response => {
@@ -161,10 +161,27 @@ const submitPostUpdate = (postId, post, cb) => {
   }
 }
 
-const submitPostUpdateWithImage = () => {
+const submitPostUpdateWithImage = (image, postId, post, cb) => {
+  console.log('submitPostUpdateWithImage starts')
   return dispatch => {
+    const optionalHeaders = {
+      'Content-Type': 'multipart/form-data'
+    }
 
-    console.log('submitPostUpdateWithImage')
+    return getAxiosInstance(optionalHeaders).then(api => {
+      api.post(`${API_URL}/stories/images`, image)
+        .then(response => {
+          console.log(response.data)
+          const newPost = {
+            ...post,
+            image_ids: [
+              response.data.id
+            ]
+          }
+          console.log('New post with fresh image', newPost)
+          dispatch(submitPostUpdate(postId, newPost, cb))
+        }).catch(error => console.log('SUBMIT POST UPDATE WITH IMAGE ERROR: ', error))
+    })
   }
 }
 

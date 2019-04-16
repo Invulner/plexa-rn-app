@@ -11,13 +11,14 @@ const initialState = {
   news_id: null
 }
 
-const deleteImageData = (state, action) => {
-  if (state.image_ids) {
-    const  { image_ids, image_urls, ...rest } = state
-
-    return rest
-  } else 
-
+const deleteImageData = (state) => {
+  if (state.image_ids) 
+    return {
+      ...state,
+      image_ids: [],
+      image_urls: []
+    }
+  else 
     return state
 }
 
@@ -115,7 +116,7 @@ const PostReducer = (state = initialState, action) => {
       return savePostToModify(state, action)
 
     case types.DELETE_IMAGE_DATA:
-      return deleteImageData(state, action)
+      return deleteImageData(state)
 
     default:
       return state

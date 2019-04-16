@@ -29,7 +29,7 @@ const mapDispatchToProps = (dispatch) => {
   const deleteLocationObj = () => dispatch(LocationsActions.deleteLocationObj())
   const submitPostUpdate = (id, post, cb) => dispatch(FeedOperations.submitPostUpdate(id, post, cb))
   const deleteImageData = () => dispatch(PostActions.deleteImageData())
-  const submitPostUpdateWithImage = () => dispatch(FeedOperations.submitPostUpdateWithImage())
+  const submitPostUpdateWithImage = (image, postId, data, cb) => dispatch(FeedOperations.submitPostUpdateWithImage(image, postId, data, cb))
 
   return {
     submitPost,
@@ -82,7 +82,7 @@ class ComposeScreen extends Component {
     return !!this.props.post.topic_ids.length
   }
 
-  submitPostWithImage = (post, cb) => {
+  createImageFormData = () => {
     const { imageURI } = this.state
     const image = new FormData()
 
@@ -91,25 +91,27 @@ class ComposeScreen extends Component {
       name: 'photo.jpg',
       type: 'image/jpg'
     })
+
+    return image
+  }
+
+  submitPostWithImage = (post, cb) => {
+    const image = this.createImageFormData()
+
     this.props.submitPostWithImage(image, post, cb)
   }
 
   submitPostUpdateWithImage = (postId, data, cb) => {
     const { submitPostUpdate, submitPostUpdateWithImage, post: { image_ids } } = this.props
 
-    if (image_ids) {
+    if (image_ids.length) {
       const { image_urls, ...rest } = data
+
       submitPostUpdate(postId, rest, cb)
     } else {
-      // const { imageURI } = this.state
-      // const image = new FormData()
+      const image = this.createImageFormData()
 
-      // image.append('image', {
-      //   uri: imageURI,
-      //   name: 'photo.jpg',
-      //   type: 'image/jpg'
-      // })
-      console.log('from this.submitPostUpdateWithImage')
+      submitPostUpdateWithImage(image, postId, data, cb)
     }
   }
 
