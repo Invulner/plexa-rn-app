@@ -29,6 +29,7 @@ const mapDispatchToProps = (dispatch) => {
   const deleteLocationObj = () => dispatch(LocationsActions.deleteLocationObj())
   const submitPostUpdate = (id, post, cb) => dispatch(FeedOperations.submitPostUpdate(id, post, cb))
   const deleteImageData = () => dispatch(PostActions.deleteImageData())
+  const submitPostUpdateWithImage = () => dispatch(FeedOperations.submitPostUpdateWithImage())
 
   return {
     submitPost,
@@ -36,7 +37,8 @@ const mapDispatchToProps = (dispatch) => {
     submitPostWithImage,
     deleteLocationObj,
     submitPostUpdate,
-    deleteImageData
+    deleteImageData,
+    submitPostUpdateWithImage
   }
 }
 
@@ -44,7 +46,7 @@ class ComposeScreen extends Component {
   setImageFromProps = () => {
     const { image_urls } = this.props.post
 
-    return image_urls.length ? image_urls[0].preview_url : ''
+    return image_urls && image_urls.length ? image_urls[0].preview_url : ''
   }
 
   state = {
@@ -92,6 +94,25 @@ class ComposeScreen extends Component {
     this.props.submitPostWithImage(image, post, cb)
   }
 
+  submitPostUpdateWithImage = (postId, data, cb) => {
+    const { submitPostUpdate, submitPostUpdateWithImage, post: { image_ids } } = this.props
+
+    if (image_ids) {
+      const { image_urls, ...rest } = data
+      submitPostUpdate(postId, rest, cb)
+    } else {
+      // const { imageURI } = this.state
+      // const image = new FormData()
+
+      // image.append('image', {
+      //   uri: imageURI,
+      //   name: 'photo.jpg',
+      //   type: 'image/jpg'
+      // })
+      console.log('from this.submitPostUpdateWithImage')
+    }
+  }
+
   resetStateImg = () => {
     this.setState({ imageURI: '' })
     this.props.deleteImageData()
@@ -128,7 +149,7 @@ class ComposeScreen extends Component {
       this.toggleOverlay()
       
       if(postId) {
-        this.state.imageURI ? console.log('submit post request with image') : submitPostUpdate(postId, data, cb)
+        this.state.imageURI ? this.submitPostUpdateWithImage(postId, data, cb) : submitPostUpdate(postId, data, cb)
       } else {
         this.state.imageURI ? this.submitPostWithImage(data, cb) : submitPost(data, cb)
       }

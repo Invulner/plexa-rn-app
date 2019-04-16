@@ -149,7 +149,7 @@ const deletePost = (postId) => {
 
 const submitPostUpdate = (postId, post, cb) => {
   return dispatch => {
-
+    console.log('Feed operations submitPostUpdate post: ', post)
     return getAxiosInstance().then(api => {
       api.put(`${API_URL}/stories/${postId}`, post)
         .then(response => {
@@ -158,6 +158,13 @@ const submitPostUpdate = (postId, post, cb) => {
           cb()
         })
     })
+  }
+}
+
+const submitPostUpdateWithImage = () => {
+  return dispatch => {
+
+    console.log('submitPostUpdateWithImage')
   }
 }
 
@@ -171,5 +178,6 @@ export default {
   reportPost,
   blockUser,
   deletePost,
-  submitPostUpdate
+  submitPostUpdate,
+  submitPostUpdateWithImage
 }
