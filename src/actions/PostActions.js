@@ -53,6 +53,10 @@ const savePostToModify = (post) => ({
   post
 })
 
+const deleteImageData = () => ({
+  type: types.DELETE_IMAGE_DATA
+})
+
 export default {
   saveLink,
   toggleTopic,
@@ -64,5 +68,6 @@ export default {
   deleteGroup,
   saveLocation,
   deleteLocation,
-  savePostToModify
+  savePostToModify,
+  deleteImageData
 }

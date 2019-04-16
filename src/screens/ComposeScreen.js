@@ -28,20 +28,28 @@ const mapDispatchToProps = (dispatch) => {
   const submitPostWithImage = (image, post, cb) => dispatch(FeedOperations.submitPostWithImage(image, post, cb))
   const deleteLocationObj = () => dispatch(LocationsActions.deleteLocationObj())
   const submitPostUpdate = (id, post, cb) => dispatch(FeedOperations.submitPostUpdate(id, post, cb))
+  const deleteImageData = () => dispatch(PostActions.deleteImageData())
 
   return {
     submitPost,
     resetPost,
     submitPostWithImage,
     deleteLocationObj,
-    submitPostUpdate
+    submitPostUpdate,
+    deleteImageData
   }
 }
 
 class ComposeScreen extends Component {
+  setImageFromProps = () => {
+    const { image_urls } = this.props.post
+
+    return image_urls ? image_urls[0].preview_url : ''
+  }
+
   state = {
     spinner: false,
-    imageURI: ''
+    imageURI: this.setImageFromProps()
   }
 
   attachImage = async () => {
@@ -86,6 +94,7 @@ class ComposeScreen extends Component {
 
   resetStateImg = () => {
     this.setState({ imageURI: '' })
+    this.props.deleteImageData()
   }
 
   resetPost = () => {

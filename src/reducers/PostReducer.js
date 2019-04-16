@@ -11,8 +11,18 @@ const initialState = {
   news_id: null
 }
 
+const deleteImageData = (state, action) => {
+  if (state.image_ids) {
+    const  { image_ids, image_urls, ...rest } = state
+
+    return rest
+  } else 
+
+    return state
+}
+
 const savePostToModify = (state, action) => {
-  const { link_url, topics, content, comments_enabled, public: isPublic, group, location, news_id } = action.post
+  const { link_url, topics, content, comments_enabled, public: isPublic, group, location, news_id, image_ids, image_urls } = action.post
   const topic_ids = topics.map(topic => topic.id)
   const location_id = location ? location.find((item, index, array) => index === array.length - 1).id : initialState.location_id
   const group_id = group ? group.id : initialState.group_id
@@ -25,7 +35,9 @@ const savePostToModify = (state, action) => {
     public: isPublic,
     group_id,
     location_id,
-    news_id
+    news_id,
+    image_ids,
+    image_urls
   }
 }
 
@@ -101,6 +113,9 @@ const PostReducer = (state = initialState, action) => {
 
     case types.SAVE_POST_TO_MODIFY:
       return savePostToModify(state, action)
+
+    case types.DELETE_IMAGE_DATA:
+      return deleteImageData(state, action)
 
     default:
       return state
