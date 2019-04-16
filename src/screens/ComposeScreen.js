@@ -44,7 +44,7 @@ class ComposeScreen extends Component {
   setImageFromProps = () => {
     const { image_urls } = this.props.post
 
-    return image_urls ? image_urls[0].preview_url : ''
+    return image_urls.length ? image_urls[0].preview_url : ''
   }
 
   state = {
