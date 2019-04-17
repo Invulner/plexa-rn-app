@@ -161,13 +161,6 @@ const submitPostUpdate = (postId, post, cb) => {
   }
 }
 
-const submitPostUpdateWithImage = (image, postId, post, cb) => {
-  return dispatch => {
-
-    return dispatch(submitPostWithImage(image, post, cb, postId))
-  }
-}
-
 export default {
   getFeed,
   refreshFeed,
@@ -178,6 +171,5 @@ export default {
   reportPost,
   blockUser,
   deletePost,
-  submitPostUpdate,
-  submitPostUpdateWithImage
+  submitPostUpdate
 }

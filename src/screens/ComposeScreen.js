@@ -25,11 +25,10 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   const submitPost = (post, cb) => dispatch(FeedOperations.submitPost(post, cb))
   const resetPost = () => dispatch(PostActions.resetPost())
-  const submitPostWithImage = (image, post, cb) => dispatch(FeedOperations.submitPostWithImage(image, post, cb))
+  const submitPostWithImage = (image, post, cb, postId) => dispatch(FeedOperations.submitPostWithImage(image, post, cb, postId))
   const deleteLocationObj = () => dispatch(LocationsActions.deleteLocationObj())
   const submitPostUpdate = (id, post, cb) => dispatch(FeedOperations.submitPostUpdate(id, post, cb))
   const deleteImageData = () => dispatch(PostActions.deleteImageData())
-  const submitPostUpdateWithImage = (image, postId, data, cb) => dispatch(FeedOperations.submitPostUpdateWithImage(image, postId, data, cb))
 
   return {
     submitPost,
@@ -37,8 +36,7 @@ const mapDispatchToProps = (dispatch) => {
     submitPostWithImage,
     deleteLocationObj,
     submitPostUpdate,
-    deleteImageData,
-    submitPostUpdateWithImage
+    deleteImageData
   }
 }
 
@@ -102,7 +100,7 @@ class ComposeScreen extends Component {
   }
 
   submitPostUpdateWithImage = (postId, data, cb) => {
-    const { submitPostUpdate, submitPostUpdateWithImage, post: { image_ids } } = this.props
+    const { submitPostUpdate, submitPostWithImage, post: { image_ids } } = this.props
 
     if (image_ids.length) {
       const { image_urls, ...rest } = data
@@ -111,7 +109,7 @@ class ComposeScreen extends Component {
     } else {
       const image = this.createImageFormData()
 
-      submitPostUpdateWithImage(image, postId, data, cb)
+      submitPostWithImage(image, data, cb, postId)
     }
   }
 
