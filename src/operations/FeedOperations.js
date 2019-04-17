@@ -60,41 +60,6 @@ const updateLike = (flag, id) => {
   }
 }
 
-const submitPost = (post, cb) => {
-  return dispatch => {
-
-    getAxiosInstance().then(api => {
-      api.post(`${API_URL}/stories`, post)
-      .then(res => {
-        console.log(res.data)
-        dispatch(FeedActions.saveComposedPost(res.data))
-        cb()
-      }).catch(error => console.log('SUBMIT POST ERROR: ', error))
-    })
-  }
-}
-
-const submitPostWithImage = (image, post, cb) => {
-  return dispatch => {
-    const optionalHeaders = {
-      'Content-Type': 'multipart/form-data'
-    }
-
-    return getAxiosInstance(optionalHeaders).then(api => {
-      api.post(`${API_URL}/stories/images`, image)
-        .then(response => {
-          const newPost = {
-            ...post,
-            image_ids: [
-              response.data.id
-            ]
-          }
-          dispatch(submitPost(newPost, cb))
-        }).catch(error => console.log('SUBMIT IMAGE ERROR: ', error))
-    })
-  }
-}
-
 const hidePost = (postId) => {
   return dispatch => {
 
@@ -147,6 +112,41 @@ const deletePost = (postId) => {
   }
 }
 
+const submitPost = (post, cb) => {
+  return dispatch => {
+
+    getAxiosInstance().then(api => {
+      api.post(`${API_URL}/stories`, post)
+      .then(res => {
+        console.log(res.data)
+        dispatch(FeedActions.saveComposedPost(res.data))
+        cb()
+      }).catch(error => console.log('SUBMIT POST ERROR: ', error))
+    })
+  }
+}
+
+const submitPostWithImage = (image, post, cb, postId) => {
+  return dispatch => {
+    const optionalHeaders = {
+      'Content-Type': 'multipart/form-data'
+    }
+
+    return getAxiosInstance(optionalHeaders).then(api => {
+      api.post(`${API_URL}/stories/images`, image)
+        .then(response => {
+          const newPost = {
+            ...post,
+            image_ids: [
+              response.data.id
+            ]
+          }
+          postId ? dispatch(submitPostUpdate(postId, newPost, cb)) : dispatch(submitPost(newPost, cb))
+        }).catch(error => console.log('SUBMIT IMAGE ERROR: ', error))
+    })
+  }
+}
+
 const submitPostUpdate = (postId, post, cb) => {
   return dispatch => {
     console.log('Feed operations: submitPostUpdate  ', post)
@@ -156,32 +156,15 @@ const submitPostUpdate = (postId, post, cb) => {
           console.log(response.data)
           dispatch(FeedActions.updatePost(response.data))
           cb()
-        })
+        }).catch(error => console.log('SUBMIT POST UPDATE ERROR: ', error))
     })
   }
 }
 
 const submitPostUpdateWithImage = (image, postId, post, cb) => {
-  console.log('submitPostUpdateWithImage starts')
   return dispatch => {
-    const optionalHeaders = {
-      'Content-Type': 'multipart/form-data'
-    }
 
-    return getAxiosInstance(optionalHeaders).then(api => {
-      api.post(`${API_URL}/stories/images`, image)
-        .then(response => {
-          console.log(response.data)
-          const newPost = {
-            ...post,
-            image_ids: [
-              response.data.id
-            ]
-          }
-          console.log('New post with fresh image', newPost)
-          dispatch(submitPostUpdate(postId, newPost, cb))
-        }).catch(error => console.log('SUBMIT POST UPDATE WITH IMAGE ERROR: ', error))
-    })
+    return dispatch(submitPostWithImage(image, post, cb, postId))
   }
 }
 
