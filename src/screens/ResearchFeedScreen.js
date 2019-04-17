@@ -23,13 +23,13 @@ const mapStateToProps = (state) => {
 }
 
 class ResearchFeedScreen extends Component {
-  componentDidMount() {
-    this.props.getResearchFeed()
-  }
-
   addToFeed = () => {
     const { getResearchFeed, researchFeed: { page, loading } } = this.props
     !loading && getResearchFeed(page + 1)
+  }
+
+  componentDidMount() {
+    this.props.getResearchFeed()
   }
 
   render() {
