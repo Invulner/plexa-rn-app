@@ -11,12 +11,12 @@ const mapStateToProps = (state) => {
   return { userId }
 }
 
-const mapDispatchToProps = (dispatch, { navigation }) => {
+const mapDispatchToProps = (dispatch) => {
   const hidePost = (postId) => dispatch(FeedOperations.hidePost(postId))
   const reportPost = (postId) => dispatch(FeedOperations.reportPost(postId))
   const blockUser = (authorId) => dispatch(FeedOperations.blockUser(authorId))
   const deletePost = (postId) => dispatch(FeedOperations.deletePost(postId))
-  const getPost = (id) => dispatch(PostOperations.getPost(id, navigation))
+  const getPost = (id, cb) => dispatch(PostOperations.getPost(id, cb))
 
   return {
     hidePost,
@@ -51,10 +51,11 @@ class PostActionButton extends Component {
     }
   }
 
-  editPost = () => {
-    const { getPost, postId } = this.props
+  onEditBtnClick = () => {
+    const { getPost, postId, navigation } = this.props
+    const cb = () => navigation.navigate('Compose', { postId })
 
-    getPost(postId)
+    getPost(postId, cb)
   }
 
   showAlert = (option) => { 
@@ -79,9 +80,13 @@ class PostActionButton extends Component {
 
     switch(buttonIndex) {
       case 0:
-        return isMedbot ? this.showAlert('hide') : (this.isOwnPost() ? this.editPost() : console.log('send message'))
+        if (isMedbot)
+          return this.showAlert('hide')
+        return this.isOwnPost() ? this.onEditBtnClick() : console.log('send message')
       case 1:
-        return isMedbot ? null : (this.isOwnPost() ? this.showAlert('delete') : this.showAlert('hide'))
+        if (isMedbot)
+          return
+        return this.isOwnPost() ? this.showAlert('delete') : this.showAlert('hide')
       case 2:
         return this.isOwnPost() ? null : this.showAlert('report')
       case 3:

@@ -22,10 +22,10 @@ const deleteImageData = (state) => {
     return state
 }
 
-const savePostToModify = (state, action) => {
+const savePost = (state, action) => {
   const { link_url, topics, content, comments_enabled, public: isPublic, group, location, news_id, image_ids, image_urls } = action.post
   const topic_ids = topics.map(topic => topic.id)
-  const location_id = location ? location.find((item, index, array) => index === array.length - 1).id : initialState.location_id
+  const location_id = location ? location.slice(-1)[0].id : initialState.location_id
   const group_id = group ? group.id : initialState.group_id
 
   return {
@@ -112,8 +112,8 @@ const PostReducer = (state = initialState, action) => {
     case types.RESET_POST:
       return initialState
 
-    case types.SAVE_POST_TO_MODIFY:
-      return savePostToModify(state, action)
+    case types.SAVE_POST:
+      return savePost(state, action)
 
     case types.DELETE_IMAGE_DATA:
       return deleteImageData(state)

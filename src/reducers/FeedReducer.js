@@ -107,7 +107,7 @@ const FeedReducer = (state = initialState, action) => {
         feedData: action.refreshedFeedData
       }
 
-    case types.SAVE_POST:
+    case types.SAVE_COMPOSED_POST:
       return {
         ...state,
         feedData: [

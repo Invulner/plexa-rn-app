@@ -36,8 +36,8 @@ const updateCommentsCounter = (id, counter) => ({
   counter
 })
 
-const savePost = (post) => ({
-  type: types.SAVE_POST,
+const saveComposedPost = (post) => ({
+  type: types.SAVE_COMPOSED_POST,
   post
 })
 
@@ -74,7 +74,7 @@ export default {
   resetFeed,
   updatePostLike,
   updateCommentsCounter,
-  savePost,
+  saveComposedPost,
   hidePost,
   reportPost,
   blockUser,

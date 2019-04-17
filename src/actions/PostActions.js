@@ -48,8 +48,8 @@ const deleteLocation = () => ({
   type: types.DELETE_LOCATION
 })
 
-const savePostToModify = (post) => ({
-  type: types.SAVE_POST_TO_MODIFY,
+const savePost = (post) => ({
+  type: types.SAVE_POST,
   post
 })
 
@@ -68,6 +68,6 @@ export default {
   deleteGroup,
   saveLocation,
   deleteLocation,
-  savePostToModify,
+  savePost,
   deleteImageData
 }

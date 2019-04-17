@@ -67,7 +67,7 @@ const submitPost = (post, cb) => {
       api.post(`${API_URL}/stories`, post)
       .then(res => {
         console.log(res.data)
-        dispatch(FeedActions.savePost(res.data))
+        dispatch(FeedActions.saveComposedPost(res.data))
         cb()
       }).catch(error => console.log('SUBMIT POST ERROR: ', error))
     })
