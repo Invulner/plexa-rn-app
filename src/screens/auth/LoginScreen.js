@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { View, TextInput, StyleSheet, TouchableOpacity, Linking, Image, Alert, ActivityIndicator } from 'react-native'
 import { connect } from 'react-redux'
 import UserOperations from '../../operations/UserOperations'
-import { SIGN_UP_URL, MIN_PASSWORD_LENGTH } from '../../constants'
+import { SIGN_UP_URL, MIN_PASSWORD_LENGTH, PASSWORD_URL } from '../../constants'
 import { BRAND_DARK, BG_COLOR, BRAND_LIGHT } from '../../assets/styles/colors'
 import SafeArea from '../../components/common/SafeArea'
 import { LightText } from '../../components/common/fonts'
@@ -120,11 +120,17 @@ class LoginScreen extends Component {
                 Not a member?
               </LightText>
               <LightText 
-                style={styles.signUpLink} 
+                style={styles.externalLink} 
                 onPress={() => Linking.openURL(SIGN_UP_URL)}>
                 Sign up
               </LightText>
             </View>
+
+            <LightText
+              style={styles.externalLink}
+              onPress={() => Linking.openURL(PASSWORD_URL)}>
+              Forgot password?
+            </LightText>
 
             <LightText style={styles.serviceText}>
               By using our service you agree with
@@ -224,7 +230,7 @@ const styles = StyleSheet.create({
     ...signUpText
   },
 
-  signUpLink: {
+  externalLink: {
     ...signUpText,
     textDecorationLine: "underline",
     marginLeft: 10
