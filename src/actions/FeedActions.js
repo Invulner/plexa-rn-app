@@ -36,8 +36,8 @@ const updateCommentsCounter = (id, counter) => ({
   counter
 })
 
-const savePost = (post) => ({
-  type: types.SAVE_POST,
+const saveComposedPost = (post) => ({
+  type: types.SAVE_COMPOSED_POST,
   post
 })
 
@@ -56,6 +56,16 @@ const blockUser = (id) => ({
   id
 })
 
+const deletePost = (id) => ({
+  type: types.DELETE_POST,
+  id
+})
+
+const updatePost = (post) => ({
+  type: types.UPDATE_POST,
+  post
+})
+
 export default {
   saveFeedData,
   toggleFeedDataLoading,
@@ -64,8 +74,10 @@ export default {
   resetFeed,
   updatePostLike,
   updateCommentsCounter,
-  savePost,
+  saveComposedPost,
   hidePost,
   reportPost,
-  blockUser
+  blockUser,
+  deletePost,
+  updatePost
 }

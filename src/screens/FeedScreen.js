@@ -32,6 +32,8 @@ class FeedScreen extends Component {
       return <PostPlaceholder option={'hidden'} />
     else if (item.reported)
       return <PostPlaceholder option={'reported'} />
+    else if (item.deleted)
+      return <PostPlaceholder option={'deleted'} />
     else
       return (
         <FeedPost  

@@ -25,21 +25,31 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   const submitPost = (post, cb) => dispatch(FeedOperations.submitPost(post, cb))
   const resetPost = () => dispatch(PostActions.resetPost())
-  const submitPostWithImage = (image, post, cb) => dispatch(FeedOperations.submitPostWithImage(image, post, cb))
+  const submitPostWithImage = (image, post, cb, postId) => dispatch(FeedOperations.submitPostWithImage(image, post, cb, postId))
   const deleteLocationObj = () => dispatch(LocationsActions.deleteLocationObj())
+  const submitPostUpdate = (id, post, cb) => dispatch(FeedOperations.submitPostUpdate(id, post, cb))
+  const deleteImageData = () => dispatch(PostActions.deleteImageData())
 
   return {
     submitPost,
     resetPost,
     submitPostWithImage,
-    deleteLocationObj
+    deleteLocationObj,
+    submitPostUpdate,
+    deleteImageData
   }
 }
 
 class ComposeScreen extends Component {
+  setImageFromProps = () => {
+    const { image_urls } = this.props.post
+
+    return image_urls && image_urls.length ? image_urls[0].preview_url : ''
+  }
+
   state = {
     spinner: false,
-    imageURI: ''
+    imageURI: this.setImageFromProps()
   }
 
   attachImage = async () => {
@@ -70,7 +80,7 @@ class ComposeScreen extends Component {
     return !!this.props.post.topic_ids.length
   }
 
-  submitPostWithImage = (post, cb) => {
+  createImageFormData = () => {
     const { imageURI } = this.state
     const image = new FormData()
 
@@ -79,11 +89,33 @@ class ComposeScreen extends Component {
       name: 'photo.jpg',
       type: 'image/jpg'
     })
+
+    return image
+  }
+
+  submitPostWithImage = (post, cb) => {
+    const image = this.createImageFormData()
+
     this.props.submitPostWithImage(image, post, cb)
+  }
+
+  submitPostUpdateWithImage = (postId, data, cb) => {
+    const { submitPostUpdate, submitPostWithImage, post: { image_ids } } = this.props
+
+    if (image_ids.length) {
+      const { image_urls, ...rest } = data
+
+      submitPostUpdate(postId, rest, cb)
+    } else {
+      const image = this.createImageFormData()
+
+      submitPostWithImage(image, data, cb, postId)
+    }
   }
 
   resetStateImg = () => {
     this.setState({ imageURI: '' })
+    this.props.deleteImageData()
   }
 
   resetPost = () => {
@@ -93,9 +125,13 @@ class ComposeScreen extends Component {
     deleteLocationObj()
   }
 
+  isImageExist = () => {
+    return !!this.state.imageURI
+  }
+
   onSubmit = () => {
     if (this.isTopicSelected()) {
-      const { post, submitPost } = this.props
+      const { post, submitPost, navigation,submitPostUpdate } = this.props
       const { link_url, news_id, content, ...rest } = post
       let obj
 
@@ -107,18 +143,28 @@ class ComposeScreen extends Component {
         obj = rest
 
       const data = { ...obj, content: content.trim() }
+      const postId = navigation.getParam('postId')
 
       const cb = () => {
         this.toggleOverlay()
         this.navigateToFeed()
-        this.resetPost()
       }
 
       this.toggleOverlay()
-      this.state.imageURI ? this.submitPostWithImage(data, cb) : submitPost(data, cb)
+      
+      if(postId) {
+        this.isImageExist() ? this.submitPostUpdateWithImage(postId, data, cb) : submitPostUpdate(postId, data, cb)
+      } else {
+        this.isImageExist() ? this.submitPostWithImage(data, cb) : submitPost(data, cb)
+      }
     } else {
       Alert.alert('Error', 'At least one topic has to be selected')
     }
+  }
+
+  componentWillUnmount() {
+    this.resetPost()
+    this.props.navigation.setParams({ postId: null })
   }
 
   render() {

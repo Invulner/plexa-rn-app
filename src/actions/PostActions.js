@@ -48,6 +48,15 @@ const deleteLocation = () => ({
   type: types.DELETE_LOCATION
 })
 
+const savePost = (post) => ({
+  type: types.SAVE_POST,
+  post
+})
+
+const deleteImageData = () => ({
+  type: types.DELETE_IMAGE_DATA
+})
+
 export default {
   saveLink,
   toggleTopic,
@@ -58,5 +67,7 @@ export default {
   saveGroup,
   deleteGroup,
   saveLocation,
-  deleteLocation
+  deleteLocation,
+  savePost,
+  deleteImageData
 }

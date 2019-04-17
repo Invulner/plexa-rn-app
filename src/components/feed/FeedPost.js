@@ -19,10 +19,6 @@ class FeedPost extends Component {
     this.setState(prevState => ({ modal: !prevState.modal }))
   }
 
-  areAnyLinkDetails = () => {
-    return Object.getOwnPropertyNames(this.props.item.link_details).length !== 0
-  }
-
   renderResearch = () => {
     const { fullView, item: { news_item } } = this.props
 
@@ -42,18 +38,19 @@ class FeedPost extends Component {
   }
 
   renderAttachedBlock = () => {
-    switch(this.props.item.news_kind) {
-      case 'research':
-        return this.renderResearch()
-      case 'news':
-        return this.renderNews()
-      case null:
-        if (this.areAnyLinkDetails())
-          return this.renderLinkDetails()
-        else
+    const { link_url, news_kind } = this.props.item
+
+    if (link_url) {
+      switch(news_kind) {
+        case 'research':
+          return this.renderResearch()
+        case 'news':
+          return this.renderNews()
+        case null:
+            return this.renderLinkDetails()
+        default:
           return null
-      default:
-        return null
+      }
     }
   }
 
@@ -62,9 +59,9 @@ class FeedPost extends Component {
 
     if (content)
       return (
-          <RegularText style={feedStyles.linkCaption}>
-            {fullView ? content : utils.truncate(content)}
-          </RegularText>
+        <RegularText style={feedStyles.linkCaption}>
+          {fullView ? content : utils.truncate(content)}
+        </RegularText>
       )
     else
       return null

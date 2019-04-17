@@ -60,41 +60,6 @@ const updateLike = (flag, id) => {
   }
 }
 
-const submitPost = (post, cb) => {
-  return dispatch => {
-
-    getAxiosInstance().then(api => {
-      api.post(`${API_URL}/stories`, post)
-      .then(res => {
-        console.log(res.data)
-        dispatch(FeedActions.savePost(res.data))
-        cb()
-      }).catch(error => console.log('SUBMIT POST ERROR: ', error))
-    })
-  }
-}
-
-const submitPostWithImage = (image, post, cb) => {
-  return dispatch => {
-    const optionalHeaders = {
-      'Content-Type': 'multipart/form-data'
-    }
-
-    return getAxiosInstance(optionalHeaders).then(api => {
-      api.post(`${API_URL}/stories/images`, image)
-        .then(response => {
-          const newPost = {
-            ...post,
-            image_ids: [
-              response.data.id
-            ]
-          }
-          dispatch(submitPost(newPost, cb))
-        }).catch(error => console.log('SUBMIT IMAGE ERROR: ', error))
-    })
-  }
-}
-
 const hidePost = (postId) => {
   return dispatch => {
 
@@ -122,14 +87,76 @@ const reportPost = (postId) => {
 }
 
 const blockUser = (userId) => {
-  return dispatch => {
-    
+  return dispatch => { 
+
     return getAxiosInstance().then(api => {
       api.post(`${API_URL}/profiles/${userId}/block`)
         .then(response => {
           console.log(response.data)
           response.data.blocked && dispatch(FeedActions.blockUser(userId))
         })
+    })
+  }
+}
+
+const deletePost = (postId) => {
+  return dispatch => {
+    
+    return getAxiosInstance().then(api => {
+      api.delete(`${API_URL}/stories/${postId}`)
+        .then(response => {
+          console.log(response)
+          response.data.deleted && dispatch(FeedActions.deletePost(postId))
+        })
+    })
+  }
+}
+
+const submitPost = (post, cb) => {
+  return dispatch => {
+
+    getAxiosInstance().then(api => {
+      api.post(`${API_URL}/stories`, post)
+      .then(res => {
+        console.log(res.data)
+        dispatch(FeedActions.saveComposedPost(res.data))
+        cb()
+      }).catch(error => console.log('SUBMIT POST ERROR: ', error))
+    })
+  }
+}
+
+const submitPostWithImage = (image, post, cb, postId) => {
+  return dispatch => {
+    const optionalHeaders = {
+      'Content-Type': 'multipart/form-data'
+    }
+
+    return getAxiosInstance(optionalHeaders).then(api => {
+      api.post(`${API_URL}/stories/images`, image)
+        .then(response => {
+          const newPost = {
+            ...post,
+            image_ids: [
+              response.data.id
+            ]
+          }
+          postId ? dispatch(submitPostUpdate(postId, newPost, cb)) : dispatch(submitPost(newPost, cb))
+        }).catch(error => console.log('SUBMIT IMAGE ERROR: ', error))
+    })
+  }
+}
+
+const submitPostUpdate = (postId, post, cb) => {
+  return dispatch => {
+    console.log('Feed operations: submitPostUpdate  ', post)
+    return getAxiosInstance().then(api => {
+      api.put(`${API_URL}/stories/${postId}`, post)
+        .then(response => {
+          console.log(response.data)
+          dispatch(FeedActions.updatePost(response.data))
+          cb()
+        }).catch(error => console.log('SUBMIT POST UPDATE ERROR: ', error))
     })
   }
 }
@@ -142,5 +169,7 @@ export default {
   submitPostWithImage,
   hidePost,
   reportPost,
-  blockUser
+  blockUser,
+  deletePost,
+  submitPostUpdate
 }
