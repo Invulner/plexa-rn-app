@@ -2,8 +2,26 @@ import React, { Component } from 'react'
 import { View, StyleSheet } from 'react-native'
 import { RegularText, SemiboldText } from '../components/common/fonts'
 import { BRAND_LIGHT, BG_COLOR, GRAY } from '../assets/styles/colors'
+import { connect } from 'react-redux'
+import ChatsOperations from '../operations/ChatsOperations'
+
+const mapStateToProps = (state) => {
+  const { rooms } = state.chats
+
+  return { rooms }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  const getChats = () => dispatch(ChatsOperations.getChats())
+
+  return { getChats }
+}
 
 class MessagesScreen extends Component {
+  componentDidMount() {
+    this.props.getChats()
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -75,11 +93,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 10
-  },
-
-  date: {
-
   }
 })
 
-export default MessagesScreen
+export default connect(mapStateToProps, mapDispatchToProps)(MessagesScreen)
