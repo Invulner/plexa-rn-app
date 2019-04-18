@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, Image } from 'react-native'
 import { RegularText, SemiboldText } from '../components/common/fonts'
 import { BRAND_LIGHT, BG_COLOR, GRAY, LIGHT_GRAY } from '../assets/styles/colors'
 import { connect } from 'react-redux'
@@ -38,7 +38,7 @@ class MessagesScreen extends Component {
     return `${day} ${month}`
   }
 
-  renderChatItems = () => {
+  renderRooms = () => {
     const { rooms } = this.props
     const sortedRooms = rooms.sort(utils.sortByTime('last_message_date'))
 
@@ -47,11 +47,19 @@ class MessagesScreen extends Component {
         <React.Fragment key={item.id}>
           <View style={styles.chatBox}>
             <View style={styles.leftBox}>
-              <View style={styles.initialsBox}>
-                <RegularText style={styles.initials}>
-                  {utils.getInitials(item.title)}
-                </RegularText>
+
+              <View style={styles.titleImageBox}>
+                {!!item.members[0].avatar ? 
+                  <Image
+                    style={styles.avatar}
+                    source={{uri: item.members[0].avatar}} />
+                  :
+                  <RegularText style={styles.initials}>
+                    {utils.getInitials(item.title)}
+                  </RegularText>
+                }
               </View>
+
               <View>
                 <SemiboldText style={styles.text}>
                   {item.title}
@@ -60,10 +68,12 @@ class MessagesScreen extends Component {
                   {item.last_message.text}
                 </RegularText>
               </View>
+
             </View>
             <RegularText style={styles.date}>
               {this.renderDate(item.last_message_date)}
             </RegularText>
+
           </View>
           {index !== array.length - 1 && this.renderSeparator()}
         </React.Fragment>
@@ -81,7 +91,7 @@ class MessagesScreen extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.chatsBox}>
-          {!!rooms && this.renderChatItems()}
+          {!!rooms && this.renderRooms()}
         </View>
       </View>
     )
@@ -94,6 +104,12 @@ const styles = StyleSheet.create({
     backgroundColor: BG_COLOR,
     paddingTop: 15,
     paddingHorizontal: 10
+  },
+
+  avatar: {
+    height: 40,
+    width: 40,
+    resizeMode: 'contain'
   },
 
   chatsBox: {
@@ -130,14 +146,15 @@ const styles = StyleSheet.create({
     marginTop: 7
   },
 
-  initialsBox: {
+  titleImageBox: {
     height: 40,
     width: 40,
     borderRadius: 40,
     backgroundColor: BRAND_LIGHT,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 10
+    marginRight: 10,
+    overflow: 'hidden'
   },
 
   separator: {
