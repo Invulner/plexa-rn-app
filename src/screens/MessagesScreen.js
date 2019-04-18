@@ -6,11 +6,16 @@ import { connect } from 'react-redux'
 import ChatsOperations from '../operations/ChatsOperations'
 import utils from '../utils'
 import { LinearGradient } from 'expo'
+import Loader from '../components/common/Loader'
 
 const mapStateToProps = (state) => {
-  const { rooms } = state.chats
+  const { rooms, loading } = state.chats
+  const sortedRooms = !!rooms && rooms.sort(utils.sortByTime('last_message_date'))
 
-  return { rooms }
+  return { 
+    sortedRooms,
+    loading
+  }
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -31,16 +36,15 @@ class MessagesScreen extends Component {
   }
 
   renderDate = (time) => {
-    const date = new Date(time).toString()
-    const day = date.slice(8, 10)
-    const month = date.slice(4, 7)
+    const date = new Date(time)
+    const day = date.getDate()
+    const month = date.toString().slice(4, 7)
 
     return `${day} ${month}`
   }
 
   renderRooms = () => {
-    const { rooms } = this.props
-    const sortedRooms = rooms.sort(utils.sortByTime('last_message_date'))
+    const { sortedRooms } = this.props
 
     return sortedRooms.map((item, index, array) => {
       return (
@@ -86,13 +90,17 @@ class MessagesScreen extends Component {
   }
 
   render() {
-    const { rooms } = this.props
+    const { sortedRooms, loading } = this.props
 
     return (
       <View style={styles.container}>
-        <View style={styles.chatsBox}>
-          {!!rooms && this.renderRooms()}
-        </View>
+        {loading ?
+          <Loader />
+          :
+          <View style={styles.chatsBox}>
+            {!!sortedRooms && this.renderRooms()}
+          </View>
+      }
       </View>
     )
   }

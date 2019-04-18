@@ -25,13 +25,13 @@ const getDescription = (description, fullView) => {
 
 const sortByTime = (timeField) => {
   return (a, b) => {
-    const date1 = new Date(a[timeField])
-    const date2 = new Date(b[timeField])
+    const date1 = new Date(a[timeField]).getTime()
+    const date2 = new Date(b[timeField]).getTime()
 
-    if (date1.getTime() === date2.getTime())
+    if (date1 === date2)
       return 0
     else
-      return date1.getTime() < date2.getTime() ? -1 : 1
+      return date1 < date2 ? -1 : 1
   }
 }
 

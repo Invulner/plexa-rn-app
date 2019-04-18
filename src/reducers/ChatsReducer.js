@@ -1,6 +1,8 @@
 import types from '../types/chats'
 
-const initialState = {}
+const initialState = {
+  loading: true
+}
 
 const ChatsReducer = (state = initialState, action) => {
   switch(action.type) {
@@ -9,6 +11,13 @@ const ChatsReducer = (state = initialState, action) => {
         ...state,
         rooms: action.data
       }
+      
+    case types.TOGGLE_CHATS_LOADING:
+      return {
+        ...state,
+        loading: action.flag
+      }
+
     default:
       return state
   }

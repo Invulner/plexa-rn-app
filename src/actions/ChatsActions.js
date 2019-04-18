@@ -5,6 +5,12 @@ const getChats = (data) => ({
   data
 })
 
+const toggleLoading = (flag) => ({
+  type: types.TOGGLE_CHATS_LOADING,
+  flag
+})
+
 export default {
-  getChats
+  getChats,
+  toggleLoading
 }
