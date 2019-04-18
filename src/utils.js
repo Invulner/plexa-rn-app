@@ -23,11 +23,16 @@ const getDescription = (description, fullView) => {
   return fullView ? description : truncate(description)
 }
 
-const sortByTime = (a, b) => {
-  const date1 = new Date(a.created_at)
-  const date2 = new Date(b.created_at)
+const sortByTime = (timeField) => {
+  return (a, b) => {
+    const date1 = new Date(a[timeField])
+    const date2 = new Date(b[timeField])
 
-  return (date1.getTime() - date2.getTime()) < 0 ? -1 : 1
+    if (date1.getTime() === date2.getTime())
+      return 0
+    else
+      return date1.getTime() < date2.getTime() ? -1 : 1
+  }
 }
 
 const updateItemById = (arr, id, newVals) => {

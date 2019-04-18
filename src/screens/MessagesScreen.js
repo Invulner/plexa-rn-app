@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 import { View, StyleSheet } from 'react-native'
 import { RegularText, SemiboldText } from '../components/common/fonts'
-import { BRAND_LIGHT, BG_COLOR, GRAY } from '../assets/styles/colors'
+import { BRAND_LIGHT, BG_COLOR, GRAY, LIGHT_GRAY } from '../assets/styles/colors'
 import { connect } from 'react-redux'
 import ChatsOperations from '../operations/ChatsOperations'
+import utils from '../utils'
+import { LinearGradient } from 'expo'
 
 const mapStateToProps = (state) => {
   const { rooms } = state.chats
@@ -18,9 +20,18 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 class MessagesScreen extends Component {
+  renderSeparator = () => {
+    return (
+      <LinearGradient
+        colors={['#d3d3d3', 'transparent']}
+        style={styles.separator}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 0 }} />
+    )
+  }
+
   renderDate = (time) => {
     const date = new Date(time).toString()
-    console.log(date)
     const day = date.slice(8, 10)
     const month = date.slice(4, 7)
 
@@ -29,31 +40,33 @@ class MessagesScreen extends Component {
 
   renderChatItems = () => {
     const { rooms } = this.props
+    const sortedRooms = rooms.sort(utils.sortByTime('last_message_date'))
 
-    return rooms.map(item => {
+    return sortedRooms.map((item, index, array) => {
       return (
-        <View
-          key={item.id} 
-          style={styles.chatBox}>
-          <View style={styles.leftBox}>
-            <View style={styles.initialsBox}>
-              <RegularText style={styles.initials}>
-                IN
-              </RegularText>
+        <React.Fragment key={item.id}>
+          <View style={styles.chatBox}>
+            <View style={styles.leftBox}>
+              <View style={styles.initialsBox}>
+                <RegularText style={styles.initials}>
+                  {utils.getInitials(item.title)}
+                </RegularText>
+              </View>
+              <View>
+                <SemiboldText style={styles.text}>
+                  {item.title}
+                </SemiboldText>
+                <RegularText style={styles.message}>
+                  {item.last_message.text}
+                </RegularText>
+              </View>
             </View>
-            <View>
-              <SemiboldText style={styles.text}>
-                {item.title}
-              </SemiboldText>
-              <RegularText style={styles.textLight}>
-                {item.last_message.text}
-              </RegularText>
-            </View>
+            <RegularText style={styles.date}>
+              {this.renderDate(item.last_message_date)}
+            </RegularText>
           </View>
-          <RegularText style={styles.textLight}>
-            {this.renderDate(item.last_message_date)}
-          </RegularText>
-        </View>
+          {index !== array.length - 1 && this.renderSeparator()}
+        </React.Fragment>
       )
     })
   }
@@ -67,27 +80,9 @@ class MessagesScreen extends Component {
 
     return (
       <View style={styles.container}>
-      {!!rooms && this.renderChatItems()}
-        {/* <View style={styles.chatBox}>
-          <View style={styles.leftBox}>
-            <View style={styles.initialsBox}>
-              <RegularText style={styles.initials}>
-                IN
-              </RegularText>
-            </View>
-            <View>
-              <SemiboldText style={styles.text}>
-                Name
-              </SemiboldText>
-              <RegularText style={styles.textLight}>
-                Last message
-              </RegularText>
-            </View>
-          </View>
-          <RegularText style={styles.textLight}>
-            Date
-          </RegularText>
-        </View> */}
+        <View style={styles.chatsBox}>
+          {!!rooms && this.renderChatItems()}
+        </View>
       </View>
     )
   }
@@ -101,12 +96,21 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10
   },
 
+  chatsBox: {
+    backgroundColor: '#fff',
+    borderRadius: 5
+  },
+
   text: {
     fontSize: 18
   },
 
-  textLight: {
+  message: {
     color: GRAY
+  },
+
+  date: {
+    color: LIGHT_GRAY
   },
 
   leftBox: {
@@ -115,12 +119,10 @@ const styles = StyleSheet.create({
   },
 
   chatBox: {
-    height: 70,
-    backgroundColor: '#fff',
+    height: 70, 
     flexDirection: 'row',
     padding: 10,
-    justifyContent: 'space-between',
-    borderRadius: 5
+    justifyContent: 'space-between'
   },
 
   initials: {
@@ -136,6 +138,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 10
+  },
+
+  separator: {
+    height: 1,
+    marginHorizontal: 10
   }
 })
 
