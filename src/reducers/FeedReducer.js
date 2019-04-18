@@ -8,7 +8,12 @@ const initialState = {
 
 const blockUser = (state, action) => {
   const newVal = { blocked: true }
-  const newFeedData = state.feedData.map(item => item.author.id === action.id ? { ...item, ...newVal } : item)
+  const newFeedData = state.feedData.map(item => {
+    if (item.author.id === action.id)
+      return { ...item, ...newVal }
+    else
+      return item
+  })
 
   return {
     ...state,
