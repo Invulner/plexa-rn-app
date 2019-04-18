@@ -60,7 +60,7 @@ const updateLike = (flag, id) => {
   }
 }
 
-const hidePost = (postId) => {
+const hidePost = (postId, cb) => {
   return dispatch => {
 
     return getAxiosInstance().then(api => {
@@ -68,12 +68,13 @@ const hidePost = (postId) => {
         .then(response => {
           console.log(response.data)
           response.data.hidden && dispatch(FeedActions.hidePost(postId))
+          cb()
         })
     })
   }
 }
 
-const reportPost = (postId) => {
+const reportPost = (postId, cb) => {
   return dispatch => {
 
     return getAxiosInstance().then(api => {
@@ -81,12 +82,13 @@ const reportPost = (postId) => {
         .then(response => {
           console.log(response.data)
           response.data.reported && dispatch(FeedActions.reportPost(postId))
+          cb()
         })
     })
   }
 }
 
-const blockUser = (userId) => {
+const blockUser = (userId, cb) => {
   return dispatch => { 
 
     return getAxiosInstance().then(api => {
@@ -94,12 +96,13 @@ const blockUser = (userId) => {
         .then(response => {
           console.log(response.data)
           response.data.blocked && dispatch(FeedActions.blockUser(userId))
+          cb()
         })
     })
   }
 }
 
-const deletePost = (postId) => {
+const deletePost = (postId, cb) => {
   return dispatch => {
     
     return getAxiosInstance().then(api => {
@@ -107,6 +110,7 @@ const deletePost = (postId) => {
         .then(response => {
           console.log(response)
           response.data.deleted && dispatch(FeedActions.deletePost(postId))
+          cb()
         })
     })
   }

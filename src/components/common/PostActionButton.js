@@ -12,10 +12,10 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-  const hidePost = (postId) => dispatch(FeedOperations.hidePost(postId))
-  const reportPost = (postId) => dispatch(FeedOperations.reportPost(postId))
-  const blockUser = (authorId) => dispatch(FeedOperations.blockUser(authorId))
-  const deletePost = (postId) => dispatch(FeedOperations.deletePost(postId))
+  const hidePost = (postId, cb) => dispatch(FeedOperations.hidePost(postId, cb))
+  const reportPost = (postId, cb) => dispatch(FeedOperations.reportPost(postId, cb))
+  const blockUser = (authorId, cb) => dispatch(FeedOperations.blockUser(authorId, cb))
+  const deletePost = (postId, cb) => dispatch(FeedOperations.deletePost(postId, cb))
   const getPost = (id, cb) => dispatch(PostOperations.getPost(id, cb))
 
   return {
@@ -35,17 +35,18 @@ class PostActionButton extends Component {
   }
 
   onAlertOKPress = (option) => {
-    const { deletePost, blockUser, hidePost, reportPost, postId, authorId } = this.props
+    const { deletePost, blockUser, hidePost, reportPost, postId, authorId, navigation } = this.props
+    const cb = () => navigation.navigate('Feed')
 
     switch (option) {
       case 'hide':
-        return hidePost(postId)
+        return hidePost(postId, cb)
       case 'report':
-        return reportPost(postId)
+        return reportPost(postId, cb)
       case 'block':
-        return blockUser(authorId)
+        return blockUser(authorId, cb)
       case 'delete':
-        return deletePost(postId)
+        return deletePost(postId, cb)
       default:
         console.log('Wrong option or no option passed')
     }
