@@ -18,14 +18,57 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 class MessagesScreen extends Component {
+  renderDate = (time) => {
+    const date = new Date(time).toString()
+    console.log(date)
+    const day = date.slice(8, 10)
+    const month = date.slice(4, 7)
+
+    return `${day} ${month}`
+  }
+
+  renderChatItems = () => {
+    const { rooms } = this.props
+
+    return rooms.map(item => {
+      return (
+        <View
+          key={item.id} 
+          style={styles.chatBox}>
+          <View style={styles.leftBox}>
+            <View style={styles.initialsBox}>
+              <RegularText style={styles.initials}>
+                IN
+              </RegularText>
+            </View>
+            <View>
+              <SemiboldText style={styles.text}>
+                {item.title}
+              </SemiboldText>
+              <RegularText style={styles.textLight}>
+                {item.last_message.text}
+              </RegularText>
+            </View>
+          </View>
+          <RegularText style={styles.textLight}>
+            {this.renderDate(item.last_message_date)}
+          </RegularText>
+        </View>
+      )
+    })
+  }
+
   componentDidMount() {
     this.props.getChats()
   }
 
   render() {
+    const { rooms } = this.props
+
     return (
       <View style={styles.container}>
-        <View style={styles.chatBox}>
+      {!!rooms && this.renderChatItems()}
+        {/* <View style={styles.chatBox}>
           <View style={styles.leftBox}>
             <View style={styles.initialsBox}>
               <RegularText style={styles.initials}>
@@ -44,7 +87,7 @@ class MessagesScreen extends Component {
           <RegularText style={styles.textLight}>
             Date
           </RegularText>
-        </View>
+        </View> */}
       </View>
     )
   }
