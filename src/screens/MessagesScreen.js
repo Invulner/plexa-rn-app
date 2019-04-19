@@ -25,6 +25,21 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 class MessagesScreen extends Component {
+  renderAvatar = (item, title) => {
+    if (item.type === 'user' && item.members[0].avatar)
+      return (
+        <Image
+          style={styles.avatar}
+          source={{uri: item.members[0].avatar}} />
+      )
+    else
+      return (
+        <RegularText style={styles.initials}>
+          {utils.getInitials(title)}
+        </RegularText>
+      )
+  }
+
   renderSeparator = () => {
     return (
       <LinearGradient
@@ -47,26 +62,20 @@ class MessagesScreen extends Component {
     const { sortedRooms } = this.props
 
     return sortedRooms.map((item, index, array) => {
+      const title = item.type === 'user' ? item.title : item.group.title
+
       return (
         <React.Fragment key={item.id}>
           <View style={styles.chatBox}>
             <View style={styles.leftBox}>
 
               <View style={styles.titleImageBox}>
-                {!!item.members[0].avatar ? 
-                  <Image
-                    style={styles.avatar}
-                    source={{uri: item.members[0].avatar}} />
-                  :
-                  <RegularText style={styles.initials}>
-                    {utils.getInitials(item.title)}
-                  </RegularText>
-                }
+                {this.renderAvatar(item, title)}
               </View>
 
               <View>
                 <SemiboldText style={styles.text}>
-                  {item.title}
+                  {utils.truncate(title, 25)}
                 </SemiboldText>
                 <RegularText style={styles.message}>
                   {item.last_message.text}
@@ -98,7 +107,7 @@ class MessagesScreen extends Component {
           <Loader />
           :
           <View style={styles.chatsBox}>
-            {!!sortedRooms && this.renderRooms()}
+            {this.renderRooms()}
           </View>
       }
       </View>
