@@ -25,8 +25,8 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 class MessagesScreen extends Component {
-  renderAvatar = (item, title) => {
-    if (item.type === 'user' && item.members[0].avatar)
+  renderAvatar = (item, title, isUserChat) => {
+    if (isUserChat && item.members[0].avatar)
       return (
         <Image
           style={styles.avatar}
@@ -62,7 +62,8 @@ class MessagesScreen extends Component {
     const { sortedRooms } = this.props
 
     return sortedRooms.map((item, index, array) => {
-      const title = item.type === 'user' ? item.title : item.group.title
+      const isUserChat = item.type === 'user'
+      const { title } = isUserChat ? item : item.group
 
       return (
         <React.Fragment key={item.id}>
@@ -70,7 +71,7 @@ class MessagesScreen extends Component {
             <View style={styles.leftBox}>
 
               <View style={styles.titleImageBox}>
-                {this.renderAvatar(item, title)}
+                {this.renderAvatar(item, title, isUserChat)}
               </View>
 
               <View>
