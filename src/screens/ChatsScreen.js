@@ -9,11 +9,11 @@ import { LinearGradient } from 'expo'
 import Loader from '../components/common/Loader'
 
 const mapStateToProps = (state) => {
-  const { rooms, loading } = state.chats
-  const sortedRooms = !!rooms && rooms.sort(utils.sortByTime('last_message_date'))
+  const { items, loading } = state.chats
+  const sortedChats = !!items && items.sort(utils.sortByTime('last_message_date'))
 
   return { 
-    sortedRooms,
+    sortedChats,
     loading
   }
 }
@@ -24,7 +24,7 @@ const mapDispatchToProps = (dispatch) => {
   return { getChats }
 }
 
-class MessagesScreen extends Component {
+class ChatsScreen extends Component {
   isUserChat = (item) => {
     return item.type === 'user'
   }
@@ -62,10 +62,10 @@ class MessagesScreen extends Component {
     return `${day} ${month}`
   }
 
-  renderRooms = () => {
-    const { sortedRooms } = this.props
+  renderChats = () => {
+    const { sortedChats } = this.props
 
-    return sortedRooms.map((item, index, array) => {
+    return sortedChats.map((item, index, array) => {
       const { title } = this.isUserChat(item) ? item : item.group
 
       return (
@@ -111,7 +111,7 @@ class MessagesScreen extends Component {
           <Loader />
           :
           <View style={styles.chatsBox}>
-            {this.renderRooms()}
+            {this.renderChats()}
           </View>
       }
       </View>
@@ -184,4 +184,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(MessagesScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(ChatsScreen)
