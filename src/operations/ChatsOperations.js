@@ -8,9 +8,9 @@ const getChats = () => {
 
     return getAxiosInstance().then(api => {
       api.get(`${API_URL}/rooms`)
-        .then(result => {
-          console.log(result)
-          dispatch(ChatsActions.getChats(result.data))
+        .then(response => {
+          console.log(response.data)
+          dispatch(ChatsActions.getChats(response.data))
           dispatch(ChatsActions.toggleLoading(false))
         })
     })

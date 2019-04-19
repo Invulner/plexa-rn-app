@@ -9,11 +9,11 @@ import { LinearGradient } from 'expo'
 import Loader from '../components/common/Loader'
 
 const mapStateToProps = (state) => {
-  const { rooms, loading } = state.chats
-  const sortedRooms = !!rooms && rooms.sort(utils.sortByTime('last_message_date'))
+  const { items, loading } = state.chats
+  const sortedChats = !!items && items.sort(utils.sortByTime('last_message_date'))
 
   return { 
-    sortedRooms,
+    sortedChats,
     loading
   }
 }
@@ -24,7 +24,26 @@ const mapDispatchToProps = (dispatch) => {
   return { getChats }
 }
 
-class MessagesScreen extends Component {
+class ChatsScreen extends Component {
+  isUserChat = (item) => {
+    return item.type === 'user'
+  }
+
+  renderAvatar = (item, title) => {
+    if (this.isUserChat(item) && item.members[0].avatar)
+      return (
+        <Image
+          style={styles.avatar}
+          source={{uri: item.members[0].avatar}} />
+      )
+    else
+      return (
+        <RegularText style={styles.initials}>
+          {utils.getInitials(title)}
+        </RegularText>
+      )
+  }
+
   renderSeparator = () => {
     return (
       <LinearGradient
@@ -43,30 +62,24 @@ class MessagesScreen extends Component {
     return `${day} ${month}`
   }
 
-  renderRooms = () => {
-    const { sortedRooms } = this.props
+  renderChats = () => {
+    const { sortedChats } = this.props
 
-    return sortedRooms.map((item, index, array) => {
+    return sortedChats.map((item, index, array) => {
+      const { title } = this.isUserChat(item) ? item : item.group
+
       return (
         <React.Fragment key={item.id}>
           <View style={styles.chatBox}>
             <View style={styles.leftBox}>
 
               <View style={styles.titleImageBox}>
-                {!!item.members[0].avatar ? 
-                  <Image
-                    style={styles.avatar}
-                    source={{uri: item.members[0].avatar}} />
-                  :
-                  <RegularText style={styles.initials}>
-                    {utils.getInitials(item.title)}
-                  </RegularText>
-                }
+                {this.renderAvatar(item, title)}
               </View>
 
               <View>
                 <SemiboldText style={styles.text}>
-                  {item.title}
+                  {utils.truncate(title, 25)}
                 </SemiboldText>
                 <RegularText style={styles.message}>
                   {item.last_message.text}
@@ -90,7 +103,7 @@ class MessagesScreen extends Component {
   }
 
   render() {
-    const { sortedRooms, loading } = this.props
+    const { loading } = this.props
 
     return (
       <View style={styles.container}>
@@ -98,7 +111,7 @@ class MessagesScreen extends Component {
           <Loader />
           :
           <View style={styles.chatsBox}>
-            {!!sortedRooms && this.renderRooms()}
+            {this.renderChats()}
           </View>
       }
       </View>
@@ -171,4 +184,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(MessagesScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(ChatsScreen)

@@ -9,9 +9,9 @@ const ChatsReducer = (state = initialState, action) => {
     case types.GET_CHATS:
       return {
         ...state,
-        rooms: action.data
+        items: action.data
       }
-      
+
     case types.TOGGLE_CHATS_LOADING:
       return {
         ...state,
