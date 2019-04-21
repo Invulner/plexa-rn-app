@@ -10,7 +10,13 @@ const toggleLoading = (flag) => ({
   flag
 })
 
+const getUsers = (data) => ({
+  type: types.GET_USERS,
+  data
+})
+
 export default {
   getChats,
-  toggleLoading
+  toggleLoading,
+  getUsers
 }

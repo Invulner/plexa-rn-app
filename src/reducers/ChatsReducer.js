@@ -1,7 +1,8 @@
 import types from '../types/chats'
 
 const initialState = {
-  loading: true
+  loading: true,
+  users: []
 }
 
 const ChatsReducer = (state = initialState, action) => {
@@ -16,6 +17,12 @@ const ChatsReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: action.flag
+      }
+
+    case types.GET_USERS:
+      return {
+        ...state,
+        users: action.data
       }
 
     default:

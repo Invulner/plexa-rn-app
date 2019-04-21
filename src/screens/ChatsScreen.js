@@ -30,22 +30,6 @@ class ChatsScreen extends Component {
     return item.type === 'user'
   }
 
-  renderAvatar = (item, title) => {
-    return 
-    // if (this.isUserChat(item) && item.members[0].avatar)
-    //   return (
-    //     <Image
-    //       style={styles.avatar}
-    //       source={{uri: item.members[0].avatar}} />
-    //   )
-    // else
-    //   return (
-    //     <RegularText style={styles.initials}>
-    //       {this.isUserChat(item) ? utils.getInitials(title) : 'G'}
-    //     </RegularText>
-    //   )
-  }
-
   renderSeparator = () => {
     return (
       <LinearGradient

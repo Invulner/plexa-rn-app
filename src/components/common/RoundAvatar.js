@@ -6,15 +6,12 @@ import { BRAND_LIGHT } from '../../assets/styles/colors'
 
 function RoundAvatar(props) {
   const { src, isUserChat, title } = props
+
   const renderInitials = () => {
-    switch (isUserChat) {
-      case undefined || true:
-        return utils.getInitials(title)
-      case false:
-        return 'G'
-      default:
-        return console.log('wrong option in RoundAvatar')
-    }
+    if (isUserChat === undefined || isUserChat === true)
+      return utils.getInitials(title)
+    else
+      return 'G'
   }
 
   return (
