@@ -7,6 +7,7 @@ import ChatsOperations from '../operations/ChatsOperations'
 import utils from '../utils'
 import { LinearGradient } from 'expo'
 import Loader from '../components/common/Loader'
+import RoundAvatar from '../components/common/RoundAvatar'
 
 const mapStateToProps = (state) => {
   const { items, loading } = state.chats
@@ -30,18 +31,19 @@ class ChatsScreen extends Component {
   }
 
   renderAvatar = (item, title) => {
-    if (this.isUserChat(item) && item.members[0].avatar)
-      return (
-        <Image
-          style={styles.avatar}
-          source={{uri: item.members[0].avatar}} />
-      )
-    else
-      return (
-        <RegularText style={styles.initials}>
-          {utils.getInitials(title)}
-        </RegularText>
-      )
+    return 
+    // if (this.isUserChat(item) && item.members[0].avatar)
+    //   return (
+    //     <Image
+    //       style={styles.avatar}
+    //       source={{uri: item.members[0].avatar}} />
+    //   )
+    // else
+    //   return (
+    //     <RegularText style={styles.initials}>
+    //       {this.isUserChat(item) ? utils.getInitials(title) : 'G'}
+    //     </RegularText>
+    //   )
   }
 
   renderSeparator = () => {
@@ -67,16 +69,16 @@ class ChatsScreen extends Component {
 
     return sortedChats.map((item, index, array) => {
       const { title } = this.isUserChat(item) ? item : item.group
+      const src = item.members ? item.members[0].avatar : null
 
       return (
         <React.Fragment key={item.id}>
           <View style={styles.chatBox}>
             <View style={styles.leftBox}>
-
-              <View style={styles.titleImageBox}>
-                {this.renderAvatar(item, title)}
-              </View>
-
+              <RoundAvatar 
+                isUserChat={this.isUserChat(item)}
+                title={title}
+                src={src} />
               <View>
                 <SemiboldText style={styles.text}>
                   {utils.truncate(title, 25)}
@@ -127,11 +129,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10
   },
 
-  avatar: {
-    height: 40,
-    width: 40,
-    resizeMode: 'contain'
-  },
+  // avatar: {
+  //   height: 40,
+  //   width: 40,
+  //   resizeMode: 'contain'
+  // },
 
   chatsBox: {
     backgroundColor: '#fff',
@@ -162,21 +164,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
 
-  initials: {
-    color: '#fff',
-    marginTop: 7
-  },
-
-  titleImageBox: {
-    height: 40,
-    width: 40,
-    borderRadius: 40,
-    backgroundColor: BRAND_LIGHT,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 10,
-    overflow: 'hidden'
-  },
+  // initials: {
+  //   color: '#fff',
+  //   marginTop: 7
+  // },
 
   separator: {
     height: 1,
