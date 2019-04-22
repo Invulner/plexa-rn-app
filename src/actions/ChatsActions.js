@@ -15,8 +15,13 @@ const getUsers = (data) => ({
   data
 })
 
+const deleteUsers = () => ({
+  type: types.DELETE_USERS
+})
+
 export default {
   getChats,
   toggleLoading,
-  getUsers
+  getUsers,
+  deleteUsers
 }

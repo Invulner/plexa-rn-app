@@ -25,6 +25,12 @@ const ChatsReducer = (state = initialState, action) => {
         users: action.data
       }
 
+    case types.DELETE_USERS:
+      return {
+        ...state,
+        users: initialState.users
+      }
+
     default:
       return state
   }

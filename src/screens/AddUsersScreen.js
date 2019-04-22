@@ -5,12 +5,17 @@ import ChatsOperations from '../operations/ChatsOperations'
 import RoundAvatar from '../components/common/RoundAvatar'
 import debounce from 'lodash.debounce'
 import { connect } from 'react-redux'
-import { RegularText } from '../components/common/fonts';
+import { RegularText } from '../components/common/fonts'
+import ChatsActions from '../actions/ChatsActions'
 
 const mapDispatchToProps = (dispatch) => {
   const getUsers = (q) => dispatch(ChatsOperations.getUsers(q))
+  const deleteUsers = () => dispatch(ChatsActions.deleteUsers())
 
-  return { getUsers }
+  return { 
+    getUsers,
+    deleteUsers
+  }
 }
 
 const mapStateToProps = (state) => {
@@ -53,6 +58,11 @@ class AddUsersScreen extends Component {
   }
 
   getUsers = debounce(input => this.props.getUsers(input), 1000)
+
+  componentWillUnmount() {
+    this.props.deleteUsers()
+  }
+  
   
   render() {
     const { input } = this.state
@@ -91,7 +101,7 @@ const styles = StyleSheet.create({
   },
 
   name: {
-    fontSize: 16,
+    fontSize: 18,
     marginTop: 5
   }
 })
