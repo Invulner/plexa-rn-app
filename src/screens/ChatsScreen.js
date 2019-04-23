@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, Image } from 'react-native'
+import { View, StyleSheet, ScrollView } from 'react-native'
 import { RegularText, SemiboldText } from '../components/common/fonts'
-import { BRAND_LIGHT, BG_COLOR, GRAY, LIGHT_GRAY } from '../assets/styles/colors'
+import { BG_COLOR, GRAY, LIGHT_GRAY } from '../assets/styles/colors'
 import { connect } from 'react-redux'
 import ChatsOperations from '../operations/ChatsOperations'
 import utils from '../utils'
 import { LinearGradient } from 'expo'
 import Loader from '../components/common/Loader'
+import RoundAvatar from '../components/common/RoundAvatar'
 
 const mapStateToProps = (state) => {
   const { items, loading } = state.chats
@@ -27,21 +28,6 @@ const mapDispatchToProps = (dispatch) => {
 class ChatsScreen extends Component {
   isUserChat = (item) => {
     return item.type === 'user'
-  }
-
-  renderAvatar = (item, title) => {
-    if (this.isUserChat(item) && item.members[0].avatar)
-      return (
-        <Image
-          style={styles.avatar}
-          source={{uri: item.members[0].avatar}} />
-      )
-    else
-      return (
-        <RegularText style={styles.initials}>
-          {utils.getInitials(title)}
-        </RegularText>
-      )
   }
 
   renderSeparator = () => {
@@ -67,22 +53,23 @@ class ChatsScreen extends Component {
 
     return sortedChats.map((item, index, array) => {
       const { title } = this.isUserChat(item) ? item : item.group
+      const avatarSrc = item.members ? item.members[0].avatar : null
 
       return (
         <React.Fragment key={item.id}>
           <View style={styles.chatBox}>
             <View style={styles.leftBox}>
-
-              <View style={styles.titleImageBox}>
-                {this.renderAvatar(item, title)}
-              </View>
-
+              <RoundAvatar 
+                isUserChat={this.isUserChat(item)}
+                title={title}
+                src={avatarSrc}
+                size='medium' />
               <View>
                 <SemiboldText style={styles.text}>
                   {utils.truncate(title, 25)}
                 </SemiboldText>
                 <RegularText style={styles.message}>
-                  {item.last_message.text}
+                  {item.last_message ? item.last_message.text : null}
                 </RegularText>
               </View>
 
@@ -106,15 +93,17 @@ class ChatsScreen extends Component {
     const { loading } = this.props
 
     return (
-      <View style={styles.container}>
-        {loading ?
-          <Loader />
-          :
-          <View style={styles.chatsBox}>
-            {this.renderChats()}
-          </View>
-      }
-      </View>
+      <ScrollView style={styles.scrollView}>
+        <View style={styles.container}>
+          {loading ?
+            <Loader />
+            :
+            <View style={styles.chatsBox}>
+              {this.renderChats()}
+            </View>
+        }
+        </View>
+      </ScrollView>
     )
   }
 }
@@ -123,14 +112,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: BG_COLOR,
-    paddingTop: 15,
+    paddingVertical: 15,
     paddingHorizontal: 10
-  },
-
-  avatar: {
-    height: 40,
-    width: 40,
-    resizeMode: 'contain'
   },
 
   chatsBox: {
@@ -162,25 +145,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
 
-  initials: {
-    color: '#fff',
-    marginTop: 7
-  },
-
-  titleImageBox: {
-    height: 40,
-    width: 40,
-    borderRadius: 40,
-    backgroundColor: BRAND_LIGHT,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 10,
-    overflow: 'hidden'
-  },
-
   separator: {
     height: 1,
     marginHorizontal: 10
+  },
+
+  scrollView: {
+    backgroundColor: BG_COLOR
   }
 })
 

@@ -13,6 +13,7 @@ import AddLinkScreen from '../screens/AddLinkScreen'
 import AddGroupScreen from '../screens/AddGroupScreen'
 import Done from '../components/common/header/Done'
 import AddLocationScreen from '../screens/AddLocationScreen'
+import AddUsersScreen from '../screens/AddUsersScreen'
 
 const MainStack = createStackNavigator({
   MainSwitch: {
@@ -25,13 +26,13 @@ const MainStack = createStackNavigator({
   Policy: {
     screen: PrivacyPolicy,
     navigationOptions: () => ({
-      headerTitle: <HeaderTitle title={'Privacy Policy'} />
+      headerTitle: <HeaderTitle title={'Privacy policy'} />
     })
   },
   Terms: {
     screen: TermsOfService,
     navigationOptions: () => ({
-      headerTitle: <HeaderTitle title={'Terms of Service'} />
+      headerTitle: <HeaderTitle title={'Terms of service'} />
     })
   },
   PublicProfile: {
@@ -55,7 +56,7 @@ const MainStack = createStackNavigator({
   AddLink: {
     screen: AddLinkScreen,
     navigationOptions: () => ({
-      headerTitle: <HeaderTitle title={'Add Link'} />,
+      headerTitle: <HeaderTitle title={'Add link'} />,
       headerRight: <Done />
     })
   },
@@ -68,9 +69,16 @@ const MainStack = createStackNavigator({
   AddLocation: {
     screen: AddLocationScreen,
     navigationOptions: () => ({
-      headerTitle: <HeaderTitle title={'Target Location'} />
+      headerTitle: <HeaderTitle title={'Target location'} />
     })
-  }
+  },
+  AddUsers: {
+    screen: AddUsersScreen,
+    navigationOptions: () => ({
+      headerTitle: <HeaderTitle title={'Add users'} />,
+      headerRight: <Done />
+    })
+  },
 }, {
   defaultNavigationOptions: {
     headerStyle: {

@@ -17,7 +17,7 @@ class CustomTabBar extends Component {
             tabIndex={1} />
           <TabButton 
             iconType={'messages'} 
-            route={'Messages'}
+            route={'Chats'}
             tabIndex={2} />
           <TabButton 
             iconType={'profile'} 

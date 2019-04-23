@@ -8,7 +8,7 @@ import FeedScreen from '../screens/FeedScreen'
 const AppTabNavigator = createMaterialTopTabNavigator({
   Feed: FeedScreen,
   ResearchFeed: ResearchFeedScreen,
-  Messages: ChatsScreen,
+  Chats: ChatsScreen,
   Profile: ProfileScreen,
 }, {
   tabBarOptions: {

@@ -22,10 +22,6 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 class Topics extends Component {
-  state = {
-    topic_ids: []
-  }
-
   isTopicChosen = (itemId) => {
     const { topic_ids } = this.props
 

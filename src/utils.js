@@ -58,7 +58,7 @@ const sortByField = (field) => {
   }
 }
 
-getLocation = (location) => {
+const getLocation = (location) => {
   const country = location.find(item => item.kind === 'country').name
   const city = location.find(item => item.kind === 'city').name
   const locationString = `${city}, ${country}`
@@ -66,7 +66,7 @@ getLocation = (location) => {
   return truncate(locationString, 20)
 }
 
-getMedicalPractice = (user) => {
+const getMedicalPractice = (user) => {
   const { specialities, sub_specialities, conditions, interests } = user
   const allPractice = [
     {

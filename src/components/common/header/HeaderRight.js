@@ -1,16 +1,18 @@
 import React, { Component } from 'react'
 import { View, TouchableOpacity, Image, StyleSheet } from 'react-native'
+import { withNavigation } from 'react-navigation'
 
-class FeedHeaderRight extends Component {
+class HeaderRight extends Component {
   render() {
+    const { navigate } = this.props.navigation
+
     return (
       <View style={styles.container}>
-        <TouchableOpacity onPress={() => console.log('header message button')}>
+        <TouchableOpacity onPress={() => navigate('AddUsers')}>
           <Image 
             style={styles.messageIcon}
-            source={require('../../../assets/icons/envelope-icon-white.png')} />
-        </TouchableOpacity>
-        
+            source={require('../../../assets/icons/add-users.png')} />
+        </TouchableOpacity>        
       </View>
     )
   }
@@ -23,9 +25,9 @@ const styles = StyleSheet.create({
   },
 
   messageIcon: {
-    width: 20, 
+    width: 35, 
     resizeMode: 'contain',
   }
 })
 
-export default FeedHeaderRight
+export default withNavigation(HeaderRight)

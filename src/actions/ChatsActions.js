@@ -10,7 +10,24 @@ const toggleLoading = (flag) => ({
   flag
 })
 
+const getUsers = (data) => ({
+  type: types.GET_USERS,
+  data
+})
+
+const deleteUsers = () => ({
+  type: types.DELETE_USERS
+})
+
+const createChat = (data) => ({
+  type: types.CREATE_CHAT,
+  data
+})
+
 export default {
   getChats,
-  toggleLoading
+  toggleLoading,
+  getUsers,
+  deleteUsers,
+  createChat
 }
