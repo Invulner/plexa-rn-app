@@ -53,7 +53,7 @@ class ChatsScreen extends Component {
 
     return sortedChats.map((item, index, array) => {
       const { title } = this.isUserChat(item) ? item : item.group
-      const src = item.members ? item.members[0].avatar : null
+      const avatarSrc = item.members ? item.members[0].avatar : null
 
       return (
         <React.Fragment key={item.id}>
@@ -62,7 +62,7 @@ class ChatsScreen extends Component {
               <RoundAvatar 
                 isUserChat={this.isUserChat(item)}
                 title={title}
-                src={src}
+                src={avatarSrc}
                 size='medium' />
               <View>
                 <SemiboldText style={styles.text}>

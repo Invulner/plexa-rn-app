@@ -35,23 +35,23 @@ class AddUsersScreen extends Component {
 
   addUser = (id) => {
     this.setState(prevState => {
-      if (prevState.userIds.includes(id))
-        return {
-          ...prevState,
-          userIds: prevState.userIds.filter(item => item !== id)
-        }
-      else
-        return {
-          ...prevState,
-          userIds: [...prevState.userIds, id]
-        }
+      let userIds
+
+      if (prevState.userIds.includes(id)) 
+        userIds = prevState.userIds.filter(item => item !== id)
+      else 
+        userIds = [...prevState.userIds, id]
+
+      return {
+        ...prevState,
+        userIds
+      }
     })
   }
 
   renderChosenUsers = () => {
-    const { userIds } = this.state
     const { users } = this.props
-    const userArr = users.filter(user => userIds.includes(user.id))
+    const userArr = users.filter(user => this.isUserChosen(user.id))
 
     if (userArr.length)
       return userArr.map(user => {
@@ -77,7 +77,7 @@ class AddUsersScreen extends Component {
       this.getUsers(input)
     } else {
       this.props.deleteUsers()
-      this.setState({ userIds: '' })
+      this.setState({ userIds: [] })
       this.getUsers.cancel()
     }
   }

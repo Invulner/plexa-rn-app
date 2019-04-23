@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { View, TouchableOpacity, Image, StyleSheet } from 'react-native'
 import { withNavigation } from 'react-navigation'
 
-class FeedHeaderRight extends Component {
+class HeaderRight extends Component {
   render() {
     const { navigate } = this.props.navigation
 
@@ -30,4 +30,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default withNavigation(FeedHeaderRight)
+export default withNavigation(HeaderRight)
