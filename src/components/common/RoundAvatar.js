@@ -8,10 +8,7 @@ function RoundAvatar(props) {
   const { src, isUserChat, title, size, boxStyle } = props
 
   const renderInitials = () => {
-    if (isUserChat === false)
-      return 'G'
-    else
-      return utils.getInitials(title)
+    return isUserChat === false ? 'G' : utils.getInitials(title)
   }
 
   return (

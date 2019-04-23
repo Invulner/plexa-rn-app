@@ -34,17 +34,16 @@ class AddUsersScreen extends Component {
   }
 
   addUser = (id) => {
-    this.setState(prevState => {
-      let userIds
+    this.setState(({ userIds }) => {
+      let newUserIds
 
-      if (prevState.userIds.includes(id)) 
-        userIds = prevState.userIds.filter(item => item !== id)
+      if (userIds.includes(id)) 
+        newUserIds = userIds.filter(item => item !== id)
       else 
-        userIds = [...prevState.userIds, id]
+        newUserIds = [...userIds, id]
 
       return {
-        ...prevState,
-        userIds
+        userIds: newUserIds
       }
     })
   }
