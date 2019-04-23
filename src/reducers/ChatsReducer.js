@@ -2,7 +2,8 @@ import types from '../types/chats'
 
 const initialState = {
   loading: true,
-  users: []
+  users: [],
+  items: []
 }
 
 const ChatsReducer = (state = initialState, action) => {
@@ -29,6 +30,12 @@ const ChatsReducer = (state = initialState, action) => {
       return {
         ...state,
         users: initialState.users
+      }
+
+    case types.CREATE_CHAT:
+      return {
+        ...state,
+        items: [action.data, ...state.items]
       }
 
     default:

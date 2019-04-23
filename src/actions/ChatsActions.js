@@ -19,9 +19,15 @@ const deleteUsers = () => ({
   type: types.DELETE_USERS
 })
 
+const createChat = (data) => ({
+  type: types.CREATE_CHAT,
+  data
+})
+
 export default {
   getChats,
   toggleLoading,
   getUsers,
-  deleteUsers
+  deleteUsers,
+  createChat
 }

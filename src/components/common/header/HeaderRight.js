@@ -11,7 +11,7 @@ class FeedHeaderRight extends Component {
         <TouchableOpacity onPress={() => navigate('AddUsers')}>
           <Image 
             style={styles.messageIcon}
-            source={require('../../../assets/icons/envelope-icon-white.png')} />
+            source={require('../../../assets/icons/add-users.png')} />
         </TouchableOpacity>        
       </View>
     )
@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
   },
 
   messageIcon: {
-    width: 25, 
+    width: 35, 
     resizeMode: 'contain',
   }
 })

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, Image } from 'react-native'
+import { View, StyleSheet, ScrollView } from 'react-native'
 import { RegularText, SemiboldText } from '../components/common/fonts'
-import { BRAND_LIGHT, BG_COLOR, GRAY, LIGHT_GRAY } from '../assets/styles/colors'
+import { BG_COLOR, GRAY, LIGHT_GRAY } from '../assets/styles/colors'
 import { connect } from 'react-redux'
 import ChatsOperations from '../operations/ChatsOperations'
 import utils from '../utils'
@@ -62,13 +62,14 @@ class ChatsScreen extends Component {
               <RoundAvatar 
                 isUserChat={this.isUserChat(item)}
                 title={title}
-                src={src} />
+                src={src}
+                size='medium' />
               <View>
                 <SemiboldText style={styles.text}>
                   {utils.truncate(title, 25)}
                 </SemiboldText>
                 <RegularText style={styles.message}>
-                  {item.last_message.text}
+                  {item.last_message ? item.last_message.text : null}
                 </RegularText>
               </View>
 
@@ -92,15 +93,17 @@ class ChatsScreen extends Component {
     const { loading } = this.props
 
     return (
-      <View style={styles.container}>
-        {loading ?
-          <Loader />
-          :
-          <View style={styles.chatsBox}>
-            {this.renderChats()}
-          </View>
-      }
-      </View>
+      <ScrollView style={styles.scrollView}>
+        <View style={styles.container}>
+          {loading ?
+            <Loader />
+            :
+            <View style={styles.chatsBox}>
+              {this.renderChats()}
+            </View>
+        }
+        </View>
+      </ScrollView>
     )
   }
 }
@@ -109,15 +112,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: BG_COLOR,
-    paddingTop: 15,
+    paddingVertical: 15,
     paddingHorizontal: 10
   },
-
-  // avatar: {
-  //   height: 40,
-  //   width: 40,
-  //   resizeMode: 'contain'
-  // },
 
   chatsBox: {
     backgroundColor: '#fff',
@@ -148,14 +145,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
 
-  // initials: {
-  //   color: '#fff',
-  //   marginTop: 7
-  // },
-
   separator: {
     height: 1,
     marginHorizontal: 10
+  },
+
+  scrollView: {
+    backgroundColor: BG_COLOR
   }
 })
 

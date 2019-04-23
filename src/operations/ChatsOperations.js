@@ -30,8 +30,27 @@ const getUsers = (q) => {
   }
 }
 
+const createChat = (ids, cb) => {
+  return dispatch => {
+    const params = {
+      type: 'user',
+      participants: ids
+    }
+    console.log(params)
+    return getAxiosInstance().then(api => {
+      api.post(`${API_URL}/rooms`, params)
+        .then(response => {
+          console.log('response.data', response.data)
+          dispatch(ChatsActions.createChat(response.data))
+          cb()
+      }).catch(error => console.log('createChat OPERATION ERROR: ', error))
+    })
+  }
+}
+
 
 export default {
   getChats,
-  getUsers
+  getUsers,
+  createChat
 }

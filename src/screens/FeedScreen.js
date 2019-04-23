@@ -84,8 +84,7 @@ class FeedScreen extends Component {
       <SafeArea>
         <NavigationEvents
           onDidFocus={this.setOnLogoPress}
-          onDidBlur={this.resetOnLogoPress}
-        />
+          onDidBlur={this.resetOnLogoPress} />
         {feedLoading && !feedData.length ?
           <Loader />
           :

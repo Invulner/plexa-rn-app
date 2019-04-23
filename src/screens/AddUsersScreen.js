@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, TextInput } from 'react-native'
+import { View, StyleSheet, TextInput, TouchableOpacity } from 'react-native'
 import SafeArea from '../components/common/SafeArea'
 import ChatsOperations from '../operations/ChatsOperations'
 import RoundAvatar from '../components/common/RoundAvatar'
@@ -7,16 +7,7 @@ import debounce from 'lodash.debounce'
 import { connect } from 'react-redux'
 import { RegularText } from '../components/common/fonts'
 import ChatsActions from '../actions/ChatsActions'
-
-const mapDispatchToProps = (dispatch) => {
-  const getUsers = (q) => dispatch(ChatsOperations.getUsers(q))
-  const deleteUsers = () => dispatch(ChatsActions.deleteUsers())
-
-  return { 
-    getUsers,
-    deleteUsers
-  }
-}
+import IconChecked from '../components/common/IconChecked'
 
 const mapStateToProps = (state) => {
   const { users } = state.chats
@@ -24,18 +15,77 @@ const mapStateToProps = (state) => {
   return { users }
 }
 
+const mapDispatchToProps = (dispatch) => {
+  const getUsers = (q) => dispatch(ChatsOperations.getUsers(q))
+  const deleteUsers = () => dispatch(ChatsActions.deleteUsers())
+  const createChat = (ids, cb) => dispatch(ChatsOperations.createChat(ids, cb))
+
+  return { 
+    getUsers,
+    deleteUsers,
+    createChat
+  }
+}
 
 class AddUsersScreen extends Component {
   state = {
-    input: ''
+    input: '',
+    userIds: []
   }
+
+  addUser = (id) => {
+    this.setState(prevState => {
+      if (prevState.userIds.includes(id))
+        return {
+          ...prevState,
+          userIds: prevState.userIds.filter(item => item !== id)
+        }
+      else
+        return {
+          ...prevState,
+          userIds: [...prevState.userIds, id]
+        }
+    })
+  }
+
+  renderChosenUsers = () => {
+    const { userIds } = this.state
+    const { users } = this.props
+    const userArr = users.filter(user => userIds.includes(user.id))
+
+    if (userArr.length)
+      return userArr.map(user => {
+        return (
+          <RoundAvatar
+            size='medium'
+            src={user.avatar_url}
+            title={user.full_name}
+            key={user.id}
+            boxStyle={{ marginBottom: 15 }} />
+        )
+      })
+  }
+
+  getUsers = debounce(input => this.props.getUsers(input), 1000)
 
   onInputChange = (input) => {
     this.setState({ input }, () => this.toggleUsers(input))
   }
   
   toggleUsers = (input) => {
-    input ? this.getUsers(input) : this.getUsers.cancel()
+    if (input) {
+      this.getUsers(input)
+    } else {
+      this.props.deleteUsers()
+      this.setState({ userIds: '' })
+      this.getUsers.cancel()
+    }
+  }
+
+  isUserChosen = (id) => {
+    const { userIds } = this.state
+
+    return userIds.includes(id)
   }
   
   renderUsers = () => {
@@ -43,26 +93,43 @@ class AddUsersScreen extends Component {
 
     return users.map(user => {
       return (
-        <View 
+        <TouchableOpacity 
           style={styles.userBox}
-          key={user.id}>
-          <RoundAvatar
-            src={user.avatar_url}
-            title={user.full_name} />
-          <RegularText style={styles.name}>
-            {user.full_name}
-          </RegularText>
-        </View>
+          key={user.id}
+          onPress={() => this.addUser(user.id)}>
+          <View style={styles.leftBox}>
+            <RoundAvatar
+              src={user.avatar_url}
+              title={user.full_name}
+              size='medium' />
+            <RegularText style={styles.name}>
+              {user.full_name}
+            </RegularText>
+          </View>
+          {this.isUserChosen(user.id) && <IconChecked />}
+        </TouchableOpacity>
       )
     })
   }
 
-  getUsers = debounce(input => this.props.getUsers(input), 1000)
+  onSubmit = () => {
+    const { createChat, navigation } = this.props
+    const { userIds } = this.state
+    //Redirect to screen with chat (we do not have this screen yet)
+    const cb = () => navigation.navigate('Chats')
+
+    createChat(userIds, cb)
+  }
+
+  componentDidMount() {
+    this.props.navigation.setParams({
+      onDonePress: this.onSubmit
+    })
+  }
 
   componentWillUnmount() {
     this.props.deleteUsers()
   }
-  
   
   render() {
     const { input } = this.state
@@ -75,7 +142,10 @@ class AddUsersScreen extends Component {
           style={styles.searhField}
           placeholder='Search user ...'
           onChangeText={this.onInputChange} />
-          {!!users.length && this.renderUsers()}
+        <View style={styles.chosenUsers}>
+          {this.renderChosenUsers()}
+        </View> 
+        {!!users.length && this.renderUsers()}
       </SafeArea>
     )
   }
@@ -86,7 +156,6 @@ const styles = StyleSheet.create({
     height: 50,
     width: '100%',
     paddingHorizontal: 10,
-    marginBottom: 20,
     backgroundColor: '#fff',
     fontSize: 16
   },
@@ -97,12 +166,25 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: '#fff',
     alignItems: 'center',
-    marginBottom: 2
+    marginBottom: 2,
+    justifyContent: 'space-between'
   },
 
   name: {
     fontSize: 18,
-    marginTop: 5
+    marginTop: 8
+  },
+
+  leftBox: {
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+
+  chosenUsers: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    paddingHorizontal: 10,
+    paddingTop: 15
   }
 })
 
