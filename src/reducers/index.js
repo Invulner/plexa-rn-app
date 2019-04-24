@@ -8,6 +8,7 @@ import ResearchFeedReducer from './ResearchFeedReducer'
 import PostReducer from './PostReducer'
 import LocationsReducer from './LocationsReducer'
 import ChatsReducer from './ChatsReducer'
+import ChatReducer from './ChatReducer'
 
 const rootReducer = combineReducers({
   device: DeviceReducer,
@@ -18,7 +19,8 @@ const rootReducer = combineReducers({
   researchFeed: ResearchFeedReducer,
   post: PostReducer,
   locations: LocationsReducer,
-  chats: ChatsReducer
+  chats: ChatsReducer,
+  chat: ChatReducer
 })
 
 export default rootReducer
