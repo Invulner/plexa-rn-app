@@ -218,7 +218,7 @@ class ComposeScreen extends Component {
           </View>
 
           <TouchableOpacity
-            style={[styles.postBtn, (this.isPostBtnActive()) && styles.btnActive]}
+            style={[styles.postBtn, this.isPostBtnActive() && styles.btnActive]}
             onPress={this.onSubmit}
             disabled={!this.isPostBtnActive()}>
             <RegularText style={styles.postText}>

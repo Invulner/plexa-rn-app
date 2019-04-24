@@ -95,7 +95,7 @@ const formatDate = (dateArg) => {
   const day = date.getDate()
   const month = date.toString().slice(4, 7)
 
-    return `${day} ${month}`
+  return `${day} ${month}`
 }
 
 const formatChatDate = (dateArg) => {
