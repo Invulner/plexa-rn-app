@@ -212,9 +212,9 @@ class ComposeScreen extends Component {
           </View>
 
           <TouchableOpacity
-            style={[styles.postBtn, (!this.isEmptyInput() || link_url) && styles.btnActive]}
+            style={[styles.postBtn, (!this.isEmptyInput() || link_url || this.isImageExist()) && styles.btnActive]}
             onPress={this.onSubmit}
-            disabled={!link_url && this.isEmptyInput()}>
+            disabled={!link_url && this.isEmptyInput() && !this.isImageExist()}>
             <RegularText style={styles.postText}>
               Post
             </RegularText>
