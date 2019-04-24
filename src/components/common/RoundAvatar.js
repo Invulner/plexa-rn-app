@@ -46,8 +46,8 @@ const styles = StyleSheet.create({
   },
 
   avatarImage_small: {
-    height: 20,
-    width: 20
+    height: 30,
+    width: 30
   },
 
   avatarImage_medium: {
