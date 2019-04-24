@@ -8,6 +8,7 @@ import utils from '../utils'
 import { LinearGradient } from 'expo'
 import Loader from '../components/common/Loader'
 import RoundAvatar from '../components/common/RoundAvatar'
+import { NavigationEvents } from 'react-navigation'
 
 const mapStateToProps = (state) => {
   const { items, loading } = state.chats
@@ -107,6 +108,22 @@ class ChatsScreen extends Component {
     })
   }
 
+  getParentNavigation = () => {
+    return this.props.navigation.dangerouslyGetParent()
+  }
+
+  setNavParams = () => {
+    this.getParentNavigation().setParams({
+      isChatsScreen: true
+    })
+  }
+  
+  resetNavParams = () => {
+    this.getParentNavigation().setParams({
+      isChatsScreen: false
+    })
+  }
+
   componentDidMount() {
     this.props.getChats()
   }
@@ -116,6 +133,9 @@ class ChatsScreen extends Component {
 
     return (
       <ScrollView style={styles.scrollView}>
+      <NavigationEvents
+        onDidFocus={this.setNavParams}
+        onDidBlur={this.resetNavParams} />
         <View style={styles.container}>
           {loading ?
             <Loader />

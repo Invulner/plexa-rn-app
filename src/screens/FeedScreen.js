@@ -56,14 +56,14 @@ class FeedScreen extends Component {
   resetNavParams = () => {
     this.getParentNavigation().setParams({ 
       onLogoPress: null,
-      isFeed: false
+      isFeedScreen: false
     })
   }
 
   setNavParams = () => {
     this.getParentNavigation().setParams({ 
       onLogoPress: this.onLogoPress,
-      isFeed: true
+      isFeedScreen: true
     })
   }
 
