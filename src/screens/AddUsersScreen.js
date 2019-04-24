@@ -114,8 +114,7 @@ class AddUsersScreen extends Component {
   onSubmit = () => {
     const { createChat, navigation } = this.props
     const { userIds } = this.state
-    //Redirect to screen with chat (we do not have this screen yet)
-    const cb = () => navigation.navigate('Chats')
+    const cb = () => navigation.navigate('Chat')
 
     createChat(userIds, cb)
   }

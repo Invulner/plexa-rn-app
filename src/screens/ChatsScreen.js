@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, ScrollView } from 'react-native'
+import { View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native'
 import { RegularText, SemiboldText } from '../components/common/fonts'
 import { BG_COLOR, GRAY, LIGHT_GRAY } from '../assets/styles/colors'
 import { connect } from 'react-redux'
@@ -48,6 +48,26 @@ class ChatsScreen extends Component {
     return `${day} ${month}`
   }
 
+  onChatPress = (item, title) => {
+    const { navigation } = this.props
+    const date = new Date(item.last_message_date)
+    const unixDay = 86400000
+    let lastMessageDate
+
+    if (Date.now() - date.getTime() <= unixDay)
+      lastMessageDate = 'Today'
+    else if (Date.now() - date.getTime() <= 2 * unixDay)
+      lastMessageDate = 'Yesterday'
+    else 
+      lastMessageDate = this.renderDate(date)
+
+    navigation.navigate('Chat', { 
+      chatId: item.id,
+      chatTitle: utils.truncate(title, 35),
+      lastMessageDate: lastMessageDate
+    })
+  }
+
   renderChats = () => {
     const { sortedChats } = this.props
 
@@ -57,7 +77,9 @@ class ChatsScreen extends Component {
 
       return (
         <React.Fragment key={item.id}>
-          <View style={styles.chatBox}>
+          <TouchableOpacity
+            onPress={() => this.onChatPress(item, title)} 
+            style={styles.chatBox}>
             <View style={styles.leftBox}>
               <RoundAvatar 
                 isUserChat={this.isUserChat(item)}
@@ -78,7 +100,7 @@ class ChatsScreen extends Component {
               {this.renderDate(item.last_message_date)}
             </RegularText>
 
-          </View>
+          </TouchableOpacity>
           {index !== array.length - 1 && this.renderSeparator()}
         </React.Fragment>
       )
