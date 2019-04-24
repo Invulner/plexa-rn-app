@@ -41,31 +41,13 @@ class ChatsScreen extends Component {
     )
   }
 
-  renderDate = (time) => {
-    const date = new Date(time)
-    const day = date.getDate()
-    const month = date.toString().slice(4, 7)
-
-    return `${day} ${month}`
-  }
-
   onChatPress = (item, title) => {
     const { navigation } = this.props
-    const date = new Date(item.last_message_date)
-    const unixDay = 86400000
-    let lastMessageDate
-
-    if (Date.now() - date.getTime() <= unixDay)
-      lastMessageDate = 'Today'
-    else if (Date.now() - date.getTime() <= 2 * unixDay)
-      lastMessageDate = 'Yesterday'
-    else 
-      lastMessageDate = this.renderDate(date)
 
     navigation.navigate('Chat', { 
       chatId: item.id,
       chatTitle: utils.truncate(title, 35),
-      lastMessageDate: lastMessageDate
+      lastMessageDate: utils.formatChatDate(item.last_message_date)
     })
   }
 
@@ -98,7 +80,7 @@ class ChatsScreen extends Component {
 
             </View>
             <RegularText style={styles.date}>
-              {this.renderDate(item.last_message_date)}
+              {utils.formatDate(item.last_message_date)}
             </RegularText>
 
           </TouchableOpacity>

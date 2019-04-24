@@ -90,6 +90,27 @@ const getMedicalPractice = (user) => {
   return allPractice.filter(obj => obj.list && obj.list.length)
 }
 
+const formatDate = (dateArg) => {
+  const date = new Date(dateArg)
+  const day = date.getDate()
+  const month = date.toString().slice(4, 7)
+
+    return `${day} ${month}`
+}
+
+const formatChatDate = (dateArg) => {
+  const date = new Date(dateArg)
+  const unixDay = 86400000
+
+  if (Date.now() - date.getTime() <= unixDay)
+    return 'Today'
+  else if (Date.now() - date.getTime() <= 2 * unixDay)
+    return 'Yesterday'
+  else 
+    return formatDate(date)  
+}
+
+
 export default {
   getInitials,
   truncate,
@@ -100,5 +121,7 @@ export default {
   findItemById,
   sortByField,
   getLocation,
-  getMedicalPractice
+  getMedicalPractice,
+  formatDate,
+  formatChatDate
 }
