@@ -5,9 +5,11 @@ import { withNavigation } from 'react-navigation'
 class FeedHeaderLeft extends Component {
   render() {
     const { navigation } = this.props
+    const isFeedScreen = navigation.getParam('isFeedScreen')
     
     return (
       <View style={styles.container}>
+      {isFeedScreen &&
         <TouchableOpacity 
           style={styles.addPostButton} 
           onPress={() => navigation.navigate('Compose')}>
@@ -15,6 +17,7 @@ class FeedHeaderLeft extends Component {
             style={styles.addPostIcon}
             source={require('../../../assets/icons/add-post.png')} />
         </TouchableOpacity>
+      }
       </View>
     )
   }

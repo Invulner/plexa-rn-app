@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, ScrollView } from 'react-native'
+import { View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native'
 import { RegularText, SemiboldText } from '../components/common/fonts'
 import { BG_COLOR, GRAY, LIGHT_GRAY } from '../assets/styles/colors'
 import { connect } from 'react-redux'
@@ -8,6 +8,7 @@ import utils from '../utils'
 import { LinearGradient } from 'expo'
 import Loader from '../components/common/Loader'
 import RoundAvatar from '../components/common/RoundAvatar'
+import { NavigationEvents } from 'react-navigation'
 
 const mapStateToProps = (state) => {
   const { items, loading } = state.chats
@@ -40,12 +41,14 @@ class ChatsScreen extends Component {
     )
   }
 
-  renderDate = (time) => {
-    const date = new Date(time)
-    const day = date.getDate()
-    const month = date.toString().slice(4, 7)
+  onChatPress = (item, title) => {
+    const { navigation } = this.props
 
-    return `${day} ${month}`
+    navigation.navigate('Chat', { 
+      chatId: item.id,
+      chatTitle: utils.truncate(title, 35),
+      lastMessageDate: utils.formatChatDate(item.last_message_date)
+    })
   }
 
   renderChats = () => {
@@ -57,7 +60,9 @@ class ChatsScreen extends Component {
 
       return (
         <React.Fragment key={item.id}>
-          <View style={styles.chatBox}>
+          <TouchableOpacity
+            onPress={() => this.onChatPress(item, title)} 
+            style={styles.chatBox}>
             <View style={styles.leftBox}>
               <RoundAvatar 
                 isUserChat={this.isUserChat(item)}
@@ -75,13 +80,29 @@ class ChatsScreen extends Component {
 
             </View>
             <RegularText style={styles.date}>
-              {this.renderDate(item.last_message_date)}
+              {utils.formatDate(item.last_message_date)}
             </RegularText>
 
-          </View>
+          </TouchableOpacity>
           {index !== array.length - 1 && this.renderSeparator()}
         </React.Fragment>
       )
+    })
+  }
+
+  getParentNavigation = () => {
+    return this.props.navigation.dangerouslyGetParent()
+  }
+
+  setNavParams = () => {
+    this.getParentNavigation().setParams({
+      isChatsScreen: true
+    })
+  }
+  
+  resetNavParams = () => {
+    this.getParentNavigation().setParams({
+      isChatsScreen: false
     })
   }
 
@@ -94,6 +115,9 @@ class ChatsScreen extends Component {
 
     return (
       <ScrollView style={styles.scrollView}>
+      <NavigationEvents
+        onDidFocus={this.setNavParams}
+        onDidBlur={this.resetNavParams} />
         <View style={styles.container}>
           {loading ?
             <Loader />

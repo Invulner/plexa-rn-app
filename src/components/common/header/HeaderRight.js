@@ -4,15 +4,18 @@ import { withNavigation } from 'react-navigation'
 
 class HeaderRight extends Component {
   render() {
-    const { navigate } = this.props.navigation
+    const { navigation } = this.props
+    const isChatsScreen = navigation.getParam('isChatsScreen')
 
     return (
       <View style={styles.container}>
-        <TouchableOpacity onPress={() => navigate('AddUsers')}>
+      {isChatsScreen &&
+        <TouchableOpacity onPress={() => navigation.navigate('AddUsers')}>
           <Image 
             style={styles.messageIcon}
             source={require('../../../assets/icons/add-users.png')} />
         </TouchableOpacity>        
+      }
       </View>
     )
   }

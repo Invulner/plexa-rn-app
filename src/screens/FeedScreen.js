@@ -53,15 +53,17 @@ class FeedScreen extends Component {
     this.props.refreshFeed()
   }
 
-  resetOnLogoPress = () => {
+  resetNavParams = () => {
     this.getParentNavigation().setParams({ 
-      onLogoPress: null
+      onLogoPress: null,
+      isFeedScreen: false
     })
   }
 
-  setOnLogoPress = () => {
+  setNavParams = () => {
     this.getParentNavigation().setParams({ 
-      onLogoPress: this.onLogoPress
+      onLogoPress: this.onLogoPress,
+      isFeedScreen: true
     })
   }
 
@@ -83,8 +85,8 @@ class FeedScreen extends Component {
     return (
       <SafeArea>
         <NavigationEvents
-          onDidFocus={this.setOnLogoPress}
-          onDidBlur={this.resetOnLogoPress} />
+          onDidFocus={this.setNavParams}
+          onDidBlur={this.resetNavParams} />
         {feedLoading && !feedData.length ?
           <Loader />
           :

@@ -162,6 +162,12 @@ class ComposeScreen extends Component {
     }
   }
 
+  isPostBtnActive = () => {
+    const { link_url } = this.props.post
+
+    return !this.isEmptyInput() || link_url || this.isImageExist()
+  }
+
   componentWillUnmount() {
     this.resetPost()
     this.props.navigation.setParams({ postId: null })
@@ -212,9 +218,9 @@ class ComposeScreen extends Component {
           </View>
 
           <TouchableOpacity
-            style={[styles.postBtn, (!this.isEmptyInput() || link_url) && styles.btnActive]}
+            style={[styles.postBtn, this.isPostBtnActive() && styles.btnActive]}
             onPress={this.onSubmit}
-            disabled={!link_url && this.isEmptyInput()}>
+            disabled={!this.isPostBtnActive()}>
             <RegularText style={styles.postText}>
               Post
             </RegularText>
