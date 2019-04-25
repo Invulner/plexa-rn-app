@@ -110,6 +110,13 @@ const formatChatDate = (dateArg) => {
     return formatDate(date)  
 }
 
+const formatTime = (time) => {
+  const date = new Date(time)
+  const hours = date.getHours()
+  const mins = date.getMinutes()
+
+  return `${hours}:${mins}`
+}
 
 export default {
   getInitials,
@@ -123,5 +130,6 @@ export default {
   getLocation,
   getMedicalPractice,
   formatDate,
-  formatChatDate
+  formatChatDate,
+  formatTime
 }

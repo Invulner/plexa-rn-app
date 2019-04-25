@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, SafeAreaView } from 'react-native'
+import { View, StyleSheet, SafeAreaView, FlatList } from 'react-native'
 import SafeArea from '../components/common/SafeArea'
 import { connect } from 'react-redux'
 import ChatOperations from '../operations/ChatOperations'
@@ -10,8 +10,23 @@ import RoundAvatar from '../components/common/RoundAvatar'
 
 const mapStateToProps = (state) => {
   const { messages } = state.chat
+  const { full_name: userName } = state.user
 
-  return { messages }
+  const isUser = (item) => {
+    return item.author.name === userName
+  }
+
+  const data = messages.map((item, index, array) => {
+    if (index >= 1 && item.author.name === array[index - 1].author.name){
+      return isUser(item) ? { ...item, isUser: true, isNextMessage: true } : { ...item, isNextMessage: true }
+    }
+    else
+      return isUser(item) ? { ...item, isUser: true } : item
+  })
+
+  return { 
+    data
+  }
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -22,6 +37,48 @@ const mapDispatchToProps = (dispatch) => {
 
 
 class ChatScreen extends Component {
+  renderItem = ({ item }) => {
+    if (item.isUser)
+      return (
+        <View style={[styles.userMessage, item.isNextMessage && styles.nextUserMessage]}>
+          {this.renderMessage(item.text)}
+          {this.renderTime(item.created_at)}
+        </View>
+      )
+    else
+      return (
+        <View style={styles.publicOuterBox}>
+        {!item.isNextMessage &&
+          <RoundAvatar
+            src={'https://www.reduceimages.com/img/image-after.jpg'}
+            title='User'
+            size='small'
+            boxStyle={{ marginRight: 5 }} />
+        }
+          <View style={[styles.publicUserMessage, item.isNextMessage && styles.nextPublicUserMessage]}>
+            {this.renderMessage(item.text)}
+            {this.renderTime(item.created_at)}
+          </View>
+        </View>
+      )
+  }
+
+  renderMessage = (text) => {
+    return (
+      <RegularText style={styles.text}>
+        {text}
+      </RegularText>
+    )
+  }
+
+  renderTime = (time) => {
+    return (
+      <RegularText style={styles.time}>
+        {utils.formatTime(time)}
+      </RegularText>
+    )
+  }
+
   componentDidMount() {
     const { navigation, getMessages } = this.props
     const chatId = navigation.getParam('chatId')
@@ -30,6 +87,8 @@ class ChatScreen extends Component {
   }
   
   render() {
+    const { data } = this.props
+
     return (
       <SafeAreaView>
         <View style={styles.container}>
@@ -38,7 +97,15 @@ class ChatScreen extends Component {
           25 February 2019
         </RegularText>
 
-          <View style={styles.userMessage}>
+        {!!data && 
+          <FlatList
+            data={data}
+            keyExtractor={item => item.id + ''}
+            renderItem={this.renderItem} />
+        }
+ 
+
+{/*          <View style={styles.userMessage}>
             <RegularText style={styles.text}>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae iste modi excepturi et, eligendi eaque.
             </RegularText>
@@ -90,9 +157,10 @@ class ChatScreen extends Component {
             <RegularText style={styles.time}>
               17:02
             </RegularText>
-          </View>
+          </View> */}
 
         </View>
+
       </SafeAreaView>
     )
   }
