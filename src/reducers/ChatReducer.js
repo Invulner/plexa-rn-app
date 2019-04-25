@@ -2,7 +2,8 @@ import types from '../types/chat'
 
 const initialState = {
   messages: [],
-  loading: true
+  loading: true,
+  page: 1
 }
 
 const chatReducer = (state = initialState, action) => {
@@ -10,7 +11,10 @@ const chatReducer = (state = initialState, action) => {
     case types.SAVE_MESSAGES:
       return {
         ...state,
-        messages: action.data
+        messages: [
+          ...state.messages,
+          ...action.data
+        ]
       }
 
     case types.DELETE_MESSAGES:
@@ -23,6 +27,12 @@ const chatReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: action.flag
+      }
+
+    case types.UPDATE_CHAT_PAGE:
+      return {
+        ...state,
+        page: state.page + 1
       }
 
     default:

@@ -11,21 +11,26 @@ import { getChatMessages } from '../selectors/ChatMessages'
 import Loader from '../components/common/Loader'
 
 const mapStateToProps = (state) => {
-  const { loading } = state.chat
+  const { loading, page } = state.chat
+  const { full_name: userName } = state.user
 
   return { 
     data: getChatMessages(state),
-    loading
+    loading,
+    page,
+    userName
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
-  const getMessages = (id) => dispatch(ChatOperations.getMessages(id))
+  const getMessages = (id, page) => dispatch(ChatOperations.getMessages(id, page))
   const deleteMessages = () => dispatch(ChatActions.deleteMessages())
+  const updatePage = () => dispatch(ChatActions.updateChatPage())
 
   return { 
     getMessages,
-    deleteMessages
+    deleteMessages,
+    updatePage
   }
 }
 
@@ -72,11 +77,23 @@ class ChatScreen extends Component {
     )
   }
 
-  componentDidMount() {
-    const { navigation, getMessages } = this.props
-    const chatId = navigation.getParam('chatId')
+  getChatId = () => {
+    const { navigation } = this.props
 
-    getMessages(chatId)
+    return navigation.getParam('chatId')
+  }
+
+  addMessages = () => {
+    const { page, getMessages, updatePage } = this.props
+
+    getMessages(this.getChatId(), page + 1)
+    updatePage()
+  }
+
+  componentDidMount() {
+    const { getMessages } = this.props
+
+    getMessages(this.getChatId())
   }
 
   componentWillUnmount() {
@@ -88,19 +105,23 @@ class ChatScreen extends Component {
 
     return (
       <SafeAreaView style={styles.safeArea}>
-        {!loading && data.length ?
+        {loading && !data.length ?
+          <Loader />
+          :
           <View style={styles.container}>
             <RegularText style={styles.chatDate}>
-              25 February 2019
+              Example date
             </RegularText>
 
             <FlatList
               data={data}
+              contentContainerStyle={styles.list}
               keyExtractor={item => item.id + ''}
-              renderItem={this.renderItem} />
+              renderItem={this.renderItem}
+              onEndReachedThreshold={0}
+              onEndReached={this.addMessages}
+              ListFooterComponent={loading && <Loader />} />
           </View>
-          :
-          <Loader />
         }
       </SafeAreaView>
     )
@@ -140,7 +161,7 @@ const styles = StyleSheet.create({
   },
 
   container: {
-    padding: 10,
+    paddingVertical: 10,
     flex: 1
   },
 
@@ -173,6 +194,10 @@ const styles = StyleSheet.create({
 
   safeArea: {
     flex: 1
+  },
+
+  list: {
+    paddingHorizontal: 10
   }
 })
 

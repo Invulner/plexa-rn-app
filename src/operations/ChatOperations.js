@@ -2,12 +2,13 @@ import ChatActions from '../actions/ChatActions'
 import getAxiosInstance from '../config/axios'
 import { API_URL } from '../constants'
 
-const getMessages = (id) => {
+const getMessages = (id, page = 1) => {
   return dispatch => {
+    console.log('page :', page)
     dispatch(ChatActions.toggleMessagesLoading(true))
 
     return getAxiosInstance().then(api => {
-      api.get(`${API_URL}/rooms/${id}/messages`)
+      api.get(`${API_URL}/rooms/${id}/messages?page=${page}`)
         .then(response => {
           console.log(response.data)
           dispatch(ChatActions.saveMessages(response.data))

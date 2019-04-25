@@ -1,5 +1,4 @@
 import { createSelector } from 'reselect'
-import utils from '../utils'
 
 export const getChatMessages = createSelector(
   state => state.user.full_name,
