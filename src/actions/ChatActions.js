@@ -5,6 +5,11 @@ const saveMessages = (data) => ({
   data
 })
 
+const deleteMessages = () => ({
+  type: types.DELETE_MESSAGES
+})
+
 export default {
-  saveMessages
+  saveMessages,
+  deleteMessages
 }

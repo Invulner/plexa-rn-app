@@ -7,6 +7,7 @@ import utils from '../utils'
 import { RegularText } from '../components/common/fonts'
 import { BG_COLOR, GRAY } from '../assets/styles/colors'
 import RoundAvatar from '../components/common/RoundAvatar'
+import ChatActions from '../actions/ChatActions'
 
 const mapStateToProps = (state) => {
   const { messages } = state.chat
@@ -31,10 +32,13 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   const getMessages = (id) => dispatch(ChatOperations.getMessages(id))
+  const deleteMessages = () => dispatch(ChatActions.deleteMessages())
 
-  return { getMessages }
+  return { 
+    getMessages,
+    deleteMessages
+  }
 }
-
 
 class ChatScreen extends Component {
   renderItem = ({ item }) => {
@@ -50,7 +54,7 @@ class ChatScreen extends Component {
         <View style={styles.publicOuterBox}>
         {!item.isNextMessage &&
           <RoundAvatar
-            src={'https://www.reduceimages.com/img/image-after.jpg'}
+            src={item.author.avatar}
             title='User'
             size='small'
             boxStyle={{ marginRight: 5 }} />
@@ -84,6 +88,10 @@ class ChatScreen extends Component {
     const chatId = navigation.getParam('chatId')
 
     getMessages(chatId)
+  }
+
+  componentWillUnmount() {
+    this.props.deleteMessages()
   }
   
   render() {
