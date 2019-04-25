@@ -8,26 +8,11 @@ import { RegularText } from '../components/common/fonts'
 import { BG_COLOR, GRAY } from '../assets/styles/colors'
 import RoundAvatar from '../components/common/RoundAvatar'
 import ChatActions from '../actions/ChatActions'
+import { getChatMessages } from '../selectors/ChatMessages'
 
 const mapStateToProps = (state) => {
-  const { messages } = state.chat
-  const { full_name: userName } = state.user
 
-  const isUser = (item) => {
-    return item.author.name === userName
-  }
-
-  const data = messages.map((item, index, array) => {
-    if (index >= 1 && item.author.name === array[index - 1].author.name){
-      return isUser(item) ? { ...item, isUser: true, isNextMessage: true } : { ...item, isNextMessage: true }
-    }
-    else
-      return isUser(item) ? { ...item, isUser: true } : item
-  })
-
-  return { 
-    data
-  }
+  return { data: getChatMessages(state) }
 }
 
 const mapDispatchToProps = (dispatch) => {
