@@ -72,15 +72,6 @@ class ChatScreen extends Component {
     )
   }
 
-  // renderSeparator = ({ highlighted }) => {
-  //   if (highlighted)
-  //     return (
-  //       <RegularText style={styles.chatDate}>
-  //         25 February 2019
-  //       </RegularText>
-  //     )
-  // }
-
   componentDidMount() {
     const { navigation, getMessages } = this.props
     const chatId = navigation.getParam('chatId')

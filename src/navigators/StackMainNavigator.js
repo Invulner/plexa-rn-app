@@ -15,7 +15,6 @@ import Done from '../components/common/header/Done'
 import AddLocationScreen from '../screens/AddLocationScreen'
 import AddUsersScreen from '../screens/AddUsersScreen'
 import ChatScreen from '../screens/ChatScreen'
-import ChatHeaderTitle from '../components/common/header/ChatHeaderTitle'
 
 const MainStack = createStackNavigator({
   MainSwitch: {
@@ -83,14 +82,9 @@ const MainStack = createStackNavigator({
   },
   Chat: {
     screen: ChatScreen,
-    navigationOptions: ({ navigation }) => {
-      const title = navigation.getParam('chatTitle')
-      const lastMessageDate = navigation.getParam('lastMessageDate')
-
-      return {
-        headerTitle: <ChatHeaderTitle title={title} lastMessageDate={lastMessageDate} />
-      }
-    }
+    navigationOptions: ({ navigation }) => ({
+      headerTitle: <HeaderTitle title={navigation.getParam('chatTitle')} />
+    })
   }
 }, {
   defaultNavigationOptions: {
