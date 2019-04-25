@@ -113,10 +113,24 @@ const formatChatDate = (dateArg) => {
 const formatTime = (time) => {
   const date = new Date(time)
   const hours = date.getHours()
-  const mins = date.getMinutes()
+  let mins = date.getMinutes()
+  mins = mins < 10 ? `0${mins}` : mins
 
   return `${hours}:${mins}`
 }
+
+// const areDatesEqual = (a, b) => {
+//   const date1 = new Date(a)
+//   const date2 = new Date(b)
+//   const date1Day = date1.getDate()
+//   const date1Month = date1.getMonth()
+//   const date1Year = date1.getFullYear()
+//   const date2Day = date2.getDate()
+//   const date2Month = date2.getMonth()
+//   const date2Year = date2.getFullYear()
+
+//   return date1Day === date2Day && date1Month === date2Month && date1Year === date2Year
+// }
 
 export default {
   getInitials,
@@ -131,5 +145,6 @@ export default {
   getMedicalPractice,
   formatDate,
   formatChatDate,
-  formatTime
+  formatTime,
+  // areDatesEqual
 }

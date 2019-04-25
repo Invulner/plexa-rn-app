@@ -1,7 +1,8 @@
 import types from '../types/chat'
 
 const initialState = {
-  messages: []
+  messages: [],
+  loading: true
 }
 
 const chatReducer = (state = initialState, action) => {
@@ -16,6 +17,12 @@ const chatReducer = (state = initialState, action) => {
       return {
         ...state,
         messages: initialState.messages
+      }
+
+    case types.TOGGLE_MESSAGES_LOADING:
+      return {
+        ...state,
+        loading: action.flag
       }
 
     default:

@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { View, StyleSheet, SafeAreaView, FlatList } from 'react-native'
-import SafeArea from '../components/common/SafeArea'
 import { connect } from 'react-redux'
 import ChatOperations from '../operations/ChatOperations'
 import utils from '../utils'
@@ -9,10 +8,15 @@ import { BG_COLOR, GRAY } from '../assets/styles/colors'
 import RoundAvatar from '../components/common/RoundAvatar'
 import ChatActions from '../actions/ChatActions'
 import { getChatMessages } from '../selectors/ChatMessages'
+import Loader from '../components/common/Loader'
 
 const mapStateToProps = (state) => {
+  const { loading } = state.chat
 
-  return { data: getChatMessages(state) }
+  return { 
+    data: getChatMessages(state),
+    loading
+  }
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -68,6 +72,15 @@ class ChatScreen extends Component {
     )
   }
 
+  // renderSeparator = ({ highlighted }) => {
+  //   if (highlighted)
+  //     return (
+  //       <RegularText style={styles.chatDate}>
+  //         25 February 2019
+  //       </RegularText>
+  //     )
+  // }
+
   componentDidMount() {
     const { navigation, getMessages } = this.props
     const chatId = navigation.getParam('chatId')
@@ -80,80 +93,24 @@ class ChatScreen extends Component {
   }
   
   render() {
-    const { data } = this.props
+    const { data, loading } = this.props
 
     return (
-      <SafeAreaView>
-        <View style={styles.container}>
+      <SafeAreaView style={styles.safeArea}>
+        {!loading && data.length ?
+          <View style={styles.container}>
+            <RegularText style={styles.chatDate}>
+              25 February 2019
+            </RegularText>
 
-        <RegularText style={styles.chatDate}>
-          25 February 2019
-        </RegularText>
-
-        {!!data && 
-          <FlatList
-            data={data}
-            keyExtractor={item => item.id + ''}
-            renderItem={this.renderItem} />
+            <FlatList
+              data={data}
+              keyExtractor={item => item.id + ''}
+              renderItem={this.renderItem} />
+          </View>
+          :
+          <Loader />
         }
- 
-
-{/*          <View style={styles.userMessage}>
-            <RegularText style={styles.text}>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae iste modi excepturi et, eligendi eaque.
-            </RegularText>
-            <RegularText style={styles.time}>
-              16:43
-            </RegularText>
-          </View>
-
-          <View style={styles.publicOuterBox}>
-            <RoundAvatar
-              src={'https://www.reduceimages.com/img/image-after.jpg'}
-              title='User'
-              size='small'
-              boxStyle={{ marginRight: 5 }} />
-            <View style={styles.publicUserMessage}>
-              <RegularText style={styles.text}>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Voluptate est ipsa provident?
-              </RegularText>
-              <RegularText style={styles.time}>
-                16:48
-              </RegularText>
-            </View>
-          </View>
-
-          <View style={styles.publicOuterBox}>
-            <View style={[styles.publicUserMessage, styles.nextPublicUserMessage]}>
-              <RegularText style={styles.text}>
-                Lorem?
-              </RegularText>
-              <RegularText style={styles.time}>
-                16:48
-              </RegularText>
-            </View>
-          </View>
-
-          <View style={styles.userMessage}>
-            <RegularText style={styles.text}>
-              Lorem ipsum dolor sit amet consectetur adipisicing.
-            </RegularText>
-            <RegularText style={styles.time}>
-              17:02
-            </RegularText>
-          </View>
-
-          <View style={[styles.userMessage, styles.nextUserMessage]}>
-            <RegularText style={styles.text}>
-              Lorem, ipsum dolor.
-            </RegularText>
-            <RegularText style={styles.time}>
-              17:02
-            </RegularText>
-          </View> */}
-
-        </View>
-
       </SafeAreaView>
     )
   }
@@ -192,7 +149,8 @@ const styles = StyleSheet.create({
   },
 
   container: {
-    padding: 10
+    padding: 10,
+    flex: 1
   },
 
   time: {
@@ -220,6 +178,10 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginBottom: 10,
     ...time
+  },
+
+  safeArea: {
+    flex: 1
   }
 })
 

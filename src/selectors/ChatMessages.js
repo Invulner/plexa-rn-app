@@ -1,4 +1,5 @@
 import { createSelector } from 'reselect'
+import utils from '../utils'
 
 export const getChatMessages = createSelector(
   state => state.user.full_name,
@@ -8,7 +9,7 @@ export const getChatMessages = createSelector(
       return item.author.name === userName
     }
 
-    const data = messages.map((item, index, array) => {
+    let data = messages.map((item, index, array) => {
       if (index >= 1 && item.author.name === array[index - 1].author.name){
         return isUser(item) ? { ...item, isUser: true, isNextMessage: true } : { ...item, isNextMessage: true }
       }

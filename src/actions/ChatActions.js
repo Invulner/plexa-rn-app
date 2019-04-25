@@ -9,7 +9,13 @@ const deleteMessages = () => ({
   type: types.DELETE_MESSAGES
 })
 
+const toggleMessagesLoading = (flag) => ({
+  type: types.TOGGLE_MESSAGES_LOADING,
+  flag
+})
+
 export default {
   saveMessages,
-  deleteMessages
+  deleteMessages,
+  toggleMessagesLoading
 }
