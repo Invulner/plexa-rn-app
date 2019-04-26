@@ -12,13 +12,11 @@ import Loader from '../components/common/Loader'
 
 const mapStateToProps = (state) => {
   const { loading, page } = state.chat
-  const { full_name: userName } = state.user
 
   return { 
     data: getChatMessages(state),
     loading,
-    page,
-    userName
+    page
   }
 }
 
@@ -36,7 +34,13 @@ const mapDispatchToProps = (dispatch) => {
 
 class ChatScreen extends Component {
   renderItem = ({ item }) => {
-    if (item.isUser)
+    if (item.date)
+      return (
+        <RegularText style={styles.chatDate}>
+          {utils.formatChatDate(item.date, 'isFullDate')}
+        </RegularText>
+      )
+    else if (item.isUser)
       return (
         <View style={[styles.userMessage, item.isNextMessage && styles.nextUserMessage]}>
           {this.renderMessage(item.text)}
@@ -109,15 +113,13 @@ class ChatScreen extends Component {
           <Loader />
           :
           <View style={styles.container}>
-            <RegularText style={styles.chatDate}>
-              Example date
-            </RegularText>
 
             <FlatList
               data={data}
               contentContainerStyle={styles.list}
-              keyExtractor={item => item.id + ''}
+              keyExtractor={item => (item.id ? item.id : item.date ) + ''}
               renderItem={this.renderItem}
+              inverted={true}
               onEndReachedThreshold={0}
               onEndReached={this.addMessages}
               ListFooterComponent={loading && <Loader />} />

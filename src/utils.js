@@ -98,16 +98,19 @@ const formatDate = (dateArg) => {
   return `${day} ${month}`
 }
 
-const formatChatDate = (dateArg) => {
+const formatChatDate = (dateArg, isFullDate = false) => {
   const date = new Date(dateArg)
   const unixDay = 86400000
+  const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 
+  'September', 'October', 'November', 'December']
+  const fullDate = `${date.getDate()} ${monthNames[date.getMonth() - 1]} ${date.getFullYear()}`
 
   if (Date.now() - date.getTime() <= unixDay)
     return 'Today'
   else if (Date.now() - date.getTime() <= 2 * unixDay)
     return 'Yesterday'
   else 
-    return formatDate(date)  
+    return isFullDate ? fullDate : formatDate(date)  
 }
 
 const formatTime = (time) => {
@@ -115,22 +118,22 @@ const formatTime = (time) => {
   const hours = date.getHours()
   let mins = date.getMinutes()
   mins = mins < 10 ? `0${mins}` : mins
-
+  
   return `${hours}:${mins}`
 }
 
-// const areDatesEqual = (a, b) => {
-//   const date1 = new Date(a)
-//   const date2 = new Date(b)
-//   const date1Day = date1.getDate()
-//   const date1Month = date1.getMonth()
-//   const date1Year = date1.getFullYear()
-//   const date2Day = date2.getDate()
-//   const date2Month = date2.getMonth()
-//   const date2Year = date2.getFullYear()
+const compareDates = (a, b) => {
+  const date1 = new Date(a)
+  const date2 = new Date(b)
+  const date1Day = date1.getDate()
+  const date1Month = date1.getMonth()
+  const date1Year = date1.getFullYear()
+  const date2Day = date2.getDate()
+  const date2Month = date2.getMonth()
+  const date2Year = date2.getFullYear()
 
-//   return date1Day === date2Day && date1Month === date2Month && date1Year === date2Year
-// }
+  return date1Day === date2Day && date1Month === date2Month && date1Year === date2Year
+}
 
 export default {
   getInitials,
@@ -146,5 +149,5 @@ export default {
   formatDate,
   formatChatDate,
   formatTime,
-  // areDatesEqual
+  compareDates
 }
