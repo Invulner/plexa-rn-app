@@ -11,12 +11,13 @@ import { getChatMessages } from '../selectors/ChatMessages'
 import Loader from '../components/common/Loader'
 
 const mapStateToProps = (state) => {
-  const { loading, page } = state.chat
+  const { loading, page, isLoadingMore } = state.chat
 
   return { 
     data: getChatMessages(state),
     loading,
-    page
+    page,
+    isLoadingMore
   }
 }
 
@@ -24,11 +25,13 @@ const mapDispatchToProps = (dispatch) => {
   const getMessages = (id, page) => dispatch(ChatOperations.getMessages(id, page))
   const deleteMessages = () => dispatch(ChatActions.deleteMessages())
   const updatePage = () => dispatch(ChatActions.updateChatPage())
+  const toggleisLoadingMore = (flag) => dispatch(ChatActions.toggleIsLoadingMore(flag))
 
   return { 
     getMessages,
     deleteMessages,
-    updatePage
+    updatePage,
+    toggleisLoadingMore
   }
 }
 
@@ -101,11 +104,13 @@ class ChatScreen extends Component {
   }
 
   componentWillUnmount() {
-    this.props.deleteMessages()
+    const { toggleisLoadingMore, deleteMessages } = this.props
+    deleteMessages()
+    toggleisLoadingMore(true)
   }
   
   render() {
-    const { data, loading } = this.props
+    const { data, loading, isLoadingMore } = this.props
 
     return (
       <SafeAreaView style={styles.safeArea}>
@@ -121,7 +126,7 @@ class ChatScreen extends Component {
               renderItem={this.renderItem}
               inverted={true}
               onEndReachedThreshold={0}
-              onEndReached={this.addMessages}
+              onEndReached={isLoadingMore && this.addMessages}
               ListFooterComponent={loading && <Loader />} />
           </View>
         }

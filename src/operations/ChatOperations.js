@@ -11,7 +11,10 @@ const getMessages = (id, page = 1) => {
       api.get(`${API_URL}/rooms/${id}/messages?page=${page}`)
         .then(response => {
           console.log(response.data)
-          dispatch(ChatActions.saveMessages(response.data))
+          if (response.data.length)
+            dispatch(ChatActions.saveMessages(response.data))
+          else
+            dispatch(ChatActions.toggleIsLoadingMore(false))
           dispatch(ChatActions.toggleMessagesLoading(false))
         }).catch(error => console.log('getMessages CHAT OPERATION ERROR: ', error))
     })
