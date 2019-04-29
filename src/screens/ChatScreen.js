@@ -1,12 +1,11 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, SafeAreaView, TouchableOpacity, Image, ScrollView, FlatList } from 'react-native'
+import { View, StyleSheet, SafeAreaView, TouchableOpacity, Image, FlatList } from 'react-native'
 import { connect } from 'react-redux'
 import ChatOperations from '../operations/ChatOperations'
 import utils from '../utils'
 import { RegularText } from '../components/common/fonts'
 import { BG_COLOR, GRAY } from '../assets/styles/colors'
 import RoundAvatar from '../components/common/RoundAvatar'
-import ChatActions from '../actions/ChatActions'
 import { getChatMessages } from '../selectors/ChatMessages'
 import Loader from '../components/common/Loader'
 
@@ -23,15 +22,11 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   const getMessages = (id, page) => dispatch(ChatOperations.getMessages(id, page))
-  const deleteMessages = () => dispatch(ChatActions.deleteMessages())
-  const toggleisLoadingMore = (flag) => dispatch(ChatActions.toggleIsLoadingMore(flag))
-  const resetPage = () => dispatch(ChatActions.resetPage())
+  const resetChat = () => dispatch(ChatOperations.resetChat())
 
   return { 
     getMessages,
-    deleteMessages,
-    toggleisLoadingMore,
-    resetPage
+    resetChat
   }
 }
 
@@ -121,10 +116,9 @@ class ChatScreen extends Component {
   }
 
   componentWillUnmount() {
-    const { toggleisLoadingMore, deleteMessages, resetPage } = this.props
-    deleteMessages()
-    toggleisLoadingMore(true)
-    resetPage()
+    const { resetChat } = this.props
+
+    resetChat()
   }
   
   render() {
@@ -136,19 +130,13 @@ class ChatScreen extends Component {
           <Loader />
           :
           <View style={styles.container}>
-          {/* <ScrollView
-            contentContainerStyle={styles.list} 
-            initialScrollIndex={data.length - 1}>
-            {this.renderListFooter()}
-            {this.renderItems()}
-          </ScrollView> */}
             <FlatList
               data={data}
               contentContainerStyle={styles.list}
               keyExtractor={item => (item.id ? item.id : item.date ) + ''}
               renderItem={this.renderItem}
               inverted={true}
-              ListFooterComponent={this.renderListFooter()} />
+              ListFooterComponent={loading ? <Loader /> : this.renderListFooter()} />
           </View>
         }
       </SafeAreaView>
@@ -216,7 +204,7 @@ const styles = StyleSheet.create({
 
   chatDate: {
     alignSelf: 'center',
-    marginBottom: 10,
+    marginVertical: 10,
     ...time
   },
 

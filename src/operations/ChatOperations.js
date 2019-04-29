@@ -16,13 +16,22 @@ const getMessages = (id, page = 1) => {
             page !== 1 && dispatch(ChatActions.updateChatPage())
             response.data.length < 20 && dispatch(ChatActions.toggleIsLoadingMore(false))
           }
-          
+
           dispatch(ChatActions.toggleMessagesLoading(false))
         }).catch(error => console.log('getMessages CHAT OPERATION ERROR: ', error))
     })
   }
 }
 
+const resetChat = () => {
+  return dispatch => {
+    dispatch(ChatActions.deleteMessages())
+    dispatch(ChatActions.toggleIsLoadingMore(true))
+    dispatch(ChatActions.resetPage())
+  }
+}
+
 export default {
-  getMessages
+  getMessages,
+  resetChat
 }

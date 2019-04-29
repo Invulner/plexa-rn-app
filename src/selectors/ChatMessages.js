@@ -14,8 +14,9 @@ export const getChatMessages = createSelector(
     }
 
     const newArr = messages.reduce((acc, item, index, arr) => {
-      const penultIndex = arr.length - 2
-      if (index <= penultIndex && !utils.compareDates(item.created_at, arr[index + 1].created_at)) {
+      const nextItem = arr[index + 1]
+
+      if (nextItem && !utils.compareDates(item.created_at, nextItem.created_at)) {
         const newDateItem = { date: item.created_at }
         acc.push(item)
         acc.push(newDateItem)
@@ -26,11 +27,12 @@ export const getChatMessages = createSelector(
     }, [])
 
     const data = newArr.map((item, index, array) => {
-      const penultIndex = array.length - 2
+      const nextItem = array[index + 1]
+
       if (isDateItem(item)) {
         return item
       }
-      else if (index <= penultIndex && !isDateItem(array[index + 1]) && item.author.name === array[index + 1].author.name){
+      else if (nextItem && !isDateItem(nextItem) && item.author.name === nextItem.author.name){
         return isUser(item) ? { ...item, isUser: true, isNextMessage: true } : { ...item, isNextMessage: true }
       }
       else {
