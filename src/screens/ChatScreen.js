@@ -103,9 +103,7 @@ class ChatScreen extends Component {
   }
 
   getChatId = () => {
-    const { navigation } = this.props
-
-    return navigation.getParam('chatId')
+    return this.props.navigation.getParam('chatId')
   }
 
   addMessages = () => {
@@ -115,15 +113,11 @@ class ChatScreen extends Component {
   }
 
   componentDidMount() {
-    const { getMessages } = this.props
-
-    getMessages(this.getChatId())
+    this.props.getMessages(this.getChatId())
   }
 
   componentWillUnmount() {
-    const { resetChat } = this.props
-
-    resetChat()
+    this.props.resetChat()
   }
   
   render() {
