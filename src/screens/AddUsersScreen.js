@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, TextInput, TouchableOpacity } from 'react-native'
+import { View, StyleSheet, TextInput, TouchableOpacity, ScrollView, Image } from 'react-native'
 import SafeArea from '../components/common/SafeArea'
 import ChatsOperations from '../operations/ChatsOperations'
 import RoundAvatar from '../components/common/RoundAvatar'
@@ -8,6 +8,8 @@ import { connect } from 'react-redux'
 import { RegularText } from '../components/common/fonts'
 import ChatsActions from '../actions/ChatsActions'
 import IconChecked from '../components/common/IconChecked'
+import utils from '../utils'
+import { BG_COLOR } from '../assets/styles/colors'
 
 const mapStateToProps = (state) => {
   const { users } = state.chats
@@ -30,37 +32,40 @@ const mapDispatchToProps = (dispatch) => {
 class AddUsersScreen extends Component {
   state = {
     input: '',
-    userIds: []
+    chosenUsers: []
   }
 
-  addUser = (id) => {
-    this.setState(({ userIds }) => {
-      let newUserIds
+  toggleUser = (user) => {
+    this.setState(({ chosenUsers }) => {
+      let newUsers
 
-      if (userIds.includes(id)) 
-        newUserIds = userIds.filter(item => item !== id)
-      else 
-        newUserIds = [...userIds, id]
+      if (utils.findItemById(chosenUsers, user.id))
+        newUsers = chosenUsers.filter(item => item.id !== user.id)
+      else
+        newUsers = [...chosenUsers, user]
 
-      return {
-        userIds: newUserIds
-      }
+      return { chosenUsers: newUsers }
     })
   }
 
   renderChosenUsers = () => {
-    const { users } = this.props
-    const userArr = users.filter(user => this.isUserChosen(user.id))
+    const { chosenUsers } = this.state
 
-    if (userArr.length)
-      return userArr.map(user => {
+    if (chosenUsers.length)
+      return chosenUsers.map(user => {
         return (
-          <RoundAvatar
-            size='medium'
-            src={user.avatar_url}
-            title={user.full_name}
+          <TouchableOpacity
             key={user.id}
-            boxStyle={{ marginBottom: 15 }} />
+            onPress={() => this.toggleUser(user)}>
+            <Image
+              style={styles.removeIcon}
+              source={require('../assets/icons/close-image-brand-light.png')} />
+            <RoundAvatar
+              size='medium'
+              src={user.avatar_url}
+              title={user.full_name}
+              boxStyle={{ marginBottom: 15 }} />
+          </TouchableOpacity>
         )
       })
   }
@@ -68,23 +73,22 @@ class AddUsersScreen extends Component {
   getUsers = debounce(input => this.props.getUsers(input), 1000)
 
   onInputChange = (input) => {
-    this.setState({ input }, () => this.toggleUsers(input))
+    this.setState({ input }, () => this.processUsers(input))
   }
   
-  toggleUsers = (input) => {
+  processUsers = (input) => {
     if (input) {
       this.getUsers(input)
     } else {
       this.props.deleteUsers()
-      this.setState({ userIds: [] })
       this.getUsers.cancel()
     }
   }
 
   isUserChosen = (id) => {
-    const { userIds } = this.state
+    const { chosenUsers } = this.state
 
-    return userIds.includes(id)
+    return utils.findItemById(chosenUsers, id)
   }
   
   renderUsers = () => {
@@ -95,7 +99,7 @@ class AddUsersScreen extends Component {
         <TouchableOpacity 
           style={styles.userBox}
           key={user.id}
-          onPress={() => this.addUser(user.id)}>
+          onPress={() => this.toggleUser(user)}>
           <View style={styles.leftBox}>
             <RoundAvatar
               src={user.avatar_url}
@@ -113,8 +117,12 @@ class AddUsersScreen extends Component {
 
   onSubmit = () => {
     const { createChat, navigation } = this.props
-    const { userIds } = this.state
-    const cb = () => navigation.navigate('Chat')
+    const { chosenUsers } = this.state
+    const userIds = chosenUsers.map(user => user.id)
+    const cb = (chatId, title) => navigation.navigate('Chat', { 
+      chatId, 
+      chatTitle: utils.truncate(title, 20) 
+    })
 
     createChat(userIds, cb)
   }
@@ -142,8 +150,10 @@ class AddUsersScreen extends Component {
           onChangeText={this.onInputChange} />
         <View style={styles.chosenUsers}>
           {this.renderChosenUsers()}
-        </View> 
-        {!!users.length && this.renderUsers()}
+        </View>
+        <ScrollView contentContainerStyle={styles.userList}>
+          {!!users.length && this.renderUsers()}
+        </ScrollView>
       </SafeArea>
     )
   }
@@ -183,6 +193,19 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     paddingHorizontal: 10,
     paddingTop: 15
+  },
+
+  userList: {
+    backgroundColor: BG_COLOR
+  },
+
+  removeIcon: {
+    position: 'absolute',
+    right: 5,
+    top: -5,
+    width: 13,
+    height: 13,
+    resizeMode: 'contain'
   }
 })
 
