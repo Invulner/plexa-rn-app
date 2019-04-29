@@ -122,7 +122,7 @@ const formatTime = (time) => {
   return `${hours}:${mins}`
 }
 
-const compareDates = (a, b) => {
+const areDatesEqual = (a, b) => {
   const date1 = new Date(a)
   const date2 = new Date(b)
 
@@ -143,5 +143,5 @@ export default {
   formatDate,
   formatChatDate,
   formatTime,
-  compareDates
+  areDatesEqual
 }
