@@ -46,7 +46,7 @@ class ChatsScreen extends Component {
 
     navigation.navigate('Chat', { 
       chatId: item.id,
-      chatTitle: utils.truncate(title, 25)
+      chatTitle: utils.truncate(title, 20)
     })
   }
 

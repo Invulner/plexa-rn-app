@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, TextInput, TouchableOpacity, ScrollView } from 'react-native'
+import { View, StyleSheet, TextInput, TouchableOpacity, ScrollView, Image } from 'react-native'
 import SafeArea from '../components/common/SafeArea'
 import ChatsOperations from '../operations/ChatsOperations'
 import RoundAvatar from '../components/common/RoundAvatar'
@@ -57,6 +57,9 @@ class AddUsersScreen extends Component {
           <TouchableOpacity
             key={user.id}
             onPress={() => this.toggleUser(user)}>
+            <Image
+              style={styles.removeIcon}
+              source={require('../assets/icons/close-image-brand-light.png')} />
             <RoundAvatar
               size='medium'
               src={user.avatar_url}
@@ -118,7 +121,7 @@ class AddUsersScreen extends Component {
     const userIds = chosenUsers.map(user => user.id)
     const cb = (chatId, title) => navigation.navigate('Chat', { 
       chatId, 
-      chatTitle: utils.truncate(title, 25) 
+      chatTitle: utils.truncate(title, 20) 
     })
 
     createChat(userIds, cb)
@@ -194,6 +197,15 @@ const styles = StyleSheet.create({
 
   userList: {
     backgroundColor: BG_COLOR
+  },
+
+  removeIcon: {
+    position: 'absolute',
+    right: 5,
+    top: -5,
+    width: 13,
+    height: 13,
+    resizeMode: 'contain'
   }
 })
 
