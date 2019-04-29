@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
   authorRowContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 5
+    marginTop: 2
   },
 
   dotImage: {
