@@ -98,18 +98,36 @@ const formatDate = (dateArg) => {
   return `${day} ${month}`
 }
 
-const formatChatDate = (dateArg) => {
+const formatChatDate = (dateArg, isFullDate = false) => {
   const date = new Date(dateArg)
   const unixDay = 86400000
+  const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 
+  'September', 'October', 'November', 'December']
+  const fullDate = `${date.getDate()} ${monthNames[date.getMonth() - 1]} ${date.getFullYear()}`
 
   if (Date.now() - date.getTime() <= unixDay)
     return 'Today'
   else if (Date.now() - date.getTime() <= 2 * unixDay)
     return 'Yesterday'
   else 
-    return formatDate(date)  
+    return isFullDate ? fullDate : formatDate(date)  
 }
 
+const formatTime = (time) => {
+  const date = new Date(time)
+  const hours = date.getHours()
+  let mins = date.getMinutes()
+  mins = mins < 10 ? `0${mins}` : mins
+  
+  return `${hours}:${mins}`
+}
+
+const areDatesEqual = (a, b) => {
+  const date1 = new Date(a)
+  const date2 = new Date(b)
+
+  return date1.setHours(0,0,0,0) === date2.setHours(0,0,0,0)
+}
 
 export default {
   getInitials,
@@ -123,5 +141,7 @@ export default {
   getLocation,
   getMedicalPractice,
   formatDate,
-  formatChatDate
+  formatChatDate,
+  formatTime,
+  areDatesEqual
 }

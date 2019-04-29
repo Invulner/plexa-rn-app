@@ -9,7 +9,6 @@ const fetchResearchFeed = (saveOption, page = 1) => {
     getAxiosInstance().then(api => {
       api.get(`${API_URL}/feed/featured?page=${page}`)
         .then(response => {
-          console.log('Featured feed: ', response)
 
           switch(saveOption) {
             case 'add':
