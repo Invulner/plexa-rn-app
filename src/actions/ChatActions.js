@@ -18,21 +18,9 @@ const updateChatPage = (page) => ({
   type: types.UPDATE_CHAT_PAGE,
   page
 })
-
-const toggleIsLoadingMore = (flag) => ({
-  type: types.TOGGLE_IS_LOADING_MORE,
-  flag
-})
-
-const resetPage = () => ({
-  type: types.RESET_PAGE
-})
-
 export default {
   saveMessages,
   deleteMessages,
   toggleMessagesLoading,
-  updateChatPage,
-  toggleIsLoadingMore,
-  resetPage
+  updateChatPage
 }

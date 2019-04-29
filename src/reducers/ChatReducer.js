@@ -2,9 +2,7 @@ import types from '../types/chat'
 
 const initialState = {
   messages: [],
-  loading: true,
-  page: 1,
-  isLoadingMore: true
+  loading: true
 }
 
 const chatReducer = (state = initialState, action) => {
@@ -33,19 +31,7 @@ const chatReducer = (state = initialState, action) => {
     case types.UPDATE_CHAT_PAGE:
       return {
         ...state,
-        page: state.page + 1
-      }
-
-    case types.TOGGLE_IS_LOADING_MORE:
-      return {
-        ...state,
-        isLoadingMore: action.flag
-      }
-
-    case types.RESET_PAGE:
-      return {
-        ...state,
-        page: initialState.page
+        page: action.page
       }
 
     default:

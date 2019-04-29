@@ -8,15 +8,15 @@ import { BG_COLOR, GRAY } from '../assets/styles/colors'
 import RoundAvatar from '../components/common/RoundAvatar'
 import { getChatMessages } from '../selectors/ChatMessages'
 import Loader from '../components/common/Loader'
+import { MESSAGES_IN_PAGE } from '../constants'
 
 const mapStateToProps = (state) => {
-  const { loading, page, isLoadingMore } = state.chat
+  const { loading, page } = state.chat
 
   return { 
     data: getChatMessages(state),
     loading,
-    page,
-    isLoadingMore
+    page
   }
 }
 
@@ -80,9 +80,7 @@ class ChatScreen extends Component {
   }
 
   renderListFooter = () => {
-    const { isLoadingMore } = this.props
-
-    if (isLoadingMore)
+    if (this.isLoadingMore())
       return (
         <TouchableOpacity
           style={styles.btn}
@@ -97,6 +95,13 @@ class ChatScreen extends Component {
       )
   }
 
+  isLoadingMore = () => {
+    const { page, data } = this.props
+    let arr = data.filter(item => !item.date)
+
+    return page * MESSAGES_IN_PAGE === arr.length
+  }
+
   getChatId = () => {
     const { navigation } = this.props
 
@@ -104,9 +109,9 @@ class ChatScreen extends Component {
   }
 
   addMessages = () => {
-    const { page, getMessages, isLoadingMore } = this.props
+    const { page, getMessages } = this.props
 
-    isLoadingMore && getMessages(this.getChatId(), page + 1)
+    this.isLoadingMore() && getMessages(this.getChatId(), page + 1)
   }
 
   componentDidMount() {

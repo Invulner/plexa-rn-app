@@ -10,13 +10,8 @@ const getMessages = (id, page = 1) => {
     return getAxiosInstance().then(api => {
       api.get(`${API_URL}/rooms/${id}/messages?page=${page}`)
         .then(response => {
-          
-          if (response.data.length) {
-            dispatch(ChatActions.saveMessages(response.data))
-            page !== 1 && dispatch(ChatActions.updateChatPage())
-            response.data.length < 20 && dispatch(ChatActions.toggleIsLoadingMore(false))
-          }
-
+          dispatch(ChatActions.saveMessages(response.data))
+          dispatch(ChatActions.updateChatPage(page))
           dispatch(ChatActions.toggleMessagesLoading(false))
         }).catch(error => console.log('getMessages CHAT OPERATION ERROR: ', error))
     })
@@ -26,8 +21,7 @@ const getMessages = (id, page = 1) => {
 const resetChat = () => {
   return dispatch => {
     dispatch(ChatActions.deleteMessages())
-    dispatch(ChatActions.toggleIsLoadingMore(true))
-    dispatch(ChatActions.resetPage())
+    dispatch(ChatActions.updateChatPage(1))
   }
 }
 
