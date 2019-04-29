@@ -42,7 +42,8 @@ const createChat = (ids, cb) => {
         .then(response => {
           console.log('response.data', response.data)
           dispatch(ChatsActions.createChat(response.data))
-          cb()
+          const { id, title } = response.data
+          cb(id, title)
       }).catch(error => console.log('createChat OPERATION ERROR: ', error))
     })
   }
