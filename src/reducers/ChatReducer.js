@@ -42,6 +42,12 @@ const chatReducer = (state = initialState, action) => {
         isLoadingMore: action.flag
       }
 
+    case types.RESET_PAGE:
+      return {
+        ...state,
+        page: initialState.page
+      }
+
     default:
       return state
   }

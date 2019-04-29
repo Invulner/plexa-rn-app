@@ -24,10 +24,15 @@ const toggleIsLoadingMore = (flag) => ({
   flag
 })
 
+const resetPage = () => ({
+  type: types.RESET_PAGE
+})
+
 export default {
   saveMessages,
   deleteMessages,
   toggleMessagesLoading,
   updateChatPage,
-  toggleIsLoadingMore
+  toggleIsLoadingMore,
+  resetPage
 }

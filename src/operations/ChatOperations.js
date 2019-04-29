@@ -10,11 +10,13 @@ const getMessages = (id, page = 1) => {
     return getAxiosInstance().then(api => {
       api.get(`${API_URL}/rooms/${id}/messages?page=${page}`)
         .then(response => {
-          console.log(response.data)
-          if (response.data.length)
+          
+          if (response.data.length) {
             dispatch(ChatActions.saveMessages(response.data))
-          else
-            dispatch(ChatActions.toggleIsLoadingMore(false))
+            page !== 1 && dispatch(ChatActions.updateChatPage())
+            response.data.length < 20 && dispatch(ChatActions.toggleIsLoadingMore(false))
+          }
+          
           dispatch(ChatActions.toggleMessagesLoading(false))
         }).catch(error => console.log('getMessages CHAT OPERATION ERROR: ', error))
     })

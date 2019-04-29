@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, SafeAreaView, FlatList } from 'react-native'
+import { View, StyleSheet, SafeAreaView, TouchableOpacity, Image, ScrollView, FlatList } from 'react-native'
 import { connect } from 'react-redux'
 import ChatOperations from '../operations/ChatOperations'
 import utils from '../utils'
@@ -24,14 +24,14 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   const getMessages = (id, page) => dispatch(ChatOperations.getMessages(id, page))
   const deleteMessages = () => dispatch(ChatActions.deleteMessages())
-  const updatePage = () => dispatch(ChatActions.updateChatPage())
   const toggleisLoadingMore = (flag) => dispatch(ChatActions.toggleIsLoadingMore(flag))
+  const resetPage = () => dispatch(ChatActions.resetPage())
 
   return { 
     getMessages,
     deleteMessages,
-    updatePage,
-    toggleisLoadingMore
+    toggleisLoadingMore,
+    resetPage
   }
 }
 
@@ -53,13 +53,13 @@ class ChatScreen extends Component {
     else
       return (
         <View style={styles.publicOuterBox}>
-        {!item.isNextMessage &&
-          <RoundAvatar
-            src={item.author.avatar}
-            title='User'
-            size='small'
-            boxStyle={{ marginRight: 5 }} />
-        }
+          {!item.isNextMessage &&
+            <RoundAvatar
+              src={item.author.avatar}
+              title='User'
+              size='small'
+              boxStyle={{ marginRight: 5 }} />
+          }
           <View style={[styles.publicUserMessage, item.isNextMessage && styles.nextPublicUserMessage]}>
             {this.renderMessage(item.text)}
             {this.renderTime(item.created_at)}
@@ -84,6 +84,24 @@ class ChatScreen extends Component {
     )
   }
 
+  renderListFooter = () => {
+    const { isLoadingMore } = this.props
+
+    if (isLoadingMore)
+      return (
+        <TouchableOpacity
+          style={styles.btn}
+          onPress={this.addMessages}>
+          <Image
+            source={require('../assets/icons/load-more.png')}
+            style={styles.loadIcon} />
+          <RegularText style={styles.btnText}>
+            Load previous messages
+          </RegularText>
+        </TouchableOpacity>
+      )
+  }
+
   getChatId = () => {
     const { navigation } = this.props
 
@@ -91,10 +109,9 @@ class ChatScreen extends Component {
   }
 
   addMessages = () => {
-    const { page, getMessages, updatePage } = this.props
+    const { page, getMessages, isLoadingMore } = this.props
 
-    getMessages(this.getChatId(), page + 1)
-    updatePage()
+    isLoadingMore && getMessages(this.getChatId(), page + 1)
   }
 
   componentDidMount() {
@@ -104,13 +121,14 @@ class ChatScreen extends Component {
   }
 
   componentWillUnmount() {
-    const { toggleisLoadingMore, deleteMessages } = this.props
+    const { toggleisLoadingMore, deleteMessages, resetPage } = this.props
     deleteMessages()
     toggleisLoadingMore(true)
+    resetPage()
   }
   
   render() {
-    const { data, loading, isLoadingMore } = this.props
+    const { data, loading } = this.props
 
     return (
       <SafeAreaView style={styles.safeArea}>
@@ -118,16 +136,19 @@ class ChatScreen extends Component {
           <Loader />
           :
           <View style={styles.container}>
-
+          {/* <ScrollView
+            contentContainerStyle={styles.list} 
+            initialScrollIndex={data.length - 1}>
+            {this.renderListFooter()}
+            {this.renderItems()}
+          </ScrollView> */}
             <FlatList
               data={data}
               contentContainerStyle={styles.list}
               keyExtractor={item => (item.id ? item.id : item.date ) + ''}
               renderItem={this.renderItem}
               inverted={true}
-              onEndReachedThreshold={0}
-              onEndReached={isLoadingMore && this.addMessages}
-              ListFooterComponent={loading && <Loader />} />
+              ListFooterComponent={this.renderListFooter()} />
           </View>
         }
       </SafeAreaView>
@@ -205,6 +226,25 @@ const styles = StyleSheet.create({
 
   list: {
     paddingHorizontal: 10
+  },
+
+  btn: {
+    flexDirection: 'row',
+    alignSelf: 'center',
+    marginBottom: 10,
+    backgroundColor: 'transparent'
+  },
+
+  btnText: {
+    fontSize: 16,
+    color: GRAY
+  },
+
+  loadIcon: {
+    width: 15, 
+    height: 15, 
+    resizeMode: 'contain',
+    marginRight: 10
   }
 })
 
