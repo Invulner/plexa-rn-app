@@ -43,7 +43,7 @@ class AddUsersScreen extends Component {
         newUsers = chosenUsers.filter(item => item.id !== user.id)
       else
         newUsers = [...chosenUsers, user]
-      console.log('newUsers', newUsers)
+
       return { chosenUsers: newUsers }
     })
   }
@@ -73,10 +73,10 @@ class AddUsersScreen extends Component {
   getUsers = debounce(input => this.props.getUsers(input), 1000)
 
   onInputChange = (input) => {
-    this.setState({ input }, () => this.fetchUsers(input))
+    this.setState({ input }, () => this.processUsers(input))
   }
   
-  fetchUsers = (input) => {
+  processUsers = (input) => {
     if (input) {
       this.getUsers(input)
     } else {
