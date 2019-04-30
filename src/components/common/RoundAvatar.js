@@ -5,21 +5,17 @@ import utils from '../../utils'
 import { BRAND_LIGHT } from '../../assets/styles/colors'
 
 function RoundAvatar(props) {
-  const { src, isUserChat, title, size, boxStyle } = props
-
-  const renderInitials = () => {
-    return isUserChat === false ? 'G' : utils.getInitials(title)
-  }
+  const { src, title, size, boxStyle } = props
 
   return (
     <View style={[styles.titleImageBox, styles[`avatarImage_${size}`], boxStyle]}>
-      {!!src ?
+      {!!src && title !== 'G' ?
         <Image
           style={[styles.avatar, styles[`avatarImage_${size}`]]}
           source={{ uri: src }} />
         :
         <RegularText style={styles.initials}>
-          {renderInitials()}
+          {utils.getInitials(title)}
         </RegularText>
       }
     </View>
