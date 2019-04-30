@@ -23,16 +23,16 @@ const getDescription = (description, fullView) => {
   return fullView ? description : truncate(description)
 }
 
-const sortByTime = (timeField, reverse = false) => {
+const sortByTime = ({ field, order }) => {
   return (a, b) => {
-    const date1 = new Date(a[timeField]).getTime()
-    const date2 = new Date(b[timeField]).getTime()
+    const date1 = new Date(a[field]).getTime()
+    const date2 = new Date(b[field]).getTime()
 
     if (date1 === date2)
       return 0
-    else if (reverse)
+    else if (order === 'desc')
       return date1 < date2 ? 1 : -1
-    else
+    else if (order === 'asc')
       return date1 < date2 ? -1 : 1
   }
 }

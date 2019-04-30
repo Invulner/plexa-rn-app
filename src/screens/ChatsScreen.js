@@ -12,7 +12,7 @@ import { NavigationEvents } from 'react-navigation'
 
 const mapStateToProps = (state) => {
   const { items, loading } = state.chats
-  const sortedChats = !!items && items.sort(utils.sortByTime('last_message_date', 'reverse'))
+  const sortedChats = !!items && items.sort(utils.sortByTime({ field: 'last_message_date', order: 'desc' }))
 
   return { 
     sortedChats,
