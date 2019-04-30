@@ -12,7 +12,7 @@ import { NavigationEvents } from 'react-navigation'
 
 const mapStateToProps = (state) => {
   const { items, loading } = state.chats
-  const sortedChats = !!items && items.sort(utils.sortByTime('last_message_date'))
+  const sortedChats = !!items && items.sort(utils.sortByTime({ field: 'last_message_date', order: 'desc' }))
 
   return { 
     sortedChats,
@@ -50,6 +50,13 @@ class ChatsScreen extends Component {
     })
   }
 
+  renderTitle = (item, title) => {
+    if (item.members.length > 2 && this.isUserChat(item) || !this.isUserChat(item))
+      return 'G'
+    else
+      return title
+  }
+
   renderChats = () => {
     const { sortedChats } = this.props
 
@@ -65,7 +72,7 @@ class ChatsScreen extends Component {
             <View style={styles.leftBox}>
               <RoundAvatar 
                 isUserChat={this.isUserChat(item)}
-                title={title}
+                title={this.renderTitle(item, title)}
                 src={avatarSrc}
                 size='medium' />
               <View>
@@ -113,20 +120,20 @@ class ChatsScreen extends Component {
     const { loading } = this.props
 
     return (
-      <ScrollView style={styles.scrollView}>
-      <NavigationEvents
-        onDidFocus={this.setNavParams}
-        onDidBlur={this.resetNavParams} />
-        <View style={styles.container}>
-          {loading ?
-            <Loader />
-            :
+      <View style={styles.container}>
+        <NavigationEvents
+          onDidFocus={this.setNavParams}
+          onDidBlur={this.resetNavParams} />
+        {loading ?
+          <Loader />
+          :
+          <ScrollView style={styles.scrollView}>
             <View style={styles.chatsBox}>
               {this.renderChats()}
             </View>
+          </ScrollView>
         }
-        </View>
-      </ScrollView>
+      </View>
     )
   }
 }

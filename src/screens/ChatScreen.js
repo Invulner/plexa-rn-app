@@ -51,7 +51,7 @@ class ChatScreen extends Component {
           {!item.isNextMessage &&
             <RoundAvatar
               src={item.author.avatar}
-              title='User'
+              title={item.author.name}
               size='small'
               boxStyle={{ marginRight: 5 }} />
           }
@@ -176,7 +176,6 @@ const styles = StyleSheet.create({
   },
 
   container: {
-    paddingVertical: 10,
     flex: 1
   },
 
@@ -218,7 +217,7 @@ const styles = StyleSheet.create({
   btn: {
     flexDirection: 'row',
     alignSelf: 'center',
-    marginBottom: 10,
+    marginVertical: 13,
     backgroundColor: 'transparent'
   },
 

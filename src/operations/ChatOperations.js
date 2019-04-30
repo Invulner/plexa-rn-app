@@ -4,12 +4,12 @@ import { API_URL } from '../constants'
 
 const getMessages = (id, page = 1) => {
   return dispatch => {
-    console.log('page :', page)
     dispatch(ChatActions.toggleMessagesLoading(true))
 
     return getAxiosInstance().then(api => {
       api.get(`${API_URL}/rooms/${id}/messages?page=${page}`)
         .then(response => {
+          console.log('response.data :', response.data)
           dispatch(ChatActions.saveMessages(response.data))
           dispatch(ChatActions.updateChatPage(page))
           dispatch(ChatActions.toggleMessagesLoading(false))
