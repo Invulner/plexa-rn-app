@@ -4,11 +4,16 @@ import ActionSheet from 'react-native-action-sheet'
 import { connect } from 'react-redux'
 import FeedOperations from '../../operations/FeedOperations'
 import PostOperations from '../../operations/PostOperations'
+import ChatsOperations from '../../operations/ChatsOperations'
 
 const mapStateToProps = (state) => {
   const userId = state.user.id
+  const chats = state.chats.items
 
-  return { userId }
+  return { 
+    userId,
+    chats
+  }
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -17,13 +22,15 @@ const mapDispatchToProps = (dispatch) => {
   const blockUser = (authorId, cb) => dispatch(FeedOperations.blockUser(authorId, cb))
   const deletePost = (postId, cb) => dispatch(FeedOperations.deletePost(postId, cb))
   const getPost = (id, cb) => dispatch(PostOperations.getPost(id, cb))
+  const createChat = (ids, cb) => dispatch(ChatsOperations.createChat(ids, cb))
 
   return {
     hidePost,
     reportPost,
     blockUser,
     deletePost,
-    getPost
+    getPost,
+    createChat
   }
 }
 
@@ -76,6 +83,33 @@ class PostActionButton extends Component {
     Alert.alert(title, message, config)
   }
 
+  findChat = () => {
+    const { chats, authorId } = this.props
+    const arr = chats.filter(chat => chat.members.length === 2)
+    const chat = arr.find(chat => chat.members.find(member => member.profile_id === authorId))
+
+    return chat
+  }
+
+  sendMessage = () => {
+    const { navigation, createChat, authorId } = this.props
+
+    if (this.findChat())
+      navigation.navigate('Chat', {
+        chatId: this.findChat().id,
+        chatTitle: this.findChat().title
+      })
+    else {
+      const cb = (id, title) => navigation.navigate('Chat', {
+        chatId: id,
+        chatTitle: title
+      })
+      const members = [authorId]
+      
+      createChat(members, cb)
+    }
+  }
+  
   onBtnPress = (buttonIndex) => {
     const { isMedbot } = this.props
 
@@ -83,7 +117,7 @@ class PostActionButton extends Component {
       case 0:
         if (isMedbot)
           return this.showAlert('hide')
-        return this.isOwnPost() ? this.onEditBtnClick() : console.log('send message')
+        return this.isOwnPost() ? this.onEditBtnClick() : this.sendMessage()
       case 1:
         if (isMedbot)
           return
