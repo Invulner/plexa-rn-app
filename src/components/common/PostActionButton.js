@@ -83,12 +83,13 @@ class PostActionButton extends Component {
     Alert.alert(title, message, config)
   }
 
-  findChat = () => {
-    const { chats, authorId } = this.props
-    const arr = chats.filter(chat => chat.members.length === 2)
-    const chat = arr.find(chat => chat.members.find(member => member.profile_id === authorId))
+  getChat = (id) => {
 
-    return chat
+    return this.props.chats.find(chat => {
+      let isTwoParticipantsInChat = chat.members.length === 2
+
+      return isTwoParticipantsInChat && chat.members.find(member => member.profile_id === id)
+    })
   }
 
   navigateToChat = (id, title) => {
@@ -100,9 +101,10 @@ class PostActionButton extends Component {
   
   sendMessage = () => {
     const { createChat, authorId } = this.props
+    const existingChat = this.getChat(authorId)
 
-    if (this.findChat())
-      this.navigateToChat(this.findChat().id, this.findChat().title)
+    if (existingChat)
+      this.navigateToChat(existingChat.id, existingChat.title)
     else 
       createChat([authorId], this.navigateToChat)
   }
