@@ -4,6 +4,7 @@ import { BRAND_LIGHT } from '../../assets/styles/colors'
 import GreyLine from '../common/GreyLine'
 import { connect } from 'react-redux'
 import CommentOperations from '../../operations/CommentsOperations'
+import { BG_COLOR } from '../../assets/styles/colors'
 
 const mapDispatchToProps = (dispatch, { navigation }) => {
   const postComment = (comment) => dispatch(CommentOperations.postComment(comment, navigation))
@@ -28,6 +29,7 @@ class ReplyBox extends Component {
 
   onSubmit = () => {
     if (!this.isEmptyInput()) {
+      //this can be conditional
       this.props.postComment(this.state.reply.trim())
       this.setState({ reply: ''})
     }
@@ -74,9 +76,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     paddingHorizontal: 10,
-    backgroundColor: '#f2eee7',
-    borderRadius: 7,
-    minHeight: 40
+    backgroundColor: BG_COLOR,
+    borderRadius: 20,
+    minHeight: 40,
+    maxHeight: 100
   },
 
   container: {
@@ -86,7 +89,8 @@ const styles = StyleSheet.create({
 
   input: {
     fontSize: 16,
-    width: '85%'
+    width: '85%',
+    marginBottom: 5
   },
 
   iconBox: {
