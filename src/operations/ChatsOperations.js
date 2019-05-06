@@ -36,11 +36,11 @@ const createChat = (ids, cb) => {
       type: 'user',
       participants: ids
     }
-    console.log(params)
+
     return getAxiosInstance().then(api => {
       api.post(`${API_URL}/rooms`, params)
         .then(response => {
-          console.log('response.data', response.data)
+          console.log('createChat response: ', response.data)
           dispatch(ChatsActions.createChat(response.data))
           const { id, title } = response.data
           cb(id, title)

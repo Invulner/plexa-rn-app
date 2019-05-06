@@ -91,23 +91,20 @@ class PostActionButton extends Component {
     return chat
   }
 
+  navigateToChat = (id, title) => {
+    this.props.navigation.navigate('Chat', {
+      chatId: id,
+      chatTitle: title
+    })
+  }
+  
   sendMessage = () => {
-    const { navigation, createChat, authorId } = this.props
+    const { createChat, authorId } = this.props
 
     if (this.findChat())
-      navigation.navigate('Chat', {
-        chatId: this.findChat().id,
-        chatTitle: this.findChat().title
-      })
-    else {
-      const cb = (id, title) => navigation.navigate('Chat', {
-        chatId: id,
-        chatTitle: title
-      })
-      const members = [authorId]
-      
-      createChat(members, cb)
-    }
+      this.navigateToChat(this.findChat().id, this.findChat().title)
+    else 
+      createChat([authorId], this.navigateToChat)
   }
   
   onBtnPress = (buttonIndex) => {
