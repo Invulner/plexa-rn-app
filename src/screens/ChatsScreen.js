@@ -127,7 +127,7 @@ class ChatsScreen extends Component {
         {loading ?
           <Loader />
           :
-          <ScrollView style={styles.scrollView}>
+          <ScrollView contentContainerStyle={styles.scrollView}>
             <View style={styles.chatsBox}>
               {this.renderChats()}
             </View>
@@ -141,9 +141,7 @@ class ChatsScreen extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: BG_COLOR,
-    paddingVertical: 15,
-    paddingHorizontal: 10
+    backgroundColor: BG_COLOR
   },
 
   chatsBox: {
@@ -181,7 +179,9 @@ const styles = StyleSheet.create({
   },
 
   scrollView: {
-    backgroundColor: BG_COLOR
+    backgroundColor: BG_COLOR,
+    paddingVertical: 15,
+    paddingHorizontal: 10
   }
 })
 

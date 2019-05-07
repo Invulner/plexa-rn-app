@@ -100,19 +100,23 @@ const formatDate = (dateArg) => {
   return `${day} ${month}`
 }
 
-const formatChatDate = (dateArg, isFullDate = false) => {
+const formatChatDate = (dateArg) => {
   const date = new Date(dateArg)
-  const unixDay = 86400000
   const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 
   'September', 'October', 'November', 'December']
-  const fullDate = `${date.getDate()} ${monthNames[date.getMonth() - 1]} ${date.getFullYear()}`
+  const fullDate = `${date.getDate()} ${monthNames[date.getMonth()]} ${date.getFullYear()}`
+  const today = new Date()
+  const yesterday = new Date()
+  yesterday.setDate(today.getDate() - 1)
+  const isDateToday = today.setHours(0,0,0,0) === date.setHours(0,0,0,0)
+  const isDateYesterday = yesterday.setHours(0,0,0,0) == date.setHours(0,0,0,0)
 
-  if (Date.now() - date.getTime() <= unixDay)
+  if (isDateToday)
     return 'Today'
-  else if (Date.now() - date.getTime() <= 2 * unixDay)
+  else if (isDateYesterday)
     return 'Yesterday'
   else 
-    return isFullDate ? fullDate : formatDate(date)  
+    return fullDate 
 }
 
 const formatTime = (time) => {

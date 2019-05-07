@@ -5,6 +5,20 @@ const initialState = {
   loading: true
 }
 
+const updateMessage = (state, action) => {
+  const index = state.messages.findIndex(item => item.text === action.message.text)
+  const messages = [
+    ...state.messages.slice(0, index),
+    action.message,
+    ...state.messages.slice(index + 1)
+  ]
+
+  return {
+    ...state,
+    messages
+  }
+}
+
 const chatReducer = (state = initialState, action) => {
   switch (action.type) {
     case types.SAVE_MESSAGES:
@@ -33,6 +47,15 @@ const chatReducer = (state = initialState, action) => {
         ...state,
         page: action.page
       }
+
+    case types.SAVE_MESSAGE:
+      return {
+        ...state,
+        messages: [action.message, ...state.messages]
+      }
+
+    case types.UPDATE_MESSAGE:
+      return updateMessage(state, action)
 
     default:
       return state

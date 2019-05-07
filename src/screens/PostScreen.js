@@ -6,7 +6,7 @@ import { BG_COLOR } from '../assets/styles/colors'
 import CommentsOperations from '../operations/CommentsOperations'
 import Comment from '../components/comment/Comment'
 import CommentsPlaceholder from '../components/comment/CommentsPlaceholder'
-import ReplyBox from '../components/comment/ReplyBox'
+import ReplyBox from '../components/common/ReplyBox'
 import Loader from '../components/common/Loader'
 import GreyLine from '../components/common/GreyLine'
 import CommentsActions from '../actions/CommentsActions'
@@ -104,6 +104,7 @@ class PostScreen extends Component {
         </ScrollView>
         {enabled &&
           <ReplyBox
+            type='comment'
             author={postAuthor}
             navigation={navigation} />
         }
