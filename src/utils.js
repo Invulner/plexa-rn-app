@@ -106,7 +106,8 @@ const formatChatDate = (dateArg) => {
   'September', 'October', 'November', 'December']
   const fullDate = `${date.getDate()} ${monthNames[date.getMonth()]} ${date.getFullYear()}`
   const today = new Date()
-  const yesterday = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1)
+  const yesterday = new Date()
+  yesterday.setDate(today.getDate() - 1)
   const isDateToday = today.setHours(0,0,0,0) === date.setHours(0,0,0,0)
   const isDateYesterday = yesterday.setHours(0,0,0,0) == date.setHours(0,0,0,0)
 
