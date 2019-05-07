@@ -13,7 +13,6 @@ const mapStateToProps = (state) => {
   return { full_name }
 }
 
-
 const mapDispatchToProps = (dispatch, { navigation }) => {
   const postComment = (comment) => dispatch(CommentOperations.postComment(comment, navigation))
   const sendMessage = (chatId, params) => dispatch(ChatOperations.sendMessage(chatId, params))
@@ -43,19 +42,22 @@ class ReplyBox extends Component {
     const { postComment, sendMessage, type, chatId, full_name } = this.props
     const reply = this.state.reply.trim()
 
-    if (type === 'comment')
-      postComment(reply)
-    else if (type === 'chat') {
-      const params = {
-        text: reply,
-        seq_id: 1, //required number, but we don't use it
-        author: {
-          name: full_name
-        },
-        created_at: new Date().toString()
-      }
-      
-      sendMessage(chatId, params)
+    switch (type) {
+      case 'comment':
+        postComment(reply)
+      break
+
+      case 'chat':
+        const params = {
+          text: reply,
+          seq_id: 1, //required number, but we don't use it
+          author: {
+            name: full_name
+          },
+          created_at: new Date().toString()
+        }
+        sendMessage(chatId, params)
+      break
     }
 
     this.setState({ reply: '' })

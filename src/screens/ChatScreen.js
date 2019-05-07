@@ -9,7 +9,7 @@ import RoundAvatar from '../components/common/RoundAvatar'
 import { getChatMessages } from '../selectors/ChatMessages'
 import Loader from '../components/common/Loader'
 import { MESSAGES_IN_PAGE } from '../constants'
-import ReplyBox from '../components/comment/ReplyBox'
+import ReplyBox from '../components/common/ReplyBox'
 
 const mapStateToProps = (state) => {
   const { loading, page } = state.chat
