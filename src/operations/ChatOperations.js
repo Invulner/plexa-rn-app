@@ -25,7 +25,23 @@ const resetChat = () => {
   }
 }
 
+const sendMessage = (chatId, params) => {
+  return dispatch => {
+    dispatch(ChatActions.saveMessage(params))
+    console.log('params', params)
+
+    return getAxiosInstance().then(api => {
+      api.post(`${API_URL}/rooms/${chatId}/messages`, params)
+        .then(response => {
+          console.log(response.data)
+          dispatch(ChatActions.updateMessage(response.data))
+        }).catch(error => console.log('sendMessage CHAT OPERATION ERROR: ', error))
+    })
+  }
+}
+
 export default {
   getMessages,
-  resetChat
+  resetChat,
+  sendMessage
 }

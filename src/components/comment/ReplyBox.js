@@ -5,11 +5,23 @@ import GreyLine from '../common/GreyLine'
 import { connect } from 'react-redux'
 import CommentOperations from '../../operations/CommentsOperations'
 import { BG_COLOR } from '../../assets/styles/colors'
+import ChatOperations from '../../operations/ChatOperations'
+
+const mapStateToProps = (state) => {
+  const { full_name } = state.user
+
+  return { full_name }
+}
+
 
 const mapDispatchToProps = (dispatch, { navigation }) => {
   const postComment = (comment) => dispatch(CommentOperations.postComment(comment, navigation))
+  const sendMessage = (chatId, params) => dispatch(ChatOperations.sendMessage(chatId, params))
 
-  return { postComment }
+  return { 
+    postComment,
+    sendMessage
+  }
 }
 
 class ReplyBox extends Component {
@@ -28,15 +40,39 @@ class ReplyBox extends Component {
   }
 
   onSubmit = () => {
-    if (!this.isEmptyInput()) {
-      //this can be conditional
-      this.props.postComment(this.state.reply.trim())
-      this.setState({ reply: ''})
+    const { postComment, sendMessage, type, chatId, full_name } = this.props
+    const reply = this.state.reply.trim()
+
+    if (type === 'comment')
+      postComment(reply)
+    else if (type === 'chat') {
+      const params = {
+        text: reply,
+        seq_id: 1, //required number, but we don't use it
+        author: {
+          name: full_name
+        },
+        created_at: new Date().toString()
+      }
+      
+      sendMessage(chatId, params)
+    }
+
+    this.setState({ reply: '' })
+  }
+
+  renderPlaceholder = () => {
+    const { type, author } = this.props
+
+    switch (type) {
+      case 'comment':
+        return `Reply to ${author}`
+      case 'chat':
+        return `Enter Your Message ...`
     }
   }
   
   render() {
-    const placeholder = `Reply to ${this.props.author}`
     const { reply } = this.state
 
     return (
@@ -47,13 +83,14 @@ class ReplyBox extends Component {
             <View style={styles.inputBox}>
 
               <TextInput 
-                placeholder={placeholder}
+                placeholder={this.renderPlaceholder()}
                 multiline={true}
                 onChangeText={(reply) => this.onReplyChange(reply)}
                 style={styles.input}
                 value={reply} />
 
                 <TouchableOpacity 
+                  disabled={this.isEmptyInput()}
                   style={styles.iconBox}
                   onPress={this.onSubmit}>
                   <View style={[styles.icon, !this.isEmptyInput() && styles.inputFocused]}>
@@ -123,4 +160,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect(null, mapDispatchToProps)(ReplyBox)
+export default connect(mapStateToProps, mapDispatchToProps)(ReplyBox)

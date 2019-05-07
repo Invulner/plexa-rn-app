@@ -18,9 +18,22 @@ const updateChatPage = (page) => ({
   type: types.UPDATE_CHAT_PAGE,
   page
 })
+
+const saveMessage = (message) => ({
+  type: types.SAVE_MESSAGE,
+  message
+})
+
+const updateMessage = (message) => ({
+  type: types.UPDATE_MESSAGE,
+  message
+})
+
 export default {
   saveMessages,
   deleteMessages,
   toggleMessagesLoading,
-  updateChatPage
+  updateChatPage,
+  saveMessage,
+  updateMessage
 }

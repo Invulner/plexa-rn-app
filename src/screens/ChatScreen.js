@@ -9,7 +9,7 @@ import RoundAvatar from '../components/common/RoundAvatar'
 import { getChatMessages } from '../selectors/ChatMessages'
 import Loader from '../components/common/Loader'
 import { MESSAGES_IN_PAGE } from '../constants'
-import ReplyBox from '../components/comment/ReplyBox';
+import ReplyBox from '../components/comment/ReplyBox'
 
 const mapStateToProps = (state) => {
   const { loading, page } = state.chat
@@ -36,7 +36,7 @@ class ChatScreen extends Component {
     if (item.date)
       return (
         <RegularText style={styles.chatDate}>
-          {utils.formatChatDate(item.date, 'isFullDate')}
+          {utils.formatChatDate(item.date)}
         </RegularText>
       )
     else if (item.isUser)
@@ -133,12 +133,14 @@ class ChatScreen extends Component {
             <FlatList
               data={data}
               contentContainerStyle={styles.list}
-              keyExtractor={item => (item.id ? item.id : item.date ) + ''}
+              keyExtractor={item => (item.id ? item.id : (item.date ? item.date : item.text)) + ''}
               renderItem={this.renderItem}
               inverted={true}
               ListFooterComponent={loading ? <Loader /> : this.renderListFooter()} />
             
-            <ReplyBox />
+            <ReplyBox
+              chatId={this.getChatId()}
+              type='chat' />
           </View>
         }
       </SafeAreaView>
