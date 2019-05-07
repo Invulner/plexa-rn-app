@@ -45,7 +45,7 @@ class ReplyBox extends Component {
     switch (type) {
       case 'comment':
         postComment(reply)
-      break
+        break
 
       case 'chat':
         const params = {
@@ -57,7 +57,7 @@ class ReplyBox extends Component {
           created_at: new Date().toString()
         }
         sendMessage(chatId, params)
-      break
+        break
     }
 
     this.setState({ reply: '' })
