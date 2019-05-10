@@ -1,16 +1,29 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { Provider } from 'react-redux'
-import store from './src/store'
+import { store, persistor } from './src/store'
 import { StatusBar } from 'react-native'
 import SwitchAppNavigator from './src/navigators/SwitchAppNavigator'
 import { createAppContainer } from 'react-navigation'
 import { Font } from 'expo'
+import { PersistGate } from 'redux-persist/integration/react'
+import FullscreenImage from './src/components/auth/FullscreenImage'
+import { View, Text, SafeAreaView, Image } from 'react-native'
 
 const AppContainer = createAppContainer(SwitchAppNavigator)
 
 export default class App extends React.Component {
   state = {
     fontLoaded: false
+  }
+
+  splashScreen = () => {
+    return (
+      <View style={{flex: 1}}>
+        <Image
+          style={{width: '100%', resizeMode: 'cover' }}
+          source={require('./src/assets/images/nav-bg_final-01.png')} />
+      </View>
+    )
   }
 
   async componentDidMount() {
@@ -31,11 +44,13 @@ export default class App extends React.Component {
     return (
       <Provider store={store}>
           <StatusBar />
-          {fontsLoaded ? 
-            <AppContainer />
-            :
-            null
-          }
+            <PersistGate loading={null} persistor={persistor}>
+              {fontsLoaded ? 
+                <AppContainer />
+                :
+                null
+              }
+        </PersistGate>
       </Provider>
     )
   }

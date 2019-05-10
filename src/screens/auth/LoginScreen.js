@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, TextInput, StyleSheet, TouchableOpacity, Linking, Image, Alert, ActivityIndicator } from 'react-native'
+import { View, TextInput, StyleSheet, TouchableOpacity, Linking, Image, Alert, ActivityIndicator, NetInfo } from 'react-native'
 import { connect } from 'react-redux'
 import UserOperations from '../../operations/UserOperations'
 import { SIGN_UP_URL, MIN_PASSWORD_LENGTH, PASSWORD_URL } from '../../constants'
@@ -67,9 +67,18 @@ class LoginScreen extends Component {
     Alert.alert(title, message)
   }
 
+  loginIfConnected = () => {
+    NetInfo.isConnected.fetch().then(isConnected => {
+      const title = 'No internet connection'
+      const message = 'Check your internet connection and try again'
+
+      isConnected ? this.login() : Alert.alert(title, message)
+    })
+  }
+
   onSubmit = () => {
-    if (this.isFormValid()) 
-      this.login()
+    if (this.isFormValid())
+      this.loginIfConnected()
     else 
       this.showValidationMessage()
   }

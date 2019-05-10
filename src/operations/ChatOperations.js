@@ -9,7 +9,6 @@ const getMessages = (id, page = 1) => {
     return getAxiosInstance().then(api => {
       api.get(`${API_URL}/rooms/${id}/messages?page=${page}`)
         .then(response => {
-          console.log('response.data :', response.data)
           dispatch(ChatActions.saveMessages(response.data))
           dispatch(ChatActions.updateChatPage(page))
           dispatch(ChatActions.toggleMessagesLoading(false))
@@ -28,12 +27,10 @@ const resetChat = () => {
 const sendMessage = (chatId, params) => {
   return dispatch => {
     dispatch(ChatActions.saveMessage(params))
-    console.log('params', params)
 
     return getAxiosInstance().then(api => {
       api.post(`${API_URL}/rooms/${chatId}/messages`, params)
         .then(response => {
-          console.log(response.data)
           dispatch(ChatActions.updateMessage(response.data))
         }).catch(error => console.log('sendMessage CHAT OPERATION ERROR: ', error))
     })

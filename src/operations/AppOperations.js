@@ -9,16 +9,17 @@ const initializeApp = (navigation) => {
 
 const checkForSavedCreds = async (dispatch, navigation) => {
   try {
-    const secretData = await AsyncStorage.getItem('secretData')
+    // const secretData = await AsyncStorage.getItem('secretData')
 
-    if (secretData) {
+    // if (secretData) {
       const successCallback = () => {
         navigation.navigate('App')
       }
+      
       dispatch(UserOperations.getProfileData(navigation, successCallback))
-    } else {
-      navigateToLogin(navigation)
-    }
+    // } else {
+    //   navigateToLogin(navigation)
+    // }
 
   } catch (error) {
       console.log('ASYNC STORAGE ERROR: ', error)

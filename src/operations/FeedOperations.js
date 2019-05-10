@@ -13,11 +13,9 @@ const fetchFeed = (saveOption, page = 1) => {
           switch (saveOption) {
             case 'add':
               dispatch(FeedActions.saveFeedData(response.data))
-              console.log('add to feed')
               break
             case 'refresh':
               dispatch(FeedActions.refreshFeed(response.data))
-              console.log('refresh feed')
               break
             default:
               console.log('wrong saveOption')
@@ -65,7 +63,6 @@ const hidePost = (postId, cb) => {
     return getAxiosInstance().then(api => {
       api.post(`${API_URL}/stories/${postId}/hide`)
         .then(response => {
-          console.log(response.data)
           response.data.hidden && dispatch(FeedActions.hidePost(postId))
           cb()
         })
