@@ -39,7 +39,7 @@ const connectToWs = (chatId) => {
         },
         {
           received: (data) => {
-            dispatch(ChatActions.newMessage(data))
+            dispatch(ChatActions.saveMessage(data))
             dispatch(ChatsActions.updateChat(data))
           }
         }

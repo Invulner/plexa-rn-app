@@ -30,16 +30,6 @@ const chatReducer = (state = initialState, action) => {
         ]
       }
 
-    case types.NEW_MESSAGE:
-      if (state.messages.find(message => message.seq_id === action.data.seq_id)) return state
-      return {
-        ...state,
-        messages: [
-          action.data,
-          ...state.messages
-        ]
-      }
-
     case types.DELETE_MESSAGES:
       return {
         ...state,
@@ -59,6 +49,7 @@ const chatReducer = (state = initialState, action) => {
       }
 
     case types.SAVE_MESSAGE:
+	    if (action.message.seq_id && state.messages.find(message => message.seq_id === action.message.seq_id)) return state //check if message from web socket is not your own message
       return {
         ...state,
         messages: [action.message, ...state.messages]
