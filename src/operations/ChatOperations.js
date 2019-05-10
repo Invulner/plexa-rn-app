@@ -1,6 +1,9 @@
 import ChatActions from '../actions/ChatActions'
 import getAxiosInstance from '../config/axios'
 import { API_URL } from '../constants'
+import cable from '../action_cable/cable_instance'
+
+let roomConnection
 
 const getMessages = (id, page = 1) => {
   return dispatch => {
@@ -21,7 +24,26 @@ const resetChat = () => {
   return dispatch => {
     dispatch(ChatActions.deleteMessages())
     dispatch(ChatActions.updateChatPage(1))
+	  roomConnection.unsubscribe()
   }
+}
+
+const connectToWs = (chatId) => {
+	return dispatch => {
+	  return cable.then(cable_instance => {
+		  roomConnection = cable_instance.subscriptions.create(
+			  {
+				  channel: 'RoomsChannel',
+				  id: chatId
+			  },
+			  {
+				  received: (data) => {
+					  dispatch(ChatActions.newMessage(data))
+				  }
+			  }
+		  )
+    })
+	}
 }
 
 const sendMessage = (chatId, params) => {
@@ -40,5 +62,6 @@ const sendMessage = (chatId, params) => {
 export default {
   getMessages,
   resetChat,
-  sendMessage
+  sendMessage,
+  connectToWs
 }

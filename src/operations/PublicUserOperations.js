@@ -13,7 +13,6 @@ const getPublicUserProfile = (navigation) => {
     return getAxiosInstance().then(api => {
       api.get(`${API_URL}/profiles/${id}`)
         .then(response => {
-          console.log(response)
           dispatch(PublicUserActions.savePublicUserData(response.data))
           dispatch(PublicUserActions.togglePublicUserLoading(false))
         })

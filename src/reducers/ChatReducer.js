@@ -30,6 +30,15 @@ const chatReducer = (state = initialState, action) => {
         ]
       }
 
+	  case types.NEW_MESSAGE:
+		  return {
+			  ...state,
+			  messages: [
+				  action.data,
+				  ...state.messages
+			  ]
+		  }
+
     case types.DELETE_MESSAGES:
       return {
         ...state,

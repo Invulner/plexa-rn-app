@@ -5,6 +5,11 @@ const saveMessages = (data) => ({
   data
 })
 
+const newMessage = (data) => ({
+	type: types.NEW_MESSAGE,
+	data
+})
+
 const deleteMessages = () => ({
   type: types.DELETE_MESSAGES
 })
@@ -35,5 +40,6 @@ export default {
   toggleMessagesLoading,
   updateChatPage,
   saveMessage,
-  updateMessage
+  updateMessage,
+	newMessage
 }
