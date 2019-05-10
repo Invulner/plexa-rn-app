@@ -6,8 +6,8 @@ const saveMessages = (data) => ({
 })
 
 const newMessage = (data) => ({
-	type: types.NEW_MESSAGE,
-	data
+  type: types.NEW_MESSAGE,
+  data
 })
 
 const deleteMessages = () => ({
@@ -41,5 +41,5 @@ export default {
   updateChatPage,
   saveMessage,
   updateMessage,
-	newMessage
+  newMessage
 }

@@ -24,26 +24,26 @@ const resetChat = () => {
   return dispatch => {
     dispatch(ChatActions.deleteMessages())
     dispatch(ChatActions.updateChatPage(1))
-	  roomConnection.unsubscribe()
+    roomConnection.unsubscribe()
   }
 }
 
 const connectToWs = (chatId) => {
-	return dispatch => {
-	  return cable.then(cable_instance => {
-		  roomConnection = cable_instance.subscriptions.create(
-			  {
-				  channel: 'RoomsChannel',
-				  id: chatId
-			  },
-			  {
-				  received: (data) => {
-					  dispatch(ChatActions.newMessage(data))
-				  }
-			  }
-		  )
+  return dispatch => {
+    return cable.then(cable_instance => {
+      roomConnection = cable_instance.subscriptions.create(
+        {
+          channel: 'RoomsChannel',
+          id: chatId
+        },
+        {
+          received: (data) => {
+            dispatch(ChatActions.newMessage(data))
+          }
+        }
+      )
     })
-	}
+  }
 }
 
 const sendMessage = (chatId, params) => {
