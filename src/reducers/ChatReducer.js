@@ -31,6 +31,7 @@ const chatReducer = (state = initialState, action) => {
       }
 
 	  case types.NEW_MESSAGE:
+	    if (state.messages.find(message => message.seq_id === action.data.seq_id)) return state
 		  return {
 			  ...state,
 			  messages: [
