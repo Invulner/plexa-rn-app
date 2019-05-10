@@ -38,6 +38,12 @@ class ReplyBox extends Component {
     return !reply.trim().length
   }
 
+  getSeqId = (min, max) => {
+    let rand = min + Math.random() * (max + 1 - min)
+
+    return  Math.floor(rand)
+  }
+
   onSubmit = () => {
     const { postComment, sendMessage, type, chatId, full_name } = this.props
     const reply = this.state.reply.trim()
@@ -50,7 +56,7 @@ class ReplyBox extends Component {
       case 'chat':
         const params = {
           text: reply,
-          seq_id: 1, //required number, but we don't use it
+          seq_id: this.getSeqId(),
           author: {
             name: full_name
           },
