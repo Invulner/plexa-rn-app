@@ -24,6 +24,11 @@ const createChat = (data) => ({
   data
 })
 
+const updateChat = (data) => ({
+	type: types.UPDATE_CHAT,
+	data
+})
+
 const resetChats = () => ({
   type: types.RESET_CHATS
 })
@@ -34,5 +39,6 @@ export default {
   getUsers,
   deleteUsers,
   createChat,
-  resetChats
+  resetChats,
+  updateChat
 }

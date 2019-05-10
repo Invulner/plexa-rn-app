@@ -1,4 +1,5 @@
 import ChatActions from '../actions/ChatActions'
+import ChatsActions from '../actions/ChatsActions'
 import getAxiosInstance from '../config/axios'
 import { API_URL } from '../constants'
 import cable from '../action_cable/cable_instance'
@@ -39,6 +40,7 @@ const connectToWs = (chatId) => {
         {
           received: (data) => {
             dispatch(ChatActions.newMessage(data))
+            dispatch(ChatsActions.updateChat(data))
           }
         }
       )

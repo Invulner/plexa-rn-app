@@ -6,6 +6,23 @@ const initialState = {
   items: []
 }
 
+const updateChat = (state, action) => {
+	const index = state.items.findIndex(item => item.id === action.data.room_id)
+  state.items[index]["last_message"] = action.data
+  state.items[index]["last_message_date"] = action.data.created_at
+
+	const items = [
+		...state.items.slice(0, index),
+		state.items[index],
+		...state.items.slice(index + 1)
+	]
+
+	return {
+		...state,
+		items
+	}
+}
+
 const ChatsReducer = (state = initialState, action) => {
   switch(action.type) {
     case types.GET_CHATS:
@@ -40,6 +57,9 @@ const ChatsReducer = (state = initialState, action) => {
 
     case types.RESET_CHATS:
       return initialState
+
+	  case types.UPDATE_CHAT:
+		  return updateChat(state, action)
 
     default:
       return state
