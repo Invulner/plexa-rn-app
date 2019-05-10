@@ -56,7 +56,7 @@ class ReplyBox extends Component {
       case 'chat':
         const params = {
           text: reply,
-          seq_id: this.getSeqId(),
+          seq_id: this.getSeqId(1000, 100000),
           author: {
             name: full_name
           },
