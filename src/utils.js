@@ -1,4 +1,5 @@
 import { MAX_CONTENT_LENGTH, UNAUTHORIZED_STATUS_CODE } from './constants'
+import { Alert } from 'react-native'
 
 const getInitials = (name) => {
   let initials = name.toUpperCase().split(/\s/).reduce((acc, cur) => acc += cur.slice(0,1), '')
@@ -139,6 +140,11 @@ const isAuthorizedRequest = (errorStatusCode) => {
   return errorStatusCode !== UNAUTHORIZED_STATUS_CODE
 }
 
+const showConnectivityError = () => {
+  Alert.alert('No internet connection', 'Check your internet connection and try again')
+}
+
+
 export default {
   getInitials,
   truncate,
@@ -154,5 +160,6 @@ export default {
   formatChatDate,
   formatTime,
   areDatesEqual,
-  isAuthorizedRequest
+  isAuthorizedRequest,
+  showConnectivityError
 }

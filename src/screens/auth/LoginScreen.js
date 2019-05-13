@@ -6,6 +6,7 @@ import { SIGN_UP_URL, MIN_PASSWORD_LENGTH, PASSWORD_URL } from '../../constants'
 import { BRAND_DARK, BG_COLOR, BRAND_LIGHT } from '../../assets/styles/colors'
 import SafeArea from '../../components/common/SafeArea'
 import { LightText } from '../../components/common/fonts'
+import utils from '../../utils'
 
 const mapDispatchToProps = (dispatch, { navigation }) => {
   const login = (credentials) => dispatch(UserOperations.auth(credentials, navigation))
@@ -69,10 +70,7 @@ class LoginScreen extends Component {
 
   loginIfConnected = () => {
     NetInfo.isConnected.fetch().then(isConnected => {
-      const title = 'No internet connection'
-      const message = 'Check your internet connection and try again'
-
-      isConnected ? this.login() : Alert.alert(title, message)
+      isConnected ? this.login() : utils.showConnectivityError()
     })
   }
 
