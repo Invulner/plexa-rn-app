@@ -24,10 +24,15 @@ const createChat = (data) => ({
   data
 })
 
+const resetChats = () => ({
+  type: types.RESET_CHATS
+})
+
 export default {
   getChats,
   toggleLoading,
   getUsers,
   deleteUsers,
-  createChat
+  createChat,
+  resetChats
 }

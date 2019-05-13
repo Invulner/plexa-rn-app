@@ -38,6 +38,9 @@ const ChatsReducer = (state = initialState, action) => {
         items: [action.data, ...state.items]
       }
 
+    case types.RESET_CHATS:
+      return initialState
+
     default:
       return state
   }

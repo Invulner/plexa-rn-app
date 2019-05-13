@@ -6,13 +6,17 @@ import getAxiosInstance from '../config/axios'
 import PublicUserOperations from './PublicUserOperations'
 import FeedActions from '../actions/FeedActions'
 import ResearchFeedActions from '../actions/ResearchFeedActions'
+import ChatsActions from '../actions/ChatsActions'
+import utils from '../utils'
 
 const auth = (credentials, navigation) => {
   return dispatch => {
     dispatch(UserActions.toggleUserDataLoading(true))
 
     return Axios.post(`${API_URL}/session/sign_in`, credentials)
-      .then(response => onLoginSuccess(response.data.data, dispatch, navigation))
+      .then(response => {
+        onLoginSuccess(response.data.data, dispatch, navigation)
+      })
       .catch(() => onLoginFail(dispatch))
   }
 }
@@ -26,11 +30,7 @@ const getProfileData = (navigation, cb) => {
           dispatch(UserActions.saveUserData(response.data))
           cb && cb()
         })
-        .catch(error => {
-          console.log('USER OP SECRET DATA ERROR: ', error)
-          redirectToLogin(navigation)
-          clearUserSecretData()
-        })
+        .catch(error => !utils.isAuthorizedRequest(error.response.status) && dispatch(logout(navigation)))
     })
   }
 }
@@ -85,6 +85,7 @@ const logout = (navigation) => {
     dispatch(FeedActions.resetFeed())
     dispatch(ResearchFeedActions.resetResearchFeed())
     dispatch(PublicUserOperations.clearPublicUserData())
+    dispatch(ChatsActions.resetChats())
   }
 }
 

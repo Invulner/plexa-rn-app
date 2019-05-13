@@ -9,7 +9,6 @@ const getChats = () => {
     return getAxiosInstance().then(api => {
       api.get(`${API_URL}/rooms`)
         .then(response => {
-          console.log(response.data)
           dispatch(ChatsActions.getChats(response.data))
           dispatch(ChatsActions.toggleLoading(false))
         })
@@ -23,7 +22,6 @@ const getUsers = (q) => {
     return getAxiosInstance().then(api => {
       api.get(`${API_URL}/profiles/search?q=${q}`)
         .then(result => {
-          console.log(result.data)
           dispatch(ChatsActions.getUsers(result.data))
         }).catch(error => console.log('GET USERS ERROR: ', error ))
     })
@@ -40,7 +38,6 @@ const createChat = (ids, cb) => {
     return getAxiosInstance().then(api => {
       api.post(`${API_URL}/rooms`, params)
         .then(response => {
-          console.log('createChat response: ', response.data)
           dispatch(ChatsActions.createChat(response.data))
           const { id, title } = response.data
           cb(id, title)
