@@ -144,6 +144,11 @@ const showConnectivityError = () => {
   Alert.alert('No internet connection', 'Check your internet connection and try again')
 }
 
+const getRandomNumber = (min, max) => {
+  let rand = min + Math.random() * (max + 1 - min)
+
+  return  Math.floor(rand)
+}
 
 export default {
   getInitials,
@@ -161,5 +166,7 @@ export default {
   formatTime,
   areDatesEqual,
   isAuthorizedRequest,
-  showConnectivityError
+  showConnectivityError,
+	getRandomNumber,
+  isAuthorizedRequest
 }

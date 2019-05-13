@@ -59,7 +59,6 @@ class ComposeScreen extends Component {
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: 'Images',
       })
-      console.log(result)
       this.setState({ imageURI: result.uri })
     }
   }

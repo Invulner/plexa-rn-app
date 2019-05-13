@@ -76,7 +76,6 @@ const reportPost = (postId, cb) => {
     return getAxiosInstance().then(api => {
       api.post(`${API_URL}/stories/${postId}/report`)
         .then(response => {
-          console.log(response.data)
           response.data.reported && dispatch(FeedActions.reportPost(postId))
           cb()
         })
@@ -90,7 +89,6 @@ const blockUser = (userId, cb) => {
     return getAxiosInstance().then(api => {
       api.post(`${API_URL}/profiles/${userId}/block`)
         .then(response => {
-          console.log(response.data)
           response.data.blocked && dispatch(FeedActions.blockUser(userId))
           cb()
         })
@@ -104,7 +102,6 @@ const deletePost = (postId, cb) => {
     return getAxiosInstance().then(api => {
       api.delete(`${API_URL}/stories/${postId}`)
         .then(response => {
-          console.log(response)
           response.data.deleted && dispatch(FeedActions.deletePost(postId))
           cb()
         })
@@ -118,7 +115,6 @@ const submitPost = (post, cb) => {
     getAxiosInstance().then(api => {
       api.post(`${API_URL}/stories`, post)
       .then(res => {
-        console.log(res.data)
         dispatch(FeedActions.saveComposedPost(res.data))
         cb()
       }).catch(error => console.log('SUBMIT POST ERROR: ', error))
@@ -153,7 +149,6 @@ const submitPostUpdate = (postId, post, cb) => {
     return getAxiosInstance().then(api => {
       api.put(`${API_URL}/stories/${postId}`, post)
         .then(response => {
-          console.log(response.data)
           dispatch(FeedActions.updatePost(response.data))
           cb()
         }).catch(error => console.log('SUBMIT POST UPDATE ERROR: ', error))

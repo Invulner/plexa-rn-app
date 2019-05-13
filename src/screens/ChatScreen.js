@@ -24,10 +24,12 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   const getMessages = (id, page) => dispatch(ChatOperations.getMessages(id, page))
   const resetChat = () => dispatch(ChatOperations.resetChat())
+  const connectToWs = (chatId) => dispatch(ChatOperations.connectToWs(chatId))
 
   return { 
     getMessages,
-    resetChat
+    resetChat,
+    connectToWs
   }
 }
 
@@ -115,6 +117,7 @@ class ChatScreen extends Component {
 
   componentDidMount() {
     this.props.getMessages(this.getChatId())
+    this.props.connectToWs(this.getChatId())
   }
 
   componentWillUnmount() {
