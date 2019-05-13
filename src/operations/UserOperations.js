@@ -7,6 +7,7 @@ import PublicUserOperations from './PublicUserOperations'
 import FeedActions from '../actions/FeedActions'
 import ResearchFeedActions from '../actions/ResearchFeedActions'
 import ChatsActions from '../actions/ChatsActions'
+import utils from '../utils'
 
 const auth = (credentials, navigation) => {
   return dispatch => {
@@ -29,10 +30,7 @@ const getProfileData = (navigation, cb) => {
           dispatch(UserActions.saveUserData(response.data))
           cb && cb()
         })
-        .catch(error => {
-          const unauthorizedStatusCode = 401
-          error.response.status === unauthorizedStatusCode && dispatch(logout(navigation))
-        })
+        .catch(error => !utils.isUserAuthorized(error.response.status) && dispatch(logout(navigation)))
     })
   }
 }

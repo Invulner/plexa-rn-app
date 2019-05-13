@@ -32,7 +32,7 @@ class AppLoadingScreen extends Component {
   }
 
   goToApp = () => {
-    // this.props.navigation.navigate('App')
+    this.props.navigation.navigate('App')
     this.getProfileDataInBackground()
   }
   

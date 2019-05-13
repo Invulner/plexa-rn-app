@@ -1,4 +1,4 @@
-import { MAX_CONTENT_LENGTH } from './constants'
+import { MAX_CONTENT_LENGTH, UNAUTHORIZED_STATUS_CODE } from './constants'
 
 const getInitials = (name) => {
   let initials = name.toUpperCase().split(/\s/).reduce((acc, cur) => acc += cur.slice(0,1), '')
@@ -135,6 +135,10 @@ const areDatesEqual = (a, b) => {
   return date1.setHours(0,0,0,0) === date2.setHours(0,0,0,0)
 }
 
+const isUserAuthorized = (errorStatusCode) => {
+  return errorStatusCode !== UNAUTHORIZED_STATUS_CODE
+}
+
 export default {
   getInitials,
   truncate,
@@ -149,5 +153,6 @@ export default {
   formatDate,
   formatChatDate,
   formatTime,
-  areDatesEqual
+  areDatesEqual,
+  isUserAuthorized
 }
