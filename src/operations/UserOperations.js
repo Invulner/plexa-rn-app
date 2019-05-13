@@ -30,8 +30,8 @@ const getProfileData = (navigation, cb) => {
           cb && cb()
         })
         .catch(error => {
-          const invalidTokenError = 'Error: Request failed with status code 401'
-          error === invalidTokenError && dispatch(logout(navigation))
+          const unauthorizedStatusCode = 401
+          error.response.status === unauthorizedStatusCode && dispatch(logout(navigation))
         })
     })
   }

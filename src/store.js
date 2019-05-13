@@ -6,9 +6,9 @@ import { persistStore, persistReducer } from 'redux-persist'
 import { AsyncStorage } from 'react-native'
 
 const persistConfig = {
- key: 'auth',
- storage: AsyncStorage,
- whitelist: ['user']
+  key: 'app',
+  storage: AsyncStorage,
+  whitelist: ['user']
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

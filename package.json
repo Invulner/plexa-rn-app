@@ -10,7 +10,6 @@
     "postinstall": "rndebugger-open"
   },
   "dependencies": {
-    "@react-native-community/netinfo": "^2.0.9",
     "axios": "^0.18.0",
     "expo": "^31.0.2",
     "lodash.debounce": "^4.0.8",

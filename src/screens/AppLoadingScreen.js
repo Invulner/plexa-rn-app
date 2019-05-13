@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Constants } from 'expo'
 import { connect } from 'react-redux'
-import { View, Image, StyleSheet, NetInfo } from 'react-native'
+import { View, Image, StyleSheet, NetInfo, Alert } from 'react-native'
 import DeviceActions from '../actions/DeviceActions'
 import UserOperations from '../operations/UserOperations'
 
@@ -32,7 +32,7 @@ class AppLoadingScreen extends Component {
   }
 
   goToApp = () => {
-    this.props.navigation.navigate('App')
+    // this.props.navigation.navigate('App')
     this.getProfileDataInBackground()
   }
   
