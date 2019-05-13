@@ -50,15 +50,22 @@ class FeedScreen extends Component {
   }
 
   onLogoPress = () => {
-    this.refs.feedList.scrollToOffset({ offset: 0 })
-    this.props.refreshFeed()
+    NetInfo.isConnected.fetch().then(isConnected => {
+      if (isConnected) {
+        this.refs.feedList.scrollToOffset({ offset: 0 })
+        this.props.refreshFeed()
+      } else {
+        utils.showConnectivityError()
+      }
+    })
   }
 
-  resetNavParams = () => {
+  resetScreenParams = () => {
     this.getParentNavigation().setParams({ 
       onLogoPress: null,
       isFeedScreen: false
     })
+    NetInfo.removeEventListener('connectionChange', this.onConnectionChange)
   }
 
   setNavParams = () => {
@@ -68,32 +75,61 @@ class FeedScreen extends Component {
     })
   }
 
-  addToFeed = () => {
-    const { page, feedLoading }  = this.props.feed
+  refreshFeed = () => {
+    console.log('refreshFeed')
+    NetInfo.isConnected.fetch().then(isConnected => {
+      console.log('isConnected :', isConnected)
+
+      if (isConnected)
+        this.props.refreshFeed()
+      else
+        utils.showConnectivityError()
+    })
+  }
+
+  onConnectionChange = ({ type }) => {
+    console.log('onConnectionChange')
+    console.log('connection type: ', type)
+    const { feed: { page }, getFeed } = this.props
+
+    type !== 'none' && type !== 'unknown' && getFeed(page + 1)
+  }
+
+  onEndReached = () => {
+    console.log('onEndReached')
+    const { feed: { page, feedLoading }, getFeed }  = this.props
     nextPage = page + 1
 
     NetInfo.isConnected.fetch().then(isConnected => {
       if (isConnected && !feedLoading) 
-        this.props.getFeed(nextPage)
-      else if (!isConnected)
+        getFeed(nextPage)
+      
+      else if (!isConnected) {
         utils.showConnectivityError()
+        NetInfo.addEventListener('connectionChange', this.onConnectionChange)
+      }
     }) 
   }
 
   componentDidMount() {
-    const { feed: { feedData }, getFeed } = this.props
+    const { feed: { feedData }, refreshFeed } = this.props
 
-    !feedData.length && getFeed()
+    NetInfo.isConnected.fetch().then(isConnected => {
+      if (!isConnected && !feedData.length)
+        utils.showConnectivityError()
+      else if (isConnected)
+        refreshFeed()
+    })  
   }
 
   render() {
-    const { refreshFeed, feed: { feedData, feedLoading } } = this.props
+    const { feed: { feedData, feedLoading } } = this.props
 
     return (
       <SafeArea>
         <NavigationEvents
           onDidFocus={this.setNavParams}
-          onDidBlur={this.resetNavParams} />
+          onDidBlur={this.resetScreenParams} />
         {feedLoading && !feedData.length ?
           <Loader />
           :
@@ -102,9 +138,9 @@ class FeedScreen extends Component {
             data={feedData}
             keyExtractor={item => item.id + ''}
             renderItem={this.renderItem} 
-            onEndReached={this.addToFeed} 
+            onEndReached={this.onEndReached} 
             onEndReachedThreshold={1}
-            onRefresh={refreshFeed}
+            onRefresh={this.refreshFeed}
             refreshing={feedLoading}
             ListFooterComponent={feedLoading && <Loader />} />
         }

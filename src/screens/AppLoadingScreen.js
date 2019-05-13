@@ -37,6 +37,7 @@ class AppLoadingScreen extends Component {
   }
   
   componentDidMount() {
+    console.log('componentDidMount')
     const { saveDeviceInfo, user, navigation: { navigate } } = this.props
     const data = {
       uuid: Constants.installationId || Constants.deviceId,
