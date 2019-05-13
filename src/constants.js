@@ -1,4 +1,5 @@
 export const BASE_URL = 'https://staging.plexa.ai'
+export const WEB_SOCKET_URL = 'wss://staging.plexa.ai/cable'
 export const SIGN_UP_URL = `${BASE_URL}/sign_up`
 export const PASSWORD_URL = `${BASE_URL}/u/password/new`
 export const API_URL = `${BASE_URL}/api/v1`

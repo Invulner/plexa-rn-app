@@ -8,7 +8,6 @@ const getPost = (id, cb) => {
     return getAxiosInstance().then(api => {
       api.get(`${API_URL}/stories/${id}`)
         .then(response => {
-          console.log(response.data)
           dispatch(PostActions.savePost(response.data))
           cb()
         }).catch(error => console.log('ERROR: ', error))

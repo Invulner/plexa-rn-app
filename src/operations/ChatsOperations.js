@@ -18,7 +18,6 @@ const getChats = () => {
 
 const getUsers = (q) => {
   return dispatch => {
-    console.log(q)
     return getAxiosInstance().then(api => {
       api.get(`${API_URL}/profiles/search?q=${q}`)
         .then(result => {

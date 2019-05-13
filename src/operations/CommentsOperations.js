@@ -31,7 +31,6 @@ const postComment = (comment, navigation) => {
     getAxiosInstance().then(api => {
       api.post(`${API_URL}/stories/${postId}/answers`, param)
         .then(response => {
-          console.log(response.data)
           dispatch(CommentsActions.addComment(response.data))
           dispatch(FeedActions.updateCommentsCounter(postId))
         })
