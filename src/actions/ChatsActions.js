@@ -25,8 +25,8 @@ const createChat = (data) => ({
 })
 
 const updateChat = (data) => ({
-	type: types.UPDATE_CHAT,
-	data
+  type: types.UPDATE_CHAT,
+  data
 })
 
 const resetChats = () => ({

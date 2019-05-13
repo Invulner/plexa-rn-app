@@ -7,20 +7,20 @@ const initialState = {
 }
 
 const updateChat = (state, action) => {
-	const index = state.items.findIndex(item => item.id === action.data.room_id)
+  const index = state.items.findIndex(item => item.id === action.data.room_id)
   state.items[index]["last_message"] = action.data
   state.items[index]["last_message_date"] = action.data.created_at
 
-	const items = [
-		...state.items.slice(0, index),
-		state.items[index],
-		...state.items.slice(index + 1)
-	]
+  const items = [
+    ...state.items.slice(0, index),
+    state.items[index],
+    ...state.items.slice(index + 1)
+  ]
 
-	return {
-		...state,
-		items
-	}
+  return {
+    ...state,
+    items
+  }
 }
 
 const ChatsReducer = (state = initialState, action) => {
