@@ -135,7 +135,7 @@ const areDatesEqual = (a, b) => {
   return date1.setHours(0,0,0,0) === date2.setHours(0,0,0,0)
 }
 
-const isUserAuthorized = (errorStatusCode) => {
+const isAuthorizedRequest = (errorStatusCode) => {
   return errorStatusCode !== UNAUTHORIZED_STATUS_CODE
 }
 
@@ -154,5 +154,5 @@ export default {
   formatChatDate,
   formatTime,
   areDatesEqual,
-  isUserAuthorized
+  isAuthorizedRequest
 }

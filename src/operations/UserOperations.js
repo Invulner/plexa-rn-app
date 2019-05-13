@@ -30,7 +30,7 @@ const getProfileData = (navigation, cb) => {
           dispatch(UserActions.saveUserData(response.data))
           cb && cb()
         })
-        .catch(error => !utils.isUserAuthorized(error.response.status) && dispatch(logout(navigation)))
+        .catch(error => !utils.isAuthorizedRequest(error.response.status) && dispatch(logout(navigation)))
     })
   }
 }
