@@ -139,6 +139,12 @@ const isAuthorizedRequest = (errorStatusCode) => {
   return errorStatusCode !== UNAUTHORIZED_STATUS_CODE
 }
 
+const getRandomNumber = (min, max) => {
+	let rand = min + Math.random() * (max + 1 - min)
+
+	return  Math.floor(rand)
+}
+
 export default {
   getInitials,
   truncate,
@@ -154,5 +160,6 @@ export default {
   formatChatDate,
   formatTime,
   areDatesEqual,
+	getRandomNumber,
   isAuthorizedRequest
 }

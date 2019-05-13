@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 import CommentOperations from '../../operations/CommentsOperations'
 import { BG_COLOR } from '../../assets/styles/colors'
 import ChatOperations from '../../operations/ChatOperations'
+import utils from '../../utils'
 
 const mapStateToProps = (state) => {
   const { full_name } = state.user
@@ -38,12 +39,6 @@ class ReplyBox extends Component {
     return !reply.trim().length
   }
 
-  getSeqId = (min, max) => {
-    let rand = min + Math.random() * (max + 1 - min)
-
-    return  Math.floor(rand)
-  }
-
   onSubmit = () => {
     const { postComment, sendMessage, type, chatId, full_name } = this.props
     const reply = this.state.reply.trim()
@@ -56,7 +51,7 @@ class ReplyBox extends Component {
       case 'chat':
         const params = {
           text: reply,
-          seq_id: this.getSeqId(1000, 100000),
+          seq_id: utils.getRandomNumber(1000, 100000),
           author: {
             name: full_name
           },
