@@ -1,5 +1,5 @@
 import { MAX_CONTENT_LENGTH, UNAUTHORIZED_STATUS_CODE } from './constants'
-import { Alert } from 'react-native'
+import { Alert, NetInfo } from 'react-native'
 
 const getInitials = (name) => {
   let initials = name.toUpperCase().split(/\s/).reduce((acc, cur) => acc += cur.slice(0,1), '')
@@ -150,6 +150,11 @@ const getRandomNumber = (min, max) => {
   return  Math.floor(rand)
 }
 
+const isConnectedFetchInterval = () =>
+setInterval(async () => {
+  await NetInfo.isConnected.fetch()
+}, 1000)
+
 export default {
   getInitials,
   truncate,
@@ -168,5 +173,6 @@ export default {
   isAuthorizedRequest,
   showConnectivityError,
 	getRandomNumber,
-  isAuthorizedRequest
+  isAuthorizedRequest,
+  isConnectedFetchInterval
 }

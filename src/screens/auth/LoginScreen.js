@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, TextInput, StyleSheet, TouchableOpacity, Linking, Image, Alert, ActivityIndicator, NetInfo } from 'react-native'
+import { View, TextInput, StyleSheet, TouchableOpacity, Linking, Image, Alert, ActivityIndicator } from 'react-native'
 import { connect } from 'react-redux'
 import UserOperations from '../../operations/UserOperations'
 import { SIGN_UP_URL, MIN_PASSWORD_LENGTH, PASSWORD_URL } from '../../constants'
@@ -15,9 +15,12 @@ const mapDispatchToProps = (dispatch, { navigation }) => {
 }
 
 const mapStateToProps = (state) => {
-  const { loading } = state.user
+  const { user: { loading }, network: { isConnected } } = state
 
-  return { loading }
+  return { 
+    loading,
+    isConnected
+  }
 }
 
 class LoginScreen extends Component {
@@ -69,9 +72,7 @@ class LoginScreen extends Component {
   }
 
   loginIfConnected = () => {
-    NetInfo.isConnected.fetch().then(isConnected => {
-      isConnected ? this.login() : utils.showConnectivityError()
-    })
+    this.props.isConnected ? this.login() : utils.showConnectivityError()
   }
 
   onSubmit = () => {

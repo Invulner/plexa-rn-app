@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 import { Constants } from 'expo'
 import { connect } from 'react-redux'
-import { View, Image, StyleSheet, NetInfo, Alert } from 'react-native'
+import { View, Image, StyleSheet, NetInfo } from 'react-native'
 import DeviceActions from '../actions/DeviceActions'
 import UserOperations from '../operations/UserOperations'
+import utils from '../utils'
+import ConnectionActions from '../actions/ConnectionActions'
 
 const mapStateToProps = (state) => {
   const { user } = state
@@ -14,30 +16,30 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch, { navigation }) => {
   const saveDeviceInfo = (data) => dispatch(DeviceActions.saveDeviceInfo(data))
   const getProfileData = (cb) => dispatch(UserOperations.getProfileData(navigation, cb))
+  const updateConnectionStatus = (isConnected) => dispatch(ConnectionActions.updateConnectionStatus(isConnected))
 
   return { 
     saveDeviceInfo,
-    getProfileData
+    getProfileData,
+    updateConnectionStatus
   }
 }
 
 class AppLoadingScreen extends Component {
-  getProfileDataInBackground = () => {
-    NetInfo.addEventListener('connectionChange', this.onConnectionChange)
+  getProfileDataInBackground = (isConnected) => {
+    const cb = () => NetInfo.isConnected.removeEventListener('connectionChange', this.getProfileDataInBackground)
+
+    isConnected && this.props.getProfileData(cb)
   }
 
-  onConnectionChange = ({ type }) => {
-    const cb = () => NetInfo.removeEventListener('connectionChange', this.onConnectionChange)
-    type !== 'none' && type !== 'unknown' && this.props.getProfileData(cb)
-  }
+  onConnectionChange = (isConnected) => this.props.updateConnectionStatus(isConnected)
 
   goToApp = () => {
     this.props.navigation.navigate('App')
-    this.getProfileDataInBackground()
+    NetInfo.isConnected.addEventListener('connectionChange', this.getProfileDataInBackground)
   }
   
   componentDidMount() {
-    console.log('componentDidMount')
     const { saveDeviceInfo, user, navigation: { navigate } } = this.props
     const data = {
       uuid: Constants.installationId || Constants.deviceId,
@@ -45,6 +47,8 @@ class AppLoadingScreen extends Component {
       device_name: Constants.deviceName
     }
     
+    utils.isConnectedFetchInterval()
+    NetInfo.isConnected.addEventListener('connectionChange', this.onConnectionChange)
     saveDeviceInfo(data)
     user.id ? this.goToApp() : navigate('Auth')
   }

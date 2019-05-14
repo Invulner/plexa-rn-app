@@ -9,6 +9,7 @@ import PostReducer from './PostReducer'
 import LocationsReducer from './LocationsReducer'
 import ChatsReducer from './ChatsReducer'
 import ChatReducer from './ChatReducer'
+import NetworkReducer from './NetworkReducer'
 
 const rootReducer = combineReducers({
   device: DeviceReducer,
@@ -20,7 +21,8 @@ const rootReducer = combineReducers({
   post: PostReducer,
   locations: LocationsReducer,
   chats: ChatsReducer,
-  chat: ChatReducer
+  chat: ChatReducer,
+  network: NetworkReducer
 })
 
 export default rootReducer
