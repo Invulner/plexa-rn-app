@@ -172,7 +172,6 @@ export default {
   areDatesEqual,
   isAuthorizedRequest,
   showConnectivityError,
-	getRandomNumber,
-  isAuthorizedRequest,
+  getRandomNumber,
   isConnectedFetchInterval
 }
