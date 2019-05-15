@@ -1,16 +1,23 @@
 import React, { Component } from 'react'
 import { View, Image, StyleSheet, TouchableOpacity } from 'react-native'
-import { withNavigation } from 'react-navigation'
+import { connect } from 'react-redux'
+
+const mapStateToProps = (state) => {
+  const { isConnected } = state.network
+
+  return { isConnected }
+}
 
 class FeedHeaderLeft extends Component {
   render() {
-    const { navigation } = this.props
+    const { navigation, isConnected } = this.props
     const isFeedScreen = navigation.getParam('isFeedScreen')
     
     return (
       <View style={styles.container}>
       {isFeedScreen &&
-        <TouchableOpacity 
+        <TouchableOpacity
+          disabled={!isConnected} 
           style={styles.addPostButton} 
           onPress={() => navigation.navigate('Compose')}>
           <Image 
@@ -41,4 +48,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default withNavigation(FeedHeaderLeft)
+export default connect(mapStateToProps, null)(FeedHeaderLeft)

@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
-import { View, TextInput, StyleSheet, TouchableOpacity, Linking, Image, Alert, ActivityIndicator, NetInfo } from 'react-native'
+import { View, TextInput, StyleSheet, TouchableOpacity, Linking, Image, Alert, ActivityIndicator } from 'react-native'
 import { connect } from 'react-redux'
 import UserOperations from '../../operations/UserOperations'
 import { SIGN_UP_URL, MIN_PASSWORD_LENGTH, PASSWORD_URL } from '../../constants'
 import { BRAND_DARK, BG_COLOR, BRAND_LIGHT } from '../../assets/styles/colors'
 import SafeArea from '../../components/common/SafeArea'
 import { LightText } from '../../components/common/fonts'
+import utils from '../../utils'
 
 const mapDispatchToProps = (dispatch, { navigation }) => {
   const login = (credentials) => dispatch(UserOperations.auth(credentials, navigation))
@@ -14,9 +15,12 @@ const mapDispatchToProps = (dispatch, { navigation }) => {
 }
 
 const mapStateToProps = (state) => {
-  const { loading } = state.user
+  const { user: { loading }, network: { isConnected } } = state
 
-  return { loading }
+  return { 
+    loading,
+    isConnected
+  }
 }
 
 class LoginScreen extends Component {
@@ -68,12 +72,7 @@ class LoginScreen extends Component {
   }
 
   loginIfConnected = () => {
-    NetInfo.isConnected.fetch().then(isConnected => {
-      const title = 'No internet connection'
-      const message = 'Check your internet connection and try again'
-
-      isConnected ? this.login() : Alert.alert(title, message)
-    })
+    this.props.isConnected ? this.login() : utils.showConnectivityError()
   }
 
   onSubmit = () => {

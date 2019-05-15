@@ -55,8 +55,16 @@ class Social extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.liked !== this.props.liked)
+    let { liked: prevLiked, likesCount: prevLikesCount, answersCount: prevAnswersCount } = prevProps
+    let { liked, likesCount, answersCount } = this.props
+
+    let likedUpdated = prevLiked !== liked
+    let likesCountUpdated = prevLikesCount !== likesCount
+    let answersCountUpdated = prevAnswersCount !== answersCount
+
+    if (likedUpdated || likesCountUpdated || answersCountUpdated) {
       this.setState(this.setPropsToState())
+    }
   }
 
   render() {

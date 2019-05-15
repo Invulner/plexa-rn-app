@@ -1,6 +1,10 @@
 import getAxiosInstance from '../config/axios'
 import { API_URL } from '../constants'
 import FeedActions from '../actions/FeedActions'
+import CommentsActions from '../actions/CommentsActions'
+import cable from '../action_cable/cable_instance'
+
+let feedConnection
 
 const fetchFeed = (saveOption, page = 1) => {
   return dispatch => {
@@ -25,7 +29,7 @@ const fetchFeed = (saveOption, page = 1) => {
           dispatch(FeedActions.updateFeedPage(page))
           dispatch(FeedActions.toggleFeedDataLoading(false))
         })
-        .catch(error => console.log('Request error: ', error))
+        .catch(error => console.log('fetchFeed error: ', error))
     })
     .catch(error => console.log('Axios config error: ', error))
   }
@@ -122,6 +126,46 @@ const submitPost = (post, cb) => {
   }
 }
 
+const handleStoryUpdate = (data, dispatch) => {
+  if (data.action === 'deleted') {
+    dispatch(FeedActions.deletePost(data.id))
+  } else {
+    dispatch(FeedActions.updatePost({...data.attrs, id: data.id}))
+  }
+}
+
+const handleAnswerUpdate = (data, dispatch) => {
+  if (data.action === 'created') {
+    dispatch(FeedActions.updateCommentsCounter(data.story_id))
+    dispatch(CommentsActions.addComment(data.attrs))
+  } else if (data.action === 'liked') {
+    dispatch(CommentsActions.updateCommentLike(data.id, data.attrs))
+  }
+}
+
+const connectToWs = () => {
+  return dispatch => {
+    return cable.then(cable_instance => {
+      feedConnection = cable_instance.subscriptions.create(
+        'FeedChannel',
+        {
+          received: (data) => {
+            if (data.type === 'story') {
+              handleStoryUpdate(data, dispatch)
+            } else if (data.type === 'answer') {
+              handleAnswerUpdate(data, dispatch)
+            }
+          }
+        }
+      )
+    })
+  }
+}
+
+const disconnectFromWs = () => {
+  feedConnection.unsubscribe()
+}
+
 const submitPostWithImage = (image, post, cb, postId) => {
   return dispatch => {
     const optionalHeaders = {
@@ -163,6 +207,8 @@ export default {
   submitPost,
   submitPostWithImage,
   hidePost,
+  connectToWs,
+  disconnectFromWs,
   reportPost,
   blockUser,
   deletePost,

@@ -20,7 +20,7 @@ const fetchResearchFeed = (saveOption, page = 1) => {
           }
           dispatch(ResearchFeedActions.updateResearchFeedPage(page))
           dispatch(ResearchFeedActions.toggleResearchFeedLoading(false))
-        }).catch(error => console.log('Request error: ', error))
+        }).catch(error => console.log('fetchResearchFeed error: ', error))
     }).catch(error => console.log('Axios config error: ', error))
   }
 }
