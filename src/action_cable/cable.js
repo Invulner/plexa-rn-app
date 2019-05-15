@@ -1,12 +1,8 @@
-import Consumer from './consumer'
 import INTERNAL from './internal'
 var slice = [].slice;
 
 const ActionCable = {
   INTERNAL: INTERNAL,
-  createConsumer: function(url) {
-    return new Consumer(url);
-  },
   startDebugging: function() {
     return this.debugging = true;
   },

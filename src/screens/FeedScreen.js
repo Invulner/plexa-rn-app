@@ -11,8 +11,12 @@ import PostPlaceholder from '../components/feed/PostPlaceholder'
 const mapDispatchToProps = (dispatch) => {
   const getFeed = (page) => dispatch(FeedOperations.getFeed(page))
   const refreshFeed = () => dispatch(FeedOperations.refreshFeed())
+  const connectToWs = () => dispatch(FeedOperations.connectToWs())
+  const disconnectFromWs = () => dispatch(FeedOperations.disconnectFromWs())
 
-  return { 
+  return {
+    connectToWs,
+    disconnectFromWs,
     getFeed,
     refreshFeed
   }
@@ -81,6 +85,14 @@ class FeedScreen extends Component {
     const nextPage = page + 1
 
     isConnected && !feedLoading && getFeed(nextPage)
+  }
+
+  componentDidMount() {
+    this.props.connectToWs()
+  }
+
+  componentWillUnmount() {
+    this.props.disconnectFromWs()
   }
 
   render() {
