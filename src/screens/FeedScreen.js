@@ -7,7 +7,6 @@ import { connect } from 'react-redux'
 import Loader from '../components/common/Loader'
 import { NavigationEvents } from 'react-navigation'
 import PostPlaceholder from '../components/feed/PostPlaceholder'
-import utils from '../utils'
 
 const mapDispatchToProps = (dispatch) => {
   const getFeed = (page) => dispatch(FeedOperations.getFeed(page))
