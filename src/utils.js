@@ -150,7 +150,7 @@ const getRandomNumber = (min, max) => {
   return  Math.floor(rand)
 }
 
-const setFetchConnectionInterval = () =>
+const startConnectionStatusWorker = () =>
   setInterval(async () => {
     await NetInfo.isConnected.fetch()
   }, 1000)
@@ -173,5 +173,5 @@ export default {
   isAuthorizedRequest,
   showConnectivityError,
   getRandomNumber,
-  setFetchConnectionInterval
+  startConnectionStatusWorker
 }

@@ -26,6 +26,10 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 class AppLoadingScreen extends Component {
+  addEventListeners = () => {
+    NetInfo.isConnected.addEventListener('connectionChange', this.onConnectionChange)
+  }
+
   onConnectionChange = (isConnected) => {
     const { updateConnectionStatus, fetchFreshData } = this.props
 
@@ -42,8 +46,8 @@ class AppLoadingScreen extends Component {
       device_name: Constants.deviceName
     }
     
-    utils.setFetchConnectionInterval()
-    NetInfo.isConnected.addEventListener('connectionChange', this.onConnectionChange)
+    utils.startConnectionStatusWorker()
+    this.addEventListeners()
     saveDeviceInfo(data)
     user.id ? navigate('App') : navigate('Auth')
   }
