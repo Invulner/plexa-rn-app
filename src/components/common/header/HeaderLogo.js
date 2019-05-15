@@ -10,15 +10,16 @@ const mapStateToProps = (state) => {
 
 function HeaderLogo(props) {
   const { navigation, isConnected } = props
+  const isFeedScreen = navigation.getParam('isFeedScreen')
   const onFeedLogoPress = navigation.getParam('onLogoPress')
 
   const onLogoPress = () => {
-    onFeedLogoPress ? onFeedLogoPress() : navigation.navigate('Feed')
+    isFeedScreen ? onFeedLogoPress() : navigation.navigate('Feed')
   }
 
   return (
     <TouchableOpacity
-      disabled={!isConnected && onFeedLogoPress}
+      disabled={!isConnected && isFeedScreen}
       onPress={onLogoPress}>
       <Image 
         source={require('../../../assets/images/logo-min.png')}
