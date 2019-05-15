@@ -18,7 +18,7 @@ function HeaderLogo(props) {
 
   return (
     <TouchableOpacity
-      disabled={!isConnected}
+      disabled={!isConnected && onFeedLogoPress}
       onPress={onLogoPress}>
       <Image 
         source={require('../../../assets/images/logo-min.png')}
