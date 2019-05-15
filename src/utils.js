@@ -1,4 +1,5 @@
 import { MAX_CONTENT_LENGTH, UNAUTHORIZED_STATUS_CODE } from './constants'
+import { Alert, NetInfo } from 'react-native'
 
 const getInitials = (name) => {
   let initials = name.toUpperCase().split(/\s/).reduce((acc, cur) => acc += cur.slice(0,1), '')
@@ -139,11 +140,20 @@ const isAuthorizedRequest = (errorStatusCode) => {
   return errorStatusCode !== UNAUTHORIZED_STATUS_CODE
 }
 
+const showConnectivityError = () => {
+  Alert.alert('No internet connection')
+}
+
 const getRandomNumber = (min, max) => {
   let rand = min + Math.random() * (max + 1 - min)
 
   return  Math.floor(rand)
 }
+
+const startConnectionStatusWorker = () =>
+  setInterval(async () => {
+    await NetInfo.isConnected.fetch()
+  }, 1000)
 
 export default {
   getInitials,
@@ -160,6 +170,8 @@ export default {
   formatChatDate,
   formatTime,
   areDatesEqual,
-	getRandomNumber,
-  isAuthorizedRequest
+  isAuthorizedRequest,
+  showConnectivityError,
+  getRandomNumber,
+  startConnectionStatusWorker
 }

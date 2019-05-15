@@ -11,8 +11,8 @@ const getChats = () => {
         .then(response => {
           dispatch(ChatsActions.getChats(response.data))
           dispatch(ChatsActions.toggleLoading(false))
-        })
-    })
+        }).catch(error => console.log('getChats error: ', error))
+    }).catch(error => console.log('Axios config error: ', error))
   }
 }
 
@@ -22,8 +22,8 @@ const getUsers = (q) => {
       api.get(`${API_URL}/profiles/search?q=${q}`)
         .then(result => {
           dispatch(ChatsActions.getUsers(result.data))
-        }).catch(error => console.log('GET USERS ERROR: ', error ))
-    })
+        }).catch(error => console.log('getUsers error: ', error ))
+    }).catch(error => console.log('Axios config error: ', error))
   }
 }
 
@@ -40,8 +40,8 @@ const createChat = (ids, cb) => {
           dispatch(ChatsActions.createChat(response.data))
           const { id, title } = response.data
           cb(id, title)
-      }).catch(error => console.log('createChat OPERATION ERROR: ', error))
-    })
+      }).catch(error => console.log('createChat error: ', error))
+    }).catch(error => console.log('Axios config error: ', error))
   }
 }
 

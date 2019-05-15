@@ -29,7 +29,7 @@ const fetchFeed = (saveOption, page = 1) => {
           dispatch(FeedActions.updateFeedPage(page))
           dispatch(FeedActions.toggleFeedDataLoading(false))
         })
-        .catch(error => console.log('Request error: ', error))
+        .catch(error => console.log('fetchFeed error: ', error))
     })
     .catch(error => console.log('Axios config error: ', error))
   }

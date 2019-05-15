@@ -8,10 +8,10 @@ import HeaderRight from '../components/common/header/HeaderRight'
 const AppStack = createStackNavigator({
   App: {
     screen: AppTabNavigator,
-    navigationOptions: () => ({
-      headerTitle: <HeaderLogo />,
-      headerLeft: <HeaderLeft />,
-      headerRight: <HeaderRight />,
+    navigationOptions: ({ navigation }) => ({
+      headerTitle: <HeaderLogo navigation={navigation} />,
+      headerLeft: <HeaderLeft navigation={navigation} />,
+      headerRight: <HeaderRight navigation={navigation} />,
       headerStyle: {
         paddingVertical: 10
       }

@@ -23,9 +23,12 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 const mapStateToProps = (state) => {
-  const { feed } = state
+  const { feed, network: { isConnected } } = state
 
-  return { feed }
+  return { 
+    feed,
+    isConnected
+  }
 }
 
 class FeedScreen extends Component {
@@ -57,30 +60,34 @@ class FeedScreen extends Component {
     this.props.refreshFeed()
   }
 
-  resetNavParams = () => {
+  resetScreenParams = () => {
     this.getParentNavigation().setParams({ 
       onLogoPress: null,
       isFeedScreen: false
     })
   }
 
-  setNavParams = () => {
+  setScreenParams = () => {
     this.getParentNavigation().setParams({ 
       onLogoPress: this.onLogoPress,
       isFeedScreen: true
     })
   }
 
-  addToFeed = () => {
-    const { page, feedLoading }  = this.props.feed
-    nextPage = page + 1
-    if (!feedLoading) {
-      this.props.getFeed(nextPage)
-    } 
+  refreshFeed = () => {
+    const { isConnected, refreshFeed } = this.props
+
+    isConnected && refreshFeed()
+  }   
+
+  onEndReached = () => {
+    const { feed: { page, feedLoading }, getFeed, isConnected }  = this.props
+    const nextPage = page + 1
+
+    isConnected && !feedLoading && getFeed(nextPage)
   }
 
   componentDidMount() {
-    this.props.getFeed()
     this.props.connectToWs()
   }
 
@@ -89,13 +96,13 @@ class FeedScreen extends Component {
   }
 
   render() {
-    const { refreshFeed, feed: { feedData, feedLoading } } = this.props
+    const { feed: { feedData, feedLoading } } = this.props
 
     return (
       <SafeArea>
         <NavigationEvents
-          onDidFocus={this.setNavParams}
-          onDidBlur={this.resetNavParams} />
+          onDidFocus={this.setScreenParams}
+          onDidBlur={this.resetScreenParams} />
         {feedLoading && !feedData.length ?
           <Loader />
           :
@@ -104,9 +111,9 @@ class FeedScreen extends Component {
             data={feedData}
             keyExtractor={item => item.id + ''}
             renderItem={this.renderItem} 
-            onEndReached={this.addToFeed} 
+            onEndReached={this.onEndReached} 
             onEndReachedThreshold={1}
-            onRefresh={refreshFeed}
+            onRefresh={this.refreshFeed}
             refreshing={feedLoading}
             ListFooterComponent={feedLoading && <Loader />} />
         }
