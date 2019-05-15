@@ -9,7 +9,6 @@ const getChats = () => {
     return getAxiosInstance().then(api => {
       api.get(`${API_URL}/rooms`)
         .then(response => {
-          console.log('getChats: ', response.data);
           dispatch(ChatsActions.getChats(response.data))
           dispatch(ChatsActions.toggleLoading(false))
         })
@@ -41,7 +40,8 @@ const createChat = (ids, cb) => {
           dispatch(ChatsActions.createChat(response.data))
           const { id, title } = response.data
           cb(id, title)
-      }).catch(error => console.log('createChat OPERATION ERROR: ', error))
+          console.log('response.data', response.data)
+      }).catch(error => console.log('createChat OPERATION ERROR: ', error.response))
     })
   }
 }

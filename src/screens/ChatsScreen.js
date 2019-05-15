@@ -51,8 +51,6 @@ class ChatsScreen extends Component {
   }
 
   findChatAvatar = (item, title) => {
-    console.log('title: ', title)
-    console.log('member found: ', item.members.find(member => member.name === title))
     const member = item.members.find(member => member.name === title)
     return member ? member.avatar : null
   }

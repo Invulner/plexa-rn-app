@@ -16,7 +16,6 @@ const getMessages = (id, page = 1) => {
           dispatch(ChatActions.saveMessages(response.data))
           dispatch(ChatActions.updateChatPage(page))
           dispatch(ChatActions.toggleMessagesLoading(false))
-          console.log('getMessages: '. response.data)
         }).catch(error => console.log('getMessages CHAT OPERATION ERROR: ', error))
     })
   }
@@ -57,6 +56,7 @@ const sendMessage = (chatId, params) => {
       api.post(`${API_URL}/rooms/${chatId}/messages`, params)
         .then(response => {
           dispatch(ChatActions.updateMessage(response.data))
+          dispatch(ChatsActions.updateChat(response.data))
         }).catch(error => console.log('sendMessage CHAT OPERATION ERROR: ', error))
     })
   }
