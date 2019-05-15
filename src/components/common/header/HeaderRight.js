@@ -1,16 +1,24 @@
 import React, { Component } from 'react'
 import { View, TouchableOpacity, Image, StyleSheet } from 'react-native'
-import { withNavigation } from 'react-navigation'
+import { connect } from 'react-redux'
+
+const mapStateToProps = (state) => {
+  const { isConnected } = state.network
+
+  return { isConnected }
+}
 
 class HeaderRight extends Component {
   render() {
-    const { navigation } = this.props
+    const { navigation, isConnected } = this.props
     const isChatsScreen = navigation.getParam('isChatsScreen')
 
     return (
       <View style={styles.container}>
       {isChatsScreen &&
-        <TouchableOpacity onPress={() => navigation.navigate('AddUsers')}>
+        <TouchableOpacity
+          disabled={!isConnected}
+          onPress={() => navigation.navigate('AddUsers')}>
           <Image 
             style={styles.messageIcon}
             source={require('../../../assets/icons/add-users.png')} />
@@ -33,4 +41,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default withNavigation(HeaderRight)
+export default connect(mapStateToProps, null)(HeaderRight)

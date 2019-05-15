@@ -141,7 +141,7 @@ const isAuthorizedRequest = (errorStatusCode) => {
 }
 
 const showConnectivityError = () => {
-  Alert.alert('No internet connection', 'Check your internet connection and try again')
+  Alert.alert('No internet connection')
 }
 
 const getRandomNumber = (min, max) => {
@@ -150,10 +150,10 @@ const getRandomNumber = (min, max) => {
   return  Math.floor(rand)
 }
 
-const isConnectedFetchInterval = () =>
-setInterval(async () => {
-  await NetInfo.isConnected.fetch()
-}, 1000)
+const setFetchConnectionInterval = () =>
+  setInterval(async () => {
+    await NetInfo.isConnected.fetch()
+  }, 1000)
 
 export default {
   getInitials,
@@ -173,5 +173,5 @@ export default {
   isAuthorizedRequest,
   showConnectivityError,
   getRandomNumber,
-  isConnectedFetchInterval
+  setFetchConnectionInterval
 }

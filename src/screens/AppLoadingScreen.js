@@ -6,6 +6,7 @@ import DeviceActions from '../actions/DeviceActions'
 import UserOperations from '../operations/UserOperations'
 import utils from '../utils'
 import ConnectionActions from '../actions/ConnectionActions'
+import FeedOperations from '../operations/FeedOperations'
 
 const mapStateToProps = (state) => {
   const { user } = state
@@ -17,26 +18,23 @@ const mapDispatchToProps = (dispatch, { navigation }) => {
   const saveDeviceInfo = (data) => dispatch(DeviceActions.saveDeviceInfo(data))
   const getProfileData = (cb) => dispatch(UserOperations.getProfileData(navigation, cb))
   const updateConnectionStatus = (isConnected) => dispatch(ConnectionActions.updateConnectionStatus(isConnected))
+  const refreshFeed = () => dispatch(FeedOperations.refreshFeed())
 
   return { 
     saveDeviceInfo,
     getProfileData,
-    updateConnectionStatus
+    updateConnectionStatus,
+    refreshFeed
   }
 }
 
 class AppLoadingScreen extends Component {
-  getProfileDataInBackground = (isConnected) => {
-    const cb = () => NetInfo.isConnected.removeEventListener('connectionChange', this.getProfileDataInBackground)
+  onConnectionChange = (isConnected) => {
+    const { updateConnectionStatus, getProfileData, refreshFeed } = this.props
 
-    isConnected && this.props.getProfileData(cb)
-  }
-
-  onConnectionChange = (isConnected) => this.props.updateConnectionStatus(isConnected)
-
-  goToApp = () => {
-    this.props.navigation.navigate('App')
-    NetInfo.isConnected.addEventListener('connectionChange', this.getProfileDataInBackground)
+    updateConnectionStatus(isConnected)
+    !isConnected && utils.showConnectivityError()
+    isConnected && getProfileData() && refreshFeed()
   }
   
   componentDidMount() {
@@ -47,10 +45,10 @@ class AppLoadingScreen extends Component {
       device_name: Constants.deviceName
     }
     
-    utils.isConnectedFetchInterval()
+    utils.setFetchConnectionInterval()
     NetInfo.isConnected.addEventListener('connectionChange', this.onConnectionChange)
     saveDeviceInfo(data)
-    user.id ? this.goToApp() : navigate('Auth')
+    user.id ? navigate('App') : navigate('Auth')
   }
 
   render() {

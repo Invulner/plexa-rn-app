@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { FlatList, NetInfo } from 'react-native'
+import { FlatList } from 'react-native'
 import SafeArea from '../components/common/SafeArea'
 import FeedPost from '../components/feed/FeedPost'
 import FeedOperations from '../operations/FeedOperations'
@@ -58,8 +58,6 @@ class FeedScreen extends Component {
     if (isConnected) {
       this.refs.feedList.scrollToOffset({ offset: 0 })
       refreshFeed()
-    } else {
-      utils.showConnectivityError()
     }
   }
 
@@ -80,23 +78,14 @@ class FeedScreen extends Component {
   refreshFeed = () => {
     const { isConnected, refreshFeed } = this.props
 
-    isConnected ? refreshFeed() : utils.showConnectivityError()
+    isConnected && refreshFeed()
   }   
 
   onEndReached = () => {
     const { feed: { page, feedLoading }, getFeed, isConnected }  = this.props
     const nextPage = page + 1
 
-    if (isConnected && !feedLoading) 
-      getFeed(nextPage)
-    else if (!isConnected)
-      utils.showConnectivityError()
-  }
-
-  componentDidMount() {
-    //We have to fetch property from here, because in redux it could still be in it's initial state.
-    //This way we can be sure we got correct value
-    NetInfo.isConnected.fetch().then(isConnected => isConnected && this.props.refreshFeed())
+    isConnected && !feedLoading && getFeed(nextPage)
   }
 
   render() {

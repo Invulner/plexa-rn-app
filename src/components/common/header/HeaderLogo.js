@@ -1,9 +1,15 @@
 import React from 'react'
 import { Image, TouchableOpacity } from 'react-native'
-import { withNavigation } from 'react-navigation'
+import { connect } from 'react-redux'
+
+const mapStateToProps = (state) => {
+  const { isConnected } = state.network
+
+  return { isConnected }
+}
 
 function HeaderLogo(props) {
-  const { navigation } = props
+  const { navigation, isConnected } = props
   const onFeedLogoPress = navigation.getParam('onLogoPress')
 
   const onLogoPress = () => {
@@ -11,7 +17,9 @@ function HeaderLogo(props) {
   }
 
   return (
-    <TouchableOpacity onPress={onLogoPress}>
+    <TouchableOpacity
+      disabled={!isConnected}
+      onPress={onLogoPress}>
       <Image 
         source={require('../../../assets/images/logo-min.png')}
         style={{width: 40, height: 40}} />
@@ -19,4 +27,4 @@ function HeaderLogo(props) {
   )
 }
 
-export default withNavigation(HeaderLogo)
+export default connect(mapStateToProps, null)(HeaderLogo)
