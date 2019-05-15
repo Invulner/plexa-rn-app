@@ -3,10 +3,9 @@ import { Constants } from 'expo'
 import { connect } from 'react-redux'
 import { View, Image, StyleSheet, NetInfo } from 'react-native'
 import DeviceActions from '../actions/DeviceActions'
-import UserOperations from '../operations/UserOperations'
 import utils from '../utils'
-import ConnectionActions from '../actions/ConnectionActions'
-import FeedOperations from '../operations/FeedOperations'
+import AppOperations from '../operations/AppOperations'
+import NetworkActions from '../actions/NetworkActions'
 
 const mapStateToProps = (state) => {
   const { user } = state
@@ -14,27 +13,25 @@ const mapStateToProps = (state) => {
   return { user }
 }
 
-const mapDispatchToProps = (dispatch, { navigation }) => {
+const mapDispatchToProps = (dispatch) => {
   const saveDeviceInfo = (data) => dispatch(DeviceActions.saveDeviceInfo(data))
-  const getProfileData = (cb) => dispatch(UserOperations.getProfileData(navigation, cb))
-  const updateConnectionStatus = (isConnected) => dispatch(ConnectionActions.updateConnectionStatus(isConnected))
-  const refreshFeed = () => dispatch(FeedOperations.refreshFeed())
+  const updateConnectionStatus = (isConnected) => dispatch(NetworkActions.updateConnectionStatus(isConnected))
+  const fetchFreshData = () => dispatch(AppOperations.fetchFreshData())
 
   return { 
     saveDeviceInfo,
-    getProfileData,
-    updateConnectionStatus,
-    refreshFeed
+    fetchFreshData,
+    updateConnectionStatus
   }
 }
 
 class AppLoadingScreen extends Component {
   onConnectionChange = (isConnected) => {
-    const { updateConnectionStatus, getProfileData, refreshFeed } = this.props
+    const { updateConnectionStatus, fetchFreshData } = this.props
 
     updateConnectionStatus(isConnected)
     !isConnected && utils.showConnectivityError()
-    isConnected && getProfileData() && refreshFeed()
+    isConnected && fetchFreshData()
   }
   
   componentDidMount() {
