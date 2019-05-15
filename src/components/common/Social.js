@@ -55,8 +55,9 @@ class Social extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.liked !== this.props.liked)
+    if (prevProps.liked !== this.props.liked || prevProps.likesCount !== this.props.likesCount || prevProps.answersCount !== this.props.answersCount) {
       this.setState(this.setPropsToState())
+    }
   }
 
   render() {
