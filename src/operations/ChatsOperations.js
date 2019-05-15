@@ -9,6 +9,7 @@ const getChats = () => {
     return getAxiosInstance().then(api => {
       api.get(`${API_URL}/rooms`)
         .then(response => {
+          console.log('getChats: ', response.data);
           dispatch(ChatsActions.getChats(response.data))
           dispatch(ChatsActions.toggleLoading(false))
         })

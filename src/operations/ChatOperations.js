@@ -16,6 +16,7 @@ const getMessages = (id, page = 1) => {
           dispatch(ChatActions.saveMessages(response.data))
           dispatch(ChatActions.updateChatPage(page))
           dispatch(ChatActions.toggleMessagesLoading(false))
+          console.log('getMessages: '. response.data)
         }).catch(error => console.log('getMessages CHAT OPERATION ERROR: ', error))
     })
   }
