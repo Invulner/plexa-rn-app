@@ -53,12 +53,8 @@ class FeedScreen extends Component {
   }
 
   onLogoPress = () => {
-    const { isConnected, refreshFeed } = this.props
-
-    if (isConnected) {
-      this.refs.feedList.scrollToOffset({ offset: 0 })
-      refreshFeed()
-    }
+    this.refs.feedList.scrollToOffset({ offset: 0 })
+    this.props.refreshFeed()
   }
 
   resetScreenParams = () => {
