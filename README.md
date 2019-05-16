@@ -35,3 +35,16 @@ or you can directly type
 yarn ios
 ```
 to run iOS simulator
+
+Notes for Debian-based systems && Android:
+
+1) Upgrade to last npm version:
+```
+npm install -g npm@latest
+```
+2) If network error on login: Comment condition in NetworkReducer.js:
+  return {
+    isConnected: true
+  }
+
+3) Install expo app on Android 
