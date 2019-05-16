@@ -45,7 +45,7 @@ const ChatsReducer = (state = initialState, action) => {
         users: action.data
       }
 
-    case types.DELETE_USERS:
+    case types.DELETE_USERS: 
       return {
         ...state,
         users: initialState.users
@@ -61,7 +61,13 @@ const ChatsReducer = (state = initialState, action) => {
       return initialState
 
 	  case types.UPDATE_CHAT:
-		  return updateChat(state, action)
+      return updateChat(state, action)
+      
+    case types.SAVE_CHOSEN_USERS:
+      return {
+        ...state,
+        chosenUsers: action.chosenUsers
+      }
 
     default:
       return state

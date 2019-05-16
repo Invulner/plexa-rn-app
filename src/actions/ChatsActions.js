@@ -33,6 +33,11 @@ const resetChats = () => ({
   type: types.RESET_CHATS
 })
 
+const saveChosenUsers = (chosenUsers) => ({
+  type: types.SAVE_CHOSEN_USERS,
+  chosenUsers
+})
+
 export default {
   getChats,
   toggleLoading,
@@ -40,5 +45,6 @@ export default {
   deleteUsers,
   createChat,
   resetChats,
-  updateChat
+  updateChat,
+  saveChosenUsers
 }
