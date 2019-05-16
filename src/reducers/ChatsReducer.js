@@ -8,12 +8,14 @@ const initialState = {
 
 const updateChat = (state, action) => {
   const index = state.items.findIndex(item => item.id === action.data.room_id)
-  state.items[index]["last_message"] = action.data
-  state.items[index]["last_message_date"] = action.data.created_at
-
+  const updatedChat = {
+    ...state.items[index], 
+    last_message: action.data, 
+    last_message_date: action.data.created_at
+  }
   const items = [
     ...state.items.slice(0, index),
-    state.items[index],
+    updatedChat,
     ...state.items.slice(index + 1)
   ]
 
@@ -43,7 +45,7 @@ const ChatsReducer = (state = initialState, action) => {
         users: action.data
       }
 
-    case types.DELETE_USERS:
+    case types.DELETE_USERS: 
       return {
         ...state,
         users: initialState.users
@@ -58,8 +60,14 @@ const ChatsReducer = (state = initialState, action) => {
     case types.RESET_CHATS:
       return initialState
 
-	  case types.UPDATE_CHAT:
-		  return updateChat(state, action)
+    case types.UPDATE_CHAT:
+      return updateChat(state, action)
+      
+    case types.SAVE_CHOSEN_USERS:
+      return {
+        ...state,
+        chosenUsers: action.chosenUsers
+      }
 
     default:
       return state

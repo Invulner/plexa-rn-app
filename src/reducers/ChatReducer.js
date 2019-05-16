@@ -6,7 +6,7 @@ const initialState = {
 }
 
 const updateMessage = (state, action) => {
-  const index = state.messages.findIndex(item => item.text === action.message.text)
+  const index = state.messages.findIndex(item => item.seq_id === action.message.seq_id)
   const messages = [
     ...state.messages.slice(0, index),
     action.message,

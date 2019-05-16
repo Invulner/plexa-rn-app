@@ -7,20 +7,26 @@ import CommentOperations from '../../operations/CommentsOperations'
 import { BG_COLOR } from '../../assets/styles/colors'
 import ChatOperations from '../../operations/ChatOperations'
 import utils from '../../utils'
+import ChatsOperations from '../../operations/ChatsOperations'
 
 const mapStateToProps = (state) => {
-  const { full_name } = state.user
+  const { user: { full_name }, chats: { chosenUsers } } = state
 
-  return { full_name }
+  return { 
+    full_name,
+    chosenUsers
+  }
 }
 
 const mapDispatchToProps = (dispatch, { navigation }) => {
   const postComment = (comment) => dispatch(CommentOperations.postComment(comment, navigation))
-  const sendMessage = (chatId, params) => dispatch(ChatOperations.sendMessage(chatId, params))
+  const sendMessage = (chatId, messageParams) => dispatch(ChatOperations.sendMessage(chatId, messageParams))
+  const createChat = (userIds, messageParams) => dispatch(ChatsOperations.createChat(userIds, messageParams, navigation))
 
   return { 
     postComment,
-    sendMessage
+    sendMessage,
+    createChat
   }
 }
 
@@ -40,24 +46,28 @@ class ReplyBox extends Component {
   }
 
   onSubmit = () => {
-    const { postComment, sendMessage, type, chatId, full_name } = this.props
+    const { postComment, sendMessage, createChat, type, chatId, full_name, chosenUsers } = this.props
     const reply = this.state.reply.trim()
+    const messageParams = {
+      text: reply,
+      seq_id: utils.getRandomNumber(1000, 100000),
+      author: {
+        name: full_name
+      },
+      created_at: new Date().toString()
+    }
 
     switch (type) {
       case 'comment':
         postComment(reply)
         break
 
-      case 'chat':
-        const params = {
-          text: reply,
-          seq_id: utils.getRandomNumber(1000, 100000),
-          author: {
-            name: full_name
-          },
-          created_at: new Date().toString()
-        }
-        sendMessage(chatId, params)
+      case 'existing chat':
+        sendMessage(chatId, messageParams)
+        break
+      
+      case 'new chat':
+        createChat(chosenUsers, messageParams)
         break
     }
 
@@ -67,11 +77,10 @@ class ReplyBox extends Component {
   renderPlaceholder = () => {
     const { type, author } = this.props
 
-    switch (type) {
-      case 'comment':
-        return `Reply to ${author}`
-      case 'chat':
-        return `Enter Your Message ...`
+    if (type === 'comment') {
+      return `Reply to ${author}`
+    } else if (type === 'new chat' || type === 'existing chat') {
+      return `Enter Your Message ...`
     }
   }
   

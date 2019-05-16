@@ -20,12 +20,12 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   const getUsers = (q) => dispatch(ChatsOperations.getUsers(q))
   const deleteUsers = () => dispatch(ChatsActions.deleteUsers())
-  const createChat = (ids, cb) => dispatch(ChatsOperations.createChat(ids, cb))
+  const saveChosenUserIds = (userIds) => dispatch(ChatsActions.saveChosenUsers(userIds))
 
   return { 
     getUsers,
     deleteUsers,
-    createChat
+    saveChosenUserIds
   }
 }
 
@@ -116,19 +116,19 @@ class AddUsersScreen extends Component {
   }
 
   onSubmit = () => {
-    const { createChat, navigation } = this.props
     const { chosenUsers } = this.state
+    const { navigation, saveChosenUserIds } = this.props
+    const title = chosenUsers.map(user => user.full_name).join(', ')
     const userIds = chosenUsers.map(user => user.id)
-    const cb = (chatId, title) => navigation.navigate('Chat', { 
-      chatId, 
+
+    saveChosenUserIds(userIds)
+    navigation.navigate('Chat', {
       chatTitle: utils.truncate(title, 20) 
     })
-
-    createChat(userIds, cb)
   }
 
   componentDidMount() {
-    this.props.navigation.setParams({
+    this.props.navigation.setParams({ 
       onDonePress: this.onSubmit
     })
   }

@@ -10,6 +10,7 @@ import { getChatMessages } from '../selectors/ChatMessages'
 import Loader from '../components/common/Loader'
 import { MESSAGES_IN_PAGE } from '../constants'
 import ReplyBox from '../components/common/ReplyBox'
+import ChatActions from '../actions/ChatActions'
 
 const mapStateToProps = (state) => {
   const { loading, page } = state.chat
@@ -25,11 +26,13 @@ const mapDispatchToProps = (dispatch) => {
   const getMessages = (id, page) => dispatch(ChatOperations.getMessages(id, page))
   const resetChat = () => dispatch(ChatOperations.resetChat())
   const connectToWs = (chatId) => dispatch(ChatOperations.connectToWs(chatId))
+  const toggleLoading = (flag) => dispatch(ChatActions.toggleMessagesLoading(flag))
 
   return { 
     getMessages,
     resetChat,
-    connectToWs
+    connectToWs,
+    toggleLoading
   }
 }
 
@@ -98,7 +101,7 @@ class ChatScreen extends Component {
       )
   }
 
-  isLoadingMore = () => {
+  isLoadingMore = () => { 
     const { page, data } = this.props
     let arr = data.filter(item => !item.date)
 
@@ -116,20 +119,25 @@ class ChatScreen extends Component {
   }
 
   componentDidMount() {
-    this.props.getMessages(this.getChatId())
-    this.props.connectToWs(this.getChatId())
+    if (this.getChatId()) {
+      console.log('ChatScreen componentDidMount chatId(): ', this.getChatId())   
+      this.props.getMessages(this.getChatId())
+      this.props.connectToWs(this.getChatId())
+    } else {
+      this.props.toggleLoading(false)
+    }
   }
 
   componentWillUnmount() {
-    this.props.resetChat()
+    this.getChatId() && this.props.resetChat()
   }
   
   render() {
-    const { data, loading } = this.props
+    const { data, loading, navigation } = this.props
 
     return (
       <SafeAreaView style={styles.safeArea}>
-        {loading && !data.length ?
+        {loading && !data.length && this.getChatId() ?
           <Loader />
           :
           <View style={styles.container}>
@@ -142,8 +150,9 @@ class ChatScreen extends Component {
               ListFooterComponent={loading ? <Loader /> : this.renderListFooter()} />
             
             <ReplyBox
+              navigation={navigation}
               chatId={this.getChatId()}
-              type='chat' />
+              type={this.getChatId() ? 'existing chat' : 'new chat'} />
           </View>
         }
       </SafeAreaView>

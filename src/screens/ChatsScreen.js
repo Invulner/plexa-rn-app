@@ -50,6 +50,11 @@ class ChatsScreen extends Component {
     })
   }
 
+  getChatAvatar = (item, title) => {
+    const member = item.members.find(member => member.name === title)
+    return member ? member.avatar : null
+  }
+
   renderTitle = (item, title) => {
     if (item.members.length > 2 && this.isUserChat(item) || !this.isUserChat(item))
       return 'G'
@@ -62,7 +67,7 @@ class ChatsScreen extends Component {
 
     return sortedChats.map((item, index, array) => {
       const { title } = this.isUserChat(item) ? item : item.group
-      const avatarSrc = item.members ? item.members[0].avatar : null
+      const avatarSrc = item.members ? this.getChatAvatar(item, title) : null
 
       return (
         <React.Fragment key={item.id}>
@@ -80,7 +85,7 @@ class ChatsScreen extends Component {
                   {utils.truncate(title, 25)}
                 </SemiboldText>
                 <RegularText style={styles.message}>
-                  {item.last_message ? item.last_message.text : null}
+                  {item.last_message ? utils.truncate(item.last_message.text, 30) : null}
                 </RegularText>
               </View>
 
