@@ -48,7 +48,7 @@ const connectToWs = (chatId) => {
   }
 }
 
-const sendMessage = (chatId, params, isConnectingToWs = false) => {
+const sendMessage = (chatId, params, ifConnectToWs = false) => {
   return dispatch => {
     dispatch(ChatActions.saveMessage(params)) 
 
@@ -57,7 +57,7 @@ const sendMessage = (chatId, params, isConnectingToWs = false) => {
         .then(response => {
           dispatch(ChatActions.updateMessage(response.data))
           dispatch(ChatsActions.updateChat(response.data))
-          isConnectingToWs && dispatch(connectToWs(chatId))
+          ifConnectToWs && dispatch(connectToWs(chatId))
         }).catch(error => console.log('sendMessage CHAT OPERATION ERROR: ', error))
     })
   }

@@ -50,7 +50,7 @@ class ChatsScreen extends Component {
     })
   }
 
-  findChatAvatar = (item, title) => {
+  getChatAvatar = (item, title) => {
     const member = item.members.find(member => member.name === title)
     return member ? member.avatar : null
   }
@@ -67,7 +67,7 @@ class ChatsScreen extends Component {
 
     return sortedChats.map((item, index, array) => {
       const { title } = this.isUserChat(item) ? item : item.group
-      const avatarSrc = item.members ? this.findChatAvatar(item, title) : null
+      const avatarSrc = item.members ? this.getChatAvatar(item, title) : null
 
       return (
         <React.Fragment key={item.id}>

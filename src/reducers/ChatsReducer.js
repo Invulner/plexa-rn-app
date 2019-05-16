@@ -60,7 +60,7 @@ const ChatsReducer = (state = initialState, action) => {
     case types.RESET_CHATS:
       return initialState
 
-	  case types.UPDATE_CHAT:
+    case types.UPDATE_CHAT:
       return updateChat(state, action)
       
     case types.SAVE_CHOSEN_USERS:

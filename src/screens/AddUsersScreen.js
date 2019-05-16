@@ -20,13 +20,11 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   const getUsers = (q) => dispatch(ChatsOperations.getUsers(q))
   const deleteUsers = () => dispatch(ChatsActions.deleteUsers())
-  const createChat = (ids, cb) => dispatch(ChatsOperations.createChat(ids, cb))
   const saveChosenUserIds = (userIds) => dispatch(ChatsActions.saveChosenUsers(userIds))
 
   return { 
     getUsers,
     deleteUsers,
-    createChat,
     saveChosenUserIds
   }
 }
