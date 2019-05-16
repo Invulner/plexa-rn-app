@@ -109,7 +109,6 @@ class ChatScreen extends Component {
   }
 
   getChatId = () => {
-    console.log('chatId: ', this.props.navigation.getParam('chatId'))
     return this.props.navigation.getParam('chatId')
   }
 
@@ -135,7 +134,6 @@ class ChatScreen extends Component {
   
   render() {
     const { data, loading, navigation } = this.props
-    console.log('chatScreen render()')
 
     return (
       <SafeAreaView style={styles.safeArea}>
