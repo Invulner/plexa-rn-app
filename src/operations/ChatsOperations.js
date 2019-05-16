@@ -36,12 +36,11 @@ const createChat = (ids, messageParams, navigation) => {
       type: 'user',
       participants: ids
     }
-    console.log('params', params)
+    
     return getAxiosInstance().then(api => {
       api.post(`${API_URL}/rooms`, params)
         .then(response => {
           navigation.setParams({ chatId: response.data.id })
-          console.log('createChat response: ', response.data);
           dispatch(ChatsActions.createChat(response.data))
           dispatch(ChatOperations.sendMessage(response.data.id, messageParams, true))
       }).catch(error => console.log('createChat error: ', error.response))

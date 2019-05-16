@@ -26,16 +26,20 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 class AppLoadingScreen extends Component {
-  addEventListeners = () => {
-    NetInfo.isConnected.addEventListener('connectionChange', this.onConnectionChange)
+  goToApp = () => {
+    const { navigation } = this.props
+
+    navigation.navigate('App')
+    NetInfo.isConnected.addEventListener('connectionChange', this.fetchFreshData)
   }
 
-  onConnectionChange = (isConnected) => {
-    const { updateConnectionStatus, fetchFreshData } = this.props
+  fetchFreshData = (isConnected) => {
+    isConnected && this.props.fetchFreshData()
+  }
 
-    updateConnectionStatus(isConnected)
+  updateConnectionStatus = (isConnected) => {
+    this.props.updateConnectionStatus(isConnected)
     !isConnected && utils.showConnectivityError()
-    isConnected && fetchFreshData()
   }
   
   componentDidMount() {
@@ -47,9 +51,9 @@ class AppLoadingScreen extends Component {
     }
     
     utils.startConnectionStatusWorker()
-    this.addEventListeners()
+    NetInfo.isConnected.addEventListener('connectionChange', this.updateConnectionStatus)
     saveDeviceInfo(data)
-    user.id ? navigate('App') : navigate('Auth')
+    user.id ? this.goToApp() : navigate('Auth')
   }
 
   render() {

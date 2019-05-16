@@ -55,7 +55,6 @@ const sendMessage = (chatId, params, isConnectingToWs = false) => {
     return getAxiosInstance().then(api => {
       api.post(`${API_URL}/rooms/${chatId}/messages`, params)
         .then(response => {
-          console.log('sendMessage response: ', response.data);
           dispatch(ChatActions.updateMessage(response.data))
           dispatch(ChatsActions.updateChat(response.data))
           isConnectingToWs && dispatch(connectToWs(chatId))

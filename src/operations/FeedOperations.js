@@ -163,7 +163,9 @@ const connectToWs = () => {
 }
 
 const disconnectFromWs = () => {
-  return dispatch => dispatch(feedConnection.unsubscribe())
+  return dispatch => {
+    feedConnection.unsubscribe()
+  }
 }
 
 const submitPostWithImage = (image, post, cb, postId) => {

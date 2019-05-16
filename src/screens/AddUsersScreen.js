@@ -127,16 +127,6 @@ class AddUsersScreen extends Component {
     navigation.navigate('Chat', {
       chatTitle: utils.truncate(title, 20) 
     })
-
-    // const { createChat, navigation } = this.props
-    // const { chosenUsers } = this.state
-    // const userIds = chosenUsers.map(user => user.id)
-    // const cb = (chatId, title) => navigation.navigate('Chat', { 
-    //   chatId, 
-    //   chatTitle: utils.truncate(title, 20) 
-    // })
-
-    // createChat(userIds, cb)
   }
 
   componentDidMount() {
