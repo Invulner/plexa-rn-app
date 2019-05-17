@@ -47,7 +47,7 @@ const updateLike = (flag, id) => {
 
     return getAxiosInstance().then(api => {
       api.post(`${API_URL}/answers/${id}/like`, param)
-        .then(response => dispatch(CommentsActions.updateCommentLike(id, response.data)))
+        .then(response => dispatch(CommentsActions.updateComment(id, response.data)))
         .catch(error => console.log('Like error: ', error))
     })
   }
