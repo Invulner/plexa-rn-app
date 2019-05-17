@@ -89,7 +89,7 @@ const reportPost = (postId, cb) => {
 }
 
 const blockUser = (userId, cb) => {
-  return dispatch => { 
+  return dispatch => {
 
     return getAxiosInstance().then(api => {
       api.post(`${API_URL}/profiles/${userId}/block`)
@@ -103,7 +103,7 @@ const blockUser = (userId, cb) => {
 
 const deletePost = (postId, cb) => {
   return dispatch => {
-    
+
     return getAxiosInstance().then(api => {
       api.delete(`${API_URL}/stories/${postId}`)
         .then(response => {
@@ -140,15 +140,19 @@ const handleAnswerUpdate = (data, dispatch) => {
     dispatch(FeedActions.updateCommentsCounter(data.story_id))
     dispatch(CommentsActions.addComment(data.attrs))
   } else if (data.action === 'liked') {
-    dispatch(CommentsActions.updateCommentLike(data.id, data.attrs))
+    dispatch(CommentsActions.updateComment(data.id, data.attrs))
   }
 }
 
 const connectToWs = () => {
   return dispatch => {
-    return cable.then(cable_instance => {
-      feedConnection = cable_instance.subscriptions.create(
-        'FeedChannel',
+    cable().then(cable_i => {
+      global.cableInstance = cable_i
+      feedConnection = cable_i.subscriptions.create(
+        {
+          channel: 'FeedChannel',
+          client_type: 'mobile'
+        },
         {
           received: (data) => {
             if (data.type === 'story') {

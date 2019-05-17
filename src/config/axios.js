@@ -12,6 +12,7 @@ const getAxiosInstance = async (optionalHeaders = {}) => {
           'Uid': secretData.uid,
           'Access-Token': secretData['access-token'],
           'Client': secretData.client,
+          'Client-Type': 'mobile',
           ...optionalHeaders
         }
       }
