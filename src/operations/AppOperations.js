@@ -3,8 +3,8 @@ import FeedOperations from './FeedOperations'
 
 const fetchFreshData = () => {
   return dispatch => {
-    dispatch(FeedOperations.refreshFeed())
     dispatch(UserOperations.getProfileData())
+    dispatch(FeedOperations.refreshFeed())
   }  
 }
 

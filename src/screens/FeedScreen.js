@@ -12,11 +12,9 @@ const mapDispatchToProps = (dispatch) => {
   const getFeed = (page) => dispatch(FeedOperations.getFeed(page))
   const refreshFeed = () => dispatch(FeedOperations.refreshFeed())
   const connectToWs = () => dispatch(FeedOperations.connectToWs())
-  const disconnectFromWs = () => dispatch(FeedOperations.disconnectFromWs())
 
   return {
     connectToWs,
-    disconnectFromWs,
     getFeed,
     refreshFeed
   }
@@ -87,12 +85,27 @@ class FeedScreen extends Component {
     isConnected && !feedLoading && getFeed(nextPage)
   }
 
+  componentDidUpdate(prevProps) {
+    const { isConnected, connectToWs } = this.props
+    //Works when connection is restored and afted app reboot with state rehydration
+    if (prevProps.isConnected !== isConnected && isConnected) {
+      console.log('connectToWS from componentDidUpdate')
+      connectToWs()
+      //Need to add check for hange from initial state to false
+    } else if (prevProps.isConnected !== null && !isConnected) {
+      FeedOperations.disconnectFromWs()
+    }
+  }
+
   componentDidMount() {
-    this.props.connectToWs()
+    const { isConnected, connectToWs } = this.props
+    //Works only after login
+    isConnected && console.log('connectToWS from componentDidMount') && connectToWs() 
   }
 
   componentWillUnmount() {
-    this.props.disconnectFromWs()
+    //Need to check because we can't disconnect if we weren't connected
+    this.props.isConnected && FeedOperations.disconnectFromWs()
   }
 
   render() {
