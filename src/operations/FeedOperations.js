@@ -88,7 +88,7 @@ const reportPost = (postId, cb) => {
 }
 
 const blockUser = (userId, cb) => {
-  return dispatch => { 
+  return dispatch => {
 
     return getAxiosInstance().then(api => {
       api.post(`${API_URL}/profiles/${userId}/block`)
@@ -102,7 +102,7 @@ const blockUser = (userId, cb) => {
 
 const deletePost = (postId, cb) => {
   return dispatch => {
-    
+
     return getAxiosInstance().then(api => {
       api.delete(`${API_URL}/stories/${postId}`)
         .then(response => {
@@ -147,7 +147,10 @@ const connectToWs = () => {
   return dispatch => {
     return cable.then(cable_instance => {
       feedConnection = cable_instance.subscriptions.create(
-        'FeedChannel',
+        {
+         channel: 'FeedChannel',
+         client_type: 'mobile'
+        },
         {
           received: (data) => {
             if (data.type === 'story') {
