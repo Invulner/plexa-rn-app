@@ -99,7 +99,7 @@ class FeedScreen extends Component {
 
   componentDidMount() {
     const { isConnected, connectToWs } = this.props
-    //Works only after login
+    //Condition works, but connectToWs() doesn't
     isConnected && console.log('connectToWS from componentDidMount') && connectToWs() 
   }
 

@@ -28,6 +28,7 @@ const fetchFeed = (saveOption, page = 1) => {
 
           dispatch(FeedActions.updateFeedPage(page))
           dispatch(FeedActions.toggleFeedDataLoading(false))
+          console.log('fetchFeed response.data :', response.data)
         })
         .catch(error => console.log('fetchFeed error: ', error))
     })
@@ -158,6 +159,7 @@ const connectToWs = () => {
           }
         }
       )
+      console.log('feedConnection :', feedConnection);
     })
   }
 }

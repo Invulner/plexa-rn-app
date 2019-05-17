@@ -63,7 +63,8 @@ const onLoginSuccess = (data, dispatch, navigation) => {
   saveUserToAsyncStorage(userSecretData)
   redirectToFeed(navigation)
   dispatch(UserActions.toggleUserDataLoading(false))
-  dispatch(getProfileData(navigation, FeedOperations.getFeed))
+  dispatch(getProfileData(navigation))
+  dispatch(FeedOperations.getFeed())
 }
 
 const saveUserToAsyncStorage = (userSecretData) => {
