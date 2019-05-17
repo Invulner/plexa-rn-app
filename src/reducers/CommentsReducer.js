@@ -7,13 +7,9 @@ const initialState = {
   enabled: false
 }
 
-const updateCommentLike = (state, action) => {
+const updateComment = (state, action) => {
   if (action.data) {
-    const newVals = {
-      liked: action.data.liked,
-      likes_count: action.data.likes_count
-    }
-    const newItems = utils.updateItemById(state.items, action.id, newVals)
+    const newItems = utils.updateItemById(state.items, action.id, action.data)
 
       return {
         ...state,
@@ -51,8 +47,9 @@ const CommentsReducer = (state = initialState, action) => {
         ]
       }
 
-    case types.UPDATE_COMMENT_LIKE:
-      return updateCommentLike(state, action)
+    case types.UPDATE_COMMENT:
+      return updateComment(state, action)
+
     default:
       return state
   }

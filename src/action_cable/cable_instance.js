@@ -8,4 +8,4 @@ const cable  = async () => {
   return new Consumer(WEB_SOCKET_URL + '?uid=' + encodeURIComponent(creds.uid) + '&client_id=' + creds.client + '&token=' + creds['access-token'])
 }
 
-export default cable()
+export default cable

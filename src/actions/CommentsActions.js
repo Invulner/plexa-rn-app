@@ -19,8 +19,8 @@ const addComment = (item) => ({
   item
 })
 
-const updateCommentLike = (id, data) => ({
-  type: types.UPDATE_COMMENT_LIKE,
+const updateComment = (id, data) => ({
+  type: types.UPDATE_COMMENT,
   id,
   data
 })
@@ -30,5 +30,5 @@ export default {
   toggleCommentsLoading,
   resetCommentsData,
   addComment,
-  updateCommentLike
+  updateComment
 }
