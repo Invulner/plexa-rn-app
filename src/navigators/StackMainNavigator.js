@@ -38,7 +38,7 @@ const MainStack = createStackNavigator({
   },
   PublicProfile: {
     screen: PublicProfileScreen,
-    navigationOptions: () => ({
+    navigationOptions: ({ navigation }) => ({
       headerTitle: <HeaderLogo navigation={navigation} />
     })
   },
