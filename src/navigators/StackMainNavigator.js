@@ -39,13 +39,13 @@ const MainStack = createStackNavigator({
   PublicProfile: {
     screen: PublicProfileScreen,
     navigationOptions: () => ({
-      headerTitle: HeaderLogo
+      headerTitle: <HeaderLogo navigation={navigation} />
     })
   },
   Post: {
     screen: PostScreen,
-    navigationOptions: () => ({
-      headerTitle: HeaderLogo
+    navigationOptions: ({ navigation }) => ({
+      headerTitle: <HeaderLogo navigation={navigation} />
     })
   },
   Compose: {

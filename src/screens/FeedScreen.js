@@ -59,6 +59,7 @@ class FeedScreen extends Component {
   }
 
   resetScreenParams = () => {
+    console.log('resetScreenParams')
     this.getParentNavigation().setParams({ 
       onLogoPress: null,
       isFeedScreen: false
@@ -66,6 +67,7 @@ class FeedScreen extends Component {
   }
 
   setScreenParams = () => {
+    console.log('setScreenParams')
     this.getParentNavigation().setParams({ 
       onLogoPress: this.onLogoPress,
       isFeedScreen: true

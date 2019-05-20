@@ -10,6 +10,7 @@ const mapStateToProps = (state) => {
 
 function HeaderLogo(props) {
   const { navigation, isConnected } = props
+  console.log('navigation prop from HeaderLogo: ', navigation);
   const isFeedScreen = navigation.getParam('isFeedScreen')
   const onFeedLogoPress = navigation.getParam('onLogoPress')
 

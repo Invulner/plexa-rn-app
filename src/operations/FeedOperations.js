@@ -163,7 +163,7 @@ const connectToWs = () => {
           }
         }
       )
-      console.log('feedConnection :', feedConnection);
+      console.log('feedConnection :', feedConnection)
     })
   }
 }
