@@ -35,12 +35,11 @@ class AppLoadingScreen extends Component {
   }
 
   onConnectionChange = (isConnected) => {
-    const { updateConnectionStatus, fetchFreshData } = this.props
+    const { updateConnectionStatus, fetchFreshData, navigation } = this.props
 
     updateConnectionStatus(isConnected)
     !isConnected && utils.showConnectivityError()
-    console.log('this.isUserSaved()', this.isUserSaved())
-    isConnected && this.isUserSaved() && fetchFreshData()
+    isConnected && this.isUserSaved() && fetchFreshData(navigation)
   }
   
   componentDidMount() {
@@ -63,7 +62,7 @@ class AppLoadingScreen extends Component {
         <Image 
           style={styles.image}
           source={require('../assets/images/nav-bg_final-01.png')} />
-    </View>
+      </View>
     )
   }
 }

@@ -59,7 +59,6 @@ class FeedScreen extends Component {
   }
 
   resetScreenParams = () => {
-    console.log('resetScreenParams')
     this.getParentNavigation().setParams({ 
       onLogoPress: null,
       isFeedScreen: false
@@ -67,7 +66,6 @@ class FeedScreen extends Component {
   }
 
   setScreenParams = () => {
-    console.log('setScreenParams')
     this.getParentNavigation().setParams({ 
       onLogoPress: this.onLogoPress,
       isFeedScreen: true
@@ -91,18 +89,18 @@ class FeedScreen extends Component {
     const { isConnected, connectToWs } = this.props
     //Works when connection is restored and afted app reboot with state rehydration
     if (prevProps.isConnected !== isConnected && isConnected) {
-      console.log('connectToWS from componentDidUpdate')
       connectToWs()
-      //Need to add check for hange from initial state to false
+    //Need to add check for change from initial state to false
     } else if (prevProps.isConnected !== null && !isConnected) {
       FeedOperations.disconnectFromWs()
     }
   }
 
   componentDidMount() {
+    //Works after login
     const { isConnected, connectToWs } = this.props
-    //Condition works, but connectToWs() doesn't
-    isConnected && console.log('connectToWS from componentDidMount') && connectToWs() 
+
+    isConnected && connectToWs()
   }
 
   componentWillUnmount() {
