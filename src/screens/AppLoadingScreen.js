@@ -26,20 +26,24 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 class AppLoadingScreen extends Component {
+  isUserSaved = () => {
+    return this.props.user.id
+  }
+
   addEventListeners = () => {
     NetInfo.isConnected.addEventListener('connectionChange', this.onConnectionChange)
   }
 
   onConnectionChange = (isConnected) => {
-    const { updateConnectionStatus, fetchFreshData } = this.props
+    const { updateConnectionStatus, fetchFreshData, navigation } = this.props
 
     updateConnectionStatus(isConnected)
     !isConnected && utils.showConnectivityError()
-    isConnected && fetchFreshData()
+    isConnected && this.isUserSaved() && fetchFreshData(navigation)
   }
   
   componentDidMount() {
-    const { saveDeviceInfo, user, navigation: { navigate } } = this.props
+    const { saveDeviceInfo, navigation: { navigate } } = this.props
     const data = {
       uuid: Constants.installationId || Constants.deviceId,
       platform: Object.keys(Constants.platform)[0],
@@ -49,7 +53,7 @@ class AppLoadingScreen extends Component {
     utils.startConnectionStatusWorker()
     this.addEventListeners()
     saveDeviceInfo(data)
-    user.id ? navigate('App') : navigate('Auth')
+    this.isUserSaved() ? navigate('App') : navigate('Auth')
   }
 
   render() {
@@ -58,7 +62,7 @@ class AppLoadingScreen extends Component {
         <Image 
           style={styles.image}
           source={require('../assets/images/nav-bg_final-01.png')} />
-    </View>
+      </View>
     )
   }
 }

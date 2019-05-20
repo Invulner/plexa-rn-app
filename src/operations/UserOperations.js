@@ -8,6 +8,7 @@ import FeedActions from '../actions/FeedActions'
 import ResearchFeedActions from '../actions/ResearchFeedActions'
 import ChatsActions from '../actions/ChatsActions'
 import utils from '../utils'
+import FeedOperations from './FeedOperations'
 
 const auth = (credentials, navigation) => {
   return dispatch => {
@@ -62,6 +63,7 @@ const onLoginSuccess = (data, dispatch, navigation) => {
   redirectToFeed(navigation)
   dispatch(UserActions.toggleUserDataLoading(false))
   dispatch(getProfileData(navigation))
+  dispatch(FeedOperations.getFeed())
 }
 
 const saveUserToAsyncStorage = (userSecretData) => {
