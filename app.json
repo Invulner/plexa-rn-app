@@ -23,7 +23,9 @@
     "ios": {
       "config": {
         "usesNonExemptEncryption": false
-      }
+      },
+      "bundleIdentifier": "com.plexa.app2",
+      "buildNumber": "1"
     }
   }
 }
