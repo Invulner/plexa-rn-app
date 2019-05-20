@@ -24,7 +24,7 @@
       "config": {
         "usesNonExemptEncryption": false
       },
-      "bundleIdentifier": "com.plexa.app2",
+      "bundleIdentifier": "com.plexa.native",
       "buildNumber": "1"
     }
   }
