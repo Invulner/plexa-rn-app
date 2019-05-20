@@ -87,7 +87,7 @@ class FeedScreen extends Component {
 
   componentDidUpdate(prevProps) {
     const { isConnected, connectToWs } = this.props
-    //Works when connection is restored and afted app reboot with state rehydration
+    //Works when connection is restored and after app reboot with state rehydration
     if (prevProps.isConnected !== isConnected && isConnected) {
       connectToWs()
     //Need to add check for change from initial state to false
@@ -104,7 +104,7 @@ class FeedScreen extends Component {
   }
 
   componentWillUnmount() {
-    //Need to check because we can't disconnect if we weren't connected
+    //Check if there was connection before component unmounting
     this.props.isConnected && FeedOperations.disconnectFromWs()
   }
 

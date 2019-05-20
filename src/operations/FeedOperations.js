@@ -162,7 +162,6 @@ const connectToWs = () => {
           }
         }
       )
-      console.log('feedConnection :', feedConnection)
     })
   }
 }
