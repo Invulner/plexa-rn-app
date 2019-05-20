@@ -1,12 +1,12 @@
 {
   "expo": {
     "name": "Plexa",
-    "description": "This project is really great.",
+    "description": "Plexa AI",
     "slug": "Plexa",
     "privacy": "public",
     "sdkVersion": "31.0.0",
     "platforms": ["ios", "android"],
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "src/assets/images/icon.png",
     "splash": {
@@ -15,7 +15,8 @@
       "backgroundColor": "#ededed"
     },
     "updates": {
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 0,
+      "enabled": true
     },
     "assetBundlePatterns": [
       "src/assets/images/*"
@@ -25,7 +26,11 @@
         "usesNonExemptEncryption": false
       },
       "bundleIdentifier": "com.plexa.native",
-      "buildNumber": "1"
+      "buildNumber": "1",
+      "infoPlist": {
+        "NSPhotoLibraryUsageDescription": "Please provide the Plexa app with permission to access your photos."
+      },
+      "icon": "src/assets/images/iTunesArtwork@2x.png"
     }
   }
 }
