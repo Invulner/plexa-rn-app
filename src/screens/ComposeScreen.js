@@ -177,6 +177,7 @@ class ComposeScreen extends Component {
     const { link_url, group_id, location_id } = this.props.post
 
     return (
+      
       <SafeArea>
         <Spinner visible={spinner} />
         <View style={styles.inputBox}>
@@ -189,7 +190,7 @@ class ComposeScreen extends Component {
             }
           </ScrollView>
         </View>
-
+        
         <GreyLine boxStyle={styles.lineSolid} />
 
         <View style={styles.btnBox}>
@@ -229,6 +230,7 @@ class ComposeScreen extends Component {
 
         <Controls />
         <Topics />
+
       </SafeArea>
     )
   }

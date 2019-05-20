@@ -153,6 +153,7 @@ class ChatScreen extends Component {
               navigation={navigation}
               chatId={this.getChatId()}
               type={this.getChatId() ? 'existing chat' : 'new chat'} />
+              
           </View>
         }
       </SafeAreaView>
@@ -193,7 +194,8 @@ const styles = StyleSheet.create({
   },
 
   container: {
-    flex: 1
+    flex: 1,
+    justifyContent: 'space-between'
   },
 
   time: {

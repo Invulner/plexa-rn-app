@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, Image, TextInput, TouchableOpacity } from 'react-native'
+import { View, StyleSheet, Image, TextInput, TouchableOpacity, KeyboardAvoidingView } from 'react-native'
 import { BRAND_LIGHT } from '../../assets/styles/colors'
 import GreyLine from '../common/GreyLine'
 import { connect } from 'react-redux'
@@ -88,32 +88,34 @@ class ReplyBox extends Component {
     const { reply } = this.state
 
     return (
-      <React.Fragment>
-          <GreyLine boxStyle={styles.lineBox}/>
-  
-          <View style={styles.container}>
-            <View style={styles.inputBox}>
+      <KeyboardAvoidingView 
+        behavior='padding' 
+        keyboardVerticalOffset={90}>
+        <GreyLine boxStyle={styles.lineBox}/>
 
-              <TextInput 
-                placeholder={this.renderPlaceholder()}
-                multiline={true}
-                onChangeText={(reply) => this.onReplyChange(reply)}
-                style={styles.input}
-                value={reply} />
+        <View style={styles.container}>
+          <View style={styles.inputBox}>
 
-                <TouchableOpacity 
-                  disabled={this.isEmptyInput()}
-                  style={styles.iconBox}
-                  onPress={this.onSubmit}>
-                  <View style={[styles.icon, !this.isEmptyInput() && styles.inputFocused]}>
-                    <Image
-                      style={styles.iconImage} 
-                      source={require('../../assets/icons/send-button.png')} />
-                  </View>
-                </TouchableOpacity>
-            </View>
-          </View>   
-      </React.Fragment>
+            <TextInput 
+              placeholder={this.renderPlaceholder()}
+              multiline={true}
+              onChangeText={(reply) => this.onReplyChange(reply)}
+              style={styles.input}
+              value={reply} />
+
+              <TouchableOpacity 
+                disabled={this.isEmptyInput()}
+                style={styles.iconBox}
+                onPress={this.onSubmit}>
+                <View style={[styles.icon, !this.isEmptyInput() && styles.inputFocused]}>
+                  <Image
+                    style={styles.iconImage} 
+                    source={require('../../assets/icons/send-button.png')} />
+                </View>
+              </TouchableOpacity>
+          </View>
+        </View>   
+      </KeyboardAvoidingView>
     )
   }
 } 

@@ -138,7 +138,7 @@ class ChatsScreen extends Component {
             </View>
           </ScrollView>
         }
-      </View>
+    </View>
     )
   }
 }
@@ -146,7 +146,8 @@ class ChatsScreen extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: BG_COLOR
+    backgroundColor: BG_COLOR,
+    justifyContent: 'flex-end'
   },
 
   chatsBox: {
