@@ -25,8 +25,19 @@ const updateComment = (id, data) => ({
   data
 })
 
+const editComment = (id) => ({
+  type: types.EDIT_COMMENT,
+  id
+})
+
+const cancelEditing = () => ({
+  type: types.CANCEL_EDITING
+})
+
 export default {
   saveCommentsData,
+  editComment,
+  cancelEditing,
   toggleCommentsLoading,
   resetCommentsData,
   addComment,

@@ -4,7 +4,8 @@ import utils from '../utils'
 const initialState = {
   items: [],
   loading: true,
-  enabled: false
+  enabled: false,
+  editable: null
 }
 
 const updateComment = (state, action) => {
@@ -49,6 +50,18 @@ const CommentsReducer = (state = initialState, action) => {
 
     case types.UPDATE_COMMENT:
       return updateComment(state, action)
+
+    case types.EDIT_COMMENT:
+      return {
+        ...state,
+        editable: utils.findItemById(state.items, action.id)
+      }
+
+    case types.CANCEL_EDITING:
+      return {
+        ...state,
+        editable: null
+      }
 
     default:
       return state

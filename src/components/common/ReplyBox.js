@@ -10,21 +10,24 @@ import utils from '../../utils'
 import ChatsOperations from '../../operations/ChatsOperations'
 
 const mapStateToProps = (state) => {
-  const { user: { full_name }, chats: { chosenUsers } } = state
+  const { user: { full_name }, chats: { chosenUsers }, comments: { editable } } = state
 
   return { 
     full_name,
-    chosenUsers
+    chosenUsers,
+    editable
   }
 }
 
 const mapDispatchToProps = (dispatch, { navigation }) => {
   const postComment = (comment) => dispatch(CommentOperations.postComment(comment, navigation))
+  const updateComment = (comment) => dispatch(CommentOperations.updateComment(comment))
   const sendMessage = (chatId, messageParams) => dispatch(ChatOperations.sendMessage(chatId, messageParams))
   const createChat = (userIds, messageParams) => dispatch(ChatsOperations.createChat(userIds, messageParams, navigation))
 
   return { 
     postComment,
+    updateComment,
     sendMessage,
     createChat
   }
@@ -33,6 +36,13 @@ const mapDispatchToProps = (dispatch, { navigation }) => {
 class ReplyBox extends Component {
   state = {
     reply: ''
+  }
+
+  componentDidUpdate (prevProps) {
+    const { editable } = this.props
+    if (editable && (prevProps.editable !== editable)) {
+      this.setState({ reply: editable.content })
+    }
   }
 
   onReplyChange = (reply) => {
@@ -46,7 +56,7 @@ class ReplyBox extends Component {
   }
 
   onSubmit = () => {
-    const { postComment, sendMessage, createChat, type, chatId, full_name, chosenUsers } = this.props
+    const { postComment, updateComment, sendMessage, createChat, type, chatId, full_name, chosenUsers, editable } = this.props
     const reply = this.state.reply.trim()
     const messageParams = {
       text: reply,
@@ -59,7 +69,11 @@ class ReplyBox extends Component {
 
     switch (type) {
       case 'comment':
-        postComment(reply)
+        if (editable) {
+          updateComment({id: editable.id, content: reply})
+        } else {
+          postComment(reply)
+        }
         break
 
       case 'existing chat':

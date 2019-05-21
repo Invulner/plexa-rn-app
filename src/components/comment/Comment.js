@@ -14,7 +14,8 @@ function Comment(props) {
       <GreyLine />
       <View style={styles.container}>
         <PostHead 
-          created_at={created_at} 
+          created_at={created_at}
+          commentId={id}
           author={author}
           isComment />
         <RegularText style={feedStyles.linkCaption}>              

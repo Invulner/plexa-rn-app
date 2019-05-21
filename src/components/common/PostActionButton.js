@@ -3,6 +3,7 @@ import { Image, StyleSheet, TouchableOpacity, Platform, Alert } from 'react-nati
 import ActionSheet from 'react-native-action-sheet'
 import { connect } from 'react-redux'
 import FeedOperations from '../../operations/FeedOperations'
+import CommentsOperations from '../../operations/CommentsOperations'
 import PostOperations from '../../operations/PostOperations'
 import ChatsOperations from '../../operations/ChatsOperations'
 
@@ -22,6 +23,7 @@ const mapDispatchToProps = (dispatch) => {
   const blockUser = (authorId, cb) => dispatch(FeedOperations.blockUser(authorId, cb))
   const deletePost = (postId, cb) => dispatch(FeedOperations.deletePost(postId, cb))
   const getPost = (id, cb) => dispatch(PostOperations.getPost(id, cb))
+  const editComment = (id) => dispatch(CommentsOperations.editComment(id))
   const createChat = (ids, cb) => dispatch(ChatsOperations.createChat(ids, cb))
 
   return {
@@ -30,6 +32,7 @@ const mapDispatchToProps = (dispatch) => {
     blockUser,
     deletePost,
     getPost,
+    editComment,
     createChat
   }
 }
@@ -60,10 +63,14 @@ class PostActionButton extends Component {
   }
 
   onEditBtnClick = () => {
-    const { getPost, postId, navigation } = this.props
-    const cb = () => navigation.navigate('Compose', { postId })
+    const { getPost, postId, commentId, navigation } = this.props
+    if (commentId) {
+      this.props.editComment(commentId)
+    } else {
+      const cb = () => navigation.navigate('Compose', { postId })
 
-    getPost(postId, cb)
+      getPost(postId, cb)
+    }
   }
 
   showAlert = (option) => { 
