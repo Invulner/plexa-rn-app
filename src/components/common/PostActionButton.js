@@ -184,8 +184,9 @@ const styles = StyleSheet.create({
   },
 
   actionBtn: {
-    marginTop: 5,
+    marginTop: -5,
     marginLeft: 'auto',
+    padding: 10
   }
 })
 
