@@ -27,9 +27,10 @@ class Done extends Component {
     
     return (
       <TouchableOpacity
+        disabled={!this.isBtnActive()}
         style={styles.btn}
         onPress={navigation.getParam('onDonePress')}>
-        <RegularText style={[styles.text, isComposeScreen && !this.isBtnActive() && { opacity: 0.7 }]}>
+        <RegularText style={[styles.text, isComposeScreen && this.isBtnActive() && { color: BRAND_DARK }]}>
           {btnText}
         </RegularText>
       </TouchableOpacity>
@@ -40,7 +41,7 @@ class Done extends Component {
 const styles = StyleSheet.create({
   text: {
     fontSize: 20,
-    color: BRAND_DARK,
+    color: 'rgba(126, 120, 100, 0.6)',
     marginTop: 10,
   },
 

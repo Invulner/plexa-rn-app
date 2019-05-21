@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, TouchableOpacity, Alert, ScrollView, Keyboard, SafeAreaView } from 'react-native'
+import { View, StyleSheet, Alert, ScrollView, Keyboard, SafeAreaView } from 'react-native'
 import { connect } from 'react-redux'
-import { RegularText } from '../components/common/fonts'
 import GreyLine from '../components/common/GreyLine'
-import { BRAND_LIGHT } from '../assets/styles/colors'
 import FeedOperations from '../operations/FeedOperations'
 import Spinner from 'react-native-loading-spinner-overlay'
 import Topics from '../components/compose/Topics'
@@ -50,6 +48,11 @@ class ComposeScreen extends Component {
     spinner: false,
     imageURI: this.setImageFromProps(),
     keyboard: false
+  }
+
+  addEventListeners = () => {
+    Keyboard.addListener('keyboardWillShow', this.onKeyboardShow)
+    Keyboard.addListener('keyboardWillHide', this.onKeyboardHide)
   }
 
   onKeyboardShow = () => {
@@ -176,8 +179,7 @@ class ComposeScreen extends Component {
   }
 
   componentDidMount() {
-    Keyboard.addListener('keyboardWillShow', this.onKeyboardShow)
-    Keyboard.addListener('keyboardWillHide', this.onKeyboardHide)
+    this.addEventListeners()
     this.props.navigation.setParams({
       onDonePress: this.onSubmit,
       isImageExist: this.isImageExist(),
@@ -222,49 +224,37 @@ class ComposeScreen extends Component {
           </View>
           
           {!keyboard &&
-          <View>
+          <React.Fragment>
             <Topics />
-          <Controls />
-          </View>
+            <Controls />
+          </React.Fragment>
           }
-
         </View>
        
         <View>
           <GreyLine boxStyle={styles.lineSolid} />
           <View style={styles.btnBox}>
+            <AttachBtn
+              iconType={'photo'}
+              onPress={this.attachImage}
+              active={imageURI} />
 
-            <View style={styles.leftIconBox}>
-              <AttachBtn
-                iconType={'photo'}
-                onPress={this.attachImage}
-                active={imageURI} />
+            <AttachBtn
+              active={!!link_url}
+              route={'AddLink'}
+              iconType={'link'} />
 
-              <AttachBtn
-                active={!!link_url}
-                route={'AddLink'}
-                iconType={'link'} />
+            <AttachBtn
+              active={!!location_id}
+              route={'AddLocation'}
+              iconType={'location'} />
 
-              <AttachBtn
-                active={!!location_id}
-                route={'AddLocation'}
-                iconType={'location'} />
-
-              <AttachBtn
-                active={!!group_id}
-                iconType={'users'}
-                route={'AddGroup'} />
-            </View>
-
-            {/* <TouchableOpacity
-              style={[styles.postBtn, this.isPostBtnActive() && styles.btnActive]}
-              onPress={this.onSubmit}
-              disabled={!this.isPostBtnActive()}>
-              <RegularText style={styles.postText}>
-                Post
-              </RegularText>
-            </TouchableOpacity> */}
+            <AttachBtn
+              active={!!group_id}
+              iconType={'users'}
+              route={'AddGroup'} />
           </View>
+          
           <GreyLine boxStyle={[styles.lineSolid, { marginBottom: 20 }]} />
         </View>
       </SafeAreaView>
@@ -286,20 +276,11 @@ const styles = StyleSheet.create({
 
   btnBox: {
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
     flexDirection: 'row',
     paddingHorizontal: 10,
     height: 50,
   },
-
-  // postBtn: {
-  //   width: 80,
-  //   height: 35,
-  //   justifyContent: 'center',
-  //   alignItems:'center',
-  //   backgroundColor: 'rgba(188, 172, 133, 0.5)',
-  //   borderRadius: 7
-  // },
 
   postText: {
     marginTop: 7,
@@ -309,16 +290,6 @@ const styles = StyleSheet.create({
 
   lineSolid: {
     paddingHorizontal: 0
-  },
-
-  leftIconBox: {
-    flexDirection: 'row',
-    width: '45%',
-    justifyContent: 'space-between'
-  },
-
-  btnActive: {
-    backgroundColor: BRAND_LIGHT
   }
 })
 
