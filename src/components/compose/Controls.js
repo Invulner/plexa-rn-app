@@ -34,7 +34,7 @@ class Controls extends Component {
     const { comments_enabled, toggleComments, isPublic, togglePrivacy } = this.props
 
     return (
-      <React.Fragment>
+      <View style={styles.container}>
         <View style={styles.controlBox}>
           <SemiboldText style={styles.label}>
             Replies
@@ -74,12 +74,17 @@ class Controls extends Component {
               style={styles.switch} />
           </View>
         </View>
-      </React.Fragment>
+      </View>
     )
   }
 }
 
 const styles = StyleSheet.create({
+  container: {
+    height: 100, 
+    paddingVertical: 15
+  },
+
   controlBox: {
     flexDirection: 'row',
     paddingHorizontal: 10

@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, TouchableOpacity, Alert, ScrollView } from 'react-native'
+import { View, StyleSheet, TouchableOpacity, Alert, ScrollView, Keyboard, SafeAreaView, KeyboardAvoidingView } from 'react-native'
 import { connect } from 'react-redux'
-import SafeArea from '../components/common/SafeArea'
 import { RegularText } from '../components/common/fonts'
 import GreyLine from '../components/common/GreyLine'
 import { BRAND_LIGHT } from '../assets/styles/colors'
@@ -41,6 +40,14 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 class ComposeScreen extends Component {
+  onKeyboardShow = () => {
+    this.setState({ keyboard: true })
+  }
+
+  onKeyboardHide = () => {
+    this.setState({ keyboard: false })
+  }
+
   setImageFromProps = () => {
     const { image_urls } = this.props.post
 
@@ -49,7 +56,8 @@ class ComposeScreen extends Component {
 
   state = {
     spinner: false,
-    imageURI: this.setImageFromProps()
+    imageURI: this.setImageFromProps(),
+    keyboard: false
   }
 
   attachImage = async () => {
@@ -167,78 +175,95 @@ class ComposeScreen extends Component {
     return !this.isEmptyInput() || link_url || this.isImageExist()
   }
 
+  componentDidMount() {
+    Keyboard.addListener('keyboardWillShow', this.onKeyboardShow)
+    Keyboard.addListener('keyboardWillHide', this.onKeyboardHide)
+  }
+
   componentWillUnmount() {
     this.resetPost()
     this.props.navigation.setParams({ postId: null })
   }
 
   render() {
-    const { spinner, imageURI } = this.state
+    const { spinner, imageURI, keyboard } = this.state
     const { link_url, group_id, location_id } = this.props.post
 
     return (
-      
-      <SafeArea>
+      <SafeAreaView style={styles.container}>
         <Spinner visible={spinner} />
-        <View style={styles.inputBox}>
-          <ScrollView>
-            <Message noImage={!imageURI} />
-            {!!imageURI &&
-              <Photo
-                onClose={this.resetStateImg}
-                imageSrc={imageURI} />
-            }
-          </ScrollView>
-        </View>
-        
-        <GreyLine boxStyle={styles.lineSolid} />
 
-        <View style={styles.btnBox}>
-
-          <View style={styles.leftIconBox}>
-            <AttachBtn
-              iconType={'photo'}
-              onPress={this.attachImage}
-              active={imageURI} />
-
-            <AttachBtn
-              active={!!link_url}
-              route={'AddLink'}
-              iconType={'link'} />
-
-            <AttachBtn
-              active={!!location_id}
-              route={'AddLocation'}
-              iconType={'location'} />
-
-            <AttachBtn
-              active={!!group_id}
-              iconType={'users'}
-              route={'AddGroup'} />
+        <View>
+          <View style={styles.inputBox}>
+            <ScrollView>
+              <Message noImage={!imageURI} />
+              {!!imageURI &&
+                <Photo
+                  onClose={this.resetStateImg}
+                  imageSrc={imageURI} />
+              }
+            </ScrollView>
           </View>
+          
+          {!keyboard &&
+          <View>
+            <Topics />
+          <Controls />
+          </View>
+          }
 
-          <TouchableOpacity
-            style={[styles.postBtn, this.isPostBtnActive() && styles.btnActive]}
-            onPress={this.onSubmit}
-            disabled={!this.isPostBtnActive()}>
-            <RegularText style={styles.postText}>
-              Post
-            </RegularText>
-          </TouchableOpacity>
         </View>
-        <GreyLine boxStyle={[styles.lineSolid, { marginBottom: 20 }]} />
+       
+        <View>
+          <GreyLine boxStyle={styles.lineSolid} />
+          <View style={styles.btnBox}>
 
-        <Controls />
-        <Topics />
+            <View style={styles.leftIconBox}>
+              <AttachBtn
+                iconType={'photo'}
+                onPress={this.attachImage}
+                active={imageURI} />
 
-      </SafeArea>
+              <AttachBtn
+                active={!!link_url}
+                route={'AddLink'}
+                iconType={'link'} />
+
+              <AttachBtn
+                active={!!location_id}
+                route={'AddLocation'}
+                iconType={'location'} />
+
+              <AttachBtn
+                active={!!group_id}
+                iconType={'users'}
+                route={'AddGroup'} />
+            </View>
+
+            <TouchableOpacity
+              style={[styles.postBtn, this.isPostBtnActive() && styles.btnActive]}
+              onPress={this.onSubmit}
+              disabled={!this.isPostBtnActive()}>
+              <RegularText style={styles.postText}>
+                Post
+              </RegularText>
+            </TouchableOpacity>
+          </View>
+          <GreyLine boxStyle={[styles.lineSolid, { marginBottom: 20 }]} />
+        </View>
+      </SafeAreaView>
     )
   }
 }
 
 const styles = StyleSheet.create({
+  container: {
+    justifyContent: 'space-between', 
+    flex: 1
+  },
+
   inputBox: {
-    height: 300,
+    height: 400,
     paddingTop: 20,
     paddingBottom: 15
   },
