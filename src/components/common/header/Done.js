@@ -2,18 +2,35 @@ import React, { Component } from 'react'
 import { StyleSheet, TouchableOpacity } from 'react-native'
 import { RegularText } from '../../common/fonts'
 import { BRAND_DARK } from '../../../assets/styles/colors'
-import { withNavigation } from 'react-navigation'
+import { connect } from 'react-redux'
+
+const mapStateToProps = (state) => {
+  const { link_url, content } = state.post
+
+  return {
+    link_url,
+    content
+  }
+}
 
 class Done extends Component {
-  render() {
-    const { navigation } = this.props
+  isBtnActive = () => {
+    const { link_url, content, navigation } = this.props
+    const isImageExist = navigation.getParam('isImageExist')
+    
+    return link_url || content.trim().length || isImageExist
+  }
 
+  render() {
+    const { navigation, btnText } = this.props
+    const isComposeScreen = navigation.getParam('isComposeScreen')
+    
     return (
       <TouchableOpacity
         style={styles.btn}
         onPress={navigation.getParam('onDonePress')}>
-        <RegularText style={styles.text}>
-          Done
+        <RegularText style={[styles.text, isComposeScreen && !this.isBtnActive() && { opacity: 0.7 }]}>
+          {btnText}
         </RegularText>
       </TouchableOpacity>
     )
@@ -24,7 +41,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 20,
     color: BRAND_DARK,
-    marginTop: 10
+    marginTop: 10,
   },
 
   btn: {
@@ -32,4 +49,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default withNavigation(Done)
+export default connect(mapStateToProps, null)(Done)

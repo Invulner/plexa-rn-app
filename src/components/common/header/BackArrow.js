@@ -18,7 +18,8 @@ const styles = StyleSheet.create({
     height: 20,
     marginLeft: 5,
     marginBottom: -7,
-    resizeMode: 'contain'
+    resizeMode: 'contain',
+    padding: 10
   }
 })
 

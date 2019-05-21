@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, TouchableOpacity, Alert, ScrollView, Keyboard, SafeAreaView, KeyboardAvoidingView } from 'react-native'
+import { View, StyleSheet, TouchableOpacity, Alert, ScrollView, Keyboard, SafeAreaView } from 'react-native'
 import { connect } from 'react-redux'
 import { RegularText } from '../components/common/fonts'
 import GreyLine from '../components/common/GreyLine'
@@ -40,14 +40,6 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 class ComposeScreen extends Component {
-  onKeyboardShow = () => {
-    this.setState({ keyboard: true })
-  }
-
-  onKeyboardHide = () => {
-    this.setState({ keyboard: false })
-  }
-
   setImageFromProps = () => {
     const { image_urls } = this.props.post
 
@@ -58,6 +50,14 @@ class ComposeScreen extends Component {
     spinner: false,
     imageURI: this.setImageFromProps(),
     keyboard: false
+  }
+
+  onKeyboardShow = () => {
+    this.setState({ keyboard: true })
+  }
+
+  onKeyboardHide = () => {
+    this.setState({ keyboard: false })
   }
 
   attachImage = async () => {
@@ -178,11 +178,27 @@ class ComposeScreen extends Component {
   componentDidMount() {
     Keyboard.addListener('keyboardWillShow', this.onKeyboardShow)
     Keyboard.addListener('keyboardWillHide', this.onKeyboardHide)
+    this.props.navigation.setParams({
+      onDonePress: this.onSubmit,
+      isImageExist: this.isImageExist(),
+      isComposeScreen: true
+    })
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (!!prevState.imageURI !== !!this.state.imageURI) {
+      this.props.navigation.setParams({
+        isImageExist: this.isImageExist()
+      })
+    }
   }
 
   componentWillUnmount() {
     this.resetPost()
-    this.props.navigation.setParams({ postId: null })
+    this.props.navigation.setParams({ 
+      postId: null,
+      isComposeScreen: false
+    })
   }
 
   render() {
@@ -240,14 +256,14 @@ class ComposeScreen extends Component {
                 route={'AddGroup'} />
             </View>
 
-            <TouchableOpacity
+            {/* <TouchableOpacity
               style={[styles.postBtn, this.isPostBtnActive() && styles.btnActive]}
               onPress={this.onSubmit}
               disabled={!this.isPostBtnActive()}>
               <RegularText style={styles.postText}>
                 Post
               </RegularText>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
           <GreyLine boxStyle={[styles.lineSolid, { marginBottom: 20 }]} />
         </View>
@@ -276,14 +292,14 @@ const styles = StyleSheet.create({
     height: 50,
   },
 
-  postBtn: {
-    width: 80,
-    height: 35,
-    justifyContent: 'center',
-    alignItems:'center',
-    backgroundColor: 'rgba(188, 172, 133, 0.5)',
-    borderRadius: 7
-  },
+  // postBtn: {
+  //   width: 80,
+  //   height: 35,
+  //   justifyContent: 'center',
+  //   alignItems:'center',
+  //   backgroundColor: 'rgba(188, 172, 133, 0.5)',
+  //   borderRadius: 7
+  // },
 
   postText: {
     marginTop: 7,

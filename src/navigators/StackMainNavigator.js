@@ -50,15 +50,16 @@ const MainStack = createStackNavigator({
   },
   Compose: {
     screen: ComposeScreen,
-    navigationOptions: () => ({
-      headerTitle: <HeaderTitle title={'New post'} />
+    navigationOptions: ({ navigation }) => ({
+      headerTitle: <HeaderTitle title={'New post'} />,
+      headerRight: <Done btnText='Post' navigation={navigation} />
     })
   },
   AddLink: {
     screen: AddLinkScreen,
-    navigationOptions: () => ({
+    navigationOptions: ({ navigation }) => ({
       headerTitle: <HeaderTitle title={'Add link'} />,
-      headerRight: <Done />
+      headerRight: <Done btnText='Done' navigation={navigation} />
     })
   },
   AddGroup: {
@@ -75,9 +76,9 @@ const MainStack = createStackNavigator({
   },
   AddUsers: {
     screen: AddUsersScreen,
-    navigationOptions: () => ({
+    navigationOptions: ({ navigation }) => ({
       headerTitle: <HeaderTitle title={'Add users'} />,
-      headerRight: <Done />
+      headerRight: <Done btnText='Done' navigation={navigation} />
     })
   },
   Chat: {
