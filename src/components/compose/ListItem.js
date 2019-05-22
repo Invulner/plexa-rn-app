@@ -1,6 +1,6 @@
 import React from 'react'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
-import GreyLine from '../common/GreyLine'
+import GrayLine from '../common/GrayLine'
 import { RegularText } from '../common/fonts'
 import IconChecked from '../common/IconChecked'
 import { DARK_GRAY } from '../../assets/styles/colors'
@@ -20,7 +20,7 @@ function UserListItem(props) {
         </TouchableOpacity>
         {isChosen && <IconChecked />}
       </View>
-      <GreyLine boxStyle={styles.lineSolid}/>
+      <GrayLine boxStyle={styles.lineSolid}/>
     </React.Fragment>
   )
 }

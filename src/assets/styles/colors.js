@@ -1,7 +1,4 @@
-// export const BG_COLOR = '#fafafa'
 export const BG_COLOR = '#f4f4f4'
-// export const BG_COLOR = '#f2f2f2'
-// export const BG_COLOR = '#ededed'
 export const BRAND_LIGHT = '#bcac85'
 export const BRAND_DARK = '#7e7864'
 export const PREVIEW_LIGHT = '#00a453'

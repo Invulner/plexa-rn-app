@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { View, StyleSheet, Alert, ScrollView, Keyboard, SafeAreaView } from 'react-native'
 import { connect } from 'react-redux'
-import GreyLine from '../components/common/GreyLine'
+import GrayLine from '../components/common/GrayLine'
 import FeedOperations from '../operations/FeedOperations'
 import Spinner from 'react-native-loading-spinner-overlay'
 import Topics from '../components/compose/Topics'
@@ -12,6 +12,7 @@ import PostActions from '../actions/PostActions'
 import { ImagePicker, Permissions } from 'expo'
 import Photo from '../components/compose/Photo'
 import LocationsActions from '../actions/LocationsActions'
+import { KeyboardAccessoryNavigation } from 'react-native-keyboard-accessory'
 
 const mapStateToProps = (state) => {
   const { post } = state
@@ -196,7 +197,8 @@ class ComposeScreen extends Component {
   }
 
   componentWillUnmount() {
-    Keyboard.removeAllListeners()
+    Keyboard.removeAllListeners('keyboardWillShow')
+    Keyboard.removeAllListeners('keyboardWillHide')
     this.resetPost()
     this.props.navigation.setParams({ 
       postId: null,
@@ -212,51 +214,54 @@ class ComposeScreen extends Component {
       <SafeAreaView style={styles.container}>
         <Spinner visible={spinner} />
 
+        <View style={styles.inputBox}>
+          <ScrollView>
+            <Message noImage={!imageURI} />
+            {!!imageURI &&
+              <Photo
+                onClose={this.resetStateImg}
+                imageSrc={imageURI} />
+            }
+          </ScrollView>
+        </View>
+
         <View>
-          <View style={styles.inputBox}>
-            <ScrollView>
-              <Message noImage={!imageURI} />
-              {!!imageURI &&
-                <Photo
-                  onClose={this.resetStateImg}
-                  imageSrc={imageURI} />
-              }
-            </ScrollView>
-          </View>
-          
           {!keyboard &&
             <React.Fragment>
               <Topics />
               <Controls />
+
+              <GrayLine boxStyle={styles.lineSolid} />
+              <View style={styles.btnBox}>
+                <AttachBtn
+                  iconType={'photo'}
+                  onPress={this.attachImage}
+                  active={imageURI} />
+
+                <AttachBtn
+                  active={!!link_url}
+                  route={'AddLink'}
+                  iconType={'link'} />
+
+                <AttachBtn
+                  active={!!location_id}
+                  route={'AddLocation'}
+                  iconType={'location'} />
+
+                <AttachBtn
+                  active={!!group_id}
+                  iconType={'users'}
+                  route={'AddGroup'} />
+              </View>
+              
+              <GrayLine boxStyle={[styles.lineSolid, { marginBottom: 20 }]} />
             </React.Fragment>
           }
-        </View>
-       
-        <View>
-          <GreyLine boxStyle={styles.lineSolid} />
-          <View style={styles.btnBox}>
-            <AttachBtn
-              iconType={'photo'}
-              onPress={this.attachImage}
-              active={imageURI} />
-
-            <AttachBtn
-              active={!!link_url}
-              route={'AddLink'}
-              iconType={'link'} />
-
-            <AttachBtn
-              active={!!location_id}
-              route={'AddLocation'}
-              iconType={'location'} />
-
-            <AttachBtn
-              active={!!group_id}
-              iconType={'users'}
-              route={'AddGroup'} />
-          </View>
-          
-          <GreyLine boxStyle={[styles.lineSolid, { marginBottom: 20 }]} />
+ 
+        <KeyboardAccessoryNavigation
+          inSafeAreaView={true}
+          nextHidden={true}
+          previousHidden={true} />
         </View>
       </SafeAreaView>
     )
@@ -270,7 +275,7 @@ const styles = StyleSheet.create({
   },
 
   inputBox: {
-    height: 400,
+    height: 250,
     paddingTop: 20,
     paddingBottom: 15
   },
