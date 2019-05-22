@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { StyleSheet, TouchableOpacity } from 'react-native'
-import { RegularText } from '../../common/fonts'
+import { RegularText } from '../fonts'
 import { BRAND_DARK } from '../../../assets/styles/colors'
 import { connect } from 'react-redux'
 
@@ -13,7 +13,7 @@ const mapStateToProps = (state) => {
   }
 }
 
-class Done extends Component {
+class DoneBtn extends Component {
   isBtnActive = () => {
     const { link_url, content, navigation } = this.props
     const isImageExist = navigation.getParam('isImageExist')
@@ -27,10 +27,13 @@ class Done extends Component {
     
     return (
       <TouchableOpacity
-        disabled={!this.isBtnActive()}
+        disabled={isComposeScreen && !this.isBtnActive()}
         style={styles.btn}
         onPress={navigation.getParam('onDonePress')}>
-        <RegularText style={[styles.text, isComposeScreen && this.isBtnActive() && { color: BRAND_DARK }]}>
+        <RegularText style={[
+          styles.text, 
+          !isComposeScreen && { color: BRAND_DARK }, 
+          isComposeScreen && this.isBtnActive() && { color: BRAND_DARK }]}>
           {btnText}
         </RegularText>
       </TouchableOpacity>
@@ -50,4 +53,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect(mapStateToProps, null)(Done)
+export default connect(mapStateToProps, null)(DoneBtn)

@@ -11,7 +11,7 @@ import PostScreen from '../screens/PostScreen'
 import ComposeScreen from '../screens/ComposeScreen'
 import AddLinkScreen from '../screens/AddLinkScreen'
 import AddGroupScreen from '../screens/AddGroupScreen'
-import Done from '../components/common/header/Done'
+import DoneBtn from '../components/common/header/DoneBtn'
 import AddLocationScreen from '../screens/AddLocationScreen'
 import AddUsersScreen from '../screens/AddUsersScreen'
 import ChatScreen from '../screens/ChatScreen'
@@ -52,14 +52,14 @@ const MainStack = createStackNavigator({
     screen: ComposeScreen,
     navigationOptions: ({ navigation }) => ({
       headerTitle: <HeaderTitle title={'New post'} />,
-      headerRight: <Done btnText='Post' navigation={navigation} />
+      headerRight: <DoneBtn btnText='Post' navigation={navigation} />
     })
   },
   AddLink: {
     screen: AddLinkScreen,
     navigationOptions: ({ navigation }) => ({
       headerTitle: <HeaderTitle title={'Add link'} />,
-      headerRight: <Done btnText='Done' navigation={navigation} />
+      headerRight: <DoneBtn btnText='Done' navigation={navigation} />
     })
   },
   AddGroup: {
@@ -78,7 +78,7 @@ const MainStack = createStackNavigator({
     screen: AddUsersScreen,
     navigationOptions: ({ navigation }) => ({
       headerTitle: <HeaderTitle title={'Add users'} />,
-      headerRight: <Done btnText='Done' navigation={navigation} />
+      headerRight: <DoneBtn btnText='Done' navigation={navigation} />
     })
   },
   Chat: {
