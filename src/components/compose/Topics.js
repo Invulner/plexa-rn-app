@@ -51,11 +51,13 @@ class Topics extends Component {
 
   render() {
     return (
-      <ScrollView>
-        <View style={styles.topicsBox}>
-          {this.renderTopics()}
-        </View>  
-      </ScrollView>
+      <View style={{height: 200}}>
+        <ScrollView>
+          <View style={styles.topicsBox}>
+            {this.renderTopics()}
+          </View>  
+        </ScrollView>
+      </View>
     )
   }
 }

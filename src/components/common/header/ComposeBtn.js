@@ -8,7 +8,7 @@ const mapStateToProps = (state) => {
   return { isConnected }
 }
 
-class FeedHeaderLeft extends Component {
+class ComposeBtn extends Component {
   render() {
     const { navigation, isConnected } = this.props
     const isFeedScreen = navigation.getParam('isFeedScreen')
@@ -48,4 +48,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect(mapStateToProps, null)(FeedHeaderLeft)
+export default connect(mapStateToProps, null)(ComposeBtn)

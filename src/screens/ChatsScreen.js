@@ -138,7 +138,7 @@ class ChatsScreen extends Component {
             </View>
           </ScrollView>
         }
-      </View>
+    </View>
     )
   }
 }

@@ -8,22 +8,22 @@ const mapStateToProps = (state) => {
   return { isConnected }
 }
 
-class HeaderRight extends Component {
+class AddUsersBtn extends Component {
   render() {
     const { navigation, isConnected } = this.props
     const isChatsScreen = navigation.getParam('isChatsScreen')
 
     return (
       <View style={styles.container}>
-      {isChatsScreen &&
-        <TouchableOpacity
-          disabled={!isConnected}
-          onPress={() => navigation.navigate('AddUsers')}>
-          <Image 
-            style={styles.messageIcon}
-            source={require('../../../assets/icons/add-users.png')} />
-        </TouchableOpacity>        
-      }
+        {isChatsScreen &&
+          <TouchableOpacity
+            disabled={!isConnected}
+            onPress={() => navigation.navigate('AddUsers')}>
+            <Image 
+              style={styles.messageIcon}
+              source={require('../../../assets/icons/add-users.png')} />
+          </TouchableOpacity>        
+        }
       </View>
     )
   }
@@ -41,4 +41,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect(mapStateToProps, null)(HeaderRight)
+export default connect(mapStateToProps, null)(AddUsersBtn)

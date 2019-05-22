@@ -120,7 +120,6 @@ class ChatScreen extends Component {
 
   componentDidMount() {
     if (this.getChatId()) {
-      console.log('ChatScreen componentDidMount chatId(): ', this.getChatId())   
       this.props.getMessages(this.getChatId())
       this.props.connectToWs(this.getChatId())
     } else {
@@ -153,6 +152,7 @@ class ChatScreen extends Component {
               navigation={navigation}
               chatId={this.getChatId()}
               type={this.getChatId() ? 'existing chat' : 'new chat'} />
+              
           </View>
         }
       </SafeAreaView>

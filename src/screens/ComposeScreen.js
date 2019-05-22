@@ -1,10 +1,7 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, TouchableOpacity, Alert, ScrollView } from 'react-native'
+import { View, StyleSheet, Alert, ScrollView, Keyboard, SafeAreaView } from 'react-native'
 import { connect } from 'react-redux'
-import SafeArea from '../components/common/SafeArea'
-import { RegularText } from '../components/common/fonts'
 import GreyLine from '../components/common/GreyLine'
-import { BRAND_LIGHT } from '../assets/styles/colors'
 import FeedOperations from '../operations/FeedOperations'
 import Spinner from 'react-native-loading-spinner-overlay'
 import Topics from '../components/compose/Topics'
@@ -49,7 +46,21 @@ class ComposeScreen extends Component {
 
   state = {
     spinner: false,
-    imageURI: this.setImageFromProps()
+    imageURI: this.setImageFromProps(),
+    keyboard: false
+  }
+
+  addEventListeners = () => {
+    Keyboard.addListener('keyboardWillShow', this.onKeyboardShow)
+    Keyboard.addListener('keyboardWillHide', this.onKeyboardHide)
+  }
+
+  onKeyboardShow = () => {
+    this.setState({ keyboard: true })
+  }
+
+  onKeyboardHide = () => {
+    this.setState({ keyboard: false })
   }
 
   attachImage = async () => {
@@ -167,34 +178,63 @@ class ComposeScreen extends Component {
     return !this.isEmptyInput() || link_url || this.isImageExist()
   }
 
+  componentDidMount() {
+    this.addEventListeners()
+    this.props.navigation.setParams({
+      onDonePress: this.onSubmit,
+      isImageExist: this.isImageExist(),
+      isComposeScreen: true
+    })
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (!!prevState.imageURI !== !!this.state.imageURI) {
+      this.props.navigation.setParams({
+        isImageExist: this.isImageExist()
+      })
+    }
+  }
+
   componentWillUnmount() {
+    Keyboard.removeAllListeners()
     this.resetPost()
-    this.props.navigation.setParams({ postId: null })
+    this.props.navigation.setParams({ 
+      postId: null,
+      isComposeScreen: false
+    })
   }
 
   render() {
-    const { spinner, imageURI } = this.state
+    const { spinner, imageURI, keyboard } = this.state
     const { link_url, group_id, location_id } = this.props.post
 
     return (
-      <SafeArea>
+      <SafeAreaView style={styles.container}>
         <Spinner visible={spinner} />
-        <View style={styles.inputBox}>
-          <ScrollView>
-            <Message noImage={!imageURI} />
-            {!!imageURI &&
-              <Photo
-                onClose={this.resetStateImg}
-                imageSrc={imageURI} />
-            }
-          </ScrollView>
+
+        <View>
+          <View style={styles.inputBox}>
+            <ScrollView>
+              <Message noImage={!imageURI} />
+              {!!imageURI &&
+                <Photo
+                  onClose={this.resetStateImg}
+                  imageSrc={imageURI} />
+              }
+            </ScrollView>
+          </View>
+          
+          {!keyboard &&
+            <React.Fragment>
+              <Topics />
+              <Controls />
+            </React.Fragment>
+          }
         </View>
-
-        <GreyLine boxStyle={styles.lineSolid} />
-
-        <View style={styles.btnBox}>
-
-          <View style={styles.leftIconBox}>
+       
+        <View>
+          <GreyLine boxStyle={styles.lineSolid} />
+          <View style={styles.btnBox}>
             <AttachBtn
               iconType={'photo'}
               onPress={this.attachImage}
@@ -215,47 +255,32 @@ class ComposeScreen extends Component {
               iconType={'users'}
               route={'AddGroup'} />
           </View>
-
-          <TouchableOpacity
-            style={[styles.postBtn, this.isPostBtnActive() && styles.btnActive]}
-            onPress={this.onSubmit}
-            disabled={!this.isPostBtnActive()}>
-            <RegularText style={styles.postText}>
-              Post
-            </RegularText>
-          </TouchableOpacity>
+          
+          <GreyLine boxStyle={[styles.lineSolid, { marginBottom: 20 }]} />
         </View>
-        <GreyLine boxStyle={[styles.lineSolid, { marginBottom: 20 }]} />
-
-        <Controls />
-        <Topics />
-      </SafeArea>
+      </SafeAreaView>
     )
   }
 }
 
 const styles = StyleSheet.create({
+  container: {
+    justifyContent: 'space-between', 
+    flex: 1
+  },
+
   inputBox: {
-    height: 300,
+    height: 400,
     paddingTop: 20,
     paddingBottom: 15
   },
 
   btnBox: {
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
     flexDirection: 'row',
     paddingHorizontal: 10,
     height: 50,
-  },
-
-  postBtn: {
-    width: 80,
-    height: 35,
-    justifyContent: 'center',
-    alignItems:'center',
-    backgroundColor: 'rgba(188, 172, 133, 0.5)',
-    borderRadius: 7
   },
 
   postText: {
@@ -266,16 +291,6 @@ const styles = StyleSheet.create({
 
   lineSolid: {
     paddingHorizontal: 0
-  },
-
-  leftIconBox: {
-    flexDirection: 'row',
-    width: '45%',
-    justifyContent: 'space-between'
-  },
-
-  btnActive: {
-    backgroundColor: BRAND_LIGHT
   }
 })
 
