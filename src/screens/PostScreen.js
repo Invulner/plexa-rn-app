@@ -47,10 +47,10 @@ class PostScreen extends Component {
   }
 
   renderComments = () => {
-    const { items } = this.props
+    const { items, post } = this.props
 
     if (items.length)
-      return items.map(item => <Comment item={item} key={item.id} />)
+      return items.map(item => <Comment item={item} key={item.id} postId={post.id} />)
     else
       return (
         <React.Fragment>

@@ -48,7 +48,14 @@ const concealPost = (state, action, option) => {
 
 const updateCommentsCounter = (state, action) => {
   const item = utils.findItemById(state.feedData, action.id)
-  const counter = isNaN(action.counter) ? item.answers_count + 1 : action.counter
+  let counter
+  if (action.counter === 'decrease') {
+    counter = item.answers_count - 1
+  } else if (action.counter === undefined) {
+    counter = item.answers_count + 1
+  } else {
+    counter = action.counter
+  }
   const newVal = { answers_count: counter }
   const newFeedData = utils.updateItemById(state.feedData, action.id, newVal)
 

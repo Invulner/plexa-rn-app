@@ -7,27 +7,29 @@ import Social from '../common/Social'
 import GreyLine from '../common/GreyLine'
 
 function Comment(props) {
-  const { created_at, author, content, likes_count, id, liked } = props.item
+  const { created_at, author, content, likes_count, id, liked, deleted } = props.item
 
   return (
-    <React.Fragment>
-      <GreyLine />
-      <View style={styles.container}>
-        <PostHead 
-          created_at={created_at}
-          commentId={id}
-          author={author}
-          isComment />
-        <RegularText style={feedStyles.linkCaption}>              
-          {content}
-        </RegularText>
-        <Social 
-          liked={liked}
-          likesCount={likes_count}
-          isComment={true}
-          id={id} />  
-      </View>
-    </React.Fragment>
+    !deleted &&
+      <React.Fragment>
+        <GreyLine />
+        <View style={styles.container}>
+          <PostHead
+            created_at={created_at}
+            commentId={id}
+            postId={props.postId}
+            author={author}
+            isComment />
+          <RegularText style={feedStyles.linkCaption}>
+            {content}
+          </RegularText>
+          <Social
+            liked={liked}
+            likesCount={likes_count}
+            isComment={true}
+            id={id} />
+        </View>
+      </React.Fragment>
   )
 }
 

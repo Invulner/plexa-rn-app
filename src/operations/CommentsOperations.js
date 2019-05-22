@@ -72,9 +72,23 @@ const updateComment = (comment) => {
   }
 }
 
+const deleteComment = (id, post_id) => {
+  return dispatch => {
+    getAxiosInstance().then(api => {
+      api.delete(`${API_URL}/answers/${id}`)
+      .then(() => {
+        dispatch(CommentsActions.deleteComment(id))
+        dispatch(FeedActions.updateCommentsCounter(post_id, 'decrease'))
+      })
+      .catch(error => console.log(error))
+    })
+  }
+}
+
 export default {
   getComments,
   postComment,
+  deleteComment,
   editComment,
   updateComment,
   updateLike
