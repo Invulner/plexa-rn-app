@@ -214,59 +214,56 @@ class ComposeScreen extends Component {
       <SafeAreaView style={styles.container}>
         <Spinner visible={spinner} />
 
+        <View style={styles.inputBox}>
+          <ScrollView>
+            <Message noImage={!imageURI} />
+            {!!imageURI &&
+              <Photo
+                onClose={this.resetStateImg}
+                imageSrc={imageURI} />
+            }
+          </ScrollView>
+        </View>
+
         <View>
-          <View style={styles.inputBox}>
-            <ScrollView>
-              <Message noImage={!imageURI} />
-              {!!imageURI &&
-                <Photo
-                  onClose={this.resetStateImg}
-                  imageSrc={imageURI} />
-              }
-            </ScrollView>
-          </View>
-          
           {!keyboard &&
             <React.Fragment>
               <Topics />
               <Controls />
+
+              <GrayLine boxStyle={styles.lineSolid} />
+              <View style={styles.btnBox}>
+                <AttachBtn
+                  iconType={'photo'}
+                  onPress={this.attachImage}
+                  active={imageURI} />
+
+                <AttachBtn
+                  active={!!link_url}
+                  route={'AddLink'}
+                  iconType={'link'} />
+
+                <AttachBtn
+                  active={!!location_id}
+                  route={'AddLocation'}
+                  iconType={'location'} />
+
+                <AttachBtn
+                  active={!!group_id}
+                  iconType={'users'}
+                  route={'AddGroup'} />
+              </View>
+              
+              <GrayLine boxStyle={[styles.lineSolid, { marginBottom: 20 }]} />
             </React.Fragment>
           }
-        </View>
-
-       {!keyboard &&
-        <View>
-          <GrayLine boxStyle={styles.lineSolid} />
-          <View style={styles.btnBox}>
-            <AttachBtn
-              iconType={'photo'}
-              onPress={this.attachImage}
-              active={imageURI} />
-
-            <AttachBtn
-              active={!!link_url}
-              route={'AddLink'}
-              iconType={'link'} />
-
-            <AttachBtn
-              active={!!location_id}
-              route={'AddLocation'}
-              iconType={'location'} />
-
-            <AttachBtn
-              active={!!group_id}
-              iconType={'users'}
-              route={'AddGroup'} />
-          </View>
-          
-          <GrayLine boxStyle={[styles.lineSolid, { marginBottom: 20 }]} />
-        </View>
-       }
+ 
         <KeyboardAccessoryNavigation
           bumperHeight={300}
           inSafeAreaView={true}
           nextHidden={true}
           previousHidden={true} />
+        </View>
       </SafeAreaView>
     )
   }
@@ -279,7 +276,7 @@ const styles = StyleSheet.create({
   },
 
   inputBox: {
-    height: 400,
+    height: 250,
     paddingTop: 20,
     paddingBottom: 15
   },
