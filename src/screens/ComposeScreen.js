@@ -259,7 +259,6 @@ class ComposeScreen extends Component {
           }
  
         <KeyboardAccessoryNavigation
-          bumperHeight={300}
           inSafeAreaView={true}
           nextHidden={true}
           previousHidden={true} />
