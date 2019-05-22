@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { View, StyleSheet, Image, TextInput, TouchableOpacity, KeyboardAvoidingView } from 'react-native'
 import { BRAND_LIGHT } from '../../assets/styles/colors'
-import GreyLine from '../common/GreyLine'
+import GrayLine from '../common/GrayLine'
 import { connect } from 'react-redux'
 import CommentOperations from '../../operations/CommentsOperations'
 import { BG_COLOR } from '../../assets/styles/colors'
@@ -105,7 +105,7 @@ class ReplyBox extends Component {
       <KeyboardAvoidingView 
         behavior='padding' 
         keyboardVerticalOffset={90}>
-        <GreyLine boxStyle={styles.lineBox}/>
+        <GrayLine boxStyle={styles.lineBox}/>
 
         <View style={styles.container}>
           <View style={styles.inputBox}>

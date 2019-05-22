@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { View, StyleSheet, Alert, ScrollView, Keyboard, SafeAreaView } from 'react-native'
 import { connect } from 'react-redux'
-import GreyLine from '../components/common/GreyLine'
+import GrayLine from '../components/common/GrayLine'
 import FeedOperations from '../operations/FeedOperations'
 import Spinner from 'react-native-loading-spinner-overlay'
 import Topics from '../components/compose/Topics'
@@ -12,6 +12,7 @@ import PostActions from '../actions/PostActions'
 import { ImagePicker, Permissions } from 'expo'
 import Photo from '../components/compose/Photo'
 import LocationsActions from '../actions/LocationsActions'
+import { KeyboardAccessoryNavigation } from 'react-native-keyboard-accessory'
 
 const mapStateToProps = (state) => {
   const { post } = state
@@ -196,7 +197,8 @@ class ComposeScreen extends Component {
   }
 
   componentWillUnmount() {
-    Keyboard.removeAllListeners()
+    Keyboard.removeAllListeners('keyboardWillShow')
+    Keyboard.removeAllListeners('keyboardWillHide')
     this.resetPost()
     this.props.navigation.setParams({ 
       postId: null,
@@ -231,9 +233,10 @@ class ComposeScreen extends Component {
             </React.Fragment>
           }
         </View>
-       
+
+       {!keyboard &&
         <View>
-          <GreyLine boxStyle={styles.lineSolid} />
+          <GrayLine boxStyle={styles.lineSolid} />
           <View style={styles.btnBox}>
             <AttachBtn
               iconType={'photo'}
@@ -256,8 +259,15 @@ class ComposeScreen extends Component {
               route={'AddGroup'} />
           </View>
           
-          <GreyLine boxStyle={[styles.lineSolid, { marginBottom: 20 }]} />
+          <GrayLine boxStyle={[styles.lineSolid, { marginBottom: 20 }]} />
         </View>
+       }
+        <KeyboardAccessoryNavigation
+          bumperHeight={300}
+          inSafeAreaView={true}
+          nextHidden={true}
+          previousHidden={true}
+          onDone={() => Keyboard.dismiss()} />
       </SafeAreaView>
     )
   }
