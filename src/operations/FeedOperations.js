@@ -140,6 +140,9 @@ const handleAnswerUpdate = (data, dispatch) => {
     dispatch(CommentsActions.addComment(data.attrs))
   } else if ((data.action === 'liked') || (data.action === 'updated')) {
     dispatch(CommentsActions.updateComment(data.id, data.attrs))
+  } else if (data.action === 'deleted') {
+    dispatch(CommentsActions.deleteComment(data.id))
+    dispatch(FeedActions.updateCommentsCounter(data.story_id, 'decrease'))
   }
 }
 

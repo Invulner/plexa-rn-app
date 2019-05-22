@@ -5,7 +5,9 @@ const initialState = {
   items: [],
   loading: true,
   enabled: false,
-  editable: null
+  editable: null,
+  deleted: false,
+  post_id: null
 }
 
 const updateComment = (state, action) => {
@@ -62,6 +64,9 @@ const CommentsReducer = (state = initialState, action) => {
         ...state,
         editable: null
       }
+
+    case types.DELETE_COMMENT:
+      return updateComment(state, action)
 
     default:
       return state

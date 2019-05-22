@@ -34,9 +34,19 @@ const cancelEditing = () => ({
   type: types.CANCEL_EDITING
 })
 
+const deleteComment = (id, post_id) => ({
+  type: types.DELETE_COMMENT,
+  id,
+  data: {
+    deleted: true
+  },
+  post_id
+})
+
 export default {
   saveCommentsData,
   editComment,
+  deleteComment,
   cancelEditing,
   toggleCommentsLoading,
   resetCommentsData,

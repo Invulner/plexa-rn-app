@@ -24,6 +24,7 @@ const mapDispatchToProps = (dispatch) => {
   const deletePost = (postId, cb) => dispatch(FeedOperations.deletePost(postId, cb))
   const getPost = (id, cb) => dispatch(PostOperations.getPost(id, cb))
   const editComment = (id) => dispatch(CommentsOperations.editComment(id))
+  const deleteComment = (id, post_id) => dispatch(CommentsOperations.deleteComment(id, post_id))
   const createChat = (ids, cb) => dispatch(ChatsOperations.createChat(ids, cb))
 
   return {
@@ -31,6 +32,7 @@ const mapDispatchToProps = (dispatch) => {
     reportPost,
     blockUser,
     deletePost,
+    deleteComment,
     getPost,
     editComment,
     createChat
@@ -45,7 +47,7 @@ class PostActionButton extends Component {
   }
 
   onAlertOKPress = (option) => {
-    const { deletePost, blockUser, hidePost, reportPost, postId, authorId, navigation } = this.props
+    const { deletePost, deleteComment, blockUser, hidePost, reportPost, postId, commentId, authorId, navigation } = this.props
     const cb = () => navigation.navigate('Feed')
 
     switch (option) {
@@ -56,7 +58,7 @@ class PostActionButton extends Component {
       case 'block':
         return blockUser(authorId, cb)
       case 'delete':
-        return deletePost(postId, cb)
+        return commentId? deleteComment(commentId, postId) : deletePost(postId, cb)
       default:
         console.log('Wrong option or no option passed')
     }
