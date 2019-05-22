@@ -196,6 +196,7 @@ class ComposeScreen extends Component {
   }
 
   componentWillUnmount() {
+    Keyboard.removeAllListeners()
     this.resetPost()
     this.props.navigation.setParams({ 
       postId: null,
@@ -224,10 +225,10 @@ class ComposeScreen extends Component {
           </View>
           
           {!keyboard &&
-          <React.Fragment>
-            <Topics />
-            <Controls />
-          </React.Fragment>
+            <React.Fragment>
+              <Topics />
+              <Controls />
+            </React.Fragment>
           }
         </View>
        

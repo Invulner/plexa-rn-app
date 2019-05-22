@@ -59,7 +59,7 @@ const MainStack = createStackNavigator({
     screen: AddLinkScreen,
     navigationOptions: ({ navigation }) => ({
       headerTitle: <HeaderTitle title={'Add link'} />,
-      headerRight: <DoneBtn btnText='Done' navigation={navigation} />
+      headerRight: <DoneBtn navigation={navigation} />
     })
   },
   AddGroup: {
@@ -78,7 +78,7 @@ const MainStack = createStackNavigator({
     screen: AddUsersScreen,
     navigationOptions: ({ navigation }) => ({
       headerTitle: <HeaderTitle title={'Add users'} />,
-      headerRight: <DoneBtn btnText='Done' navigation={navigation} />
+      headerRight: <DoneBtn navigation={navigation} />
     })
   },
   Chat: {

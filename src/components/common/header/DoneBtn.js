@@ -34,7 +34,7 @@ class DoneBtn extends Component {
           styles.text, 
           !isComposeScreen && { color: BRAND_DARK }, 
           isComposeScreen && this.isBtnActive() && { color: BRAND_DARK }]}>
-          {btnText}
+          {btnText || 'Done'}
         </RegularText>
       </TouchableOpacity>
     )
