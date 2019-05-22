@@ -266,8 +266,7 @@ class ComposeScreen extends Component {
           bumperHeight={300}
           inSafeAreaView={true}
           nextHidden={true}
-          previousHidden={true}
-          onDone={() => Keyboard.dismiss()} />
+          previousHidden={true} />
       </SafeAreaView>
     )
   }
