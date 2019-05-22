@@ -193,8 +193,7 @@ const styles = StyleSheet.create({
   },
 
   container: {
-    flex: 1,
-    justifyContent: 'space-between'
+    flex: 1
   },
 
   time: {

@@ -146,8 +146,7 @@ class ChatsScreen extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: BG_COLOR,
-    justifyContent: 'flex-end'
+    backgroundColor: BG_COLOR
   },
 
   chatsBox: {
