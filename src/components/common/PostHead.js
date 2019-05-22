@@ -7,7 +7,7 @@ import { withNavigation } from 'react-navigation'
 import ta from 'time-ago'
 
 function PostHead(props) {
-  const { navigation, created_at, author, isComment, postId } = props
+  const { navigation, created_at, author, isComment, postId, commentId } = props
   const { avatar_url, full_name, title, id } = author
   
   const handlePress = () => {
@@ -72,8 +72,9 @@ function PostHead(props) {
       <PostActionButton 
         isMedbot={isMedbot()} 
         postId={postId}
+        commentId={commentId}
         authorId={id}
-        navigation={navigation} />   
+        navigation={navigation} />
     </View>
   )
 }

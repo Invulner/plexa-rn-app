@@ -53,8 +53,29 @@ const updateLike = (flag, id) => {
   }
 }
 
+const editComment = (id) => {
+  return dispatch => {
+    dispatch(CommentsActions.editComment(id))
+  }
+}
+
+const updateComment = (comment) => {
+  return dispatch => {
+    getAxiosInstance().then(api => {
+      api.put(`${API_URL}/answers/${comment.id}`, {content: comment.content})
+      .then(response => {
+        dispatch(CommentsActions.updateComment(response.data.id, {content: response.data.content}))
+        dispatch(CommentsActions.cancelEditing())
+      })
+      .catch(error => console.log(error))
+    })
+  }
+}
+
 export default {
   getComments,
   postComment,
+  editComment,
+  updateComment,
   updateLike
 }

@@ -138,7 +138,7 @@ const handleAnswerUpdate = (data, dispatch) => {
   if (data.action === 'created') {
     dispatch(FeedActions.updateCommentsCounter(data.story_id))
     dispatch(CommentsActions.addComment(data.attrs))
-  } else if (data.action === 'liked') {
+  } else if ((data.action === 'liked') || (data.action === 'updated')) {
     dispatch(CommentsActions.updateComment(data.id, data.attrs))
   }
 }
@@ -193,7 +193,6 @@ const submitPostWithImage = (image, post, cb, postId) => {
 
 const submitPostUpdate = (postId, post, cb) => {
   return dispatch => {
-    console.log('Feed operations: submitPostUpdate  ', post)
     return getAxiosInstance().then(api => {
       api.put(`${API_URL}/stories/${postId}`, post)
         .then(response => {
