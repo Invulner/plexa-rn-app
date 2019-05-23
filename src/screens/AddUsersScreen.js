@@ -10,11 +10,15 @@ import ChatsActions from '../actions/ChatsActions'
 import IconChecked from '../components/common/IconChecked'
 import utils from '../utils'
 import { BG_COLOR } from '../assets/styles/colors'
+import Loader from '../components/common/Loader'
 
 const mapStateToProps = (state) => {
-  const { users } = state.chats
+  const { users, usersLoading } = state.chats
 
-  return { users }
+  return { 
+    users,
+    usersLoading
+  }
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -139,7 +143,7 @@ class AddUsersScreen extends Component {
   
   render() {
     const { input } = this.state
-    const { users } = this.props
+    const { users, usersLoading } = this.props
 
     return (
       <SafeArea>
@@ -151,9 +155,12 @@ class AddUsersScreen extends Component {
         <View style={styles.chosenUsers}>
           {this.renderChosenUsers()}
         </View>
-        <ScrollView contentContainerStyle={styles.userList}>
-          {!!users.length && this.renderUsers()}
-        </ScrollView>
+          <ScrollView contentContainerStyle={styles.userList}>
+            {usersLoading ?
+              <Loader />
+              :
+              !!users.length && this.renderUsers()}
+          </ScrollView>
       </SafeArea>
     )
   }
