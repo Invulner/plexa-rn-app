@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
 import { View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native'
 import { RegularText, SemiboldText } from '../components/common/fonts'
-import { BG_COLOR, GRAY, LIGHT_GRAY } from '../assets/styles/colors'
+import { GRAY, LIGHT_GRAY, NATIVE_GRAY } from '../assets/styles/colors'
 import { connect } from 'react-redux'
 import ChatsOperations from '../operations/ChatsOperations'
 import utils from '../utils'
-import { LinearGradient } from 'expo'
 import Loader from '../components/common/Loader'
 import RoundAvatar from '../components/common/RoundAvatar'
 import { NavigationEvents } from 'react-navigation'
@@ -33,11 +32,7 @@ class ChatsScreen extends Component {
 
   renderSeparator = () => {
     return (
-      <LinearGradient
-        colors={['#d3d3d3', 'transparent']}
-        style={styles.separator}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 0 }} />
+      <View style={{backgroundColor: NATIVE_GRAY, width: '100%', height: 1}} />
     )
   }
 
@@ -125,35 +120,23 @@ class ChatsScreen extends Component {
     const { loading } = this.props
 
     return (
-      <View style={styles.container}>
+      <React.Fragment>
         <NavigationEvents
           onDidFocus={this.setNavParams}
           onDidBlur={this.resetNavParams} />
         {loading ?
           <Loader />
           :
-          <ScrollView contentContainerStyle={styles.scrollView}>
-            <View style={styles.chatsBox}>
-              {this.renderChats()}
-            </View>
+          <ScrollView>
+            {this.renderChats()}
           </ScrollView>
         }
-    </View>
+      </React.Fragment>
     )
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: BG_COLOR
-  },
-
-  chatsBox: {
-    backgroundColor: '#fff',
-    borderRadius: 5
-  },
-
   text: {
     fontSize: 18
   },
@@ -176,17 +159,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     padding: 10,
     justifyContent: 'space-between'
-  },
-
-  separator: {
-    height: 1,
-    marginHorizontal: 10
-  },
-
-  scrollView: {
-    backgroundColor: BG_COLOR,
-    paddingVertical: 15,
-    paddingHorizontal: 10
   }
 })
 
