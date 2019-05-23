@@ -7,6 +7,7 @@ export const MIN_PASSWORD_LENGTH = 8
 export const MAX_CONTENT_LENGTH = 250
 export const MESSAGES_IN_PAGE = 20
 export const UNAUTHORIZED_STATUS_CODE = 401
+export const PUSH_ENDPOINT = `${API_URL}/devices`
 export const menuIcons = {
   'plexa': require('./assets/icons/logo-min-01.png'),
   'groups': require('./assets/icons/user-groups-01.png'),
