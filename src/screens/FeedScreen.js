@@ -6,6 +6,8 @@ import FeedOperations from '../operations/FeedOperations'
 import { connect } from 'react-redux'
 import Loader from '../components/common/Loader'
 import { NavigationEvents } from 'react-navigation'
+import registerForPushNotificationsAsync from '../config/registerForPushNotificationsAsync'
+import { Notifications } from 'expo'
 import PostPlaceholder from '../components/feed/PostPlaceholder'
 
 const mapDispatchToProps = (dispatch) => {
@@ -96,16 +98,22 @@ class FeedScreen extends Component {
     }
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     //Works after login
     const { isConnected, connectToWs } = this.props
 
     isConnected && connectToWs()
+    await registerForPushNotificationsAsync()
+    this._notificationSubscription = Notifications.addListener(this._handleNotification)
   }
 
   componentWillUnmount() {
     //Check if there was connection before component unmounting
     this.props.isConnected && FeedOperations.disconnectFromWs()
+  }
+
+  _handleNotification = (notification) => {
+    console.log(notification)
   }
 
   render() {
