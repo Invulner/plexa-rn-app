@@ -125,35 +125,23 @@ class ChatsScreen extends Component {
     const { loading } = this.props
 
     return (
-      <View style={styles.container}>
+      <React.Fragment>
         <NavigationEvents
           onDidFocus={this.setNavParams}
           onDidBlur={this.resetNavParams} />
         {loading ?
           <Loader />
           :
-          <ScrollView contentContainerStyle={styles.scrollView}>
-            <View style={styles.chatsBox}>
-              {this.renderChats()}
-            </View>
+          <ScrollView>
+            {this.renderChats()}
           </ScrollView>
         }
-    </View>
+      </React.Fragment>
     )
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: BG_COLOR
-  },
-
-  chatsBox: {
-    backgroundColor: '#fff',
-    borderRadius: 5
-  },
-
   text: {
     fontSize: 18
   },
@@ -181,12 +169,6 @@ const styles = StyleSheet.create({
   separator: {
     height: 1,
     marginHorizontal: 10
-  },
-
-  scrollView: {
-    backgroundColor: BG_COLOR,
-    paddingVertical: 15,
-    paddingHorizontal: 10
   }
 })
 
