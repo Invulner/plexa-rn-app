@@ -10,12 +10,13 @@ import utils from '../../utils'
 import ChatsOperations from '../../operations/ChatsOperations'
 
 const mapStateToProps = (state) => {
-  const { user: { full_name }, chats: { chosenUsers }, comments: { editable } } = state
+  const { user: { full_name }, chats: { chosenUsers }, comments: { editable }, device: { device_name } } = state
 
   return { 
     full_name,
     chosenUsers,
-    editable
+    editable,
+    device_name
   }
 }
 
@@ -97,6 +98,13 @@ class ReplyBox extends Component {
       return `Enter Your Message ...`
     }
   }
+
+  getAvoidingViewOffset = () => {
+    const xModelsOffset = 88
+    const olderModelsOffset = 65
+
+    return this.props.device_name.includes('X') ? xModelsOffset : olderModelsOffset
+  }
   
   render() {
     const { reply } = this.state
@@ -104,7 +112,8 @@ class ReplyBox extends Component {
     return (
       <KeyboardAvoidingView 
         behavior='padding' 
-        keyboardVerticalOffset={90}>
+        keyboardVerticalOffset={this.getAvoidingViewOffset()}>
+
         <GrayLine boxStyle={styles.lineBox}/>
 
         <View style={styles.container}>
@@ -129,7 +138,7 @@ class ReplyBox extends Component {
               </TouchableOpacity>
           </View>
         </View>   
-      </KeyboardAvoidingView>
+      </KeyboardAvoidingView> 
     )
   }
 } 
@@ -149,7 +158,9 @@ const styles = StyleSheet.create({
 
   container: {
     backgroundColor: '#fff',
-    padding: 10
+    paddingHorizontal: 10,
+    paddingTop: 10,
+    paddingBottom: 12
   },
 
   input: {
