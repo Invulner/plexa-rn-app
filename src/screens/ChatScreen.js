@@ -119,16 +119,21 @@ class ChatScreen extends Component {
   }
 
   componentDidMount() {
+    const { getMessages, connectToWs, toggleLoading, navigation } = this.props
+
     if (this.getChatId()) {
-      this.props.getMessages(this.getChatId())
-      this.props.connectToWs(this.getChatId())
+      getMessages(this.getChatId())
+      connectToWs(this.getChatId())
     } else {
-      this.props.toggleLoading(false)
+      toggleLoading(false)
     }
+    navigation.setParams({ isChatScreen: true })
   }
 
   componentWillUnmount() {
-    this.getChatId() && this.props.resetChat()
+    const { navigation, resetChat } = this.props
+    this.getChatId() && resetChat()
+    navigation.setParams({ isChatScreen: false })
   }
   
   render() {

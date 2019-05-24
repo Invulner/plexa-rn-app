@@ -186,7 +186,7 @@ class AddUsersScreen extends Component {
           }
           <ScrollView contentContainerStyle={styles.userList}>
             {usersLoading ?
-              <Loader style={styles.loader} />
+              <Loader />
               :
               !!users.length && this.renderUsers()}
           </ScrollView>
@@ -246,10 +246,6 @@ const styles = StyleSheet.create({
     width: 13,
     height: 13,
     resizeMode: 'contain'
-  },
-
-  loader: {
-    marginTop: 15
   }
 })
 
