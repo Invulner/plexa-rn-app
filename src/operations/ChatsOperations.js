@@ -17,12 +17,14 @@ const getChats = () => {
   }
 }
 
-const getUsers = (q) => {
+const getUsers = (q) => { 
   return dispatch => {
+    dispatch(ChatsActions.toggleUsersLoading(true))
     return getAxiosInstance().then(api => {
       api.get(`${API_URL}/profiles/search?q=${q}`)
         .then(result => { 
           dispatch(ChatsActions.getUsers(result.data))
+          dispatch(ChatsActions.toggleUsersLoading(false))
         }).catch(error => console.log('getUsers error: ', error ))
     }).catch(error => console.log('Axios config error: ', error))
   }

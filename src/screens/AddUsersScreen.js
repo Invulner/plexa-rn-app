@@ -10,11 +10,19 @@ import ChatsActions from '../actions/ChatsActions'
 import IconChecked from '../components/common/IconChecked'
 import utils from '../utils'
 import { BG_COLOR } from '../assets/styles/colors'
+import Loader from '../components/common/Loader'
+import { KeyboardAccessoryNavigation } from 'react-native-keyboard-accessory'
 
 const mapStateToProps = (state) => {
-  const { users } = state.chats
+  const userId = state.user.id
+  const { users, usersLoading, items } = state.chats
 
-  return { users }
+  return { 
+    users,
+    items,
+    usersLoading,
+    userId
+  }
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -63,8 +71,7 @@ class AddUsersScreen extends Component {
             <RoundAvatar
               size='medium'
               src={user.avatar_url}
-              title={user.full_name}
-              boxStyle={{ marginBottom: 15 }} />
+              title={user.full_name} />
           </TouchableOpacity>
         )
       })
@@ -115,16 +122,40 @@ class AddUsersScreen extends Component {
     })
   }
 
+  getChosenUserIds = () => {
+    return this.state.chosenUsers.map(user => user.id)
+  }
+
+  getChat = () => {
+    const { items, userId } = this.props
+    const sorted = this.getChosenUserIds().sort(utils.basicSort)
+    const chat = items.find(chat => {
+      let memberIds = chat.members.map(member => member.profile_id).sort(utils.basicSort).filter(id => id !== userId)
+
+      return memberIds.toString() === sorted.toString()
+    })
+
+    return chat
+  }
+
   onSubmit = () => {
     const { chosenUsers } = this.state
     const { navigation, saveChosenUserIds } = this.props
-    const title = chosenUsers.map(user => user.full_name).join(', ')
-    const userIds = chosenUsers.map(user => user.id)
+    const chat = this.getChat()
 
-    saveChosenUserIds(userIds)
-    navigation.navigate('Chat', {
-      chatTitle: utils.truncate(title, 20) 
-    })
+    if (chat) {
+      navigation.navigate('Chat', {
+        chatId: chat.id,
+        chatTitle: utils.truncate(chat.title, 20) 
+      })
+    } else {
+      const title = chosenUsers.map(user => user.full_name).join(', ')
+
+      saveChosenUserIds(this.getChosenUserIds())
+      navigation.navigate('Chat', {
+        chatTitle: utils.truncate(title, 20)
+      })
+    }
   }
 
   componentDidMount() {
@@ -138,8 +169,8 @@ class AddUsersScreen extends Component {
   }
   
   render() {
-    const { input } = this.state
-    const { users } = this.props
+    const { input, chosenUsers } = this.state
+    const { users, usersLoading } = this.props
 
     return (
       <SafeArea>
@@ -148,12 +179,25 @@ class AddUsersScreen extends Component {
           style={styles.searhField}
           placeholder='Search user ...'
           onChangeText={this.onInputChange} />
-        <View style={styles.chosenUsers}>
-          {this.renderChosenUsers()}
-        </View>
+        {!!chosenUsers.length &&
+          <View style={styles.horizontalScrollViewBox}>
+            <ScrollView
+              horizontal={true}
+              contentContainerStyle={styles.chosenUsers}>
+              {this.renderChosenUsers()}
+            </ScrollView>
+          </View>
+        }
         <ScrollView contentContainerStyle={styles.userList}>
-          {!!users.length && this.renderUsers()}
+          {usersLoading ?
+            <Loader />
+            :
+            !!users.length && this.renderUsers()}
         </ScrollView>
+        <KeyboardAccessoryNavigation
+          inSafeAreaView={true}
+          nextHidden={true}
+          previousHidden={true} />
       </SafeArea>
     )
   }
@@ -165,7 +209,8 @@ const styles = StyleSheet.create({
     width: '100%',
     paddingHorizontal: 10,
     backgroundColor: '#fff',
-    fontSize: 16
+    fontSize: 16,
+    marginBottom: 10
   },
 
   userBox: {
@@ -189,10 +234,13 @@ const styles = StyleSheet.create({
   },
 
   chosenUsers: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
     paddingHorizontal: 10,
-    paddingTop: 15
+    paddingTop: 10,
+    paddingBottom: 20
+  },
+
+  horizontalScrollViewBox: {
+    height: 70
   },
 
   userList: {

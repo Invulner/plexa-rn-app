@@ -3,7 +3,8 @@ import types from '../types/chats'
 const initialState = {
   loading: true,
   users: [],
-  items: []
+  items: [],
+  usersLoading: false
 }
 
 const updateChat = (state, action) => {
@@ -67,6 +68,12 @@ const ChatsReducer = (state = initialState, action) => {
       return {
         ...state,
         chosenUsers: action.chosenUsers
+      }
+
+    case types.TOGGLE_USERS_LOADING:
+      return {
+        ...state,
+        usersLoading: action.flag
       }
 
     default:
