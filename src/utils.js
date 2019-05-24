@@ -150,7 +150,7 @@ const getRandomNumber = (min, max) => {
   return  Math.floor(rand)
 }
 
-const basicSort = (a, b) => a < b ? -1 : 1
+const basicSort = (a, b) => a - b
 
 const startConnectionStatusWorker = () =>
   setInterval(async () => {

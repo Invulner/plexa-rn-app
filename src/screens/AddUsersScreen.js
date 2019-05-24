@@ -125,11 +125,12 @@ class AddUsersScreen extends Component {
     return this.state.chosenUsers.map(user => user.id)
   }
 
-  getChatIfExist = () => {
+  getChat = () => {
     const { items, userId } = this.props
     const sorted = this.getChosenUserIds().sort(utils.basicSort)
     const chat = items.find(chat => {
       let memberIds = chat.members.map(member => member.profile_id).sort(utils.basicSort).filter(id => id !== userId)
+
       return memberIds.toString() === sorted.toString()
     })
 
@@ -139,16 +140,17 @@ class AddUsersScreen extends Component {
   onSubmit = () => {
     const { chosenUsers } = this.state
     const { navigation, saveChosenUserIds } = this.props
+    const chat = this.getChat()
 
-    if (this.getChatIfExist()) {
+    if (chat) {
       navigation.navigate('Chat', {
-        chatId: this.getChatIfExist().id,
-        chatTitle: utils.truncate(this.getChatIfExist().title, 20) 
+        chatId: chat.id,
+        chatTitle: utils.truncate(chat.title, 20) 
       })
     } else {
       const title = chosenUsers.map(user => user.full_name).join(', ')
 
-      saveChosenUserIds(userIds)
+      saveChosenUserIds(this.getChosenUserIds())
       navigation.navigate('Chat', {
         chatTitle: utils.truncate(title, 20)
       })
