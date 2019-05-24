@@ -150,6 +150,8 @@ const getRandomNumber = (min, max) => {
   return  Math.floor(rand)
 }
 
+const basicSort = (a, b) => a < b ? -1 : 1
+
 const startConnectionStatusWorker = () =>
   setInterval(async () => {
     await NetInfo.isConnected.fetch()
@@ -173,5 +175,6 @@ export default {
   isAuthorizedRequest,
   showConnectivityError,
   getRandomNumber,
-  startConnectionStatusWorker
+  startConnectionStatusWorker,
+  basicSort
 }

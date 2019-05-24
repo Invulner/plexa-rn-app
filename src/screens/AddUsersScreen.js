@@ -69,7 +69,7 @@ class AddUsersScreen extends Component {
               size='medium'
               src={user.avatar_url}
               title={user.full_name}
-              boxStyle={{ marginBottom: 15 }} />
+              />
           </TouchableOpacity>
         )
       })
@@ -126,9 +126,9 @@ class AddUsersScreen extends Component {
 
   getChatIfExist = () => {
     const { items } = this.props
-    const sorted = this.getChosenUserIds().sort((a, b) => a < b ? -1 : 1)
+    const sorted = this.getChosenUserIds().sort(utils.basicSort)
     const chat = items.find(chat => {
-      let memberIds = chat.members.map(member => member.profile_id).sort((a, b) => a < b ? -1 : 1).filter(id => id !== 299)
+      let memberIds = chat.members.map(member => member.profile_id).sort(utils.basicSort).filter(id => id !== 299)
       return memberIds.toString() === sorted.toString()
     })
 
@@ -146,9 +146,10 @@ class AddUsersScreen extends Component {
       })
     } else {
       const title = chosenUsers.map(user => user.full_name).join(', ')
+
       saveChosenUserIds(userIds)
       navigation.navigate('Chat', {
-        chatTitle: utils.truncate(title, 20) 
+        chatTitle: utils.truncate(title, 20)
       })
     }
   }
@@ -164,7 +165,7 @@ class AddUsersScreen extends Component {
   }
   
   render() {
-    const { input } = this.state
+    const { input, chosenUsers } = this.state
     const { users, usersLoading } = this.props
 
     return (
@@ -174,12 +175,18 @@ class AddUsersScreen extends Component {
           style={styles.searhField}
           placeholder='Search user ...'
           onChangeText={this.onInputChange} />
-        <View style={styles.chosenUsers}>
-          {this.renderChosenUsers()}
-        </View>
+          {!!chosenUsers.length &&
+            <View style={styles.horizontalScrollViewBox}>
+              <ScrollView
+                horizontal={true}
+                contentContainerStyle={styles.chosenUsers}>
+                {this.renderChosenUsers()}
+              </ScrollView>
+            </View>
+          }
           <ScrollView contentContainerStyle={styles.userList}>
             {usersLoading ?
-              <Loader />
+              <Loader style={styles.loader} />
               :
               !!users.length && this.renderUsers()}
           </ScrollView>
@@ -194,7 +201,8 @@ const styles = StyleSheet.create({
     width: '100%',
     paddingHorizontal: 10,
     backgroundColor: '#fff',
-    fontSize: 16
+    fontSize: 16,
+    marginBottom: 10
   },
 
   userBox: {
@@ -218,10 +226,13 @@ const styles = StyleSheet.create({
   },
 
   chosenUsers: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
     paddingHorizontal: 10,
-    paddingTop: 15
+    paddingTop: 10,
+    paddingBottom: 20
+  },
+
+  horizontalScrollViewBox: {
+    height: 70
   },
 
   userList: {
@@ -235,6 +246,10 @@ const styles = StyleSheet.create({
     width: 13,
     height: 13,
     resizeMode: 'contain'
+  },
+
+  loader: {
+    marginTop: 15
   }
 })
 
