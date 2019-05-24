@@ -12,6 +12,7 @@ const getChats = () => {
         .then(response => {
           dispatch(ChatsActions.getChats(response.data))
           dispatch(ChatsActions.toggleLoading(false))
+          console.log('response.data :', response.data);
         }).catch(error => console.log('getChats error: ', error))
     }).catch(error => console.log('Axios config error: ', error))
   }

@@ -13,10 +13,11 @@ import { BG_COLOR } from '../assets/styles/colors'
 import Loader from '../components/common/Loader'
 
 const mapStateToProps = (state) => {
-  const { users, usersLoading } = state.chats
+  const { users, usersLoading, items } = state.chats
 
   return { 
     users,
+    items,
     usersLoading
   }
 }
@@ -119,16 +120,37 @@ class AddUsersScreen extends Component {
     })
   }
 
+  getChosenUserIds = () => {
+    return this.state.chosenUsers.map(user => user.id)
+  }
+
+  getChatIfExist = () => {
+    const { items } = this.props
+    const sorted = this.getChosenUserIds().sort((a, b) => a < b ? -1 : 1)
+    const chat = items.find(chat => {
+      let memberIds = chat.members.map(member => member.profile_id).sort((a, b) => a < b ? -1 : 1).filter(id => id !== 299)
+      return memberIds.toString() === sorted.toString()
+    })
+
+    return chat
+  }
+
   onSubmit = () => {
     const { chosenUsers } = this.state
     const { navigation, saveChosenUserIds } = this.props
-    const title = chosenUsers.map(user => user.full_name).join(', ')
-    const userIds = chosenUsers.map(user => user.id)
 
-    saveChosenUserIds(userIds)
-    navigation.navigate('Chat', {
-      chatTitle: utils.truncate(title, 20) 
-    })
+    if (this.getChatIfExist()) {
+      navigation.navigate('Chat', {
+        chatId: this.getChatIfExist().id,
+        chatTitle: utils.truncate(this.getChatIfExist().title, 20) 
+      })
+    } else {
+      const title = chosenUsers.map(user => user.full_name).join(', ')
+      saveChosenUserIds(userIds)
+      navigation.navigate('Chat', {
+        chatTitle: utils.truncate(title, 20) 
+      })
+    }
   }
 
   componentDidMount() {
