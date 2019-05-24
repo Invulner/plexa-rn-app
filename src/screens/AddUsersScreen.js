@@ -13,12 +13,14 @@ import { BG_COLOR } from '../assets/styles/colors'
 import Loader from '../components/common/Loader'
 
 const mapStateToProps = (state) => {
+  const userId = state.user.id
   const { users, usersLoading, items } = state.chats
 
   return { 
     users,
     items,
-    usersLoading
+    usersLoading,
+    userId
   }
 }
 
@@ -68,8 +70,7 @@ class AddUsersScreen extends Component {
             <RoundAvatar
               size='medium'
               src={user.avatar_url}
-              title={user.full_name}
-              />
+              title={user.full_name} />
           </TouchableOpacity>
         )
       })
@@ -125,10 +126,10 @@ class AddUsersScreen extends Component {
   }
 
   getChatIfExist = () => {
-    const { items } = this.props
+    const { items, userId } = this.props
     const sorted = this.getChosenUserIds().sort(utils.basicSort)
     const chat = items.find(chat => {
-      let memberIds = chat.members.map(member => member.profile_id).sort(utils.basicSort).filter(id => id !== 299)
+      let memberIds = chat.members.map(member => member.profile_id).sort(utils.basicSort).filter(id => id !== userId)
       return memberIds.toString() === sorted.toString()
     })
 
