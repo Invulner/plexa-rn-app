@@ -11,6 +11,7 @@ import IconChecked from '../components/common/IconChecked'
 import utils from '../utils'
 import { BG_COLOR } from '../assets/styles/colors'
 import Loader from '../components/common/Loader'
+import { KeyboardAccessoryNavigation } from 'react-native-keyboard-accessory'
 
 const mapStateToProps = (state) => {
   const userId = state.user.id
@@ -178,21 +179,25 @@ class AddUsersScreen extends Component {
           style={styles.searhField}
           placeholder='Search user ...'
           onChangeText={this.onInputChange} />
-          {!!chosenUsers.length &&
-            <View style={styles.horizontalScrollViewBox}>
-              <ScrollView
-                horizontal={true}
-                contentContainerStyle={styles.chosenUsers}>
-                {this.renderChosenUsers()}
-              </ScrollView>
-            </View>
-          }
-          <ScrollView contentContainerStyle={styles.userList}>
-            {usersLoading ?
-              <Loader />
-              :
-              !!users.length && this.renderUsers()}
-          </ScrollView>
+        {!!chosenUsers.length &&
+          <View style={styles.horizontalScrollViewBox}>
+            <ScrollView
+              horizontal={true}
+              contentContainerStyle={styles.chosenUsers}>
+              {this.renderChosenUsers()}
+            </ScrollView>
+          </View>
+        }
+        <ScrollView contentContainerStyle={styles.userList}>
+          {usersLoading ?
+            <Loader />
+            :
+            !!users.length && this.renderUsers()}
+        </ScrollView>
+        <KeyboardAccessoryNavigation
+          inSafeAreaView={true}
+          nextHidden={true}
+          previousHidden={true} />
       </SafeArea>
     )
   }
