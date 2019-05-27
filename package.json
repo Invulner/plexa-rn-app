@@ -17,6 +17,7 @@
     "react-native": "https://github.com/expo/react-native/archive/sdk-31.0.0.tar.gz",
     "react-native-action-sheet": "^2.1.0",
     "react-native-debugger-open": "^0.3.17",
+    "react-native-dropdownalert": "^3.11.0",
     "react-native-image-progress": "^1.1.1",
     "react-native-keyboard-accessory": "^0.1.9",
     "react-native-loading-spinner-overlay": "^1.0.1",
