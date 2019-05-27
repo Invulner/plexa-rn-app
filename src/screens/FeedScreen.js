@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { FlatList } from 'react-native'
+import { FlatList, Vibration } from 'react-native'
 import SafeArea from '../components/common/SafeArea'
 import FeedPost from '../components/feed/FeedPost'
 import FeedOperations from '../operations/FeedOperations'
@@ -9,6 +9,7 @@ import { NavigationEvents } from 'react-navigation'
 import registerForPushNotificationsAsync from '../config/registerForPushNotificationsAsync'
 import { Notifications } from 'expo'
 import PostPlaceholder from '../components/feed/PostPlaceholder'
+import DropdownAlert from 'react-native-dropdownalert'
 
 const mapDispatchToProps = (dispatch) => {
   const getFeed = (page) => dispatch(FeedOperations.getFeed(page))
@@ -98,12 +99,12 @@ class FeedScreen extends Component {
     }
   }
 
-  async componentDidMount() {
+  componentDidMount() {
     //Works after login
     const { isConnected, connectToWs } = this.props
 
     isConnected && connectToWs()
-    await registerForPushNotificationsAsync()
+    registerForPushNotificationsAsync()
     this._notificationSubscription = Notifications.addListener(this._handleNotification)
   }
 
@@ -113,7 +114,23 @@ class FeedScreen extends Component {
   }
 
   _handleNotification = (notification) => {
-    console.log(notification)
+    Vibration.vibrate(1000)
+
+    if (notification.origin === 'selected') {
+      this._navigateToPage(notification.data)
+    } else {
+      this.dropdown.alertWithType('info', notification.data.title, notification.data.body)
+      this.notificationData = notification.data
+    }
+  }
+
+  _navigateToPage = (data) => {
+    const { navigation } = this.props
+    if (data.type === 'answer') {
+      navigation.navigate('Post', { postId: data.story_id })
+    } else if (data.type === 'message') {
+      navigation.navigate('Chat', { chatId: data.room_id })
+    }
   }
 
   render() {
@@ -138,6 +155,10 @@ class FeedScreen extends Component {
             refreshing={feedLoading}
             ListFooterComponent={feedLoading && <Loader />} />
         }
+        <DropdownAlert ref={ref => this.dropdown = ref}
+          onClose={({ type, title, message, action }) => (action === 'tap') && this._navigateToPage(this.notificationData)}
+          infoColor='#7e7763'
+        />
       </SafeArea>
     )
   }
