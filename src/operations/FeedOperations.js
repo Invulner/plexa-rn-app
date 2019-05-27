@@ -3,8 +3,7 @@ import { API_URL } from '../constants'
 import FeedActions from '../actions/FeedActions'
 import CommentsActions from '../actions/CommentsActions'
 import cable from '../action_cable/cable_instance'
-
-let feedConnection
+import { Notifications } from 'expo'
 
 const fetchFeed = (saveOption, page = 1) => {
   return dispatch => {
@@ -150,7 +149,7 @@ const connectToWs = () => {
   return dispatch => {
     cable().then(cable_i => {
       global.cableInstance = cable_i
-      feedConnection = cable_i.subscriptions.create(
+      const feedChannel = cable_i.subscriptions.create(
         {
           channel: 'FeedChannel',
           client_type: 'mobile'
@@ -165,12 +164,23 @@ const connectToWs = () => {
           }
         }
       )
+
+      const statusChannel = global.cableInstance.subscriptions.create(
+        {
+          channel: 'StatusChannel'
+        },
+        {
+          received: (data) => {
+            Notifications.setBadgeNumberAsync(data.unread_count)
+          }
+        }
+      )
     })
   }
 }
 
 const disconnectFromWs = () => {
-  feedConnection.unsubscribe()
+  global.cableInstance.disconnect()
 }
 
 const submitPostWithImage = (image, post, cb, postId) => {
