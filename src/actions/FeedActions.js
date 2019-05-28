@@ -66,6 +66,10 @@ const updatePost = (post) => ({
   post
 })
 
+const toggleFilter = () => ({
+  type: types.TOGGLE_FILTER
+})
+
 export default {
   saveFeedData,
   toggleFeedDataLoading,
@@ -79,5 +83,6 @@ export default {
   reportPost,
   blockUser,
   deletePost,
-  updatePost
+  updatePost,
+  toggleFilter
 }

@@ -7,6 +7,7 @@ import { connect } from 'react-redux'
 import Loader from '../components/common/Loader'
 import { NavigationEvents } from 'react-navigation'
 import PostPlaceholder from '../components/feed/PostPlaceholder'
+import FeedFilter from '../components/feed/FeedFilter';
 
 const mapDispatchToProps = (dispatch) => {
   const getFeed = (page) => dispatch(FeedOperations.getFeed(page))
@@ -116,6 +117,9 @@ class FeedScreen extends Component {
         <NavigationEvents
           onDidFocus={this.setScreenParams}
           onDidBlur={this.resetScreenParams} />
+
+          <FeedFilter />
+
         {feedLoading && !feedData.length ?
           <Loader />
           :

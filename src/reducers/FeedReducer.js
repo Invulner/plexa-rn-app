@@ -3,7 +3,8 @@ import utils from '../utils'
 
 const initialState = {
   feedData: [],
-  feedLoading: true
+  feedLoading: true,
+  filterVisible: false
 }
 
 const blockUser = (state, action) => {
@@ -152,6 +153,12 @@ const FeedReducer = (state = initialState, action) => {
 
     case types.UPDATE_POST:
       return updatePost(state, action)
+
+    case types.TOGGLE_FILTER:
+      return {
+        ...state,
+        filterVisible: !state.filterVisible
+      }
 
     default:
       return state

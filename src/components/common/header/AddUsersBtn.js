@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import { View, TouchableOpacity, Image, StyleSheet } from 'react-native'
+import { TouchableOpacity, Image, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
+import FeedActions from '../../../actions/FeedActions';
 
 const mapStateToProps = (state) => {
   const { isConnected } = state.network
@@ -8,20 +9,24 @@ const mapStateToProps = (state) => {
   return { isConnected }
 }
 
+const mapDispatchToProps = (dispatch) => {
+  const toggleFeedFilter = (flag) => dispatch(FeedActions.toggleFilter(flag))
+
+  return { toggleFeedFilter }
+}
+
 class AddUsersBtn extends Component {
   onAddUsersPress = () => this.props.navigation.navigate('AddUsers')
 
-  onFeedFilterPress = () => console.log('pressed')
-
   render() {
-    const { navigation, isConnected } = this.props
+    const { navigation, isConnected, toggleFeedFilter } = this.props
     const isChatsScreen = navigation.getParam('isChatsScreen')
     const isFeedScreen = navigation.getParam('isFeedScreen')
 
     return (
       <TouchableOpacity
         style={styles.container} 
-        onPress={isChatsScreen ? this.onAddUsersPress : this.onFeedFilterPress}
+        onPress={isChatsScreen ? this.onAddUsersPress : toggleFeedFilter}
         disabled={!isConnected}>
           {isChatsScreen &&
             <Image
@@ -58,4 +63,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect(mapStateToProps, null)(AddUsersBtn)
+export default connect(mapStateToProps, mapDispatchToProps)(AddUsersBtn)
