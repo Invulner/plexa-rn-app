@@ -7,14 +7,16 @@ import FeedActions from '../../actions/FeedActions'
 import { BG_COLOR, BRAND_DARK, NATIVE_GRAY } from '../../assets/styles/colors'
 import { getSortedTopics } from '../../selectors/Topics'
 import { getSortedGroups } from '../../selectors/Groups'
+import FeedOperations from '../../operations/FeedOperations'
 
 const mapStateToProps = (state) => {
-  const { filterVisible } = state.feed
+  const { filterVisible, page } = state.feed
   const { location, loading } = state.user
 
   return { 
     filterVisible,
     loading,
+    page,
     location,
     topics: getSortedTopics(state),
     groups: getSortedGroups(state)
@@ -23,8 +25,12 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   const toggleFilter = () => dispatch(FeedActions.toggleFilter())
+  const refreshFeed = (page, queryParams) => dispatch(FeedOperations.refreshFeed(page, queryParams))
 
-  return { toggleFilter }
+  return { 
+    toggleFilter,
+    refreshFeed
+  }
 }
 
 class FeedFilter extends Component {
@@ -50,7 +56,7 @@ class FeedFilter extends Component {
         } else {
           return { topic_ids: [...prevState.topic_ids, itemId] }
         }
-      }, () => console.log('this.state.topic_ids', this.state.topic_ids))
+      })
     } else if (arr === groups) {
       this.setState(prevState => {
         if (itemId !== prevState.group_id) {
@@ -58,7 +64,7 @@ class FeedFilter extends Component {
         } else {
           return { group_id: null }
         }
-      }, () => console.log('this.state.group_id', this.state.group_id))
+      })
     } else if (arr === location) {
       this.setState(prevState => {
         if (prevState.location_ids.includes(itemId)) {
@@ -66,7 +72,7 @@ class FeedFilter extends Component {
         } else {
           return { location_ids: [...prevState.location_ids, itemId] }
         }
-      }, () => console.log('this.state.location_ids', this.state.location_ids))
+      })
     }
   }
 
@@ -77,6 +83,25 @@ class FeedFilter extends Component {
       location_ids: []
     })
   }
+
+  onApplyPress = () => {
+    const { toggleFilter, refreshFeed, page } = this.props
+    // const { topic_ids, location_ids, group_id } = this.state
+    // let queryParams = {}
+
+    // if (topic_ids.length) {
+    //   queryParams = { topic_ids }
+    // }
+    // if (location_ids.length) {
+    //   queryParams = { ...queryParams, location_ids }
+    // }
+    // if (group_id) {
+    //   queryParams = { ...queryParams, group_id }
+    // }
+    
+    toggleFilter()
+    refreshFeed(this.state)
+  } 
 
   renderIconChecked = (arr, itemId) => {
     const { topics, location, groups } = this.props
@@ -115,7 +140,7 @@ class FeedFilter extends Component {
   }
 
   render() {
-    const { filterVisible, toggleFilter, location, groups, topics, loading } = this.props
+    const { filterVisible, location, groups, topics, loading } = this.props
     
     return (
       <Modal
@@ -134,7 +159,7 @@ class FeedFilter extends Component {
                   Clear
                 </RegularText>
               </TouchableOpacity>
-              <TouchableOpacity onPress={toggleFilter}>
+              <TouchableOpacity onPress={this.onApplyPress}>
                 <RegularText style={styles.title}>
                   Apply
                 </RegularText>
@@ -145,7 +170,9 @@ class FeedFilter extends Component {
               <Image
                 source={require('../../assets/icons/specialties-brand.png')}
                 style={styles.titleIcon} />
-              <RegularText style={styles.title}>Filter by specialty</RegularText>
+              <RegularText style={styles.title}>
+                Filter by specialty
+              </RegularText>
             </View>
 
             <View style={this.getHeight(topics.length)}>
@@ -158,7 +185,9 @@ class FeedFilter extends Component {
               <Image
                 source={require('../../assets/icons/user-filter-brand.png')}
                 style={styles.titleIcon} />
-              <RegularText style={styles.title}>Filter by group</RegularText>
+              <RegularText style={styles.title}>
+                Filter by group
+              </RegularText>
             </View>
 
             <View style={this.getHeight(groups.length)}>
@@ -171,10 +200,12 @@ class FeedFilter extends Component {
               <Image
                 source={require('../../assets/icons/location-brand.png')}
                 style={styles.titleIcon} />
-              <RegularText style={styles.title}>Filter by location</RegularText>
+              <RegularText style={styles.title}>
+                Filter by location
+              </RegularText>
             </View>
 
-            <View style={this.getHeight(location.length)}>
+            <View>
               <ScrollView>
                 {this.renderItems(location, 'name')}
               </ScrollView>

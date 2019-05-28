@@ -6,14 +6,19 @@ import cable from '../action_cable/cable_instance'
 
 let feedConnection
 
-const fetchFeed = (saveOption, page = 1) => {
+const fetchFeed = (saveOption, page = 1, queryOptions = {}) => {
   return dispatch => {
     dispatch(FeedActions.toggleFeedDataLoading(true))
-
+    
     return getAxiosInstance().then(api => {
-      api.get(`${API_URL}/feed?page=${page}`)
+      api.get(`${API_URL}/feed`, {
+        params: {
+          ...queryOptions,
+          page
+        }
+      })
         .then(response => {
-
+          console.log('response.data', response.data)
           switch (saveOption) {
             case 'add':
               dispatch(FeedActions.saveFeedData(response.data))
@@ -41,9 +46,13 @@ const getFeed = (page = 1) => {
   }
 }
 
-const refreshFeed = () => {
+const refreshFeed = (params) => {
   return dispatch => {
-    dispatch(fetchFeed('refresh'))
+    if (params) {
+      dispatch(fetchFeed('refresh', undefined, params))
+    } else {
+      dispatch(fetchFeed('refresh'))
+    }
   }
 }
 
