@@ -7,20 +7,15 @@ import AppOperations from '../operations/AppOperations'
 import { connect } from 'react-redux'
 import Loader from '../components/common/Loader'
 import { NavigationEvents } from 'react-navigation'
-import registerForPushNotificationsAsync from '../config/registerForPushNotificationsAsync'
-import { Notifications } from 'expo'
 import PostPlaceholder from '../components/feed/PostPlaceholder'
-import DropdownAlert from 'react-native-dropdownalert'
 
 const mapDispatchToProps = (dispatch) => {
   const getFeed = (page) => dispatch(FeedOperations.getFeed(page))
   const refreshFeed = () => dispatch(FeedOperations.refreshFeed())
   const connectToWs = () => dispatch(FeedOperations.connectToWs())
-  const connectToCable = () => dispatch(AppOperations.connectToWs())
 
   return {
     connectToWs,
-    connectToCable,
     getFeed,
     refreshFeed
   }
@@ -94,18 +89,13 @@ class FeedScreen extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { isConnected, connectToWs, connectToCable, isCableConnected, loading } = this.props
+    const { isConnected, connectToWs, isCableConnected } = this.props
     //Works when connection is restored and after app reboot with state rehydration
     if (prevProps.isCableConnected !== isCableConnected && isCableConnected) {
       connectToWs()
     //Need to add check for change from initial state to false
     } else if (prevProps.isConnected !== null && !isConnected) {
-      FeedOperations.disconnectFromWs()
-    }
-
-    // After login, when cable was not connected in AppLoading Screen
-    if (prevProps.loading !== loading && !loading) {
-      connectToCable()
+      AppOperations.disconnectFromWs()
     }
   }
 
@@ -114,33 +104,11 @@ class FeedScreen extends Component {
     const { isConnected, connectToWs } = this.props
 
     isConnected && connectToWs()
-    registerForPushNotificationsAsync()
-    this._notificationSubscription = Notifications.addListener(this._handleNotification)
   }
 
   componentWillUnmount() {
     //Check if there was connection before component unmounting
-    this.props.isConnected && FeedOperations.disconnectFromWs()
-  }
-
-  _handleNotification = (notification) => {
-    Vibration.vibrate(1000)
-
-    if (notification.origin === 'selected') {
-      this._navigateToPage(notification.data)
-    } else {
-      this.dropdown.alertWithType('info', notification.data.title, notification.data.body)
-      this.notificationData = notification.data
-    }
-  }
-
-  _navigateToPage = (data) => {
-    const { navigation } = this.props
-    if (data.type === 'answer') {
-      navigation.navigate('Post', { postId: data.story_id })
-    } else if (data.type === 'message') {
-      navigation.navigate('Chat', { chatId: data.room_id })
-    }
+    this.props.isConnected && AppOperations.disconnectFromWs()
   }
 
   render() {
@@ -165,10 +133,6 @@ class FeedScreen extends Component {
             refreshing={feedLoading}
             ListFooterComponent={feedLoading && <Loader />} />
         }
-        <DropdownAlert ref={ref => this.dropdown = ref}
-          onClose={({ type, title, message, action }) => (action === 'tap') && this._navigateToPage(this.notificationData)}
-          infoColor='#7e7763'
-        />
       </SafeArea>
     )
   }

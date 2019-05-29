@@ -163,10 +163,6 @@ const connectToWs = () => {
   }
 }
 
-const disconnectFromWs = () => {
-  global.cableInstance.disconnect()
-}
-
 const submitPostWithImage = (image, post, cb, postId) => {
   return dispatch => {
     const optionalHeaders = {
@@ -208,7 +204,6 @@ export default {
   submitPostWithImage,
   hidePost,
   connectToWs,
-  disconnectFromWs,
   reportPost,
   blockUser,
   deletePost,

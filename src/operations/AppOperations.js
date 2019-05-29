@@ -11,7 +11,7 @@ const fetchFreshData = (navigation) => {
   }  
 }
 
-const connectToWs = () => {
+const connectToCable = () => {
   return dispatch => {
     cable().then(cable_i => {
       global.cableInstance = cable_i
@@ -31,7 +31,12 @@ const connectToWs = () => {
   }
 }
 
+const disconnectFromWs = () => {
+  global.cableInstance.disconnect()
+}
+
 export default {
   fetchFreshData,
-  connectToWs
+  disconnectFromWs,
+  connectToCable
 }
