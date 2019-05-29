@@ -10,8 +10,8 @@ import PostPlaceholder from '../components/feed/PostPlaceholder'
 import FeedFilter from '../components/feed/FeedFilter'
 
 const mapDispatchToProps = (dispatch) => {
-  const getFeed = (page, filters) => dispatch(FeedOperations.getFeed(page, filters))
-  const refreshFeed = (filters) => dispatch(FeedOperations.refreshFeed(filters))
+  const getFeed = (page, filter) => dispatch(FeedOperations.getFeed(page, filter))
+  const refreshFeed = (filter) => dispatch(FeedOperations.refreshFeed(filter))
   const connectToWs = () => dispatch(FeedOperations.connectToWs())
 
   return {
@@ -55,15 +55,10 @@ class FeedScreen extends Component {
   }
 
   onLogoPress = () => {
-    const { location_ids, topic_ids, group_id } = this.props.feed
-    const filters = {
-      location_ids, 
-      topic_ids, 
-      group_id
-    }
+    const { filter } = this.props.feed
 
     this.refs.feedList.scrollToOffset({ offset: 0 })
-    this.props.refreshFeed(filters)
+    this.props.refreshFeed(filter)
   }
 
   resetScreenParams = () => {
@@ -81,26 +76,16 @@ class FeedScreen extends Component {
   }
 
   refreshFeed = () => {
-    const { isConnected, refreshFeed, feed: { location_ids, topic_ids, group_id } } = this.props
-    const filters = {
-      location_ids, 
-      topic_ids, 
-      group_id
-    }
+    const { isConnected, refreshFeed, feed: { filter } } = this.props
 
-    isConnected && refreshFeed(filters)
+    isConnected && refreshFeed(filter)
   }   
 
   onEndReached = () => {
-    const { feed: { page, feedLoading, location_ids, topic_ids, group_id }, getFeed, isConnected }  = this.props
+    const { feed: { page, feedLoading, filter }, getFeed, isConnected }  = this.props
     const nextPage = page + 1
-    const filters = {
-      location_ids, 
-      topic_ids,
-      group_id
-    }
     
-    isConnected && !feedLoading && getFeed(nextPage, filters)
+    isConnected && !feedLoading && getFeed(nextPage, filter)
   }
 
   componentDidUpdate(prevProps) {

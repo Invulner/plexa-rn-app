@@ -1,13 +1,17 @@
 import types from '../types/feed'
 import utils from '../utils'
 
+const initialFilterState = {
+  topic_ids: [],
+  group_id: null,
+  location_ids: []
+}
+
 const initialState = {
   feedData: [],
   feedLoading: true,
   filterVisible: false,
-  topic_ids: [],
-  group_id: null,
-  location_ids: []
+  filter: { ...initialFilterState }
 }
 
 const blockUser = (state, action) => {
@@ -95,49 +99,55 @@ const updatePost = (state, action) => {
   }
 }
 
+const filterFeature = (arr, itemId) => {
+  if (arr.includes(itemId)) {
+    return [...arr].filter(id => id !== itemId)
+  } else {
+    return [...arr, itemId]
+  }
+}
+
 const toggleFilterItem = (state, action) => {
   const { feature, itemId } = action
-  const { topic_ids, location_ids, group_id } = state
-  let topics = []
-  let group = null
-  let locations = []
+  const { topic_ids, location_ids, group_id } = state.filter
   
   switch (feature) {
     case 'topics':
-      if (topic_ids.includes(itemId)) {
-        topics = [...topic_ids].filter(id => id !== itemId)
-      } else {
-        topics = [...topic_ids, itemId]
+      return {
+        ...state,
+        filter: {
+          ...state.filter,
+          topic_ids: filterFeature(topic_ids, itemId)
+        }
       }
-
-    return {
-      ...state,
-      topic_ids: topics
-    }
 
     case 'group':
       if (group_id !== itemId) {
-        group = itemId
+        return {
+          ...state,
+          filter: {
+            ...state.filter,
+            group_id: itemId
+          }
+        }
       } else {
-        group = null
+        return {
+          ...state,
+          filter: {
+            ...state.filter,
+            group_id: null
+          }
+        }
       }
-
-    return {
-      ...state,
-      group_id: group
-    }
 
     case 'locations':  
-      if (location_ids.includes(itemId)) {
-        locations = [...location_ids].filter(id => id !== itemId)
-      } else {
-        locations = [...location_ids, itemId]
+      return {
+        ...state,
+        filter: {
+          ...state.filter,
+          location_ids: filterFeature(location_ids, itemId)
+        }
       }
-
-    return {
-      ...state,
-      location_ids: locations
-    }
   }
 }
 
@@ -212,14 +222,11 @@ const FeedReducer = (state = initialState, action) => {
     case types.TOGGLE_FILTER_ITEM:
       return toggleFilterItem(state, action)
 
-    case types.CLEAR_FILTERS:
-      const { location_ids, topic_ids, group_id } = initialState
+    case types.CLEAR_FILTER:
 
       return {
         ...state,
-        location_ids,
-        topic_ids,
-        group_id
+        filter: initialFilterState
       }
 
     default:

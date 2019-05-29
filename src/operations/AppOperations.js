@@ -1,10 +1,10 @@
 import UserOperations from './UserOperations'
 import FeedOperations from './FeedOperations'
 
-const fetchFreshData = (navigation, filters) => {
+const fetchFreshData = (navigation, filter) => {
   return dispatch => {
     dispatch(UserOperations.getProfileData(navigation))
-    dispatch(FeedOperations.refreshFeed(filters))
+    dispatch(FeedOperations.refreshFeed(filter))
   }  
 }
 

@@ -11,14 +11,12 @@ import FeedOperations from '../../operations/FeedOperations'
 import commonStyles from '../../assets/styles/common'
 
 const mapStateToProps = (state) => {
-  const { filterVisible, location_ids, group_id, topic_ids } = state.feed
+  const { filterVisible, filter } = state.feed
   const { location, loading } = state.user
 
   return { 
     filterVisible,
-    location_ids, 
-    group_id, 
-    topic_ids,
+    filter,
     loading,
     location,
     topics: getSortedTopics(state),
@@ -30,13 +28,13 @@ const mapDispatchToProps = (dispatch) => {
   const toggleFilter = () => dispatch(FeedActions.toggleFilter())
   const refreshFeed = (page, queryParams) => dispatch(FeedOperations.refreshFeed(page, queryParams))
   const toggleFilterItem = (feature, itemId) => dispatch(FeedActions.toggleFilterItem(feature, itemId))
-  const clearFilters = () => dispatch(FeedActions.clearFilters())
+  const clearFilter = () => dispatch(FeedActions.clearFilter())
 
   return { 
     toggleFilter,
     refreshFeed,
     toggleFilterItem,
-    clearFilters
+    clearFilter
   }
 }
 
@@ -60,23 +58,18 @@ class FeedFilter extends Component {
   }
 
   onClearPress = () => {
-    this.props.clearFilters()
+    this.props.clearFilter()
   }
 
   onApplyPress = () => {
-    const { toggleFilter, refreshFeed, topic_ids, location_ids, group_id } = this.props
-    const filters = {
-      topic_ids, 
-      location_ids, 
-      group_id
-    }
+    const { toggleFilter, refreshFeed, filter } = this.props
     
     toggleFilter()
-    refreshFeed(filters)
+    refreshFeed(filter)
   } 
 
   renderIconChecked = (arr, itemId) => {
-    const { topics, location, groups, topic_ids, location_ids, group_id } = this.props
+    const { topics, location, groups, filter: { topic_ids, location_ids, group_id } } = this.props
     const isTopicSelected = arr === topics && topic_ids.includes(itemId)
     const isGroupSelected = arr === groups && group_id === itemId
     const isLocationSelected = arr === location && location_ids.includes(itemId)
@@ -104,8 +97,9 @@ class FeedFilter extends Component {
   }
 
   getHeight = (arrLength) => {
-    //Make ScrollView areas take up empty space on screen
-    const listHeight = (Dimensions.get('screen').height - 200) / 3
+    const otherElementsHeight = 200
+    const lists = 3
+    const listHeight = (Dimensions.get('screen').height - otherElementsHeight) / lists
 
     return arrLength >= 3 && {height: listHeight}
   }

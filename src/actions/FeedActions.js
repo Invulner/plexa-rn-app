@@ -76,8 +76,8 @@ const toggleFilterItem = (feature, itemId) => ({
   itemId
 })
 
-const clearFilters = () => ({
-  type: types.CLEAR_FILTERS
+const clearFilter = () => ({
+  type: types.CLEAR_FILTER
 })
 
 export default {
@@ -96,5 +96,5 @@ export default {
   updatePost,
   toggleFilter,
   toggleFilterItem,
-  clearFilters
+  clearFilter
 }
