@@ -7,6 +7,7 @@ import registerForPushNotificationsAsync from '../config/registerForPushNotifica
 import AppOperations from '../operations/AppOperations'
 import DropdownAlert from 'react-native-dropdownalert'
 import { Notifications } from 'expo'
+import { NavigationActions } from 'react-navigation'
 
 const AppContainer = createAppContainer(SwitchAppNavigator)
 
@@ -40,28 +41,35 @@ class AppWrapper extends React.Component {
   }
 
   _navigateToPage = (data) => {
-    const { navigation } = this.props
     if (data.type === 'answer') {
-      navigation.navigate('Post', { postId: data.story_id })
+      this.navigator.dispatch(NavigationActions.navigate({routeName: 'Post', params: { postId: data.story_id }}))
     } else if (data.type === 'message') {
-      navigation.navigate('Chat', { chatId: data.room_id })
+      this.navigator.dispatch(NavigationActions.navigate({routeName: 'Chat', params: { chatId: data.room_id }}))
     }
   }
 
-  componentDidUpdate(prevProps) {
-    const { loading, connectToCable } = this.props
+  _setupNetworkConnections () {
+    this.props.connectToCable()
+    registerForPushNotificationsAsync()
+    this._notificationSubscription = Notifications.addListener(this._handleNotification)
+  }
 
-    if (prevProps.loading !== loading && loading === false) {
-      connectToCable()
-      registerForPushNotificationsAsync()
-      Notifications.addListener(this._handleNotification)
+  componentDidUpdate(prevProps) {
+    if (prevProps.loading !== loading && this.props.loading === false) {
+      this._setupNetworkConnections()
+    }
+  }
+
+  componentDidMount () {
+    if (this.props.loading === false) {
+      this._setupNetworkConnections()
     }
   }
 
   render () {
     return (
     <React.Fragment>
-      <AppContainer />
+      <AppContainer ref={ref => this.navigator = ref} />
       <DropdownAlert ref={ref => this.dropdown = ref}
         onClose={({ type, title, message, action }) => (action === 'tap') && this._navigateToPage(this.notificationData)}
         infoColor='#7e7763'
