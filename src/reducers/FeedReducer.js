@@ -212,9 +212,9 @@ const FeedReducer = (state = initialState, action) => {
     case types.TOGGLE_FILTER_ITEM:
       return toggleFilterItem(state, action)
 
-    case types.CREAR_FILTERS:
+    case types.CLEAR_FILTERS:
       const { location_ids, topic_ids, group_id } = initialState
-      
+
       return {
         ...state,
         location_ids,
