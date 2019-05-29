@@ -8,15 +8,18 @@ import AppOperations from '../operations/AppOperations'
 import NetworkActions from '../actions/NetworkActions'
 
 const mapStateToProps = (state) => {
-  const { user } = state
+  const { user, feed } = state
 
-  return { user }
+  return { 
+    user,
+    feed
+  }
 }
 
 const mapDispatchToProps = (dispatch) => {
   const saveDeviceInfo = (data) => dispatch(DeviceActions.saveDeviceInfo(data))
   const updateConnectionStatus = (isConnected) => dispatch(NetworkActions.updateConnectionStatus(isConnected))
-  const fetchFreshData = () => dispatch(AppOperations.fetchFreshData())
+  const fetchFreshData = (navigation, filters) => dispatch(AppOperations.fetchFreshData(navigation, filters))
 
   return { 
     saveDeviceInfo,
@@ -35,11 +38,17 @@ class AppLoadingScreen extends Component {
   }
 
   onConnectionChange = (isConnected) => {
-    const { updateConnectionStatus, fetchFreshData, navigation } = this.props
+    const { updateConnectionStatus, fetchFreshData, navigation, feed } = this.props
+    const { location_ids, topic_ids, group_id } = feed
+    const filters = {
+      location_ids, 
+      topic_ids, 
+      group_id
+    }
 
     updateConnectionStatus(isConnected)
     !isConnected && utils.showConnectivityError()
-    isConnected && this.isUserSaved() && fetchFreshData(navigation)
+    isConnected && this.isUserSaved() && fetchFreshData(navigation, filters)
   }
   
   componentDidMount() {
