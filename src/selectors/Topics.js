@@ -11,10 +11,9 @@ export const getSortedTopics = createSelector(
     if (loading) {
       return []
     } else {
-      return [...specialities, ...sub_specialities, ...conditions, ...interests].sort(utils.sortByField('keyword'))
-    }
-    // const allTopics = loading ? [] : [...specialities, ...sub_specialities, ...conditions, ...interests]
+      const allTopics = [...specialities, ...sub_specialities, ...conditions, ...interests]
 
-    // return loading ? [] : allTopics.sort(utils.sortByField('keyword'))
+      return allTopics.sort(utils.sortByField('keyword'))
+    }
   }
 )

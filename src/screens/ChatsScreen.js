@@ -114,7 +114,7 @@ class ChatsScreen extends Component {
   }
 
   componentDidMount() {
-    // this.props.getChats()
+    this.props.getChats()
   }
 
   render() {
