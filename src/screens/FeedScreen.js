@@ -7,11 +7,11 @@ import { connect } from 'react-redux'
 import Loader from '../components/common/Loader'
 import { NavigationEvents } from 'react-navigation'
 import PostPlaceholder from '../components/feed/PostPlaceholder'
-import FeedFilter from '../components/feed/FeedFilter';
+import FeedFilter from '../components/feed/FeedFilter'
 
 const mapDispatchToProps = (dispatch) => {
-  const getFeed = (page) => dispatch(FeedOperations.getFeed(page))
-  const refreshFeed = () => dispatch(FeedOperations.refreshFeed())
+  const getFeed = (page, filters) => dispatch(FeedOperations.getFeed(page, filters))
+  const refreshFeed = (filters) => dispatch(FeedOperations.refreshFeed(filters))
   const connectToWs = () => dispatch(FeedOperations.connectToWs())
 
   return {
@@ -55,8 +55,15 @@ class FeedScreen extends Component {
   }
 
   onLogoPress = () => {
+    const { location_ids, topic_ids, group_id } = this.props.feed
+    const filters = {
+      location_ids, 
+      topic_ids, 
+      group_id
+    }
+
     this.refs.feedList.scrollToOffset({ offset: 0 })
-    this.props.refreshFeed()
+    this.props.refreshFeed(filters)
   }
 
   resetScreenParams = () => {
@@ -74,16 +81,26 @@ class FeedScreen extends Component {
   }
 
   refreshFeed = () => {
-    const { isConnected, refreshFeed } = this.props
+    const { isConnected, refreshFeed, feed: { location_ids, topic_ids, group_id } } = this.props
+    const filters = {
+      location_ids, 
+      topic_ids, 
+      group_id
+    }
 
-    isConnected && refreshFeed()
+    isConnected && refreshFeed(filters)
   }   
 
   onEndReached = () => {
-    const { feed: { page, feedLoading }, getFeed, isConnected }  = this.props
+    const { feed: { page, feedLoading, location_ids, topic_ids, group_id }, getFeed, isConnected }  = this.props
     const nextPage = page + 1
-
-    isConnected && !feedLoading && getFeed(nextPage)
+    const filters = {
+      location_ids, 
+      topic_ids,
+      group_id
+    }
+    
+    isConnected && !feedLoading && getFeed(nextPage, filters)
   }
 
   componentDidUpdate(prevProps) {
@@ -118,7 +135,7 @@ class FeedScreen extends Component {
           onDidFocus={this.setScreenParams}
           onDidBlur={this.resetScreenParams} />
 
-          <FeedFilter />
+        <FeedFilter />
 
         {feedLoading && !feedData.length ?
           <Loader />
@@ -132,7 +149,7 @@ class FeedScreen extends Component {
             onEndReachedThreshold={1}
             onRefresh={this.refreshFeed}
             refreshing={feedLoading}
-            ListFooterComponent={feedLoading && <Loader />} />
+            ListFooterComponent={feedLoading && <Loader style={{marginTop: 15}} />} />
         }
       </SafeArea>
     )
