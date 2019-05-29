@@ -4,7 +4,10 @@ import utils from '../utils'
 const initialState = {
   feedData: [],
   feedLoading: true,
-  filterVisible: false
+  filterVisible: false,
+  topic_ids: [],
+  group_id: null,
+  location_ids: []
 }
 
 const blockUser = (state, action) => {
@@ -92,6 +95,52 @@ const updatePost = (state, action) => {
   }
 }
 
+const toggleFilterItem = (state, action) => {
+  const { feature, itemId } = action
+  const { topic_ids, location_ids, group_id } = state
+  let topics = []
+  let group = null
+  let locations = []
+  
+  switch (feature) {
+    case 'topics':
+      if (topic_ids.includes(itemId)) {
+        topics = [...topic_ids].filter(id => id !== itemId)
+      } else {
+        topics = [...topic_ids, itemId]
+      }
+
+    return {
+      ...state,
+      topic_ids: topics
+    }
+
+    case 'group':
+      if (group_id !== itemId) {
+        group = itemId
+      } else {
+        group = null
+      }
+
+    return {
+      ...state,
+      group_id: group
+    }
+
+    case 'locations':  
+      if (location_ids.includes(itemId)) {
+        locations = [...location_ids].filter(id => id !== itemId)
+      } else {
+        locations = [...location_ids, itemId]
+      }
+
+    return {
+      ...state,
+      location_ids: locations
+    }
+  }
+}
+
 const FeedReducer = (state = initialState, action) => {
   switch(action.type) {
     case types.SAVE_FEED_DATA:
@@ -158,6 +207,19 @@ const FeedReducer = (state = initialState, action) => {
       return {
         ...state,
         filterVisible: !state.filterVisible
+      }
+
+    case types.TOGGLE_FILTER_ITEM:
+      return toggleFilterItem(state, action)
+
+    case types.CREAR_FILTERS:
+      const { location_ids, topic_ids, group_id } = initialState
+      
+      return {
+        ...state,
+        location_ids,
+        topic_ids,
+        group_id
       }
 
     default:

@@ -70,6 +70,16 @@ const toggleFilter = () => ({
   type: types.TOGGLE_FILTER
 })
 
+const toggleFilterItem = (feature, itemId) => ({
+  type: types.TOGGLE_FILTER_ITEM,
+  feature,
+  itemId
+})
+
+const clearFilters = () => ({
+  type: types.CREAR_FILTERS
+})
+
 export default {
   saveFeedData,
   toggleFeedDataLoading,
@@ -84,5 +94,7 @@ export default {
   blockUser,
   deletePost,
   updatePost,
-  toggleFilter
+  toggleFilter,
+  toggleFilterItem,
+  clearFilters
 }

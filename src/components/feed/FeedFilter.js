@@ -3,20 +3,22 @@ import { Modal, View, StyleSheet, SafeAreaView, Image, Dimensions, ScrollView, T
 import IconChecked from '../common/IconChecked'
 import { RegularText } from '../common/fonts'
 import { connect } from 'react-redux'
-import FeedActions from '../../actions/FeedActions'
 import { BG_COLOR, BRAND_DARK, NATIVE_GRAY } from '../../assets/styles/colors'
 import { getSortedTopics } from '../../selectors/Topics'
 import { getSortedGroups } from '../../selectors/Groups'
+import FeedActions from '../../actions/FeedActions'
 import FeedOperations from '../../operations/FeedOperations'
 
 const mapStateToProps = (state) => {
-  const { filterVisible, page } = state.feed
+  const { filterVisible, location_ids, group_id, topic_ids } = state.feed
   const { location, loading } = state.user
 
   return { 
     filterVisible,
+    location_ids, 
+    group_id, 
+    topic_ids,
     loading,
-    page,
     location,
     topics: getSortedTopics(state),
     groups: getSortedGroups(state)
@@ -26,20 +28,18 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   const toggleFilter = () => dispatch(FeedActions.toggleFilter())
   const refreshFeed = (page, queryParams) => dispatch(FeedOperations.refreshFeed(page, queryParams))
+  const toggleFilterItem = (feature, itemId) => dispatch(FeedActions.toggleFilterItem(feature, itemId))
+  const clearFilters = () => dispatch(FeedActions.clearFilters())
 
   return { 
     toggleFilter,
-    refreshFeed
+    refreshFeed,
+    toggleFilterItem,
+    clearFilters
   }
 }
 
 class FeedFilter extends Component {
-  state = {
-    topic_ids: [],
-    group_id: null,
-    location_ids: []
-  }
-
   renderSeparator = () => {
     return (
       <View style={{ backgroundColor: NATIVE_GRAY, width: '100%', height: 1 }} />
@@ -47,67 +47,38 @@ class FeedFilter extends Component {
   }
 
   toggleFilterItem = (arr, itemId) => {
-    const { topics, groups, location } = this.props
+    const { topics, groups, location, toggleFilterItem } = this.props
     
     if (arr === topics) {
-      this.setState(prevState => {
-        if (prevState.topic_ids.includes(itemId)) {
-          return { topic_ids: prevState.topic_ids.filter(id => id !== itemId) }
-        } else {
-          return { topic_ids: [...prevState.topic_ids, itemId] }
-        }
-      })
+      toggleFilterItem('topics', itemId)
     } else if (arr === groups) {
-      this.setState(prevState => {
-        if (itemId !== prevState.group_id) {
-          return { group_id: itemId }
-        } else {
-          return { group_id: null }
-        }
-      })
+      toggleFilterItem('group', itemId)
     } else if (arr === location) {
-      this.setState(prevState => {
-        if (prevState.location_ids.includes(itemId)) {
-          return { location_ids: prevState.location_ids.filter(id => id !== itemId) }
-        } else {
-          return { location_ids: [...prevState.location_ids, itemId] }
-        }
-      })
+      toggleFilterItem('locations', itemId)
     }
   }
 
   onClearPress = () => {
-    this.setState({
-      topic_ids: [],
-      group_id: null,
-      location_ids: []
-    })
+    this.props.clearFilters()
   }
 
   onApplyPress = () => {
-    const { toggleFilter, refreshFeed, page } = this.props
-    // const { topic_ids, location_ids, group_id } = this.state
-    // let queryParams = {}
-
-    // if (topic_ids.length) {
-    //   queryParams = { topic_ids }
-    // }
-    // if (location_ids.length) {
-    //   queryParams = { ...queryParams, location_ids }
-    // }
-    // if (group_id) {
-    //   queryParams = { ...queryParams, group_id }
-    // }
+    const { toggleFilter, refreshFeed, topic_ids, location_ids, group_id } = this.props
+    const filters = {
+      topic_ids, 
+      location_ids, 
+      group_id
+    }
     
     toggleFilter()
-    refreshFeed(this.state)
+    refreshFeed(filters)
   } 
 
   renderIconChecked = (arr, itemId) => {
-    const { topics, location, groups } = this.props
-    const isTopicSelected = arr === topics && this.state.topic_ids.includes(itemId)
-    const isGroupSelected = arr === groups && this.state.group_id === itemId
-    const isLocationSelected = arr === location && this.state.location_ids.includes(itemId)
+    const { topics, location, groups, topic_ids, location_ids, group_id } = this.props
+    const isTopicSelected = arr === topics && topic_ids.includes(itemId)
+    const isGroupSelected = arr === groups && group_id === itemId
+    const isLocationSelected = arr === location && location_ids.includes(itemId)
 
     if (isTopicSelected || isGroupSelected || isLocationSelected) return <IconChecked />
   }
@@ -132,10 +103,9 @@ class FeedFilter extends Component {
   }
 
   getHeight = (arrLength) => {
-     //Make ScrollView areas take up empty space on screen
-     const otherElementsHeight = 200
-     const scrollViewAreas = 3
-     const listHeight = (Dimensions.get('screen').height - otherElementsHeight) / scrollViewAreas
+    //Make ScrollView areas take up empty space on screen
+    const listHeight = (Dimensions.get('screen').height - 200) / 3
+
     return arrLength >= 3 && {height: listHeight}
   }
 
@@ -206,15 +176,12 @@ class FeedFilter extends Component {
             </View>
 
             <View>
-              <ScrollView>
-                {this.renderItems(location, 'name')}
-              </ScrollView>
+              {this.renderItems(location, 'name')}
             </View>
           </React.Fragment>
           }
           
         </SafeAreaView>
-
       </Modal>
     )
   }
@@ -223,7 +190,7 @@ class FeedFilter extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: BG_COLOR
+    backgroundColor: '#fff'
   },
 
   filterItem: {
@@ -238,7 +205,8 @@ const styles = StyleSheet.create({
   titleBox: {
     padding: 10, 
     flexDirection: 'row', 
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: BG_COLOR
   },
 
   titleIcon: {

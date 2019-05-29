@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, Image, TextInput, TouchableOpacity, KeyboardAvoidingView } from 'react-native'
+import { View, StyleSheet, Image, TextInput, TouchableOpacity, KeyboardAvoidingView, Keyboard } from 'react-native'
 import { BRAND_LIGHT } from '../../assets/styles/colors'
 import GrayLine from '../common/GrayLine'
 import { connect } from 'react-redux'
@@ -87,6 +87,7 @@ class ReplyBox extends Component {
     }
 
     this.setState({ reply: '' })
+    Keyboard.dismiss()
   }
 
   renderPlaceholder = () => {
