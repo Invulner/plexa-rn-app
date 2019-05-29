@@ -29,7 +29,7 @@ class ResearchFeedScreen extends Component {
   }
 
   componentDidMount() {
-    // this.props.getResearchFeed()
+    this.props.getResearchFeed()
   }
 
   render() {

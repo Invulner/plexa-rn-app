@@ -15,7 +15,8 @@ const AppTabNavigator = createMaterialTopTabNavigator({
     showLabel: false
   },
   tabBarPosition: 'bottom',
-  tabBarComponent: CustomTabBar
+  tabBarComponent: CustomTabBar,
+  swipeEnabled: false
 })
 
 export default AppTabNavigator
