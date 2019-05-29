@@ -8,6 +8,7 @@ import { getSortedTopics } from '../../selectors/Topics'
 import { getSortedGroups } from '../../selectors/Groups'
 import FeedActions from '../../actions/FeedActions'
 import FeedOperations from '../../operations/FeedOperations'
+import commonStyles from '../../assets/styles/common'
 
 const mapStateToProps = (state) => {
   const { filterVisible, location_ids, group_id, topic_ids } = state.feed
@@ -42,7 +43,7 @@ const mapDispatchToProps = (dispatch) => {
 class FeedFilter extends Component {
   renderSeparator = () => {
     return (
-      <View style={{ backgroundColor: NATIVE_GRAY, width: '100%', height: 1 }} />
+      <View style={commonStyles.separatorLine} />
     )
   }
 

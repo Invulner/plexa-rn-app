@@ -8,6 +8,7 @@ import utils from '../utils'
 import Loader from '../components/common/Loader'
 import RoundAvatar from '../components/common/RoundAvatar'
 import { NavigationEvents } from 'react-navigation'
+import commonStyles from '../assets/styles/common'
 
 const mapStateToProps = (state) => {
   const { items, loading } = state.chats
@@ -32,7 +33,7 @@ class ChatsScreen extends Component {
 
   renderSeparator = () => {
     return (
-      <View style={{backgroundColor: NATIVE_GRAY, width: '100%', height: 1}} />
+      <View style={commonStyles.separatorLine} />
     )
   }
 

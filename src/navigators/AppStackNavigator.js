@@ -3,7 +3,7 @@ import { createStackNavigator } from 'react-navigation'
 import AppTabNavigator from './AppTabNavigator'
 import HeaderLogo from '../components/common/header/HeaderLogo'
 import ComposeBtn from '../components/common/header/ComposeBtn'
-import AddUsersBtn from '../components/common/header/AddUsersBtn'
+import AppHeaderRight from '../components/common/header/AppHeaderRight'
 
 const AppStack = createStackNavigator({
   App: {
@@ -11,7 +11,7 @@ const AppStack = createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       headerTitle: <HeaderLogo navigation={navigation} />,
       headerLeft: <ComposeBtn navigation={navigation} />,
-      headerRight: <AddUsersBtn navigation={navigation} />,
+      headerRight: <AppHeaderRight navigation={navigation} />,
       headerStyle: {
         paddingVertical: 10
       }

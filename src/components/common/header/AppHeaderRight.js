@@ -15,7 +15,7 @@ const mapDispatchToProps = (dispatch) => {
   return { toggleFeedFilter }
 }
 
-class AddUsersBtn extends Component {
+class AppHeaderRight extends Component {
   onAddUsersPress = () => this.props.navigation.navigate('AddUsers')
 
   render() {
@@ -63,4 +63,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddUsersBtn)
+export default connect(mapStateToProps, mapDispatchToProps)(AppHeaderRight)
