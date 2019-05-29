@@ -3,6 +3,7 @@ import { FlatList, Vibration } from 'react-native'
 import SafeArea from '../components/common/SafeArea'
 import FeedPost from '../components/feed/FeedPost'
 import FeedOperations from '../operations/FeedOperations'
+import AppOperations from '../operations/AppOperations'
 import { connect } from 'react-redux'
 import Loader from '../components/common/Loader'
 import { NavigationEvents } from 'react-navigation'
@@ -15,20 +16,24 @@ const mapDispatchToProps = (dispatch) => {
   const getFeed = (page) => dispatch(FeedOperations.getFeed(page))
   const refreshFeed = () => dispatch(FeedOperations.refreshFeed())
   const connectToWs = () => dispatch(FeedOperations.connectToWs())
+  const connectToCable = () => dispatch(AppOperations.connectToWs())
 
   return {
     connectToWs,
+    connectToCable,
     getFeed,
     refreshFeed
   }
 }
 
 const mapStateToProps = (state) => {
-  const { feed, network: { isConnected } } = state
+  const { feed, network: { isConnected, isCableConnected }, user: { loading }} = state
 
   return { 
     feed,
-    isConnected
+    isConnected,
+    isCableConnected,
+    loading
   }
 }
 
@@ -89,13 +94,18 @@ class FeedScreen extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { isConnected, connectToWs } = this.props
+    const { isConnected, connectToWs, connectToCable, isCableConnected, loading } = this.props
     //Works when connection is restored and after app reboot with state rehydration
-    if (prevProps.isConnected !== isConnected && isConnected) {
+    if (prevProps.isCableConnected !== isCableConnected && isCableConnected) {
       connectToWs()
     //Need to add check for change from initial state to false
     } else if (prevProps.isConnected !== null && !isConnected) {
       FeedOperations.disconnectFromWs()
+    }
+
+    // After login, when cable was not connected in AppLoading Screen
+    if (prevProps.loading !== loading && !loading) {
+      connectToCable()
     }
   }
 

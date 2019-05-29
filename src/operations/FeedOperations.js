@@ -2,8 +2,6 @@ import getAxiosInstance from '../config/axios'
 import { API_URL } from '../constants'
 import FeedActions from '../actions/FeedActions'
 import CommentsActions from '../actions/CommentsActions'
-import cable from '../action_cable/cable_instance'
-import { Notifications } from 'expo'
 
 const fetchFeed = (saveOption, page = 1) => {
   return dispatch => {
@@ -147,35 +145,21 @@ const handleAnswerUpdate = (data, dispatch) => {
 
 const connectToWs = () => {
   return dispatch => {
-    cable().then(cable_i => {
-      global.cableInstance = cable_i
-      const feedChannel = cable_i.subscriptions.create(
-        {
-          channel: 'FeedChannel',
-          client_type: 'mobile'
-        },
-        {
-          received: (data) => {
-            if (data.type === 'story') {
-              handleStoryUpdate(data, dispatch)
-            } else if (data.type === 'answer') {
-              handleAnswerUpdate(data, dispatch)
-            }
+    const feedChannel = global.cableInstance && global.cableInstance.subscriptions.create(
+      {
+        channel: 'FeedChannel',
+        client_type: 'mobile'
+      },
+      {
+        received: (data) => {
+          if (data.type === 'story') {
+            handleStoryUpdate(data, dispatch)
+          } else if (data.type === 'answer') {
+            handleAnswerUpdate(data, dispatch)
           }
         }
-      )
-
-      const statusChannel = global.cableInstance.subscriptions.create(
-        {
-          channel: 'StatusChannel'
-        },
-        {
-          received: (data) => {
-            Notifications.setBadgeNumberAsync(data.unread_count)
-          }
-        }
-      )
-    })
+      }
+    )
   }
 }
 

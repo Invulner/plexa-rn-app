@@ -1,5 +1,8 @@
 import UserOperations from './UserOperations'
 import FeedOperations from './FeedOperations'
+import NetworkActions from '../actions/NetworkActions'
+import { Notifications } from 'expo'
+import cable from '../action_cable/cable_instance'
 
 const fetchFreshData = (navigation) => {
   return dispatch => {
@@ -8,6 +11,27 @@ const fetchFreshData = (navigation) => {
   }  
 }
 
+const connectToWs = () => {
+  return dispatch => {
+    cable().then(cable_i => {
+      global.cableInstance = cable_i
+      dispatch(NetworkActions.updateCableConnectionStatus(true))
+
+      const statusChannel = global.cableInstance.subscriptions.create(
+        {
+          channel: 'StatusChannel'
+        },
+        {
+          received: (data) => {
+            Notifications.setBadgeNumberAsync(data.unread_count)
+          }
+        }
+      )
+    })
+  }
+}
+
 export default {
-  fetchFreshData
+  fetchFreshData,
+  connectToWs
 }

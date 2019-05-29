@@ -17,11 +17,13 @@ const mapDispatchToProps = (dispatch) => {
   const saveDeviceInfo = (data) => dispatch(DeviceActions.saveDeviceInfo(data))
   const updateConnectionStatus = (isConnected) => dispatch(NetworkActions.updateConnectionStatus(isConnected))
   const fetchFreshData = () => dispatch(AppOperations.fetchFreshData())
+  const connectToWs = () => dispatch(AppOperations.connectToWs())
 
   return { 
     saveDeviceInfo,
     fetchFreshData,
-    updateConnectionStatus
+    updateConnectionStatus,
+    connectToWs
   }
 }
 
@@ -43,7 +45,7 @@ class AppLoadingScreen extends Component {
   }
   
   componentDidMount() {
-    const { saveDeviceInfo, navigation: { navigate } } = this.props
+    const { saveDeviceInfo, connectToWs, navigation: { navigate } } = this.props
     const data = {
       uuid: Constants.installationId || Constants.deviceId,
       platform: Object.keys(Constants.platform)[0],
@@ -53,7 +55,12 @@ class AppLoadingScreen extends Component {
     utils.startConnectionStatusWorker()
     this.addEventListeners()
     saveDeviceInfo(data)
-    this.isUserSaved() ? navigate('App') : navigate('Auth')
+    if (this.isUserSaved()) {
+      connectToWs()
+      navigate('App')
+    } else {
+      navigate('Auth')
+    }
   }
 
   render() {

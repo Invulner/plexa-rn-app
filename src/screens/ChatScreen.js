@@ -14,11 +14,13 @@ import ChatActions from '../actions/ChatActions'
 
 const mapStateToProps = (state) => {
   const { loading, page } = state.chat
+  const { isCableConnected } = state.network
 
   return { 
     data: getChatMessages(state),
     loading,
-    page
+    page,
+    isCableConnected
   }
 }
 
@@ -119,15 +121,25 @@ class ChatScreen extends Component {
   }
 
   componentDidMount() {
-    const { getMessages, connectToWs, toggleLoading, navigation } = this.props
+    const { getMessages, toggleLoading, navigation, isCableConnected, connectToWs } = this.props
 
     if (this.getChatId()) {
       getMessages(this.getChatId())
-      connectToWs(this.getChatId())
+      if (isCableConnected) {
+        connectToWs(this.getChatId())
+      }
     } else {
       toggleLoading(false)
     }
     navigation.setParams({ isChatScreen: true })
+  }
+
+  componentDidUpdate(prevProps) {
+    const { isCableConnected, connectToWs } = this.props
+
+    if (prevProps.isCableConnected !== isCableConnected && isCableConnected) {
+      connectToWs(this.getChatId())
+    }
   }
 
   componentWillUnmount() {

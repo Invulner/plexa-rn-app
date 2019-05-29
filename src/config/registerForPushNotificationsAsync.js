@@ -1,6 +1,7 @@
 import { Permissions, Notifications } from 'expo'
 import { PUSH_ENDPOINT } from '../constants'
 import { AsyncStorage } from 'react-native'
+import { Constants } from 'expo'
 
 const registerForPushNotificationsAsync = async () => {
   const { status: existingStatus } = await Permissions.getAsync(
@@ -40,8 +41,8 @@ const registerForPushNotificationsAsync = async () => {
     body: JSON.stringify({
       push_token: token,
       uuid: token,
-      platform: 'ios',
-      device_name: 'iphone'
+      platform: Object.keys(Constants.platform)[0],
+      device_name: Constants.deviceName
     }),
   });
 }
