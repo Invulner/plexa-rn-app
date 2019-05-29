@@ -135,7 +135,7 @@ class FeedFilter extends Component {
                 </RegularText>
               </TouchableOpacity>
             </View>
-
+            
             <View style={styles.titleBox}>
               <Image
                 source={require('../../assets/icons/specialties-brand.png')}
@@ -190,7 +190,7 @@ class FeedFilter extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff'
+    backgroundColor: BG_COLOR
   },
 
   filterItem: {
@@ -205,8 +205,7 @@ const styles = StyleSheet.create({
   titleBox: {
     padding: 10, 
     flexDirection: 'row', 
-    alignItems: 'center',
-    backgroundColor: BG_COLOR
+    alignItems: 'center'
   },
 
   titleIcon: {
