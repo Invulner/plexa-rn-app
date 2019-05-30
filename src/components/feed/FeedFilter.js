@@ -68,16 +68,18 @@ class FeedFilter extends Component {
     refreshFeed(filter)
   } 
 
-  renderIconChecked = (arr, itemId) => {
-    const { topics, location, groups, filter: { topic_ids, location_ids, group_id } } = this.props
-    const isTopicSelected = arr === topics && topic_ids.includes(itemId)
-    const isGroupSelected = arr === groups && group_id === itemId
-    const isLocationSelected = arr === location && location_ids.includes(itemId)
+  renderIconChecked = (filter, itemId) => {
+    const { group_id } = this.props.filter
 
-    if (isTopicSelected || isGroupSelected || isLocationSelected) return <IconChecked />
+    if (filter !== group_id && filter.includes(itemId) || filter === group_id && group_id === itemId) {
+      return <IconChecked />
+    }
   }
 
   renderItems = (arr, field) => {
+    const { topics, groups, filter: { topic_ids, location_ids, group_id } } = this.props
+    const currentFilter = arr === topics ? topic_ids : (arr === groups ? group_id : location_ids)
+
     return arr.map((item, index, arr) => {
       return (
         <React.Fragment key={item.id} >
@@ -88,7 +90,7 @@ class FeedFilter extends Component {
               style={styles.itemText}>
               {item[field]}
             </RegularText>
-           {this.renderIconChecked(arr, item.id)}
+           {this.renderIconChecked(currentFilter, item.id)}
           </TouchableOpacity>
           {index !== arr.length - 1 && this.renderSeparator()}
         </React.Fragment>
