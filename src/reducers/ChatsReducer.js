@@ -4,7 +4,8 @@ const initialState = {
   loading: true,
   users: [],
   items: [],
-  usersLoading: false
+  usersLoading: false,
+  areUsersChosen: false
 }
 
 const updateChat = (state, action) => {
@@ -74,6 +75,12 @@ const ChatsReducer = (state = initialState, action) => {
       return {
         ...state,
         usersLoading: action.flag
+      }
+
+    case types.TOGGLE_CHOSEN_USERS_FLAG:
+      return {
+        ...state,
+        areUsersChosen: action.flag
       }
 
     default:

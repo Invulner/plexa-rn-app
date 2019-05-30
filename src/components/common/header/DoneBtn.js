@@ -6,34 +6,44 @@ import { connect } from 'react-redux'
 
 const mapStateToProps = (state) => {
   const { link_url, content } = state.post
+  const { areUsersChosen } = state.chats
 
   return {
     link_url,
-    content
+    content,
+    areUsersChosen
   }
 }
 
 class DoneBtn extends Component {
   isBtnActive = () => {
-    const { link_url, content, navigation } = this.props
+    const { link_url, content, navigation, areUsersChosen } = this.props
+    const isComposeScreen = navigation.getParam('isComposeScreen')
     const isImageExist = navigation.getParam('isImageExist')
-    
-    return link_url || content.trim().length || isImageExist
+    const isAddUsersScreen = navigation.getParam('isAddUsersScreen')
+    const isEnoughtContent = link_url || content.trim().length || isImageExist
+
+    if(isComposeScreen && isEnoughtContent || isAddUsersScreen && areUsersChosen) {
+      return true
+    }
   }
 
   render() {
     const { navigation, btnText } = this.props
     const isComposeScreen = navigation.getParam('isComposeScreen')
+    const isAddUsersScreen = navigation.getParam('isAddUsersScreen')
+    const isBtnActive = this.isBtnActive()
     
     return (
       <TouchableOpacity
-        disabled={isComposeScreen && !this.isBtnActive()}
+        disabled={isComposeScreen && !isBtnActive || isAddUsersScreen && !isBtnActive}
         style={styles.btn}
         onPress={navigation.getParam('onDonePress')}>
         <RegularText style={[
           styles.text, 
-          !isComposeScreen && { color: BRAND_DARK }, 
-          isComposeScreen && this.isBtnActive() && { color: BRAND_DARK }]}>
+          !isComposeScreen && !isAddUsersScreen && { color: BRAND_DARK },
+          (isComposeScreen  && isBtnActive || 
+          isAddUsersScreen && isBtnActive) && { color: BRAND_DARK }]}>
           {btnText || 'Done'}
         </RegularText>
       </TouchableOpacity>
