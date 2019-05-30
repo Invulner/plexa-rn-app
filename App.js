@@ -2,12 +2,9 @@ import React from 'react'
 import { Provider } from 'react-redux'
 import { store, persistor } from './src/store'
 import { StatusBar } from 'react-native'
-import SwitchAppNavigator from './src/navigators/SwitchAppNavigator'
-import { createAppContainer } from 'react-navigation'
 import { Font } from 'expo'
 import { PersistGate } from 'redux-persist/integration/react'
-
-const AppContainer = createAppContainer(SwitchAppNavigator)
+import AppWrapper from './src/components/AppWrapper'
 
 export default class App extends React.Component {
   state = {
@@ -34,7 +31,7 @@ export default class App extends React.Component {
           <StatusBar />
             <PersistGate loading={null} persistor={persistor}>
               {fontsLoaded ? 
-                <AppContainer />
+                <AppWrapper />
                 :
                 null
               }

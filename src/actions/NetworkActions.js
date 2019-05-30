@@ -5,6 +5,12 @@ const updateConnectionStatus = (isConnected) => ({
   isConnected
 })
 
+const updateCableConnectionStatus = (isConnected) => ({
+  type: types.UPDATE_CABLE_CONNECTION_STATUS,
+  isConnected
+})
+
 export default {
-  updateConnectionStatus
+  updateConnectionStatus,
+  updateCableConnectionStatus
 }

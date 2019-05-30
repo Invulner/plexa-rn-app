@@ -56,7 +56,11 @@ class AppLoadingScreen extends Component {
     utils.startConnectionStatusWorker()
     this.addEventListeners()
     saveDeviceInfo(data)
-    this.isUserSaved() ? navigate('App') : navigate('Auth')
+    if (this.isUserSaved()) {
+      navigate('App')
+    } else {
+      navigate('Auth')
+    }
   }
 
   render() {
