@@ -133,48 +133,61 @@ class FeedFilter extends Component {
               </TouchableOpacity>
             </View>
             
-            <View style={styles.titleBox}>
-              <Image
-                source={require('../../assets/icons/specialties-brand.png')}
-                style={styles.titleIcon} />
-              <RegularText style={styles.title}>
-                Filter by specialty
-              </RegularText>
-            </View>
+            {!!topics && !!topics.length &&
+              <React.Fragment>
+                <View style={styles.titleBox}>
+                  <Image
+                    source={require('../../assets/icons/specialties-brand.png')}
+                    style={styles.titleIcon} />
+                  <RegularText style={styles.title}>
+                    Filter by specialty
+                  </RegularText>
+                </View>
 
-            <View style={this.getHeight(topics.length)}>
-              <ScrollView>
-                {this.renderItems(topics, 'keyword')}
-              </ScrollView>
-            </View>
+                <View style={this.getHeight(topics.length)}>
+                  <ScrollView>
+                    {this.renderItems(topics, 'keyword')}
+                  </ScrollView>
+                </View>
+              </React.Fragment>
+            }
 
-            <View style={styles.titleBox}>
-              <Image
-                source={require('../../assets/icons/user-filter-brand.png')}
-                style={styles.titleIcon} />
-              <RegularText style={styles.title}>
-                Filter by group
-              </RegularText>
-            </View>
+            {!!groups && !!groups.length &&
+              <React.Fragment>
+                <View style={styles.titleBox}>
+                  <Image
+                    source={require('../../assets/icons/user-filter-brand.png')}
+                    style={styles.titleIcon} />
+                  <RegularText style={styles.title}>
+                    Filter by group
+                  </RegularText>
+                </View>
 
-            <View style={this.getHeight(groups.length)}>
-              <ScrollView>
-                {this.renderItems(groups, 'name')}
-              </ScrollView>
-            </View>
+                <View style={this.getHeight(groups.length)}>
+                  <ScrollView>
+                    {this.renderItems(groups, 'name')}
+                  </ScrollView>
+                </View>
+              </React.Fragment>
+            }
 
-            <View style={styles.titleBox}>
-              <Image
-                source={require('../../assets/icons/location-brand.png')}
-                style={styles.titleIcon} />
-              <RegularText style={styles.title}>
-                Filter by location
-              </RegularText>
-            </View>
+            {!!location && !!location.length &&
+              <React.Fragment>
+                <View style={styles.titleBox}>
+                  <Image
+                    source={require('../../assets/icons/location-brand.png')}
+                    style={styles.titleIcon} />
+                  <RegularText style={styles.title}>
+                    Filter by location
+                  </RegularText>
+                </View>
 
-            <View>
-              {this.renderItems(location, 'name')}
-            </View>
+                <View>
+                  {this.renderItems(location, 'name')}
+                </View>
+              </React.Fragment>
+            }
+
           </React.Fragment>
           }
           

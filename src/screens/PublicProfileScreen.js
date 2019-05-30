@@ -56,9 +56,12 @@ class PublicProfileScreen extends Component {
             <UserDataBox
               title={'Type'}
               data={title} />
-            <UserDataBox
-              title={'Location'}
-              data={utils.getLocation(location)} />
+
+            {location && 
+              <UserDataBox
+                title={'Location'}
+                data={utils.getLocation(location)} />
+            }
 
             <Heading heading={'medical practice'} />
             {this.renderMedicalPractice()}
