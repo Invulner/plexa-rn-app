@@ -29,11 +29,13 @@ const mapDispatchToProps = (dispatch) => {
   const getUsers = (q) => dispatch(ChatsOperations.getUsers(q))
   const deleteUsers = () => dispatch(ChatsActions.deleteUsers())
   const saveChosenUserIds = (userIds) => dispatch(ChatsActions.saveChosenUsers(userIds))
+  const toggleChosenUsersFlag = (flag) => dispatch(ChatsActions.toggleChosenUsersFlag(flag))
 
   return { 
     getUsers,
     deleteUsers,
-    saveChosenUserIds
+    saveChosenUserIds,
+    toggleChosenUsersFlag
   }
 }
 
@@ -53,7 +55,7 @@ class AddUsersScreen extends Component {
         newUsers = [...chosenUsers, user]
 
       return { chosenUsers: newUsers }
-    })
+    }, () => this.props.toggleChosenUsersFlag(!!this.state.chosenUsers.length))
   }
 
   renderChosenUsers = () => {
@@ -159,13 +161,17 @@ class AddUsersScreen extends Component {
   }
 
   componentDidMount() {
-    this.props.navigation.setParams({ 
+    this.props.navigation.setParams({
+      isAddUsersScreen: true,
       onDonePress: this.onSubmit
     })
   }
 
   componentWillUnmount() {
     this.props.deleteUsers()
+    this.props.navigation.setParams({
+      isAddUsersScreen: false
+    })
   }
   
   render() {

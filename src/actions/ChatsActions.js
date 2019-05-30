@@ -43,6 +43,11 @@ const toggleUsersLoading = (flag) => ({
   flag
 })
 
+const toggleChosenUsersFlag = (flag) => ({
+  type: types.TOGGLE_CHOSEN_USERS_FLAG,
+  flag
+})
+
 export default {
   getChats,
   toggleLoading,
@@ -52,5 +57,6 @@ export default {
   resetChats,
   updateChat,
   saveChosenUsers,
-  toggleUsersLoading
+  toggleUsersLoading,
+  toggleChosenUsersFlag
 }
