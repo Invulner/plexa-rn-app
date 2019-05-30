@@ -16,8 +16,8 @@ const mapStateToProps = (state) => {
   return { user }
 }
 
-const mapDispatchToProps = (dispatch, { navigation }) => {
-  const logout = () => dispatch(UserOperations.logout(navigation))
+const mapDispatchToProps = (dispatch, { navigation: { navigate } }) => {
+  const logout = () => dispatch(UserOperations.logout(navigate))
 
   return { logout }
 }

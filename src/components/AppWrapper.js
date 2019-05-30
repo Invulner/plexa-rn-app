@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Vibration } from 'react-native'
+import { Vibration, NetInfo } from 'react-native'
 import SwitchAppNavigator from '../navigators/SwitchAppNavigator'
 import { createAppContainer } from 'react-navigation'
 import registerForPushNotificationsAsync from '../config/registerForPushNotificationsAsync'
@@ -8,22 +8,31 @@ import AppOperations from '../operations/AppOperations'
 import DropdownAlert from 'react-native-dropdownalert'
 import { Notifications } from 'expo'
 import { NavigationActions } from 'react-navigation'
+import NetworkActions from '../actions/NetworkActions'
+import utils from '../utils'
 
 const AppContainer = createAppContainer(SwitchAppNavigator)
 
 const mapStateToProps = (state) => {
-  const { user: { loading }} = state
+  const { user: { loading, id }, feed: { filter }} = state
 
   return {
-    loading
+    loading,
+    id,
+    filter
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   const connectToCable = () => dispatch(AppOperations.connectToCable())
+  const updateConnectionStatus = (isConnected) => dispatch(NetworkActions.updateConnectionStatus(isConnected))
+  //navigation???
+  const fetchFreshData = (navigation, filter) => dispatch(AppOperations.fetchFreshData(navigation, filter))
 
   return {
-    connectToCable
+    connectToCable,
+    updateConnectionStatus,
+    fetchFreshData
   }
 }
 
@@ -54,6 +63,27 @@ class AppWrapper extends React.Component {
     this._notificationSubscription = Notifications.addListener(this._handleNotification)
   }
 
+  isUserSaved = () => {
+    return this.props.id
+  }
+
+  navigateToRoute = (route) => {
+    this.navigator.dispatch(NavigationActions.navigate({routeName: route}))
+  }
+
+  onConnectionChange = (isConnected) => {
+    const { updateConnectionStatus, fetchFreshData, filter } = this.props
+
+    updateConnectionStatus(isConnected)
+    !isConnected && utils.showConnectivityError()
+
+    isConnected && this.isUserSaved() && fetchFreshData(this.navigateToRoute, filter)
+  }
+
+  addEventListeners = () => {
+    NetInfo.isConnected.addEventListener('connectionChange', this.onConnectionChange)
+  }
+
   componentDidUpdate(prevProps) {
     if (prevProps.loading !== this.props.loading && this.props.loading === false) {
       this._setupNetworkConnections()
@@ -64,6 +94,9 @@ class AppWrapper extends React.Component {
     if (this.props.loading === false) {
       this._setupNetworkConnections()
     }
+
+    utils.startConnectionStatusWorker()
+    this.addEventListeners()
   }
 
   render () {

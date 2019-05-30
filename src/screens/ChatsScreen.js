@@ -12,11 +12,13 @@ import commonStyles from '../assets/styles/common'
 
 const mapStateToProps = (state) => {
   const { items, loading } = state.chats
+  const { isConnected } = state.network
   const sortedChats = !!items && items.sort(utils.sortByTime({ field: 'last_message_date', order: 'desc' }))
 
   return { 
     sortedChats,
-    loading
+    loading,
+    isConnected
   }
 }
 
@@ -114,7 +116,9 @@ class ChatsScreen extends Component {
   }
 
   componentDidMount() {
-    this.props.getChats()
+    const { isConnected, getChats } = this.props
+    
+    isConnected && getChats()
   }
 
   render() {

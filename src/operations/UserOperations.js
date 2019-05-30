@@ -22,7 +22,7 @@ const auth = (credentials, navigation) => {
   }
 }
 
-const getProfileData = (navigation, cb) => {
+const getProfileData = (navigate, cb) => {
   return dispatch => {
 
     return getAxiosInstance().then(api => {
@@ -31,7 +31,7 @@ const getProfileData = (navigation, cb) => {
           dispatch(UserActions.saveUserData(response.data))
           cb && cb()
         })
-        .catch(error => !utils.isAuthorizedRequest(error.response.status) && dispatch(logout(navigation)))
+        .catch(error => !utils.isAuthorizedRequest(error.response.status) && dispatch(logout(navigate)))
     })
   }
 }
@@ -57,12 +57,13 @@ const onLoginSuccess = (data, dispatch, navigation) => {
   const { id, email, provider, uid, customer_id, discuss_api_token } = data
   const userData = {id, email, provider, customer_id}
   const userSecretData = {uid, ...discuss_api_token}
+  const { navigate } = navigation
   const cb = () => dispatch(UserActions.toggleUserDataLoading(false))
 
   dispatch(UserActions.saveUserData(userData))
   saveUserToAsyncStorage(userSecretData)
   redirectToFeed(navigation)
-  dispatch(getProfileData(navigation, cb))
+  dispatch(getProfileData(navigate, cb))
   dispatch(FeedOperations.getFeed())
 }
 
@@ -79,9 +80,9 @@ const onLoginFail = (dispatch) => {
   dispatch(UserActions.toggleUserDataLoading(false))
 }
 
-const logout = (navigation) => {
+const logout = (navigate) => {
   return dispatch => {
-    redirectToLogin(navigation)
+    navigate('Auth')
     clearUserSecretData()
     dispatch(UserActions.clearUserData())
     dispatch(FeedActions.resetFeed())

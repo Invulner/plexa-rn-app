@@ -1,13 +1,15 @@
 import UserOperations from './UserOperations'
 import FeedOperations from './FeedOperations'
+import ChatsOperations from '../operations/ChatsOperations'
 import NetworkActions from '../actions/NetworkActions'
 import { Notifications } from 'expo'
 import cable from '../action_cable/cable_instance'
 
-const fetchFreshData = (navigation, filter) => {
+const fetchFreshData = (navigateToRoute, filter) => {
   return dispatch => {
-    dispatch(UserOperations.getProfileData(navigation))
+    dispatch(UserOperations.getProfileData(navigateToRoute))
     dispatch(FeedOperations.refreshFeed(filter))
+    dispatch(ChatsOperations.getChats())
   }  
 }
 
