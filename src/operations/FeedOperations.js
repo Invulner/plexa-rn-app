@@ -6,7 +6,7 @@ import cable from '../action_cable/cable_instance'
 
 let feedConnection
 
-const fetchFeed = (saveOption, page = 1, queryOptions = {}) => {
+const fetchFeed = (saveOption, { page = 1, ...queryOptions } = {}) => {
   return dispatch => {
     dispatch(FeedActions.toggleFeedDataLoading(true))
     
@@ -41,13 +41,13 @@ const fetchFeed = (saveOption, page = 1, queryOptions = {}) => {
 
 const getFeed = (page = 1, queryOptions) => {
   return dispatch => {
-    dispatch(fetchFeed('add', page, queryOptions))
+    dispatch(fetchFeed('add', { page, ...queryOptions }))
   }
 }
 
 const refreshFeed = (queryOptions) => {
   return dispatch => {
-    dispatch(fetchFeed('refresh', undefined, queryOptions))
+    dispatch(fetchFeed('refresh', { ...queryOptions }))
   }
 }
 
