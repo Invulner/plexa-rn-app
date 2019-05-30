@@ -6,9 +6,14 @@ export const getSortedTopics = createSelector(
   state => state.user.sub_specialities,
   state => state.user.conditions,
   state => state.user.interests,
-  (specialities, sub_specialities, conditions, interests) => {
-    const allTopics = [...specialities, ...sub_specialities, ...conditions, ...interests]
+  state => state.user.loading,
+  (specialities, sub_specialities, conditions, interests, loading) => {
+    if (loading) {
+      return []
+    } else {
+      const allTopics = [...specialities, ...sub_specialities, ...conditions, ...interests]
 
-    return allTopics.sort(utils.sortByField('keyword'))
+      return allTopics.sort(utils.sortByField('keyword'))
+    }
   }
 )

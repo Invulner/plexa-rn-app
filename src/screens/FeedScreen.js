@@ -7,10 +7,11 @@ import { connect } from 'react-redux'
 import Loader from '../components/common/Loader'
 import { NavigationEvents } from 'react-navigation'
 import PostPlaceholder from '../components/feed/PostPlaceholder'
+import FeedFilter from '../components/feed/FeedFilter'
 
 const mapDispatchToProps = (dispatch) => {
-  const getFeed = (page) => dispatch(FeedOperations.getFeed(page))
-  const refreshFeed = () => dispatch(FeedOperations.refreshFeed())
+  const getFeed = (page, filter) => dispatch(FeedOperations.getFeed(page, filter))
+  const refreshFeed = (filter) => dispatch(FeedOperations.refreshFeed(filter))
   const connectToWs = () => dispatch(FeedOperations.connectToWs())
 
   return {
@@ -54,8 +55,10 @@ class FeedScreen extends Component {
   }
 
   onLogoPress = () => {
+    const { filter } = this.props.feed
+
     this.refs.feedList.scrollToOffset({ offset: 0 })
-    this.props.refreshFeed()
+    this.props.refreshFeed(filter)
   }
 
   resetScreenParams = () => {
@@ -73,16 +76,16 @@ class FeedScreen extends Component {
   }
 
   refreshFeed = () => {
-    const { isConnected, refreshFeed } = this.props
+    const { isConnected, refreshFeed, feed: { filter } } = this.props
 
-    isConnected && refreshFeed()
+    isConnected && refreshFeed(filter)
   }   
 
   onEndReached = () => {
-    const { feed: { page, feedLoading }, getFeed, isConnected }  = this.props
+    const { feed: { page, feedLoading, filter }, getFeed, isConnected }  = this.props
     const nextPage = page + 1
-
-    isConnected && !feedLoading && getFeed(nextPage)
+    
+    isConnected && !feedLoading && getFeed(nextPage, filter)
   }
 
   componentDidUpdate(prevProps) {
@@ -116,6 +119,9 @@ class FeedScreen extends Component {
         <NavigationEvents
           onDidFocus={this.setScreenParams}
           onDidBlur={this.resetScreenParams} />
+
+        <FeedFilter />
+
         {feedLoading && !feedData.length ?
           <Loader />
           :
@@ -128,7 +134,7 @@ class FeedScreen extends Component {
             onEndReachedThreshold={1}
             onRefresh={this.refreshFeed}
             refreshing={feedLoading}
-            ListFooterComponent={feedLoading && <Loader />} />
+            ListFooterComponent={feedLoading && <Loader style={{marginTop: 15}} />} />
         }
       </SafeArea>
     )

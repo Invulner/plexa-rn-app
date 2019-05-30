@@ -57,12 +57,12 @@ const onLoginSuccess = (data, dispatch, navigation) => {
   const { id, email, provider, uid, customer_id, discuss_api_token } = data
   const userData = {id, email, provider, customer_id}
   const userSecretData = {uid, ...discuss_api_token}
+  const cb = () => dispatch(UserActions.toggleUserDataLoading(false))
 
   dispatch(UserActions.saveUserData(userData))
   saveUserToAsyncStorage(userSecretData)
   redirectToFeed(navigation)
-  dispatch(UserActions.toggleUserDataLoading(false))
-  dispatch(getProfileData(navigation))
+  dispatch(getProfileData(navigation, cb))
   dispatch(FeedOperations.getFeed())
 }
 
