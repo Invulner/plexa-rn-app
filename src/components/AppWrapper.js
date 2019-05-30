@@ -55,7 +55,7 @@ class AppWrapper extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.loading !== loading && this.props.loading === false) {
+    if (prevProps.loading !== this.props.loading && this.props.loading === false) {
       this._setupNetworkConnections()
     }
   }
