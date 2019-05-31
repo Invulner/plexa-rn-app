@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { FlatList, Vibration } from 'react-native'
+import { FlatList } from 'react-native'
 import SafeArea from '../components/common/SafeArea'
 import FeedPost from '../components/feed/FeedPost'
 import FeedOperations from '../operations/FeedOperations'
@@ -9,6 +9,7 @@ import Loader from '../components/common/Loader'
 import { NavigationEvents } from 'react-navigation'
 import PostPlaceholder from '../components/feed/PostPlaceholder'
 import FeedFilter from '../components/feed/FeedFilter'
+import { POSTS_IN_PAGE } from '../constants'
 
 const mapDispatchToProps = (dispatch) => {
   const getFeed = (page, filter) => dispatch(FeedOperations.getFeed(page, filter))
@@ -82,13 +83,19 @@ class FeedScreen extends Component {
     const { isConnected, refreshFeed, feed: { filter } } = this.props
 
     isConnected && refreshFeed(filter)
-  }   
+  }
+
+  shouldAddToFeed = () => {
+    const { page, feedData } = this.props.feed
+
+    return page * POSTS_IN_PAGE === feedData.length
+  }
 
   onEndReached = () => {
     const { feed: { page, feedLoading, filter }, getFeed, isConnected }  = this.props
     const nextPage = page + 1
     
-    isConnected && !feedLoading && getFeed(nextPage, filter)
+    isConnected && this.shouldAddToFeed() && !feedLoading && getFeed(nextPage, filter)
   }
 
   componentDidUpdate(prevProps) {
