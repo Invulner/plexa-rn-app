@@ -52,7 +52,7 @@ class ChatsScreen extends Component {
   }
 
   renderTitle = (item, title) => {
-    if (item.members.length > 2 && this.isUserChat(item) || !this.isUserChat(item))
+    if (!this.isUserChat(item) || item.members.length > 2 && this.isUserChat(item))
       return 'G'
     else
       return title
