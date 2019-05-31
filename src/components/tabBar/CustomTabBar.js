@@ -1,6 +1,15 @@
 import React, { Component } from 'react'
 import { View, StyleSheet, SafeAreaView } from 'react-native'
 import TabButton from './TabButton'
+import { connect } from 'react-redux'
+
+const mapStateToProps = (state) => {
+  const { unread_count } = state.chats
+
+  return {
+    unread_count
+  }
+}
 
 class CustomTabBar extends Component {
   render() {
@@ -16,7 +25,8 @@ class CustomTabBar extends Component {
             route={'ResearchFeed'}
             tabIndex={1} />
           <TabButton 
-            iconType={'messages'} 
+            iconType={'messages'}
+            badgeValue={this.props.unread_count}
             route={'Chats'}
             tabIndex={2} />
           <TabButton 
@@ -51,4 +61,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default CustomTabBar
+export default connect(mapStateToProps)(CustomTabBar)

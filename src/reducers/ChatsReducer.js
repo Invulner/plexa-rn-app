@@ -5,7 +5,8 @@ const initialState = {
   users: [],
   items: [],
   usersLoading: false,
-  areUsersChosen: false
+  areUsersChosen: false,
+  unread_count: null
 }
 
 const updateChat = (state, action) => {
@@ -81,6 +82,12 @@ const ChatsReducer = (state = initialState, action) => {
       return {
         ...state,
         areUsersChosen: action.flag
+      }
+
+    case types.UPDATE_UNREAD_COUNT:
+      return {
+        ...state,
+        unread_count: action.data
       }
 
     default:

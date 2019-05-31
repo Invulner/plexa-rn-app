@@ -48,12 +48,18 @@ const toggleChosenUsersFlag = (flag) => ({
   flag
 })
 
+const updateUnreadCount = (data) => ({
+  type: types.UPDATE_UNREAD_COUNT,
+  data
+})
+
 export default {
   getChats,
   toggleLoading,
   getUsers,
   deleteUsers,
   createChat,
+  updateUnreadCount,
   resetChats,
   updateChat,
   saveChosenUsers,
