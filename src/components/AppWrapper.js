@@ -40,7 +40,9 @@ class AppWrapper extends React.Component {
     } else {
       this.dropdown.alertWithType('info', notification.data.title, notification.data.body)
       this.notificationData = notification.data
-      this.props.updateChat({room_id: notification.data.room_id, text: notification.data.body, created_at: Date.now(), increase_count: true})
+      if (notification.data.type === 'message') {
+        this.props.updateChat({room_id: notification.data.room_id, text: notification.data.body, created_at: Date.now(), increase_count: true})
+      }
     }
   }
 
