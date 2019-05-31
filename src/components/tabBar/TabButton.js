@@ -20,8 +20,8 @@ function TabButton(props) {
       <Image 
         style={styles.messageIcon}
         source={tabIcons[getSrc()]} />
-      {badgeValue &&
-        <Badge boxStyle={styles.badge} value={badgeValue.toString()} />
+      {!!badgeValue &&
+        <Badge boxStyle={styles.badge} value={badgeValue} />
       }
     </TouchableOpacity>
   )

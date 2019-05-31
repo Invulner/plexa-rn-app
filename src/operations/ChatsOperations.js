@@ -49,8 +49,15 @@ const createChat = (ids, messageParams, navigation) => {
   }
 }
 
+const updateChat = (data) => {
+  return dispatch => {
+    dispatch(ChatsActions.updateChat(data))
+  }
+}
+
 export default {
   getChats,
   getUsers,
+  updateChat,
   createChat
 }

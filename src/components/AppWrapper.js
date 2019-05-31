@@ -5,6 +5,7 @@ import SwitchAppNavigator from '../navigators/SwitchAppNavigator'
 import { createAppContainer } from 'react-navigation'
 import registerForPushNotificationsAsync from '../config/registerForPushNotificationsAsync'
 import AppOperations from '../operations/AppOperations'
+import ChatsOperations from '../operations/ChatsOperations'
 import DropdownAlert from 'react-native-dropdownalert'
 import { Notifications } from 'expo'
 import { NavigationActions } from 'react-navigation'
@@ -21,9 +22,11 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   const connectToCable = () => dispatch(AppOperations.connectToCable())
+  const updateChat = (data) => dispatch(ChatsOperations.updateChat(data))
 
   return {
-    connectToCable
+    connectToCable,
+    updateChat
   }
 }
 
@@ -37,6 +40,7 @@ class AppWrapper extends React.Component {
     } else {
       this.dropdown.alertWithType('info', notification.data.title, notification.data.body)
       this.notificationData = notification.data
+      this.props.updateChat({room_id: notification.data.room_id, text: notification.data.body, created_at: Date.now(), increase_count: true})
     }
   }
 
