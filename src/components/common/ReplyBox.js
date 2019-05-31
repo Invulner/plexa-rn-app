@@ -75,6 +75,7 @@ class ReplyBox extends Component {
         } else {
           postComment(reply)
         }
+        Keyboard.dismiss()
         break
 
       case 'existing chat':
@@ -87,7 +88,6 @@ class ReplyBox extends Component {
     }
 
     this.setState({ reply: '' })
-    Keyboard.dismiss()
   }
 
   renderPlaceholder = () => {
