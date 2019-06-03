@@ -1,6 +1,7 @@
 import UserOperations from './UserOperations'
 import FeedOperations from './FeedOperations'
 import NetworkActions from '../actions/NetworkActions'
+import ChatsActions from '../actions/ChatsActions'
 import { Notifications } from 'expo'
 import cable from '../action_cable/cable_instance'
 
@@ -23,6 +24,7 @@ const connectToCable = () => {
         },
         {
           received: (data) => {
+            dispatch(ChatsActions.updateUnreadCount(data.unread_count))
             Notifications.setBadgeNumberAsync(data.unread_count)
           }
         }

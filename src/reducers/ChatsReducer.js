@@ -5,15 +5,22 @@ const initialState = {
   users: [],
   items: [],
   usersLoading: false,
-  areUsersChosen: false
+  areUsersChosen: false,
+  unread_count: null
 }
 
 const updateChat = (state, action) => {
   const index = state.items.findIndex(item => item.id === action.data.room_id)
   const updatedChat = {
     ...state.items[index], 
-    last_message: action.data, 
-    last_message_date: action.data.created_at
+    last_message: {...state.items[index]['last_message'], ...action.data},
+    last_message_date: action.data.created_at || state.items[index]['last_message_date']
+  }
+  if (action.data.increase_count) {
+    updatedChat.unread_count = updatedChat.unread_count + 1
+  }
+  if (action.data.reset_count) {
+    updatedChat.unread_count = 0
   }
   const items = [
     ...state.items.slice(0, index),
@@ -81,6 +88,12 @@ const ChatsReducer = (state = initialState, action) => {
       return {
         ...state,
         areUsersChosen: action.flag
+      }
+
+    case types.UPDATE_UNREAD_COUNT:
+      return {
+        ...state,
+        unread_count: action.data
       }
 
     default:

@@ -9,6 +9,7 @@ import Loader from '../components/common/Loader'
 import RoundAvatar from '../components/common/RoundAvatar'
 import { NavigationEvents } from 'react-navigation'
 import commonStyles from '../assets/styles/common'
+import Badge from '../components/common/Badge'
 
 const mapStateToProps = (state) => {
   const { items, loading } = state.chats
@@ -22,8 +23,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   const getChats = () => dispatch(ChatsOperations.getChats())
+  const resetUnreadCount = (data) => dispatch(ChatsOperations.updateChat(data))
 
-  return { getChats }
+  return { getChats, resetUnreadCount }
 }
 
 class ChatsScreen extends Component {
@@ -44,6 +46,8 @@ class ChatsScreen extends Component {
       chatId: item.id,
       chatTitle: utils.truncate(title, 20)
     })
+
+    this.props.resetUnreadCount({room_id: item.id, reset_count: true})
   }
 
   getChatAvatar = (item, title) => {
@@ -76,6 +80,9 @@ class ChatsScreen extends Component {
                 title={this.renderTitle(item, title)}
                 src={avatarSrc}
                 size='medium' />
+              {!!item.unread_count &&
+                <Badge boxStyle={styles.badge} value={item.unread_count}/>
+              }
               <View>
                 <SemiboldText style={styles.text}>
                   {utils.truncate(title, 25)}
@@ -148,6 +155,11 @@ const styles = StyleSheet.create({
 
   date: {
     color: LIGHT_GRAY
+  },
+
+  badge: {
+    bottom: 2,
+    left: 26
   },
 
   leftBox: {
