@@ -40,7 +40,7 @@ const registerForPushNotificationsAsync = async () => {
     },
     body: JSON.stringify({
       push_token: token,
-      uuid: token,
+      uuid: Constants.installationId || Constants.deviceId,
       platform: Object.keys(Constants.platform)[0],
       device_name: Constants.deviceName
     }),
