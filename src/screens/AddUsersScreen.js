@@ -169,6 +169,7 @@ class AddUsersScreen extends Component {
 
   componentWillUnmount() {
     const { deleteUsers, navigation, toggleChosenUsersFlag } = this.props
+    
     deleteUsers()
     toggleChosenUsersFlag(false)
     navigation.setParams({
