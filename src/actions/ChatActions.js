@@ -1,9 +1,10 @@
 import types from '../types/chat'
 
-const saveMessages = (data) => ({
-  type: types.SAVE_MESSAGES,
-  data
-})
+// const saveMessages = (data, chatId) => ({
+//   type: types.SAVE_MESSAGES,
+//   data,
+//   chatId
+// })
 
 const deleteMessages = () => ({
   type: types.DELETE_MESSAGES
@@ -24,16 +25,16 @@ const saveMessage = (message) => ({
   message
 })
 
-const updateMessage = (message) => ({
-  type: types.UPDATE_MESSAGE,
-  message
-})
+// const updateMessage = (message) => ({
+//   type: types.UPDATE_MESSAGE,
+//   message
+// })
 
 export default {
-  saveMessages,
+  // saveMessages,
   deleteMessages,
   toggleMessagesLoading,
   updateChatPage,
   saveMessage,
-  updateMessage
+  // updateMessage 
 }

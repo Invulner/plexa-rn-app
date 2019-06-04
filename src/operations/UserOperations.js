@@ -9,6 +9,7 @@ import ResearchFeedActions from '../actions/ResearchFeedActions'
 import ChatsActions from '../actions/ChatsActions'
 import utils from '../utils'
 import FeedOperations from './FeedOperations'
+import ChatsOperations from './ChatsOperations';
 
 const auth = (credentials, navigation) => {
   return dispatch => {
@@ -65,6 +66,7 @@ const onLoginSuccess = (data, dispatch, navigation) => {
   redirectToFeed(navigation)
   dispatch(getProfileData(navigate, cb))
   dispatch(FeedOperations.getFeed())
+  dispatch(ChatsOperations.getChats())
 }
 
 const saveUserToAsyncStorage = (userSecretData) => {

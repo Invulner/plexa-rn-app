@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native'
 import { RegularText, SemiboldText } from '../components/common/fonts'
-import { GRAY, LIGHT_GRAY, NATIVE_GRAY } from '../assets/styles/colors'
+import { GRAY, LIGHT_GRAY } from '../assets/styles/colors'
 import { connect } from 'react-redux'
 import ChatsOperations from '../operations/ChatsOperations'
 import utils from '../utils'
@@ -115,11 +115,11 @@ class ChatsScreen extends Component {
     })
   }
 
-  componentDidMount() {
-    const { isConnected, getChats } = this.props
+  // componentDidMount() {
+  //   const { isConnected, getChats } = this.props
     
-    isConnected && getChats()
-  }
+  //   isConnected && getChats()
+  // }
 
   render() {
     const { loading } = this.props

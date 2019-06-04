@@ -1,18 +1,20 @@
 import { createSelector } from 'reselect'
 import utils from '../utils'
 
-export const getChatMessages = createSelector(
+export const makeGetChatMessages = () => createSelector(
+  (state, navigation) => navigation,
   state => state.user.full_name,
-  state => state.chat.messages,
-  (userName, messages) => {
+  state => state.chats,
+  (navigation, userName, chats) => {
+    const chatId = navigation.getParam('chatId')
+    const messages = chats.messages[chatId] ? chats.messages[chatId] : []
     const isUser = (item) => {
       return item.author.name === userName
     }
-
-    const isDateItem = (item) => {
+    const isDateItem = (item) => { 
       return !!item.date
     }
-
+    
     const newArr = messages.reduce((acc, item, index, arr) => {
       const nextItem = arr[index + 1]
       acc.push(item)

@@ -1,11 +1,61 @@
 import types from '../types/chats'
+import utils from '../utils'
 
 const initialState = {
   loading: true,
+  page: 1,
   users: [],
   items: [],
   usersLoading: false,
-  areUsersChosen: false
+  areUsersChosen: false,
+  messages: {},
+  messagesLoading: true
+}
+
+// const updateMessage = (state, action) => {
+//   const chat = utils.findItemById(state.items, action.chatId)
+//   const index = chat.messages.findIndex(item => item.seq_id === action.message.seq_id)
+//   const messages = [
+//     ...state.messages.slice(0, index),
+//     action.message,
+//     ...state.messages.slice(index + 1)
+//   ]
+
+//   return {
+//     ...state,
+//     messages
+//   }
+// }
+
+// const saveMessage = (state, acton) => {
+//   const chat = utils.findItemById(state.items, action.chatId)
+
+ 
+// }
+
+const saveMessages = (state, action) => {
+  const { messages } = state
+
+  if (!messages[action.chatId] || messages[action.chatId] && action.page === 1) {
+    return {
+      ...state,
+      page: action.page,
+      messages: {
+        ...messages,
+        [action.chatId]: action.data
+      }
+    }
+  } else if (messages) {
+    
+    return {
+      ...state,
+      page: action.page,
+      messages: {
+        ...messages,
+        [action.chatId]: [...messages[action.chatId], ...action.data]
+      }
+    }
+  }
 }
 
 const updateChat = (state, action) => {
@@ -82,6 +132,21 @@ const ChatsReducer = (state = initialState, action) => {
         ...state,
         areUsersChosen: action.flag
       }
+
+    case types.SAVE_MESSAGES:
+      return saveMessages(state, action)
+
+    case types.TOGGLE_MESSAGES_LOADING:
+      return {
+        ...state,
+        messagesLoading: action.flag
+      }
+
+    // case types.SAVE_MESSAGE:
+    //   return saveMessage(state, action)
+
+    // case types.UPDATE_MESSAGE:
+    //   return updateMessage(state, action)
 
     default:
       return state

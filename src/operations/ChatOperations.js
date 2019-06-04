@@ -7,14 +7,14 @@ let roomConnection
 
 const getMessages = (id, page = 1) => {
   return dispatch => {
-    dispatch(ChatActions.toggleMessagesLoading(true))
+    dispatch(ChatsActions.toggleMessagesLoading(true))
 
     return getAxiosInstance().then(api => {
       api.get(`${API_URL}/rooms/${id}/messages?page=${page}`)
         .then(response => {
-          dispatch(ChatActions.saveMessages(response.data))
-          dispatch(ChatActions.updateChatPage(page))
-          dispatch(ChatActions.toggleMessagesLoading(false))
+          dispatch(ChatsActions.saveMessages(response.data, id, page))
+          // dispatch(ChatActions.updateChatPage(page))
+          dispatch(ChatsActions.toggleMessagesLoading(false))
         }).catch(error => console.log('getMessages CHAT OPERATION ERROR: ', error))
     })
   }
