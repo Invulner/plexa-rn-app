@@ -1,66 +1,34 @@
 import React, { Component } from 'react'
 import { Constants } from 'expo'
 import { connect } from 'react-redux'
-import { View, Image, StyleSheet, NetInfo } from 'react-native'
+import { View, Image, StyleSheet } from 'react-native'
 import DeviceActions from '../actions/DeviceActions'
-import utils from '../utils'
-import AppOperations from '../operations/AppOperations'
-import NetworkActions from '../actions/NetworkActions'
 
 const mapStateToProps = (state) => {
-  const { user, feed: { filter } } = state
+  const { user } = state
 
-  return { 
-    user,
-    filter
-  }
+  return { user }
 }
 
 const mapDispatchToProps = (dispatch) => {
   const saveDeviceInfo = (data) => dispatch(DeviceActions.saveDeviceInfo(data))
-  const updateConnectionStatus = (isConnected) => dispatch(NetworkActions.updateConnectionStatus(isConnected))
-  const fetchFreshData = (navigation, filter) => dispatch(AppOperations.fetchFreshData(navigation, filter))
 
   return { 
-    saveDeviceInfo,
-    fetchFreshData,
-    updateConnectionStatus
+    saveDeviceInfo
   }
 }
 
 class AppLoadingScreen extends Component {
-  isUserSaved = () => {
-    return this.props.user.id
-  }
-
-  addEventListeners = () => {
-    NetInfo.isConnected.addEventListener('connectionChange', this.onConnectionChange)
-  }
-
-  onConnectionChange = (isConnected) => {
-    const { updateConnectionStatus, fetchFreshData, navigation, filter } = this.props
-
-    updateConnectionStatus(isConnected)
-    !isConnected && utils.showConnectivityError()
-    isConnected && this.isUserSaved() && fetchFreshData(navigation, filter)
-  }
-  
   componentDidMount() {
-    const { saveDeviceInfo, navigation: { navigate } } = this.props
+    const { saveDeviceInfo, user, navigation: { navigate } } = this.props
     const data = {
       uuid: Constants.installationId || Constants.deviceId,
       platform: Object.keys(Constants.platform)[0],
       device_name: Constants.deviceName
     }
     
-    utils.startConnectionStatusWorker()
-    this.addEventListeners()
     saveDeviceInfo(data)
-    if (this.isUserSaved()) {
-      navigate('App')
-    } else {
-      navigate('Auth')
-    }
+    user.id ? navigate('App') : navigate('Auth')
   }
 
   render() {

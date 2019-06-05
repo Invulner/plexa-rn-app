@@ -8,7 +8,7 @@ import { AsyncStorage } from 'react-native'
 const persistConfig = {
   key: 'app',
   storage: AsyncStorage,
-  whitelist: ['user', 'feed']
+  whitelist: ['user', 'feed', 'chats']
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

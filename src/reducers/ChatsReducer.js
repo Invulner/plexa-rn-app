@@ -2,11 +2,68 @@ import types from '../types/chats'
 
 const initialState = {
   loading: true,
+  page: 1,
   users: [],
   items: [],
   usersLoading: false,
   areUsersChosen: false,
+  messages: {},
+  messagesLoading: true,
   unread_count: null
+}
+
+const saveMessage = (state, action) => {
+  //check if message from web socket is your own message, and update if it is
+  const chatMessages = state.messages[action.chatId]
+  const message = chatMessages.find(message => message.seq_id === action.message.seq_id)
+
+  if (action.message.seq_id && message) {
+    const messageIndex = chatMessages.findIndex(item => item.seq_id === message.seq_id)
+
+    return {
+      ...state,
+      messages: {
+        ...state.messages,
+        [action.chatId]: [
+          ...chatMessages.slice(0, messageIndex),
+          action.message,
+          ...chatMessages.slice(messageIndex + 1)
+        ]
+      }
+    }
+  }
+
+  return {
+    ...state,
+    messages: {
+      ...state.messages,
+      [action.chatId]: [action.message, ...chatMessages]
+    }
+  }
+}
+
+const saveMessages = (state, action) => {
+  const { messages } = state
+
+  if (!messages[action.chatId] || messages[action.chatId] && action.page === 1) {
+    return {
+      ...state,
+      page: action.page,
+      messages: {
+        ...messages,
+        [action.chatId]: action.data
+      }
+    }
+  } else if (messages) {
+    return {
+      ...state,
+      page: action.page,
+      messages: {
+        ...messages,
+        [action.chatId]: [...messages[action.chatId], ...action.data]
+      }
+    }
+  }
 }
 
 const updateChat = (state, action) => {
@@ -89,6 +146,18 @@ const ChatsReducer = (state = initialState, action) => {
         ...state,
         areUsersChosen: action.flag
       }
+
+    case types.SAVE_MESSAGES:
+      return saveMessages(state, action)
+
+    case types.TOGGLE_MESSAGES_LOADING:
+      return {
+        ...state,
+        messagesLoading: action.flag
+      }
+
+    case types.SAVE_MESSAGE:
+      return saveMessage(state, action)
 
     case types.UPDATE_UNREAD_COUNT:
       return {

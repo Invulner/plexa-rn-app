@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { AppState } from 'react-native'
+import { AppState, NetInfo } from 'react-native'
 import SwitchAppNavigator from '../navigators/SwitchAppNavigator'
 import { createAppContainer } from 'react-navigation'
 import registerForPushNotificationsAsync from '../config/registerForPushNotificationsAsync'
@@ -9,14 +9,18 @@ import ChatsOperations from '../operations/ChatsOperations'
 import DropdownAlert from 'react-native-dropdownalert'
 import { Notifications } from 'expo'
 import { NavigationActions } from 'react-navigation'
+import utils from '../utils'
+import NetworkActions from '../actions/NetworkActions'
 
 const AppContainer = createAppContainer(SwitchAppNavigator)
 
 const mapStateToProps = (state) => {
-  const { user: { loading }} = state
+  const { user: { loading, id }, feed: { filter }} = state
 
   return {
-    loading
+    loading,
+    id,
+    filter
   }
 }
 
@@ -24,16 +28,19 @@ const mapDispatchToProps = (dispatch) => {
   const connectToCable = () => dispatch(AppOperations.connectToCable())
   const updateChat = (data) => dispatch(ChatsOperations.updateChat(data))
   const getChats = () => dispatch(ChatsOperations.getChats())
+  const fetchFreshData = (navigate, filter) => dispatch(AppOperations.fetchFreshData(navigate, filter))
+  const updateConnectionStatus = (isConnected) => dispatch(NetworkActions.updateConnectionStatus(isConnected))
 
   return {
     connectToCable,
     getChats,
-    updateChat
+    updateChat,
+    fetchFreshData,
+    updateConnectionStatus
   }
 }
 
 class AppWrapper extends React.Component {
-
   _handleNotification = (notification) => {
     if (notification.origin === 'selected') {
       this._navigateToPage(notification.data)
@@ -54,9 +61,9 @@ class AppWrapper extends React.Component {
 
   _navigateToPage = (data) => {
     if (data.type === 'answer') {
-      this.navigator.dispatch(NavigationActions.navigate({routeName: 'Post', params: { postId: data.story_id }}))
+      this.navigateToRoute('Post', { postId: data.story_id })
     } else if (data.type === 'message') {
-      this.navigator.dispatch(NavigationActions.navigate({routeName: 'Chat', params: { chatId: data.room_id }}))
+      this.navigateToRoute('Chat', { chatId: data.room_id })
     }
   }
 
@@ -64,6 +71,32 @@ class AppWrapper extends React.Component {
     this.props.connectToCable()
     registerForPushNotificationsAsync()
     this._notificationSubscription = Notifications.addListener(this._handleNotification)
+  }
+
+  isUserSaved = () => {
+    return !!this.props.id
+  }
+
+  navigateToRoute = (routeName, params) => {
+    this.navigator.dispatch(NavigationActions.navigate({routeName, params}))
+  }
+
+  onConnectionChange = (isConnected) => {
+    const { updateConnectionStatus, fetchFreshData, filter } = this.props
+
+    updateConnectionStatus(isConnected)
+    !isConnected && utils.showConnectivityError()
+
+    isConnected && this.isUserSaved() && fetchFreshData(this.navigateToRoute, filter)
+  }
+
+  addEventListeners = () => {
+    NetInfo.isConnected.addEventListener('connectionChange', this.onConnectionChange)
+    AppState.addEventListener('change', this._handleAppStateChange)
+  }
+
+  removeEventListeners = () => {
+    AppState.removeEventListener('change', this._handleAppStateChange)
   }
 
   componentDidUpdate(prevProps) {
@@ -76,11 +109,13 @@ class AppWrapper extends React.Component {
     if (this.props.loading === false) {
       this._setupNetworkConnections()
     }
-    AppState.addEventListener('change', this._handleAppStateChange)
+
+    this.addEventListeners()
+    utils.startConnectionStatusWorker()
   }
 
   componentWillUnmount() {
-    AppState.removeEventListener('change', this._handleAppStateChange)
+    this.removeEventListeners()
   }
 
   render () {

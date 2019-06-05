@@ -1,38 +1,41 @@
 import React, { Component } from 'react'
 import { View, StyleSheet, SafeAreaView, TouchableOpacity, Image, FlatList } from 'react-native'
 import { connect } from 'react-redux'
-import ChatOperations from '../operations/ChatOperations'
 import utils from '../utils'
 import { RegularText } from '../components/common/fonts'
 import { BG_COLOR, GRAY } from '../assets/styles/colors'
 import RoundAvatar from '../components/common/RoundAvatar'
-import { getChatMessages } from '../selectors/ChatMessages'
+import { makeGetChatMessages } from '../selectors/ChatMessages'
 import Loader from '../components/common/Loader'
 import { MESSAGES_IN_PAGE } from '../constants'
 import ReplyBox from '../components/common/ReplyBox'
-import ChatActions from '../actions/ChatActions'
+import ChatsActions from '../actions/ChatsActions'
+import ChatsOperations from '../operations/ChatsOperations'
 
-const mapStateToProps = (state) => {
-  const { loading, page } = state.chat
-  const { isCableConnected } = state.network
+const mapStateToProps = () => {
+  const getChatMessages = makeGetChatMessages()
+  
+  return (state, { navigation }) => {
+    const { page, messagesLoading: loading } = state.chats
+    const { isCableConnected, isConnected } = state.network
 
-  return { 
-    data: getChatMessages(state),
-    loading,
-    page,
-    isCableConnected
+    return { 
+      data: getChatMessages(state, navigation),
+      loading,
+      page,
+      isCableConnected,
+      isConnected
+    }
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
-  const getMessages = (id, page) => dispatch(ChatOperations.getMessages(id, page))
-  const resetChat = () => dispatch(ChatOperations.resetChat())
-  const connectToWs = (chatId) => dispatch(ChatOperations.connectToWs(chatId))
-  const toggleLoading = (flag) => dispatch(ChatActions.toggleMessagesLoading(flag))
+  const getMessages = (id, page) => dispatch(ChatsOperations.getMessages(id, page))
+  const connectToWs = (chatId) => dispatch(ChatsOperations.connectToWs(chatId))
+  const toggleLoading = (flag) => dispatch(ChatsActions.toggleMessagesLoading(flag))
 
   return { 
     getMessages,
-    resetChat,
     connectToWs,
     toggleLoading
   }
@@ -121,31 +124,34 @@ class ChatScreen extends Component {
   }
 
   componentDidMount() {
-    const { getMessages, toggleLoading, navigation, isCableConnected, connectToWs } = this.props
+    const { getMessages, toggleLoading, navigation, isCableConnected, connectToWs, isConnected } = this.props
 
     if (this.getChatId()) {
-      getMessages(this.getChatId())
+      isConnected && getMessages(this.getChatId())
       if (isCableConnected) {
         connectToWs(this.getChatId())
       }
-    } else {
+    } else if (!this.getChatId() || !isConnected) {
       toggleLoading(false)
     }
     navigation.setParams({ isChatScreen: true })
   }
 
   componentDidUpdate(prevProps) {
-    const { isCableConnected, connectToWs } = this.props
+    const { isCableConnected, connectToWs, isConnected, getMessages } = this.props
 
     if (prevProps.isCableConnected !== isCableConnected && isCableConnected) {
       connectToWs(this.getChatId())
     }
+
+    if(prevProps.isConnected !== this.props.isConnected && isConnected) {
+      getMessages(this.getChatId())
+    }
   }
 
   componentWillUnmount() {
-    const { navigation, resetChat } = this.props
-    this.getChatId() && resetChat()
-    navigation.setParams({ isChatScreen: false })
+    this.getChatId() && ChatsOperations.resetChat()
+    this.props.navigation.setParams({ isChatScreen: false })
   }
   
   render() {
