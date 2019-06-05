@@ -26,7 +26,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   const connectToCable = () => dispatch(AppOperations.connectToCable())
   const updateConnectionStatus = (isConnected) => dispatch(NetworkActions.updateConnectionStatus(isConnected))
-  //navigation???
   const fetchFreshData = (navigation, filter) => dispatch(AppOperations.fetchFreshData(navigation, filter))
 
   return {
@@ -51,9 +50,9 @@ class AppWrapper extends React.Component {
 
   _navigateToPage = (data) => {
     if (data.type === 'answer') {
-      this.navigator.dispatch(NavigationActions.navigate({routeName: 'Post', params: { postId: data.story_id }}))
+      this.navigateToRoute('Post', { postId: data.story_id })
     } else if (data.type === 'message') {
-      this.navigator.dispatch(NavigationActions.navigate({routeName: 'Chat', params: { chatId: data.room_id }}))
+      this.navigateToRoute('Chat', { chatId: data.room_id })
     }
   }
 
@@ -67,8 +66,8 @@ class AppWrapper extends React.Component {
     return this.props.id
   }
 
-  navigateToRoute = (route) => {
-    this.navigator.dispatch(NavigationActions.navigate({routeName: route}))
+  navigateToRoute = (route, params) => {
+    this.navigator.dispatch(NavigationActions.navigate({routeName: route, params}))
   }
 
   onConnectionChange = (isConnected) => {
