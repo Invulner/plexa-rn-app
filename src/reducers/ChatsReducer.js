@@ -1,5 +1,4 @@
 import types from '../types/chats'
-import utils from '../utils'
 
 const initialState = {
   loading: true,
@@ -12,28 +11,13 @@ const initialState = {
   messagesLoading: true
 }
 
-// const updateMessage = (state, action) => {
-//   const chat = utils.findItemById(state.items, action.chatId)
-//   const index = chat.messages.findIndex(item => item.seq_id === action.message.seq_id)
-//   const messages = [
-//     ...state.messages.slice(0, index),
-//     action.message,
-//     ...state.messages.slice(index + 1)
-//   ]
-
-//   return {
-//     ...state,
-//     messages
-//   }
-// }
-
 const saveMessage = (state, action) => {
+  //check if message from web socket is your own message, and update if it is
   const chatMessages = state.messages[action.chatId]
-  console.log('chatMessages :', chatMessages)
-  //check if message from web socket is not your own message
   const message = chatMessages.find(message => message.seq_id === action.message.seq_id)
+
   if (action.message.seq_id && message) {
-    const messageIndex = chatMessages.findIndex(item => item.id === message.id)
+    const messageIndex = chatMessages.findIndex(item => item.seq_id === message.seq_id)
 
     return {
       ...state,
@@ -167,9 +151,6 @@ const ChatsReducer = (state = initialState, action) => {
 
     case types.SAVE_MESSAGE:
       return saveMessage(state, action)
-
-    // case types.UPDATE_MESSAGE:
-    //   return updateMessage(state, action)
 
     default:
       return state

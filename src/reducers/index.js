@@ -8,7 +8,6 @@ import ResearchFeedReducer from './ResearchFeedReducer'
 import PostReducer from './PostReducer'
 import LocationsReducer from './LocationsReducer'
 import ChatsReducer from './ChatsReducer'
-import ChatReducer from './ChatReducer'
 import NetworkReducer from './NetworkReducer'
 
 const rootReducer = combineReducers({
@@ -21,7 +20,6 @@ const rootReducer = combineReducers({
   post: PostReducer,
   locations: LocationsReducer,
   chats: ChatsReducer,
-  chat: ChatReducer,
   network: NetworkReducer
 })
 

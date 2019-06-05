@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { View, StyleSheet, SafeAreaView, TouchableOpacity, Image, FlatList } from 'react-native'
 import { connect } from 'react-redux'
-import ChatOperations from '../operations/ChatOperations'
 import utils from '../utils'
 import { RegularText } from '../components/common/fonts'
 import { BG_COLOR, GRAY } from '../assets/styles/colors'
@@ -11,6 +10,7 @@ import Loader from '../components/common/Loader'
 import { MESSAGES_IN_PAGE } from '../constants'
 import ReplyBox from '../components/common/ReplyBox'
 import ChatsActions from '../actions/ChatsActions'
+import ChatsOperations from '../operations/ChatsOperations'
 
 const mapStateToProps = () => {
   const getChatMessages = makeGetChatMessages()
@@ -30,14 +30,12 @@ const mapStateToProps = () => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-  const getMessages = (id, page) => dispatch(ChatOperations.getMessages(id, page))
-  const resetChat = () => dispatch(ChatOperations.resetChat())
-  const connectToWs = (chatId) => dispatch(ChatOperations.connectToWs(chatId))
+  const getMessages = (id, page) => dispatch(ChatsOperations.getMessages(id, page))
+  const connectToWs = (chatId) => dispatch(ChatsOperations.connectToWs(chatId))
   const toggleLoading = (flag) => dispatch(ChatsActions.toggleMessagesLoading(flag))
 
   return { 
     getMessages,
-    resetChat,
     connectToWs,
     toggleLoading
   }
@@ -152,10 +150,8 @@ class ChatScreen extends Component {
   }
 
   componentWillUnmount() {
-    const { navigation, resetChat } = this.props
-
-    this.getChatId() && resetChat()
-    navigation.setParams({ isChatScreen: false })
+    this.getChatId() && ChatsOperations.resetChat()
+    this.props.navigation.setParams({ isChatScreen: false })
   }
   
   render() {
