@@ -22,7 +22,6 @@ class AppHeaderRight extends Component {
     const { navigation, isConnected, toggleFeedFilter } = this.props
     const isChatsScreen = navigation.getParam('isChatsScreen')
     const isFeedScreen = navigation.getParam('isFeedScreen')
-    console.log('isConnected', isConnected)
 
     return (
       <TouchableOpacity

@@ -28,7 +28,7 @@ const mapDispatchToProps = (dispatch) => {
   const connectToCable = () => dispatch(AppOperations.connectToCable())
   const updateChat = (data) => dispatch(ChatsOperations.updateChat(data))
   const getChats = () => dispatch(ChatsOperations.getChats())
-  const fetchFreshData = (navigation, filter) => dispatch(AppOperations.fetchFreshData(navigation, filter))
+  const fetchFreshData = (navigate, filter) => dispatch(AppOperations.fetchFreshData(navigate, filter))
   const updateConnectionStatus = (isConnected) => dispatch(NetworkActions.updateConnectionStatus(isConnected))
 
   return {
