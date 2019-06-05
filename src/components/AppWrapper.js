@@ -41,7 +41,6 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 class AppWrapper extends React.Component {
-
   _handleNotification = (notification) => {
     if (notification.origin === 'selected') {
       this._navigateToPage(notification.data)
@@ -75,11 +74,11 @@ class AppWrapper extends React.Component {
   }
 
   isUserSaved = () => {
-    return this.props.id
+    return !!this.props.id
   }
 
-  navigateToRoute = (route, params) => {
-    this.navigator.dispatch(NavigationActions.navigate({routeName: route, params}))
+  navigateToRoute = (routeName, params) => {
+    this.navigator.dispatch(NavigationActions.navigate({routeName, params}))
   }
 
   onConnectionChange = (isConnected) => {

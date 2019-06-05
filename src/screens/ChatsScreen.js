@@ -13,13 +13,11 @@ import Badge from '../components/common/Badge'
 
 const mapStateToProps = (state) => {
   const { items, loading } = state.chats
-  const { isConnected } = state.network
   const sortedChats = !!items && items.sort(utils.sortByTime({ field: 'last_message_date', order: 'desc' }))
 
   return { 
     sortedChats,
-    loading,
-    isConnected
+    loading
   }
 }
 

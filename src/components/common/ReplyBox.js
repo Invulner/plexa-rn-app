@@ -3,7 +3,7 @@ import { View, StyleSheet, Image, TextInput, TouchableOpacity, KeyboardAvoidingV
 import { BRAND_LIGHT } from '../../assets/styles/colors'
 import GrayLine from '../common/GrayLine'
 import { connect } from 'react-redux'
-import CommentOperations from '../../operations/CommentsOperations'
+import CommentsOperations from '../../operations/CommentsOperations'
 import { BG_COLOR } from '../../assets/styles/colors'
 import utils from '../../utils'
 import ChatsOperations from '../../operations/ChatsOperations'
@@ -20,8 +20,8 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch, { navigation }) => {
-  const postComment = (comment) => dispatch(CommentOperations.postComment(comment, navigation))
-  const updateComment = (comment) => dispatch(CommentOperations.updateComment(comment))
+  const postComment = (comment) => dispatch(CommentsOperations.postComment(comment, navigation))
+  const updateComment = (comment) => dispatch(CommentsOperations.updateComment(comment))
   const sendMessage = (chatId, messageParams) => dispatch(ChatsOperations.sendMessage(chatId, messageParams))
   const createChat = (userIds, messageParams) => dispatch(ChatsOperations.createChat(userIds, messageParams, navigation))
 

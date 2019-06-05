@@ -50,10 +50,6 @@ const clearUserSecretData = () => {
   AsyncStorage.removeItem('secretData', (error) => error ? console.log('ERROR: ', error) : null)
 }
 
-const redirectToLogin = (navigation) => {
-  navigation.navigate('Auth')
-}
-
 const onLoginSuccess = (data, dispatch, navigation) => {
   const { id, email, provider, uid, customer_id, discuss_api_token } = data
   const userData = {id, email, provider, customer_id}
