@@ -96,6 +96,10 @@ class AppWrapper extends React.Component {
     AppState.addEventListener('change', this._handleAppStateChange)
   }
 
+  removeEventListeners = () => {
+    AppState.removeEventListener('change', this._handleAppStateChange)
+  }
+
   componentDidUpdate(prevProps) {
     if (prevProps.loading !== this.props.loading && this.props.loading === false) {
       this._setupNetworkConnections()
@@ -112,8 +116,7 @@ class AppWrapper extends React.Component {
   }
 
   componentWillUnmount() {
-    AppState.removeEventListener('change', this._handleAppStateChange)
-    console.log('unmount')
+    this.removeEventListeners()
   }
 
   render () {
