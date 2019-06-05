@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Vibration } from 'react-native'
+import { AppState } from 'react-native'
 import SwitchAppNavigator from '../navigators/SwitchAppNavigator'
 import { createAppContainer } from 'react-navigation'
 import registerForPushNotificationsAsync from '../config/registerForPushNotificationsAsync'
@@ -23,9 +23,11 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   const connectToCable = () => dispatch(AppOperations.connectToCable())
   const updateChat = (data) => dispatch(ChatsOperations.updateChat(data))
+  const getChats = () => dispatch(ChatsOperations.getChats())
 
   return {
     connectToCable,
+    getChats,
     updateChat
   }
 }
@@ -33,16 +35,20 @@ const mapDispatchToProps = (dispatch) => {
 class AppWrapper extends React.Component {
 
   _handleNotification = (notification) => {
-    Vibration.vibrate(1000)
-
     if (notification.origin === 'selected') {
       this._navigateToPage(notification.data)
     } else {
       this.dropdown.alertWithType('info', notification.data.title, notification.data.body)
       this.notificationData = notification.data
-      if (notification.data.type === 'message') {
-        this.props.updateChat({room_id: notification.data.room_id, text: notification.data.body, created_at: Date.now(), increase_count: true})
-      }
+    }
+    if (notification.data.type === 'message') {
+      this.props.updateChat({room_id: notification.data.room_id, text: notification.data.body, created_at: Date.now(), increase_count: true})
+    }
+  }
+
+  _handleAppStateChange = (nextAppState) => {
+    if (nextAppState === 'active') {
+      this.props.getChats()
     }
   }
 
@@ -70,6 +76,11 @@ class AppWrapper extends React.Component {
     if (this.props.loading === false) {
       this._setupNetworkConnections()
     }
+    AppState.addEventListener('change', this._handleAppStateChange)
+  }
+
+  componentWillUnmount() {
+    AppState.removeEventListener('change', this._handleAppStateChange)
   }
 
   render () {
