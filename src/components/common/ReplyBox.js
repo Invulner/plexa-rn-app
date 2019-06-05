@@ -3,17 +3,17 @@ import { View, StyleSheet, Image, TextInput, TouchableOpacity, KeyboardAvoidingV
 import { BRAND_LIGHT } from '../../assets/styles/colors'
 import GrayLine from '../common/GrayLine'
 import { connect } from 'react-redux'
-import CommentOperations from '../../operations/CommentsOperations'
+import CommentsOperations from '../../operations/CommentsOperations'
 import { BG_COLOR } from '../../assets/styles/colors'
 import ChatOperations from '../../operations/ChatOperations'
 import utils from '../../utils'
 import ChatsOperations from '../../operations/ChatsOperations'
 
 const mapStateToProps = (state) => {
-  const { user: { full_name }, chats: { chosenUsers }, comments: { editable }, device: { device_name } } = state
+  const { user, chats: { chosenUsers }, comments: { editable }, device: { device_name } } = state
 
   return { 
-    full_name,
+    user,
     chosenUsers,
     editable,
     device_name
@@ -21,8 +21,8 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch, { navigation }) => {
-  const postComment = (comment) => dispatch(CommentOperations.postComment(comment, navigation))
-  const updateComment = (comment) => dispatch(CommentOperations.updateComment(comment))
+  const postComment = (comment) => dispatch(CommentsOperations.postComment(comment, navigation))
+  const updateComment = (comment) => dispatch(CommentsOperations.updateComment(comment))
   const sendMessage = (chatId, messageParams) => dispatch(ChatOperations.sendMessage(chatId, messageParams))
   const createChat = (userIds, messageParams) => dispatch(ChatsOperations.createChat(userIds, messageParams, navigation))
 
@@ -57,15 +57,23 @@ class ReplyBox extends Component {
   }
 
   onSubmit = () => {
-    const { postComment, updateComment, sendMessage, createChat, type, chatId, full_name, chosenUsers, editable } = this.props
+    const { postComment, updateComment, sendMessage, createChat, type, chatId, user, chosenUsers, editable } = this.props
     const reply = this.state.reply.trim()
     const messageParams = {
       text: reply,
       seq_id: utils.getRandomNumber(1000, 100000),
       author: {
-        name: full_name
+        name: user.full_name
       },
       created_at: new Date().toString()
+    }
+    const commentParams = {
+      id: utils.getRandomNumber(1000, 10000),
+      likes_count: 0,
+      author: user,
+      created_at: new Date().toString(),
+      content: reply,
+      updating: true
     }
 
     switch (type) {
@@ -73,7 +81,7 @@ class ReplyBox extends Component {
         if (editable) {
           updateComment({id: editable.id, content: reply})
         } else {
-          postComment(reply)
+          postComment(commentParams)
         }
         Keyboard.dismiss()
         break

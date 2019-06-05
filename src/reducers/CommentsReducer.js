@@ -10,6 +10,23 @@ const initialState = {
   post_id: null
 }
 
+const addComment = (state, action) => {
+  const updatingComment = state.items.find(comment => comment.updating)
+
+  if (updatingComment) {
+    const newItems = state.items.filter(comment => !comment.updating)
+    return {
+      ...state,
+      items: [...newItems, action.item]
+    }
+  }
+
+  return {
+    ...state,
+    items: [...state.items, action.item]
+  }
+}
+
 const updateComment = (state, action) => {
   if (action.data) {
     const newItems = utils.updateItemById(state.items, action.id, action.data)
@@ -42,13 +59,7 @@ const CommentsReducer = (state = initialState, action) => {
       return initialState
 
     case types.ADD_COMMENT:
-      return {
-        ...state,
-        items: [
-          ...state.items,
-          action.item
-        ]
-      }
+      return addComment(state, action)
 
     case types.UPDATE_COMMENT:
       return updateComment(state, action)
