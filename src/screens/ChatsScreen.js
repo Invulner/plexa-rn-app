@@ -122,12 +122,6 @@ class ChatsScreen extends Component {
     })
   }
 
-  // componentDidMount() {
-  //   const { isConnected, getChats } = this.props
-    
-  //   isConnected && getChats()
-  // }
-
   render() {
     const { loading } = this.props
 

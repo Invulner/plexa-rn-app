@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { AppState } from 'react-native'
+import { AppState, NetInfo } from 'react-native'
 import SwitchAppNavigator from '../navigators/SwitchAppNavigator'
 import { createAppContainer } from 'react-navigation'
 import registerForPushNotificationsAsync from '../config/registerForPushNotificationsAsync'
@@ -10,6 +10,7 @@ import DropdownAlert from 'react-native-dropdownalert'
 import { Notifications } from 'expo'
 import { NavigationActions } from 'react-navigation'
 import utils from '../utils'
+import NetworkActions from '../actions/NetworkActions'
 
 const AppContainer = createAppContainer(SwitchAppNavigator)
 
@@ -28,12 +29,14 @@ const mapDispatchToProps = (dispatch) => {
   const updateChat = (data) => dispatch(ChatsOperations.updateChat(data))
   const getChats = () => dispatch(ChatsOperations.getChats())
   const fetchFreshData = (navigation, filter) => dispatch(AppOperations.fetchFreshData(navigation, filter))
+  const updateConnectionStatus = (isConnected) => dispatch(NetworkActions.updateConnectionStatus(isConnected))
 
   return {
     connectToCable,
     getChats,
     updateChat,
     fetchFreshData,
+    updateConnectionStatus
   }
 }
 

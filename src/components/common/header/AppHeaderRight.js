@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { TouchableOpacity, Image, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
-import FeedActions from '../../../actions/FeedActions';
+import FeedActions from '../../../actions/FeedActions'
 
 const mapStateToProps = (state) => {
   const { isConnected } = state.network
@@ -22,6 +22,7 @@ class AppHeaderRight extends Component {
     const { navigation, isConnected, toggleFeedFilter } = this.props
     const isChatsScreen = navigation.getParam('isChatsScreen')
     const isFeedScreen = navigation.getParam('isFeedScreen')
+    console.log('isConnected', isConnected)
 
     return (
       <TouchableOpacity
