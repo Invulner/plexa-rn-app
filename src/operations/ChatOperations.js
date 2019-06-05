@@ -23,7 +23,7 @@ const getMessages = (id, page = 1) => {
 const resetChat = () => {
   return dispatch => {
     dispatch(ChatActions.deleteMessages())
-    dispatch(ChatActions.updateChatPage(1))
+    // dispatch(ChatActions.updateChatPage(1))
     roomConnection.unsubscribe()
   }
 }
@@ -37,7 +37,7 @@ const connectToWs = (chatId) => {
       },
       {
         received: (data) => {
-          dispatch(ChatActions.saveMessage(data))
+          dispatch(ChatsActions.saveMessage(data, data.room_id))
           dispatch(ChatsActions.updateChat(data))
         }
       }
@@ -47,14 +47,18 @@ const connectToWs = (chatId) => {
 
 const sendMessage = (chatId, params, ifConnectToWs = false) => {
   return dispatch => {
-    dispatch(ChatActions.saveMessage(params)) 
+    dispatch(ChatsActions.saveMessage(params, chatId)) 
 
     return getAxiosInstance().then(api => {
       api.post(`${API_URL}/rooms/${chatId}/messages`, params)
         .then(response => {
           dispatch(ChatActions.updateMessage(response.data))
           dispatch(ChatsActions.updateChat(response.data))
-          ifConnectToWs && dispatch(connectToWs(chatId))
+          if (ifConnectToWs) {
+            console.log('condition')
+            dispatch(connectToWs(chatId))
+          }
+          // ifConnectToWs && dispatch(connectToWs(chatId))
         }).catch(error => console.log('sendMessage CHAT OPERATION ERROR: ', error))
     })
   }

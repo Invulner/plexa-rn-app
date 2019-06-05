@@ -36,27 +36,27 @@ const chatReducer = (state = initialState, action) => {
         messages: initialState.messages
       }
 
-    case types.TOGGLE_MESSAGES_LOADING:
-      return {
-        ...state,
-        loading: action.flag
-      }
+    // case types.TOGGLE_MESSAGES_LOADING:
+    //   return {
+    //     ...state,
+    //     loading: action.flag
+    //   }
 
-    case types.UPDATE_CHAT_PAGE:
-      return {
-        ...state,
-        page: action.page
-      }
+    // case types.UPDATE_CHAT_PAGE:
+    //   return {
+    //     ...state,
+    //     page: action.page
+    //   }
 
-    case types.SAVE_MESSAGE:
-      //check if message from web socket is not your own message
-	    if (action.message.seq_id && state.messages.find(message => message.seq_id === action.message.seq_id)) {
-        return state
-      }
-      return {
-        ...state,
-        messages: [action.message, ...state.messages]
-      }
+    // case types.SAVE_MESSAGE:
+    //   //check if message from web socket is not your own message
+	  //   if (action.message.seq_id && state.messages.find(message => message.seq_id === action.message.seq_id)) {
+    //     return state
+    //   }
+    //   return {
+    //     ...state,
+    //     messages: [action.message, ...state.messages]
+    //   }
 
     case types.UPDATE_MESSAGE:
       return updateMessage(state, action)

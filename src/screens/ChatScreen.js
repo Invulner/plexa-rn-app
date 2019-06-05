@@ -16,8 +16,7 @@ const mapStateToProps = () => {
   const getChatMessages = makeGetChatMessages()
   
   return (state, { navigation }) => {
-    const { page } = state.chats
-    const { messagesLoading: loading } = state.chats
+    const { page, messagesLoading: loading } = state.chats
     const { isCableConnected, isConnected } = state.network
 
     return { 
@@ -141,10 +140,14 @@ class ChatScreen extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { isCableConnected, connectToWs } = this.props
+    const { isCableConnected, connectToWs, isConnected, getMessages } = this.props
 
     if (prevProps.isCableConnected !== isCableConnected && isCableConnected) {
       connectToWs(this.getChatId())
+    }
+
+    if(prevProps.isConnected !== this.props.isConnected && isConnected) {
+      getMessages(this.getChatId())
     }
   }
 

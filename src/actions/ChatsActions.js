@@ -61,11 +61,10 @@ const updateMessage = (message, chatId) => ({
   chatId
 })
 
-const saveMessage = (message, chatId, page) => ({
+const saveMessage = (message, chatId) => ({
   type: types.SAVE_MESSAGE,
   message,
-  chatId,
-  page
+  chatId
 })
 
 const toggleMessagesLoading = (flag) => ({

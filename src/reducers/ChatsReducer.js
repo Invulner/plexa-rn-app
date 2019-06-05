@@ -27,11 +27,21 @@ const initialState = {
 //   }
 // }
 
-// const saveMessage = (state, acton) => {
-//   const chat = utils.findItemById(state.items, action.chatId)
+const saveMessage = (state, action) => {
+  const chatMessages = state.messages[action.chatId]
+  //check if message from web socket is not your own message
+  if (action.message.seq_id && chatMessages.find(message => message.seq_id === action.message.seq_id)) {
+    return state
+  }
 
- 
-// }
+  return {
+    ...state,
+    messages: {
+      ...state.messages,
+      [action.chatId]: [action.message, ...chatMessages]
+    }
+  }
+}
 
 const saveMessages = (state, action) => {
   const { messages } = state
@@ -46,7 +56,6 @@ const saveMessages = (state, action) => {
       }
     }
   } else if (messages) {
-    
     return {
       ...state,
       page: action.page,
@@ -142,8 +151,8 @@ const ChatsReducer = (state = initialState, action) => {
         messagesLoading: action.flag
       }
 
-    // case types.SAVE_MESSAGE:
-    //   return saveMessage(state, action)
+    case types.SAVE_MESSAGE:
+      return saveMessage(state, action)
 
     // case types.UPDATE_MESSAGE:
     //   return updateMessage(state, action)
