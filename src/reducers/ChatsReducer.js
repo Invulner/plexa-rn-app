@@ -29,9 +29,23 @@ const initialState = {
 
 const saveMessage = (state, action) => {
   const chatMessages = state.messages[action.chatId]
+  console.log('chatMessages :', chatMessages)
   //check if message from web socket is not your own message
-  if (action.message.seq_id && chatMessages.find(message => message.seq_id === action.message.seq_id)) {
-    return state
+  const message = chatMessages.find(message => message.seq_id === action.message.seq_id)
+  if (action.message.seq_id && message) {
+    const messageIndex = chatMessages.findIndex(item => item.id === message.id)
+
+    return {
+      ...state,
+      messages: {
+        ...state.messages,
+        [action.chatId]: [
+          ...chatMessages.slice(0, messageIndex),
+          action.message,
+          ...chatMessages.slice(messageIndex + 1)
+        ]
+      }
+    }
   }
 
   return {

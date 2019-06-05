@@ -5,19 +5,19 @@ const initialState = {
   loading: true
 }
 
-const updateMessage = (state, action) => {
-  const index = state.messages.findIndex(item => item.seq_id === action.message.seq_id)
-  const messages = [
-    ...state.messages.slice(0, index),
-    action.message,
-    ...state.messages.slice(index + 1)
-  ]
+// const updateMessage = (state, action) => {
+//   const index = state.messages.findIndex(item => item.seq_id === action.message.seq_id)
+//   const messages = [
+//     ...state.messages.slice(0, index),
+//     action.message,
+//     ...state.messages.slice(index + 1)
+//   ]
 
-  return {
-    ...state,
-    messages
-  }
-}
+//   return {
+//     ...state,
+//     messages
+//   }
+// }
 
 const chatReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -58,8 +58,8 @@ const chatReducer = (state = initialState, action) => {
     //     messages: [action.message, ...state.messages]
     //   }
 
-    case types.UPDATE_MESSAGE:
-      return updateMessage(state, action)
+    // case types.UPDATE_MESSAGE:
+    //   return updateMessage(state, action)
 
     default:
       return state

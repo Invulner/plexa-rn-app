@@ -52,13 +52,9 @@ const sendMessage = (chatId, params, ifConnectToWs = false) => {
     return getAxiosInstance().then(api => {
       api.post(`${API_URL}/rooms/${chatId}/messages`, params)
         .then(response => {
-          dispatch(ChatActions.updateMessage(response.data))
-          dispatch(ChatsActions.updateChat(response.data))
-          if (ifConnectToWs) {
-            console.log('condition')
-            dispatch(connectToWs(chatId))
-          }
-          // ifConnectToWs && dispatch(connectToWs(chatId))
+          // dispatch(ChatActions.updateMessage(response.data))
+          // dispatch(ChatsActions.updateChat(response.data))
+          ifConnectToWs && dispatch(connectToWs(chatId))
         }).catch(error => console.log('sendMessage CHAT OPERATION ERROR: ', error))
     })
   }
