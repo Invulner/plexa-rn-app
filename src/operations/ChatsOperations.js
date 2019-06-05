@@ -97,6 +97,12 @@ const resetChat = () => {
   roomConnection.unsubscribe()
 }
 
+const updateChat = (data) => {
+  return dispatch => {
+    dispatch(ChatsActions.updateChat(data))
+  }
+}
+
 export default {
   getChats,
   getUsers,
@@ -104,5 +110,6 @@ export default {
   getMessages,
   sendMessage,
   connectToWs,
-  resetChat
+  resetChat,
+  updateChat,
 }

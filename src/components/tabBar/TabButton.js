@@ -2,9 +2,10 @@ import React from 'react'
 import { StyleSheet, TouchableOpacity, Image } from 'react-native'
 import { tabIcons } from '../../constants'
 import { withNavigation } from 'react-navigation'
+import Badge from '../common/Badge'
 
 function TabButton(props) {
-  const { iconType, route, navigation, tabIndex } = props
+  const { iconType, route, navigation, tabIndex, badgeValue } = props
 
   getSrc = () => {
     return tabIndex === navigation.state.index ? iconType + '-active' : iconType
@@ -19,6 +20,9 @@ function TabButton(props) {
       <Image 
         style={styles.messageIcon}
         source={tabIcons[getSrc()]} />
+      {!!badgeValue &&
+        <Badge boxStyle={styles.badge} value={badgeValue} />
+      }
     </TouchableOpacity>
   )
 }
@@ -27,6 +31,11 @@ const styles = StyleSheet.create({
   messageIcon: {
     width: 30, 
     resizeMode: 'contain'
+  },
+
+  badge: {
+    bottom: 3,
+    left: 55
   },
 
   iconBox: {
