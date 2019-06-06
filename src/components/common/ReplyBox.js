@@ -66,17 +66,18 @@ class ReplyBox extends Component {
       },
       created_at: new Date().toString()
     }
-    const commentParams = {
-      id: utils.getRandomNumber(1000, 10000),
-      likes_count: 0,
-      author: user,
-      created_at: new Date().toString(),
-      content: reply,
-      updating: true
-    }
-
+    
     switch (type) {
       case 'comment':
+        const commentParams = {
+          id: utils.getRandomNumber(1000, 10000),
+          likes_count: 0,
+          author: user,
+          created_at: new Date().toString(),
+          content: reply,
+          updating: true
+        }
+        
         if (editable) {
           updateComment({id: editable.id, content: reply})
         } else {
