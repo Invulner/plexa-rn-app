@@ -8,8 +8,7 @@ const getComments = (navigation) => {
     dispatch(CommentsActions.toggleCommentsLoading(true))
 
     return getAxiosInstance().then(api => {
-      const fallBackId = 1093
-      const postId = navigation.getParam('postId', fallBackId)
+      const postId = navigation.getParam('postId')
 
       api.get(`${API_URL}/stories/${postId}/answers`)
         .then(response => {
@@ -23,13 +22,11 @@ const getComments = (navigation) => {
 
 const postComment = (comment, navigation) => {
   return dispatch => {
-
-    const fallBackId = 1093
-    const postId = navigation.getParam('postId', fallBackId)
-    const param = { content: comment }
+    const postId = navigation.getParam('postId')
+    dispatch(CommentsActions.addComment(comment))
 
     getAxiosInstance().then(api => {
-      api.post(`${API_URL}/stories/${postId}/answers`, param)
+      api.post(`${API_URL}/stories/${postId}/answers`, {content: comment.content})
         .then(response => {
           dispatch(CommentsActions.addComment(response.data))
           dispatch(FeedActions.updateCommentsCounter(postId))

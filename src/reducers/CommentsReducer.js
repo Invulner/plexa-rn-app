@@ -45,7 +45,7 @@ const CommentsReducer = (state = initialState, action) => {
       return {
         ...state,
         items: [
-          ...state.items,
+          ...state.items.filter(comment => !comment.updating),
           action.item
         ]
       }

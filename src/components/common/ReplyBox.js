@@ -9,10 +9,10 @@ import utils from '../../utils'
 import ChatsOperations from '../../operations/ChatsOperations'
 
 const mapStateToProps = (state) => {
-  const { user: { full_name }, chats: { chosenUsers }, comments: { editable }, device: { device_name } } = state
+  const { user, chats: { chosenUsers }, comments: { editable }, device: { device_name } } = state
 
   return { 
-    full_name,
+    user,
     chosenUsers,
     editable,
     device_name
@@ -56,23 +56,32 @@ class ReplyBox extends Component {
   }
 
   onSubmit = () => {
-    const { postComment, updateComment, sendMessage, createChat, type, chatId, full_name, chosenUsers, editable } = this.props
+    const { postComment, updateComment, sendMessage, createChat, type, chatId, user, chosenUsers, editable } = this.props
     const reply = this.state.reply.trim()
     const messageParams = {
       text: reply,
       seq_id: utils.getRandomNumber(1000, 100000),
       author: {
-        name: full_name
+        name: user.full_name
       },
       created_at: new Date().toString()
     }
-
+    
     switch (type) {
       case 'comment':
+        const commentParams = {
+          id: utils.getRandomNumber(1000, 10000),
+          likes_count: 0,
+          author: user,
+          created_at: new Date().toString(),
+          content: reply,
+          updating: true
+        }
+        
         if (editable) {
           updateComment({id: editable.id, content: reply})
         } else {
-          postComment(reply)
+          postComment(commentParams)
         }
         Keyboard.dismiss()
         break
