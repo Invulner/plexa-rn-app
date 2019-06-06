@@ -22,11 +22,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch, { navigation }) => {
   const postComment = (comment) => dispatch(CommentsOperations.postComment(comment, navigation))
   const updateComment = (comment) => dispatch(CommentsOperations.updateComment(comment))
-<<<<<<< HEAD
-  const sendMessage = (chatId, messageParams) => dispatch(ChatOperations.sendMessage(chatId, messageParams))
-=======
   const sendMessage = (chatId, messageParams) => dispatch(ChatsOperations.sendMessage(chatId, messageParams))
->>>>>>> master
   const createChat = (userIds, messageParams) => dispatch(ChatsOperations.createChat(userIds, messageParams, navigation))
 
   return { 
