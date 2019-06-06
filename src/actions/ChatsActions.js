@@ -48,6 +48,30 @@ const toggleChosenUsersFlag = (flag) => ({
   flag
 })
 
+const saveMessages = (data, chatId, page) => ({
+  type: types.SAVE_MESSAGES,
+  data,
+  chatId,
+  page
+})
+
+const updateMessage = (message, chatId) => ({
+  type: types.UPDATE_MESSAGE,
+  message,
+  chatId
+})
+
+const saveMessage = (message, chatId) => ({
+  type: types.SAVE_MESSAGE,
+  message,
+  chatId
+})
+
+const toggleMessagesLoading = (flag) => ({
+  type: types.TOGGLE_MESSAGES_LOADING,
+  flag
+})
+
 const updateUnreadCount = (data) => ({
   type: types.UPDATE_UNREAD_COUNT,
   data
@@ -64,5 +88,9 @@ export default {
   updateChat,
   saveChosenUsers,
   toggleUsersLoading,
-  toggleChosenUsersFlag
+  toggleChosenUsersFlag,
+  saveMessages,
+  updateMessage,
+  saveMessage,
+  toggleMessagesLoading
 }

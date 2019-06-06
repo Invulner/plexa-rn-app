@@ -5,7 +5,6 @@ import GrayLine from '../common/GrayLine'
 import { connect } from 'react-redux'
 import CommentsOperations from '../../operations/CommentsOperations'
 import { BG_COLOR } from '../../assets/styles/colors'
-import ChatOperations from '../../operations/ChatOperations'
 import utils from '../../utils'
 import ChatsOperations from '../../operations/ChatsOperations'
 
@@ -23,7 +22,11 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch, { navigation }) => {
   const postComment = (comment) => dispatch(CommentsOperations.postComment(comment, navigation))
   const updateComment = (comment) => dispatch(CommentsOperations.updateComment(comment))
+<<<<<<< HEAD
   const sendMessage = (chatId, messageParams) => dispatch(ChatOperations.sendMessage(chatId, messageParams))
+=======
+  const sendMessage = (chatId, messageParams) => dispatch(ChatsOperations.sendMessage(chatId, messageParams))
+>>>>>>> master
   const createChat = (userIds, messageParams) => dispatch(ChatsOperations.createChat(userIds, messageParams, navigation))
 
   return { 

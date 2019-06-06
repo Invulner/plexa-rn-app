@@ -17,9 +17,7 @@ import utils from '../utils'
 const mapStateToProps = (state, { navigation }) => {
   const { feedData } = state.feed
   const { loading, enabled } = state.comments
-  //As well as profile id from public operations, fallBackId is chosen by convinience
-  const fallBackId = 1093
-  const post = utils.findItemById(feedData, navigation.getParam('postId', fallBackId))
+  const post = utils.findItemById(feedData, navigation.getParam('postId'))
 
   return {
     items: getSortedComments(state),
