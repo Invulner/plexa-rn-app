@@ -1,15 +1,17 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { RegularText } from '../fonts'
 import { View, StyleSheet } from 'react-native'
 import { BRAND_DARK } from '../../../assets/styles/colors'
 
 function HeaderTitle({ title, navigation }) {
-  const isFeedScreen = navigation.getParam('isFeedScreen')
-  const isChatsScreen = navigation.getParam('isChatsScreen')
-  const isProfileScreen = navigation.getParam('isProfileScreen')
-  const isResearchFeedScreen = navigation.getParam('isResearchFeedScreen')
+  const renderTitle = () => {
+    if (title) return title
 
-  renderTitle = () => {
+    const isFeedScreen = navigation.getParam('isFeedScreen')
+    const isChatsScreen = navigation.getParam('isChatsScreen')
+    const isProfileScreen = navigation.getParam('isProfileScreen')
+    const isResearchFeedScreen = navigation.getParam('isResearchFeedScreen')
+
     if (isFeedScreen) {
       return 'Feed'
     } else if (isChatsScreen) {
@@ -18,11 +20,8 @@ function HeaderTitle({ title, navigation }) {
       return 'Research'
     } else if (isProfileScreen) {
       return 'Profile'
-    } else {
-      return title
     }
   }
-
   return (
     <View>
       <RegularText style={styles.text}>
