@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { RegularText } from '../fonts'
 import { View, StyleSheet } from 'react-native'
 import { BRAND_DARK } from '../../../assets/styles/colors'
