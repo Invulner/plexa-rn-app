@@ -3,11 +3,30 @@ import { RegularText } from '../fonts'
 import { View, StyleSheet } from 'react-native'
 import { BRAND_DARK } from '../../../assets/styles/colors'
 
-function HeaderTitle(props) {
+function HeaderTitle({ title, navigation }) {
+  const isFeedScreen = navigation.getParam('isFeedScreen')
+  const isChatsScreen = navigation.getParam('isChatsScreen')
+  const isProfileScreen = navigation.getParam('isProfileScreen')
+  const isResearchFeedScreen = navigation.getParam('isResearchFeedScreen')
+
+  renderTitle = () => {
+    if (isFeedScreen) {
+      return 'Feed'
+    } else if (isChatsScreen) {
+      return 'Messages'
+    } else if (isResearchFeedScreen) {
+      return 'Research'
+    } else if (isProfileScreen) {
+      return 'Profile'
+    } else {
+      return title
+    }
+  }
+
   return (
     <View>
       <RegularText style={styles.text}>
-        {props.title}
+        {renderTitle()}
       </RegularText>
     </View>
   )
