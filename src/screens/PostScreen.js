@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { BG_COLOR } from '../assets/styles/colors'
 import CommentsOperations from '../operations/CommentsOperations'
 import Comment from '../components/comment/Comment'
-import CommentsPlaceholder from '../components/comment/CommentsPlaceholder'
+import SearchPlaceholder from '../components/common/SearchPlaceholder'
 import ReplyBox from '../components/common/ReplyBox'
 import Loader from '../components/common/Loader'
 import GrayLine from '../components/common/GrayLine'
@@ -53,7 +53,7 @@ class PostScreen extends Component {
       return (
         <React.Fragment>
           <GrayLine />
-          <CommentsPlaceholder message={'No comments'} />
+          <SearchPlaceholder message={'No comments'} />
         </React.Fragment>
       )
   }
@@ -95,7 +95,7 @@ class PostScreen extends Component {
             <React.Fragment>
               {this.renderComments()}
               {!enabled &&
-                <CommentsPlaceholder message={'Author has disabled commenting'}/>
+                <SearchPlaceholder message={'Author has disabled commenting'}/>
               }
             </React.Fragment>
           }

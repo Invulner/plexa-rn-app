@@ -1,8 +1,8 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
-import { RegularText } from '../common/fonts'
+import { RegularText } from './fonts'
 
-function CommentsPlaceholder(props) {
+function SearchPlaceholder(props) {
   return (
     <View style={styles.container}>
       <RegularText style={styles.text}>
@@ -27,4 +27,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default CommentsPlaceholder
+export default SearchPlaceholder
