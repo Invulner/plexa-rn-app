@@ -10,6 +10,7 @@ import { NavigationEvents } from 'react-navigation'
 import PostPlaceholder from '../components/feed/PostPlaceholder'
 import FeedFilter from '../components/feed/FeedFilter'
 import { POSTS_IN_PAGE } from '../constants'
+import SearchPlaceholder from '../components/common/SearchPlaceholder'
 
 const mapDispatchToProps = (dispatch) => {
   const getFeed = (page, filter) => dispatch(FeedOperations.getFeed(page, filter))
@@ -144,7 +145,8 @@ class FeedScreen extends Component {
             onEndReachedThreshold={1}
             onRefresh={this.refreshFeed}
             refreshing={feedLoading}
-            ListFooterComponent={feedLoading && <Loader style={{marginTop: 15}} />} />
+            ListFooterComponent={feedLoading && <Loader style={{marginTop: 15}} />}
+            ListEmptyComponent={<SearchPlaceholder message='Your search did not have any results' />} />
         }
       </SafeArea>
     )

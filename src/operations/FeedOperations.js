@@ -6,6 +6,7 @@ import CommentsActions from '../actions/CommentsActions'
 const fetchFeed = (saveOption, { page = 1, ...queryOptions } = {}) => {
   return dispatch => {
     dispatch(FeedActions.toggleFeedDataLoading(true))
+    console.log('queryOptions', queryOptions)
     
     return getAxiosInstance().then(api => {
       api.get(`${API_URL}/feed`, {
@@ -15,6 +16,7 @@ const fetchFeed = (saveOption, { page = 1, ...queryOptions } = {}) => {
         }
       })
         .then(response => {
+          console.log('response.data', response.data)
           switch (saveOption) {
             case 'add':
               dispatch(FeedActions.saveFeedData(response.data))
