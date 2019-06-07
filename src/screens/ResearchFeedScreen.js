@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import ResearchFeedOperations from '../operations/ResearchFeedOperations'
 import Loader from '../components/common/Loader'
 import Featured from '../components/researchFeed/Featured'
+import { NavigationEvents } from 'react-navigation'
 
 const mapDispatchToProps = (dispatch) => {
   const getResearchFeed = (page) => dispatch(ResearchFeedOperations.getResearchFeed(page))
@@ -28,6 +29,22 @@ class ResearchFeedScreen extends Component {
     !loading && getResearchFeed(page + 1)
   }
 
+  getParentNavigation = () => {
+    return this.props.navigation.dangerouslyGetParent()
+  }
+
+  setScreenParams = () => {
+    this.getParentNavigation().setParams({
+      isResearchFeedScreen: true
+    })
+  }
+
+  resetScreenParams = () => {
+    this.getParentNavigation().setParams({
+      isResearchFeedScreen: false
+    })
+  }
+
   componentDidMount() {
     this.props.getResearchFeed()
   }
@@ -37,6 +54,9 @@ class ResearchFeedScreen extends Component {
 
     return (
       <SafeArea>
+        <NavigationEvents
+          onDidFocus={this.setScreenParams}
+          onDidBlur={this.resetScreenParams} />
         {loading && !feedData.length ?
           <Loader />
           :

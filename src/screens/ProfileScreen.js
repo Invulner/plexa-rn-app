@@ -9,6 +9,7 @@ import Button from '../components/profile/Button'
 import utils from '../utils'
 import Heading from '../components/profile/Heading'
 import UserDataBox from '../components/profile/UserDataBox'
+import { NavigationEvents } from 'react-navigation'
 
 const mapStateToProps = (state) => {
   const { user } = state
@@ -23,6 +24,22 @@ const mapDispatchToProps = (dispatch, { navigation: { navigate } }) => {
 }
 
 class ProfileScreen extends Component {
+  getParentNavigation = () => {
+    return this.props.navigation.dangerouslyGetParent()
+  }
+
+  setScreenParams = () => {
+    this.getParentNavigation().setParams({
+      isProfileScreen: true
+    })
+  }
+
+  resetScreenParams = () => {
+    this.getParentNavigation().setParams({
+      isProfileScreen: false
+    })
+  }
+
   renderMedicalPractice = () => {
       return utils.getMedicalPractice(this.props.user).map(obj => {
 
@@ -36,11 +53,15 @@ class ProfileScreen extends Component {
   }
 
   render() {
-    const { navigation: { navigate }, user, logout } = this.props
+    const { navigation, user, logout } = this.props
     const { full_name, avatar_url, title, location } = user
+    const { navigate } = navigation
 
     return (
       <SafeArea>
+        <NavigationEvents
+          onDidFocus={this.setScreenParams}
+          onDidBlur={this.resetScreenParams} />
         <ScrollView>
           {full_name && avatar_url &&
             <AvatarBox
