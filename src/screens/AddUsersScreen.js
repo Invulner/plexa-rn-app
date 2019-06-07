@@ -104,7 +104,9 @@ class AddUsersScreen extends Component {
   }
   
   renderUsers = () => {
-    if (this.props.users.length) {
+    const { users } = this.props
+
+    if (users.length) {
       return users.map(user => {
         return (
           <TouchableOpacity 
