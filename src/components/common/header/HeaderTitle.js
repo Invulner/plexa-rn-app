@@ -8,7 +8,7 @@ function HeaderTitle({ title, navigation }) {
     if (title) return title
     const isFeedScreen = navigation.getParam('isFeedScreen')
     const isChatsScreen = navigation.getParam('isChatsScreen')
-    // const isProfileScreen = navigation.getParam('isProfileScreen')
+    const isProfileScreen = navigation.getParam('isProfileScreen')
     const isResearchFeedScreen = navigation.getParam('isResearchFeedScreen')
 
     if (isFeedScreen) {
@@ -17,7 +17,7 @@ function HeaderTitle({ title, navigation }) {
       return 'Messages'
     } else if (isResearchFeedScreen) {
       return 'Research'
-    } else if (navigation.getParam('currentScreen' === 'Profile')) {
+    } else if (isProfileScreen) {
       return 'Profile'
     }
   }
