@@ -12,7 +12,7 @@ import utils from '../utils'
 import { BG_COLOR } from '../assets/styles/colors'
 import Loader from '../components/common/Loader'
 import { KeyboardAccessoryNavigation } from 'react-native-keyboard-accessory'
-import CommentsPlaceholder from '../components/comment/CommentsPlaceholder'
+import SearchPlaceholder from '../components/common/SearchPlaceholder'
 import GrayLine from '../components/common/GrayLine'
 
 const mapStateToProps = (state) => {
@@ -130,7 +130,7 @@ class AddUsersScreen extends Component {
       return (
         <React.Fragment>
           <GrayLine />
-          <CommentsPlaceholder message='Your search did not have any results' />
+          <SearchPlaceholder message='Your search did not have any results' />
         </React.Fragment>
       )
     }
@@ -243,8 +243,7 @@ const styles = StyleSheet.create({
     width: '100%',
     paddingHorizontal: 10,
     backgroundColor: '#fff',
-    fontSize: 16,
-    // marginBottom: 10
+    fontSize: 16
   },
 
   userBox: {
