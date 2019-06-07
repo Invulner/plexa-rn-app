@@ -12,6 +12,8 @@ import utils from '../utils'
 import { BG_COLOR } from '../assets/styles/colors'
 import Loader from '../components/common/Loader'
 import { KeyboardAccessoryNavigation } from 'react-native-keyboard-accessory'
+import CommentsPlaceholder from '../components/comment/CommentsPlaceholder'
+import GrayLine from '../components/common/GrayLine'
 
 const mapStateToProps = (state) => {
   const userId = state.user.id
@@ -42,7 +44,8 @@ const mapDispatchToProps = (dispatch) => {
 class AddUsersScreen extends Component {
   state = {
     input: '',
-    chosenUsers: []
+    chosenUsers: [],
+    placeholder: false
   }
 
   toggleUser = (user) => {
@@ -101,27 +104,36 @@ class AddUsersScreen extends Component {
   }
   
   renderUsers = () => {
-    const { users } = this.props
-
-    return users.map(user => {
+    if (this.props.users.length) {
+      return users.map(user => {
+        return (
+          <TouchableOpacity 
+            style={styles.userBox}
+            key={user.id}
+            onPress={() => this.toggleUser(user)}>
+            <View style={styles.leftBox}>
+              <RoundAvatar
+                src={user.avatar_url}
+                title={user.full_name}
+                size='medium' />
+              <RegularText style={styles.name}>
+                {user.full_name}
+              </RegularText>
+            </View>
+            {this.isUserChosen(user.id) && <IconChecked />}
+          </TouchableOpacity>
+        )
+      })
+    }  
+    
+    if (this.state.placeholder) {
       return (
-        <TouchableOpacity 
-          style={styles.userBox}
-          key={user.id}
-          onPress={() => this.toggleUser(user)}>
-          <View style={styles.leftBox}>
-            <RoundAvatar
-              src={user.avatar_url}
-              title={user.full_name}
-              size='medium' />
-            <RegularText style={styles.name}>
-              {user.full_name}
-            </RegularText>
-          </View>
-          {this.isUserChosen(user.id) && <IconChecked />}
-        </TouchableOpacity>
+        <React.Fragment>
+          <GrayLine />
+          <CommentsPlaceholder message='Your search did not have any results' />
+        </React.Fragment>
       )
-    })
+    }
   }
 
   getChosenUserIds = () => {
@@ -167,6 +179,18 @@ class AddUsersScreen extends Component {
     })
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    const { users, usersLoading } = this.props
+
+    if (prevProps.usersLoading && !usersLoading && !users.length) {
+      this.setState({ placeholder: true })
+    }
+
+    if (prevState.input && !this.state.input) {
+      this.setState({ placeholder: false })
+    }
+  }
+
   componentWillUnmount() {
     const { deleteUsers, navigation, toggleChosenUsersFlag } = this.props
     
@@ -185,7 +209,7 @@ class AddUsersScreen extends Component {
       <SafeArea>
         <TextInput
           value={input} 
-          style={styles.searhField}
+          style={[styles.searhField, users.length && { marginBottom: 10 }, ]}
           placeholder='Search user ...'
           onChangeText={this.onInputChange} />
         {!!chosenUsers.length &&
@@ -199,9 +223,10 @@ class AddUsersScreen extends Component {
         }
         <ScrollView contentContainerStyle={styles.userList}>
           {usersLoading ?
-            <Loader />
+            <Loader style={{marginTop: 15}} />
             :
-            !!users.length && this.renderUsers()}
+            this.renderUsers()
+          }
         </ScrollView>
         <KeyboardAccessoryNavigation
           inSafeAreaView={true}
@@ -219,7 +244,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     backgroundColor: '#fff',
     fontSize: 16,
-    marginBottom: 10
+    // marginBottom: 10
   },
 
   userBox: {
