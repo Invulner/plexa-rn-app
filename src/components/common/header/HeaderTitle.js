@@ -6,10 +6,9 @@ import { BRAND_DARK } from '../../../assets/styles/colors'
 function HeaderTitle({ title, navigation }) {
   const renderTitle = () => {
     if (title) return title
-
     const isFeedScreen = navigation.getParam('isFeedScreen')
     const isChatsScreen = navigation.getParam('isChatsScreen')
-    const isProfileScreen = navigation.getParam('isProfileScreen')
+    // const isProfileScreen = navigation.getParam('isProfileScreen')
     const isResearchFeedScreen = navigation.getParam('isResearchFeedScreen')
 
     if (isFeedScreen) {
@@ -18,7 +17,7 @@ function HeaderTitle({ title, navigation }) {
       return 'Messages'
     } else if (isResearchFeedScreen) {
       return 'Research'
-    } else if (isProfileScreen) {
+    } else if (navigation.getParam('currentScreen' === 'Profile')) {
       return 'Profile'
     }
   }
