@@ -66,6 +66,7 @@ class AppWrapper extends React.Component {
     } else if (data.type === 'message') {
       const chatId = data.room_id
       const chatTitle = utils.findItemById(this.props.chatItems, chatId).title
+      console.log('chatTitle', chatTitle)
       this.navigateToRoute('Chat', { chatId, chatTitle: utils.truncate(chatTitle, 20) })
     }
   }

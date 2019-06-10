@@ -9,6 +9,7 @@ const getChats = () => {
     return getAxiosInstance().then(api => {
       api.get(`${API_URL}/rooms`)
         .then(response => {
+          console.log('response.data :', response.data);
           dispatch(ChatsActions.getChats(response.data))
           dispatch(ChatsActions.toggleLoading(false))
         }).catch(error => console.log('getChats error: ', error))
@@ -40,6 +41,7 @@ const createChat = (ids, messageParams, navigation) => {
     return getAxiosInstance().then(api => {
       api.post(`${API_URL}/rooms`, params)
         .then(response => {
+          console.log('response.data :', response.data);
           navigation.setParams({ chatId: response.data.id })
           dispatch(ChatsActions.createChat(response.data))
           dispatch(sendMessage(response.data.id, messageParams, true))
@@ -70,7 +72,10 @@ const sendMessage = (chatId, params, ifConnectToWs = false) => {
 
     return getAxiosInstance().then(api => {
       api.post(`${API_URL}/rooms/${chatId}/messages`, params)
-        .then(() => ifConnectToWs && dispatch(connectToWs(chatId)))
+        .then(({ data }) => {
+          ifConnectToWs && dispatch(connectToWs(chatId))
+          console.log('data :', data);
+        })
         .catch(error => console.log('sendMessage CHAT OPERATION ERROR: ', error))
     })
   }
