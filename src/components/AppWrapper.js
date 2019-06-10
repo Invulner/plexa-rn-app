@@ -15,12 +15,13 @@ import NetworkActions from '../actions/NetworkActions'
 const AppContainer = createAppContainer(SwitchAppNavigator)
 
 const mapStateToProps = (state) => {
-  const { user: { loading, id }, feed: { filter }} = state
+  const { user: { loading, id }, feed: { filter }, chats: { items: chatItems }} = state
 
   return {
     loading,
     id,
-    filter
+    filter,
+    chatItems
   }
 }
 
@@ -63,7 +64,9 @@ class AppWrapper extends React.Component {
     if (data.type === 'answer') {
       this.navigateToRoute('Post', { postId: data.story_id })
     } else if (data.type === 'message') {
-      this.navigateToRoute('Chat', { chatId: data.room_id, chatTitle: utils.truncate(data.title, 20) })
+      const chatId = data.room_id
+      const chatTitle = utils.findItemById(this.props.chatItems, chatId).title
+      this.navigateToRoute('Chat', { chatId, chatTitle: utils.truncate(chatTitle, 20) })
     }
   }
 
