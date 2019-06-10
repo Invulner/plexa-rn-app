@@ -17,7 +17,7 @@ const mapDispatchToProps = (dispatch) => {
   const getFeed = (page, filter) => dispatch(FeedOperations.getFeed(page, filter))
   const refreshFeed = (filter) => dispatch(FeedOperations.refreshFeed(filter))
   const connectToWs = () => dispatch(FeedOperations.connectToWs())
-  const toggleFeedFilter = (flag) => dispatch(FeedActions.toggleFilter(flag))
+  const toggleFeedFilter = () => dispatch(FeedActions.toggleFilter())
 
   return {
     connectToWs,
@@ -105,7 +105,7 @@ class FeedScreen extends Component {
         </RegularText>
         <RegularText style={styles.text}>
           Change your <RegularText 
-                        onPress={() => this.props.toggleFeedFilter(true)} 
+                        onPress={() => this.props.toggleFeedFilter()} 
                         style={{textDecorationLine: 'underline'}}>
                           filters
                       </RegularText>
