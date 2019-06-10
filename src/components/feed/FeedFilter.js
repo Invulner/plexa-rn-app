@@ -39,6 +39,12 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 class FeedFilter extends Component {
+  isFilterChosen = () => {
+    const { topic_ids, group_id, location_ids } = this.props.filter
+
+    return !!topic_ids.length || !!group_id || !!location_ids.length
+  }
+
   renderSeparator = () => {
     return (
       <View style={commonStyles.separatorLine} />
@@ -55,6 +61,10 @@ class FeedFilter extends Component {
     } else if (arr === location) {
       toggleFilterItem('locations', itemId)
     }
+  }
+
+  onClosePress = () => {
+    this.props.toggleFilter()
   }
 
   onClearPress = () => {
@@ -108,6 +118,7 @@ class FeedFilter extends Component {
 
   render() {
     const { filterVisible, location, groups, topics, loading } = this.props
+    const isFilterChosen = this.isFilterChosen()
     
     return (
       <Modal
@@ -121,9 +132,9 @@ class FeedFilter extends Component {
           <React.Fragment>
 
             <View style={styles.btnBox}>
-              <TouchableOpacity onPress={this.onClearPress}>
+              <TouchableOpacity onPress={isFilterChosen ? this.onClearPress : this.onClosePress}>
                 <RegularText style={styles.title}>
-                  Clear
+                  {isFilterChosen ? 'Clear' : 'Close'}
                 </RegularText>
               </TouchableOpacity>
               <TouchableOpacity onPress={this.onApplyPress}>
