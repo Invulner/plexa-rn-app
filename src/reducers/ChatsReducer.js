@@ -77,18 +77,19 @@ const saveMessages = (state, action) => {
 }
 
 const updateChat = (state, action) => {
-  const index = state.items.findIndex(item => item.id === action.data.room_id)
+  const { unread_count } = action.data
+  const data = action.data.data || action.data
+  const index = state.items.findIndex(item => item.id === data.room_id)
   const updatedChat = {
     ...state.items[index], 
-    last_message: {...state.items[index]['last_message'], ...action.data},
-    last_message_date: action.data.created_at || state.items[index]['last_message_date']
+    last_message_date: data.created_at || state.items[index]['last_message_date'],
+    unread_count
   }
-  if (action.data.increase_count) {
-    updatedChat.unread_count = updatedChat.unread_count + 1
+
+  if (data.last_message) {
+    updatedChat.last_message = {...updatedChat.last_message, text: data.last_message}
   }
-  if (action.data.reset_count) {
-    updatedChat.unread_count = 0
-  }
+
   const items = [
     ...state.items.slice(0, index),
     updatedChat,

@@ -66,7 +66,7 @@ const getMessages = (id, page = 1) => {
 
 const sendMessage = (chatId, params, ifConnectToWs = false) => {
   return dispatch => {
-    dispatch(ChatsActions.saveMessage(params, chatId)) 
+    dispatch(ChatsActions.saveMessage(params, chatId))
 
     return getAxiosInstance().then(api => {
       api.post(`${API_URL}/rooms/${chatId}/messages`, params)
@@ -100,12 +100,6 @@ const resetChat = () => {
   roomConnection.unsubscribe()
 }
 
-const updateChat = (data) => {
-  return dispatch => {
-    dispatch(ChatsActions.updateChat(data))
-  }
-}
-
 export default {
   getChats,
   getUsers,
@@ -113,6 +107,5 @@ export default {
   getMessages,
   sendMessage,
   connectToWs,
-  resetChat,
-  updateChat
+  resetChat
 }

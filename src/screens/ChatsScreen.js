@@ -23,9 +23,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   const getChats = () => dispatch(ChatsOperations.getChats())
-  const resetUnreadCount = (data) => dispatch(ChatsOperations.updateChat(data))
 
-  return { getChats, resetUnreadCount }
+  return { getChats }
 }
 
 class ChatsScreen extends Component {
@@ -46,8 +45,6 @@ class ChatsScreen extends Component {
       chatId: item.id,
       chatTitle: utils.truncate(title, 20)
     })
-
-    this.props.resetUnreadCount({room_id: item.id, reset_count: true})
   }
 
   getChatAvatar = (item, title) => {
