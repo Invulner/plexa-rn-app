@@ -22,7 +22,7 @@ class ComposeBtn extends Component {
           onPress={() => navigation.navigate('Compose')}>
           <Image 
             style={styles.addPostIcon}
-            source={require('../../../assets/icons/add-post.png')} />
+            source={require('../../../assets/icons/plus.png')} />
         </TouchableOpacity>
       }
       </View>
