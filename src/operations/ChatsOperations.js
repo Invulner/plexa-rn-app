@@ -85,6 +85,7 @@ const connectToWs = (chatId) => {
       },
       {
         received: (data) => {
+          console.log('data :', data);
           dispatch(ChatsActions.saveMessage(data, data.room_id))
           dispatch(ChatsActions.updateChat(data))
         }
@@ -111,5 +112,5 @@ export default {
   sendMessage,
   connectToWs,
   resetChat,
-  updateChat,
+  updateChat
 }
