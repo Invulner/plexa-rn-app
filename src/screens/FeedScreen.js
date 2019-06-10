@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { FlatList } from 'react-native'
+import { FlatList, StyleSheet, View } from 'react-native'
 import SafeArea from '../components/common/SafeArea'
 import FeedPost from '../components/feed/FeedPost'
 import FeedOperations from '../operations/FeedOperations'
@@ -10,17 +10,20 @@ import { NavigationEvents } from 'react-navigation'
 import PostPlaceholder from '../components/feed/PostPlaceholder'
 import FeedFilter from '../components/feed/FeedFilter'
 import { POSTS_IN_PAGE } from '../constants'
-import SearchPlaceholder from '../components/common/SearchPlaceholder'
+import { RegularText } from '../components/common/fonts'
+import FeedActions from '../actions/FeedActions'
 
 const mapDispatchToProps = (dispatch) => {
   const getFeed = (page, filter) => dispatch(FeedOperations.getFeed(page, filter))
   const refreshFeed = (filter) => dispatch(FeedOperations.refreshFeed(filter))
   const connectToWs = () => dispatch(FeedOperations.connectToWs())
+  const toggleFeedFilter = (flag) => dispatch(FeedActions.toggleFilter(flag))
 
   return {
     connectToWs,
     getFeed,
-    refreshFeed
+    refreshFeed,
+    toggleFeedFilter
   }
 }
 
@@ -36,6 +39,10 @@ const mapStateToProps = (state) => {
 }
 
 class FeedScreen extends Component {
+  state = {
+    listEmpty: false
+  }
+
   renderItem = ({ item }) => {
     const { navigation } = this.props
 
@@ -59,23 +66,14 @@ class FeedScreen extends Component {
     return this.props.navigation.dangerouslyGetParent()
   }
 
-  onLogoPress = () => {
-    const { filter } = this.props.feed
-
-    this.refs.feedList.scrollToOffset({ offset: 0 })
-    this.props.refreshFeed(filter)
-  }
-
   resetScreenParams = () => {
-    this.getParentNavigation().setParams({ 
-      onLogoPress: null,
+    this.getParentNavigation().setParams({
       isFeedScreen: false
     })
   }
 
   setScreenParams = () => {
     this.getParentNavigation().setParams({ 
-      onLogoPress: this.onLogoPress,
       isFeedScreen: true
     })
   }
@@ -99,14 +97,37 @@ class FeedScreen extends Component {
     isConnected && this.shouldAddToFeed() && !feedLoading && getFeed(nextPage, filter)
   }
 
+  renderListEmptyComponent = () => {
+    return (
+      <View style={styles.listEmpty}>
+        <RegularText style={styles.text}>
+          There are no posts for your search
+        </RegularText>
+        <RegularText style={styles.text}>
+          Change your <RegularText 
+                        onPress={() => this.props.toggleFeedFilter(true)} 
+                        style={{textDecorationLine: 'underline'}}>
+                          filters
+                      </RegularText>
+        </RegularText>
+      </View>
+    )
+  }
+
   componentDidUpdate(prevProps) {
-    const { isConnected, connectToWs, isCableConnected } = this.props
+    const { isConnected, connectToWs, isCableConnected, feed: { feedData, feedLoading } } = this.props
     //Works when connection is restored and after app reboot with state rehydration
     if (prevProps.isCableConnected !== isCableConnected && isCableConnected) {
       connectToWs()
     //Need to add check for change from initial state to false
     } else if (prevProps.isConnected !== null && !isConnected) {
       AppOperations.disconnectFromWs()
+    }
+
+    if (prevProps.feed.feedLoading && !feedLoading && !feedData.length) {
+      this.setState({ listEmpty: true })
+    } else if (!prevProps.feed.feedLoading && feedLoading) {
+      this.setState({ listEmpty: false })
     }
   }
 
@@ -132,11 +153,14 @@ class FeedScreen extends Component {
           onDidBlur={this.resetScreenParams} />
 
         <FeedFilter />
-
+        {this.state.listEmpty &&
+          this.renderListEmptyComponent() 
+        }
         {feedLoading && !feedData.length ?
           <Loader />
           :
           <FlatList
+            style={!feedData.length && {display: 'none'}}
             ref='feedList'
             data={feedData}
             keyExtractor={item => item.id + ''}
@@ -145,12 +169,23 @@ class FeedScreen extends Component {
             onEndReachedThreshold={1}
             onRefresh={this.refreshFeed}
             refreshing={feedLoading}
-            ListFooterComponent={feedLoading && <Loader style={{marginTop: 15}} />}
-            ListEmptyComponent={<SearchPlaceholder message='Your search did not have any results' />} />
+            ListFooterComponent={feedLoading && <Loader style={{marginTop: 15}} />} />
         }
       </SafeArea>
     )
   }
 }
+
+const styles = StyleSheet.create({
+  listEmpty: {
+    flex: 1,  
+    justifyContent: 'center', 
+    alignItems: 'center'
+  },
+
+  text: {
+    fontSize: 20
+  }
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(FeedScreen)
