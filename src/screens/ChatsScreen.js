@@ -4,6 +4,7 @@ import { RegularText, SemiboldText } from '../components/common/fonts'
 import { GRAY, LIGHT_GRAY } from '../assets/styles/colors'
 import { connect } from 'react-redux'
 import ChatsOperations from '../operations/ChatsOperations'
+import ChatsActions from '../actions/ChatsActions'
 import utils from '../utils'
 import Loader from '../components/common/Loader'
 import RoundAvatar from '../components/common/RoundAvatar'
@@ -23,8 +24,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   const getChats = () => dispatch(ChatsOperations.getChats())
+  const resetUnreadCount = (data) => dispatch(ChatsActions.updateChat(data))
 
-  return { getChats }
+  return { getChats, resetUnreadCount }
 }
 
 class ChatsScreen extends Component {
@@ -45,6 +47,8 @@ class ChatsScreen extends Component {
       chatId: item.id,
       chatTitle: utils.truncate(title, 20)
     })
+
+    this.props.resetUnreadCount({room_id: item.id, reset_count: true})
   }
 
   getChatAvatar = (item, title) => {
@@ -152,7 +156,7 @@ const styles = StyleSheet.create({
 
   badge: {
     bottom: 2,
-    left: 26
+    left: 24
   },
 
   leftBox: {
