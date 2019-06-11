@@ -41,11 +41,11 @@ const createChat = (ids, messageParams, navigation) => {
     return getAxiosInstance().then(api => {
       api.post(`${API_URL}/rooms`, params)
         .then(response => {
-          console.log('response.data :', response.data);
+          console.log('response.data :', response.data)
           navigation.setParams({ chatId: response.data.id })
           dispatch(ChatsActions.createChat(response.data))
           dispatch(sendMessage(response.data.id, messageParams, true))
-      }).catch(error => console.log('createChat error: ', error.response))
+      }).catch(error => console.log('createChat error: ', error))
     }).catch(error => console.log('Axios config error: ', error))
   }
 }
@@ -73,8 +73,8 @@ const sendMessage = (chatId, params, ifConnectToWs = false) => {
     return getAxiosInstance().then(api => {
       api.post(`${API_URL}/rooms/${chatId}/messages`, params)
         .then(({ data }) => {
+          dispatch(ChatsActions.updateChat(data))
           ifConnectToWs && dispatch(connectToWs(chatId))
-          console.log('data :', data);
         })
         .catch(error => console.log('sendMessage CHAT OPERATION ERROR: ', error))
     })
@@ -90,7 +90,6 @@ const connectToWs = (chatId) => {
       },
       {
         received: (data) => {
-          console.log('data :', data);
           dispatch(ChatsActions.saveMessage(data, data.room_id))
           dispatch(ChatsActions.updateChat(data))
         }

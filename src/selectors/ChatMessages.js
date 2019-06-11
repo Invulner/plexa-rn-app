@@ -14,7 +14,6 @@ export const makeGetChatMessages = () => createSelector(
     const isDateItem = (item) => { 
       return !!item.date
     }
-    
     const newArr = messages.reduce((acc, item, index, arr) => {
       const nextItem = arr[index + 1]
       acc.push(item)
