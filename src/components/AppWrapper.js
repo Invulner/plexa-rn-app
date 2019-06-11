@@ -15,13 +15,12 @@ import NetworkActions from '../actions/NetworkActions'
 const AppContainer = createAppContainer(SwitchAppNavigator)
 
 const mapStateToProps = (state) => {
-  const { user: { loading, id }, feed: { filter }, chats: { items: chatItems }} = state
+  const { user: { loading, id }, feed: { filter }} = state
 
   return {
     loading,
     id,
-    filter,
-    chatItems
+    filter
   }
 }
 
