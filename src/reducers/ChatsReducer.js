@@ -13,8 +13,18 @@ const initialState = {
 }
 
 const saveMessage = (state, action) => {
-  //check if message from web socket is your own message, and update if it is
   const chatMessages = state.messages[action.chatId]
+  
+  if (!chatMessages) {
+    return {
+      ...state,
+      messages: {
+        ...state.messages,
+        [action.chatId]: [action.message]
+      }
+    }
+  }
+  //check if message from web socket is your own message, and update if it is
   const message = chatMessages.find(message => message.seq_id === action.message.seq_id)
 
   if (action.message.seq_id && message) {
