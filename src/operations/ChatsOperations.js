@@ -41,7 +41,6 @@ const createChat = (ids, messageParams, navigation) => {
     return getAxiosInstance().then(api => {
       api.post(`${API_URL}/rooms`, params)
         .then(response => {
-          console.log('response.data :', response.data)
           navigation.setParams({ chatId: response.data.id })
           dispatch(ChatsActions.createChat(response.data))
           dispatch(sendMessage(response.data.id, messageParams, true))

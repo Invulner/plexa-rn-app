@@ -64,10 +64,7 @@ class AppWrapper extends React.Component {
     if (data.type === 'answer') {
       this.navigateToRoute('Post', { postId: data.story_id })
     } else if (data.type === 'message') {
-      const chatId = data.room_id
-      const chatTitle = utils.findItemById(this.props.chatItems, chatId).title
-      console.log('chatTitle', chatTitle)
-      this.navigateToRoute('Chat', { chatId, chatTitle: utils.truncate(chatTitle, 20) })
+      this.navigateToRoute('Chat', { chatId: data.room_id })
     }
   }
 
