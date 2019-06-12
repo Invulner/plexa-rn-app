@@ -10,30 +10,78 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-  const toggleFeedFilter = (flag) => dispatch(FeedActions.toggleFilter(flag))
+  const toggleFeedFilter = () => dispatch(FeedActions.toggleFilter())
 
   return { toggleFeedFilter }
 }
 
 class AppHeaderRight extends Component {
+  state = {
+    path: 'feed'
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.navigation.getParam('isChatsScreen')) {
+      console.log(`nextProps.navigation.getParam('isChatsScreen')`, nextProps.navigation.getParam('isChatsScreen'))
+      return {
+        path: 'chats'
+      }
+    } else if (nextProps.navigation.getParam('isFeedScreen')) {
+      return {
+        path: 'feed'
+      }
+    } else return null
+  }
+
+  onBtnPress = () => {
+    const { navigation, toggleFeedFilter } = this.props
+    return navigation.getParam('isFeedScreen') ? toggleFeedFilter : this.onAddUsersPress
+  }
+
   onAddUsersPress = () => this.props.navigation.navigate('AddUsers')
+
+  // UNSAFE_componentWillReceiveProps(nextProps) {
+  //   if (this.props.navigation !== nextProps.navigation) {
+  //     console.log('componentWillReceiveProps')
+  //     const path = nextProps.navigation.getParam('isFeedScreen') ? 'feed' : 'chats'
+  //     this.setState({ path })
+  //   }
+  // }
+
+  // componentDidUpdate(prevProps) {
+  //   if (prevProps.navigation !== this.props.navigation) {
+  //     console.log('navigation changed')
+  //     const path = this.props.navigation.getParam('isFeedSCreen') ? 'feed' : 'chats'
+  //     this.setState({ path })
+  //   }
+  // }
+
+  componentDidMount() {
+    console.log('mount header')
+    console.log('this.props.navigation :', this.props.navigation);
+  }
+
+  componentWillUnmount() {
+    console.log('unmount header')
+  }
 
   render() {
     const { navigation, isConnected, toggleFeedFilter } = this.props
-    const isChatsScreen = navigation.getParam('isChatsScreen')
-    const isFeedScreen = navigation.getParam('isFeedScreen')
-
+    // const isChatsScreen = navigation.getParam('isChatsScreen')
+    // const isFeedScreen = navigation.getParam('isFeedScreen')
+    const { path } = this.state
+    console.log('render');
     return (
       <TouchableOpacity
         style={styles.container} 
-        onPress={isChatsScreen ? this.onAddUsersPress : toggleFeedFilter}
+        onPress={this.onBtnPress()}
         disabled={!isConnected}>
-          {isChatsScreen &&
+          {path === 'chats' &&
             <Image
               style={styles.addUsersIcon}
               source={require('../../../assets/icons/add-users.png')} />
           }
-          {isFeedScreen &&
+          {path === 'feed' &&
             <Image
               style={styles.filtersIcon}
               source={require('../../../assets/icons/feed-filters.png')} />
