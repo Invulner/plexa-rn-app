@@ -9,13 +9,33 @@ const mapStateToProps = (state) => {
 }
 
 class ComposeBtn extends Component {
+  state = {
+    path: null
+  }
+
+  static getDerivedStateFromProps({ navigation }) {
+    const isChatsScreen = navigation.getParam('isChatsScreen')
+    const isFeedScreen = navigation.getParam('isFeedScreen')
+    const isResearchFeedScreen = navigation.getParam('isResearchFeedScreen')
+    const isPropfileScreen = navigation.getParam('isProfileScreen')
+
+    if (isFeedScreen) {
+      return {
+        path: 'feed'
+      }
+    } else if (isChatsScreen || isResearchFeedScreen || isPropfileScreen) {
+      return {
+        path: null
+      }
+    } else return null
+  }
+
   render() {
     const { navigation, isConnected } = this.props
-    const isFeedScreen = navigation.getParam('isFeedScreen')
-    
+
     return (
       <View style={styles.container}>
-      {isFeedScreen &&
+      {this.state.path === 'feed' &&
         <TouchableOpacity
           disabled={!isConnected} 
           style={styles.addPostButton} 
