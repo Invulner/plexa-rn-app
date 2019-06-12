@@ -10,30 +10,60 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-  const toggleFeedFilter = (flag) => dispatch(FeedActions.toggleFilter(flag))
+  const toggleFeedFilter = () => dispatch(FeedActions.toggleFilter())
 
   return { toggleFeedFilter }
 }
 
 class AppHeaderRight extends Component {
+  state = {
+    path: null
+  }
+
+  static getDerivedStateFromProps({ navigation }) {
+    const isChatsScreen = navigation.getParam('isChatsScreen')
+    const isFeedScreen = navigation.getParam('isFeedScreen')
+    const isResearchFeedScreen = navigation.getParam('isResearchFeedScreen')
+    const isPropfileScreen = navigation.getParam('isProfileScreen')
+
+    if (isChatsScreen) {
+      return {
+        path: 'chats'
+      }
+    } else if (isFeedScreen) {
+      return {
+        path: 'feed'
+      }
+    } else if (isResearchFeedScreen || isPropfileScreen) {
+      return {
+        path: null
+      }
+    } else return null
+  }
+
+  onBtnPress = () => {
+    const { navigation, toggleFeedFilter } = this.props
+
+    return navigation.getParam('isFeedScreen') ? toggleFeedFilter : this.onAddUsersPress
+  }
+
   onAddUsersPress = () => this.props.navigation.navigate('AddUsers')
 
   render() {
-    const { navigation, isConnected, toggleFeedFilter } = this.props
-    const isChatsScreen = navigation.getParam('isChatsScreen')
-    const isFeedScreen = navigation.getParam('isFeedScreen')
+    const { isConnected } = this.props
+    const { path } = this.state
 
     return (
       <TouchableOpacity
         style={styles.container} 
-        onPress={isChatsScreen ? this.onAddUsersPress : toggleFeedFilter}
+        onPress={this.onBtnPress()}
         disabled={!isConnected}>
-          {isChatsScreen &&
+          {path === 'chats' &&
             <Image
               style={styles.addUsersIcon}
               source={require('../../../assets/icons/add-users.png')} />
           }
-          {isFeedScreen &&
+          {path === 'feed' &&
             <Image
               style={styles.filtersIcon}
               source={require('../../../assets/icons/feed-filters.png')} />
