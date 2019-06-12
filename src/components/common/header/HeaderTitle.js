@@ -1,33 +1,63 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { RegularText } from '../fonts'
 import { View, StyleSheet } from 'react-native'
 import { BRAND_DARK } from '../../../assets/styles/colors'
 
-function HeaderTitle({ title, navigation }) {
-  const renderTitle = () => {
-    if (title) return title
-    const isFeedScreen = navigation.getParam('isFeedScreen')
-    const isChatsScreen = navigation.getParam('isChatsScreen')
-    const isProfileScreen = navigation.getParam('isProfileScreen')
-    const isResearchFeedScreen = navigation.getParam('isResearchFeedScreen')
+class HeaderTitle extends Component {
+  state = {
+    path: 'feed'
+  }
 
-    if (isFeedScreen) {
+  static getDerivedStateFromProps({ title, navigation }) {
+    if (navigation && navigation.getParam('isFeedScreen')) {
+      return {
+        path: 'feed'
+      }
+    } else if (navigation && navigation.getParam('isResearchFeedScreen')) {
+      return {
+        path: 'research'
+      }
+    } else if (navigation && navigation.getParam('isChatsScreen')) {
+      return {
+        path: 'chats'
+      }
+    } else if (navigation && navigation.getParam('isProfileScreen')) {
+      return {
+        path: 'profile'
+      }
+    }
+    else if (title) {
+      return {
+        path: null
+      }
+    } else return null
+  }
+
+  renderTitle = () => {
+    const { path } = this.state
+
+    if (!path) return this.props.title
+
+    if (path === 'feed') {
       return 'Feed'
-    } else if (isChatsScreen) {
+    } else if (path === 'chats') {
       return 'Messages'
-    } else if (isResearchFeedScreen) {
+    } else if (path === 'research') {
       return 'Research'
-    } else if (isProfileScreen) {
+    } else if (path === 'profile') {
       return 'Profile'
     }
   }
-  return (
-    <View>
-      <RegularText style={styles.text}>
-        {renderTitle()}
-      </RegularText>
-    </View>
-  )
+
+  render() {
+    return (
+      <View>
+        <RegularText style={styles.text}>
+          {this.renderTitle()}
+        </RegularText>
+      </View>
+    )
+  }
 }
 
 const styles = StyleSheet.create({
