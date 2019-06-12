@@ -5,15 +5,17 @@ import { connect } from 'react-redux'
 import FeedOperations from '../../operations/FeedOperations'
 import CommentsOperations from '../../operations/CommentsOperations'
 import PostOperations from '../../operations/PostOperations'
-import ChatsOperations from '../../operations/ChatsOperations'
+import ChatsActions from '../../actions/ChatsActions'
 
 const mapStateToProps = (state) => {
   const userId = state.user.id
   const chats = state.chats.items
+  const { feedData } = state.feed
 
   return { 
     userId,
-    chats
+    chats,
+    feedData
   }
 }
 
@@ -25,7 +27,7 @@ const mapDispatchToProps = (dispatch) => {
   const getPost = (id, cb) => dispatch(PostOperations.getPost(id, cb))
   const editComment = (id) => dispatch(CommentsOperations.editComment(id))
   const deleteComment = (id, post_id) => dispatch(CommentsOperations.deleteComment(id, post_id))
-  const createChat = (ids, cb) => dispatch(ChatsOperations.createChat(ids, cb))
+  const saveChosenUserIds = (userIds) => dispatch(ChatsActions.saveChosenUsers(userIds))
 
   return {
     hidePost,
@@ -35,7 +37,7 @@ const mapDispatchToProps = (dispatch) => {
     deleteComment,
     getPost,
     editComment,
-    createChat
+    saveChosenUserIds
   }
 }
 
@@ -109,13 +111,17 @@ class PostActionButton extends Component {
   }
   
   sendMessage = () => {
-    const { createChat, authorId } = this.props
+    const { authorId, postId, feedData, saveChosenUserIds } = this.props
     const existingChat = this.getChat(authorId)
 
-    if (existingChat)
+    if (existingChat) {
       this.navigateToChat(existingChat.id, existingChat.title)
-    else 
-      createChat([authorId], this.navigateToChat)
+    } else {
+      const title = feedData.find(story => story.id === postId).author.full_name
+
+      saveChosenUserIds([authorId])
+      this.navigateToChat(null, title)
+    }
   }
   
   onBtnPress = (buttonIndex) => {

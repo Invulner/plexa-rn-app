@@ -43,7 +43,7 @@ const createChat = (ids, messageParams, navigation) => {
           navigation.setParams({ chatId: response.data.id })
           dispatch(ChatsActions.createChat(response.data))
           dispatch(sendMessage(response.data.id, messageParams, true))
-      }).catch(error => console.log('createChat error: ', error))
+      }).catch(error => console.log('createChat error: ', error.response))
     }).catch(error => console.log('Axios config error: ', error))
   }
 }
@@ -74,7 +74,7 @@ const sendMessage = (chatId, params, ifConnectToWs = false) => {
           dispatch(ChatsActions.updateChat(data))
           ifConnectToWs && dispatch(connectToWs(chatId))
         })
-        .catch(error => console.log('sendMessage CHAT OPERATION ERROR: ', error))
+        .catch(error => console.log('sendMessage CHAT OPERATION ERROR: ', error.response))
     })
   }
 }
