@@ -63,11 +63,9 @@ class ProfileScreen extends Component {
           onDidFocus={this.setScreenParams}
           onDidBlur={this.resetScreenParams} />
         <ScrollView>
-          {full_name && avatar_url &&
-            <AvatarBox
-              full_name={full_name}
-              avatar_url={avatar_url} />
-          }
+          <AvatarBox
+            full_name={full_name}
+            avatar_url={avatar_url} />
 
           <Heading heading={'profile'} />
           <UserDataBox

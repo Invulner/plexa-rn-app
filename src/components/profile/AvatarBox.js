@@ -19,7 +19,7 @@ function AvatarBox(props) {
               style={profileStyles.userImage} />
             :
             <RegularText style={profileStyles.initials}>
-              {utils.getInitials(full_name)}
+              {full_name && utils.getInitials(full_name)}
             </RegularText>
             }
         </View>
