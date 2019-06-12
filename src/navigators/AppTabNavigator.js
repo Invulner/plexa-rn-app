@@ -16,13 +16,14 @@ const AppTabNavigator = createMaterialTopTabNavigator({
   },
   tabBarPosition: 'bottom',
   tabBarComponent: CustomTabBar,
-  swipeEnabled: false,
-  animationEnabled: false,
-  transitionConfig: () => ({
-    transitionSpec: {
-      duration: 0,
-    }
-  }),
+  swipeEnabled: false
+  //Left here for the next task
+  // animationEnabled: false,
+  // transitionConfig: () => ({
+  //   transitionSpec: {
+  //     duration: 0,
+  //   }
+  // })
 })
 
 export default AppTabNavigator

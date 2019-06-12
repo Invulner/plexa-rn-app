@@ -51,7 +51,7 @@ const MainStack = createStackNavigator({
   Compose: {
     screen: ComposeScreen,
     navigationOptions: ({ navigation }) => ({
-      headerTitle: <HeaderTitle navigation={null} title={'New post'} />,
+      headerTitle: <HeaderTitle title={'New post'} />,
       headerRight: <DoneBtn btnText='Post' navigation={navigation} />
     })
   },
