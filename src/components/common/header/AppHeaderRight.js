@@ -17,17 +17,26 @@ const mapDispatchToProps = (dispatch) => {
 
 class AppHeaderRight extends Component {
   state = {
-    path: 'feed'
+    path: null
   }
 
-  static getDerivedStateFromProps(nextProps) {
-    if (nextProps.navigation.getParam('isChatsScreen')) {
+  static getDerivedStateFromProps({ navigation }) {
+    const isChatsScreen = navigation.getParam('isChatsScreen')
+    const isFeedScreen = navigation.getParam('isFeedScreen')
+    const isResearchFeedScreen = navigation.getParam('isResearchFeedScreen')
+    const isPropfileScreen = navigation.getParam('isProfileScreen')
+
+    if (isChatsScreen) {
       return {
         path: 'chats'
       }
-    } else if (nextProps.navigation.getParam('isFeedScreen')) {
+    } else if (isFeedScreen) {
       return {
         path: 'feed'
+      }
+    } else if (isResearchFeedScreen || isPropfileScreen) {
+      return {
+        path: null
       }
     } else return null
   }
