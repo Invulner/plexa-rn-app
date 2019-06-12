@@ -20,9 +20,8 @@ class AppHeaderRight extends Component {
     path: 'feed'
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
+  static getDerivedStateFromProps(nextProps) {
     if (nextProps.navigation.getParam('isChatsScreen')) {
-      console.log(`nextProps.navigation.getParam('isChatsScreen')`, nextProps.navigation.getParam('isChatsScreen'))
       return {
         path: 'chats'
       }
@@ -35,42 +34,16 @@ class AppHeaderRight extends Component {
 
   onBtnPress = () => {
     const { navigation, toggleFeedFilter } = this.props
+
     return navigation.getParam('isFeedScreen') ? toggleFeedFilter : this.onAddUsersPress
   }
 
   onAddUsersPress = () => this.props.navigation.navigate('AddUsers')
 
-  // UNSAFE_componentWillReceiveProps(nextProps) {
-  //   if (this.props.navigation !== nextProps.navigation) {
-  //     console.log('componentWillReceiveProps')
-  //     const path = nextProps.navigation.getParam('isFeedScreen') ? 'feed' : 'chats'
-  //     this.setState({ path })
-  //   }
-  // }
-
-  // componentDidUpdate(prevProps) {
-  //   if (prevProps.navigation !== this.props.navigation) {
-  //     console.log('navigation changed')
-  //     const path = this.props.navigation.getParam('isFeedSCreen') ? 'feed' : 'chats'
-  //     this.setState({ path })
-  //   }
-  // }
-
-  componentDidMount() {
-    console.log('mount header')
-    console.log('this.props.navigation :', this.props.navigation);
-  }
-
-  componentWillUnmount() {
-    console.log('unmount header')
-  }
-
   render() {
-    const { navigation, isConnected, toggleFeedFilter } = this.props
-    // const isChatsScreen = navigation.getParam('isChatsScreen')
-    // const isFeedScreen = navigation.getParam('isFeedScreen')
+    const { isConnected } = this.props
     const { path } = this.state
-    console.log('render');
+
     return (
       <TouchableOpacity
         style={styles.container} 
