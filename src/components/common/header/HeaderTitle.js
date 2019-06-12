@@ -8,27 +8,26 @@ class HeaderTitle extends Component {
     path: 'feed'
   }
 
-  static getDerivedStateFromProps({ title, navigation }) {
-    if (navigation && navigation.getParam('isFeedScreen')) {
+  static getDerivedStateFromProps({ navigation }) {
+    if (!navigation) {
+      return {
+        path: null
+      }
+    } else if (navigation.getParam('isFeedScreen')) {
       return {
         path: 'feed'
       }
-    } else if (navigation && navigation.getParam('isResearchFeedScreen')) {
+    } else if (navigation.getParam('isResearchFeedScreen')) {
       return {
         path: 'research'
       }
-    } else if (navigation && navigation.getParam('isChatsScreen')) {
+    } else if (navigation.getParam('isChatsScreen')) {
       return {
         path: 'chats'
       }
-    } else if (navigation && navigation.getParam('isProfileScreen')) {
+    } else if (navigation.getParam('isProfileScreen')) {
       return {
         path: 'profile'
-      }
-    }
-    else if (title) {
-      return {
-        path: null
       }
     } else return null
   }
