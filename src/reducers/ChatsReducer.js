@@ -98,7 +98,7 @@ const updateChat = (state, action) => {
       ...state,
       items
     }
-  } else {
+  } else if (action.data.title) {
     return {
       ...state,
       items: [...state.items, action.data]

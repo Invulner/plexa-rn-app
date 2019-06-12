@@ -71,7 +71,7 @@ const sendMessage = (chatId, params, ifConnectToWs = false) => {
     return getAxiosInstance().then(api => {
       api.post(`${API_URL}/rooms/${chatId}/messages`, params)
         .then(({ data }) => {
-          dispatch(ChatsActions.updateChat(data))
+          dispatch(ChatsActions.updateChat({last_message: data, unread_count: 0}))
           ifConnectToWs && dispatch(connectToWs(chatId))
         })
         .catch(error => console.log('sendMessage CHAT OPERATION ERROR: ', error))
