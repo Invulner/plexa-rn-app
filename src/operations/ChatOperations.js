@@ -52,7 +52,7 @@ const sendMessage = (chatId, params, ifConnectToWs = false) => {
       api.post(`${API_URL}/rooms/${chatId}/messages`, params)
         .then(response => {
           dispatch(ChatActions.updateMessage(response.data))
-          dispatch(ChatsActions.updateChat(response.data))
+          dispatch(ChatsActions.updateChat({last_message: response.data, unread_count: 0}))
           ifConnectToWs && dispatch(connectToWs(chatId))
         }).catch(error => console.log('sendMessage CHAT OPERATION ERROR: ', error))
     })

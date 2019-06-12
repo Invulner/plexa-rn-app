@@ -26,9 +26,11 @@ const connectToCable = () => {
         },
         {
           received: (data) => {
-            if (data.data.room_id) {
-              data.created_at = Date.now()
-              dispatch(ChatsActions.updateChat(data))
+            if (data.data.room) {
+              const room = data.data.room
+              room.last_message = data.data.last_message
+              room.unread_count = data.data.unread_count
+              dispatch(ChatsActions.updateChat(room))
             }
             dispatch(ChatsActions.updateUnreadCount(data.unread_count))
             Notifications.setBadgeNumberAsync(data.unread_count)

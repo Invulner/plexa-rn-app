@@ -89,7 +89,7 @@ const connectToWs = (chatId) => {
       {
         received: (data) => {
           dispatch(ChatsActions.saveMessage(data, data.room_id))
-          dispatch(ChatsActions.updateChat(data))
+          dispatch(ChatsActions.updateChat({last_message: data, unread_count: 0}))
         }
       }
     )

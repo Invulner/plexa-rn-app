@@ -77,35 +77,32 @@ const saveMessages = (state, action) => {
 }
 
 const updateChat = (state, action) => {
-  const data = action.data.data || action.data
-  const index = state.items.findIndex(item => item.id === data.room_id)
+  const room_id = action.data.id || action.data.last_message.room_id
+  const index = state.items.findIndex(item => item.id === room_id)
 
-  const updatedChat = {
-    ...state.items[index],
-    last_message_date: data.created_at || state.items[index]['last_message_date']
-  }
+  if (index !== -1) {
+    const updatedChat = {
+      ...state.items[index],
+      last_message: action.data.last_message,
+      last_message_date: action.data.last_message.created_at,
+      unread_count: action.data.unread_count
+    }
 
-  if (data.last_message) {
-    updatedChat.last_message = {...updatedChat.last_message, text: data.last_message}
-  }
+    const items = [
+      ...state.items.slice(0, index),
+      updatedChat,
+      ...state.items.slice(index + 1)
+    ]
 
-  if (data.unread_count) {
-    updatedChat.unread_count = data.unread_count
-  }
-
-  if (data.reset_count) {
-    updatedChat.unread_count = 0
-  }
-
-  const items = [
-    ...state.items.slice(0, index),
-    updatedChat,
-    ...state.items.slice(index + 1)
-  ]
-
-  return {
-    ...state,
-    items
+    return {
+      ...state,
+      items
+    }
+  } else {
+    return {
+      ...state,
+      items: [...state.items, action.data]
+    }
   }
 }
 
