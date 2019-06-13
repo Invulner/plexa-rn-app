@@ -51,7 +51,7 @@ class AppWrapper extends React.Component {
 
   _handleAppStateChange = (nextAppState) => {
     if (nextAppState === 'active') {
-      this.props.getChats()
+      // this.props.getChats()
     }
   }
 
