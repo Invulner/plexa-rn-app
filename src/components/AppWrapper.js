@@ -27,7 +27,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   const connectToCable = () => dispatch(AppOperations.connectToCable())
-  const updateChat = (data) => dispatch(ChatsOperations.updateChat(data))
   const getChats = () => dispatch(ChatsOperations.getChats())
   const fetchFreshData = (navigate, filter) => dispatch(AppOperations.fetchFreshData(navigate, filter))
   const updateConnectionStatus = (isConnected) => dispatch(NetworkActions.updateConnectionStatus(isConnected))
@@ -35,7 +34,6 @@ const mapDispatchToProps = (dispatch) => {
   return {
     connectToCable,
     getChats,
-    updateChat,
     fetchFreshData,
     updateConnectionStatus
   }
@@ -48,9 +46,6 @@ class AppWrapper extends React.Component {
     } else {
       this.dropdown.alertWithType('info', notification.data.title, notification.data.body)
       this.notificationData = notification.data
-    }
-    if (notification.data.type === 'message') {
-      this.props.updateChat({room_id: notification.data.room_id, text: notification.data.body, created_at: Date.now(), increase_count: true})
     }
   }
 
