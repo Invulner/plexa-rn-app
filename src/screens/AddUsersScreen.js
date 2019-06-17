@@ -144,11 +144,10 @@ class AddUsersScreen extends Component {
 
   getChat = () => {
     const { items, userId } = this.props
-    const sorted = this.getChosenUserIds().sort(utils.basicSort)
     const chat = items.find(chat => {
-      let memberIds = chat.members.map(member => member.profile_id).sort(utils.basicSort).filter(id => id !== userId)
+      let memberIds = chat.members.map(member => member.profile_id).filter(id => id !== userId)
 
-      return memberIds.toString() === sorted.toString()
+      return utils.areArrOfNumsEqual(memberIds, this.getChosenUserIds())
     })
 
     return chat
