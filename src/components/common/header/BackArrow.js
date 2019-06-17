@@ -9,7 +9,9 @@ function BackArrow({ navigation }) {
   }
 
   return (
-    <TouchableOpacity onPress={onBackArrowPress()}>
+    <TouchableOpacity
+      hitSlop={{top: 10, right: 10, left: 10, bottom: 10}} 
+      onPress={onBackArrowPress()}>
       <Image 
         source={require('../../../assets/icons/arrow-left.png')}
         style={styles.image} />
