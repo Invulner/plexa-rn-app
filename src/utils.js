@@ -152,6 +152,14 @@ const getRandomNumber = (min, max) => {
 
 const basicSort = (a, b) => a - b
 
+const areArrOfNumsEqual = (arr1, arr2) => {
+  if (arr1.length === arr2.length && arr1.sort(basicSort).toString() === arr2.sort(basicSort).toString()) {
+    return true
+  }
+
+  return false
+}
+
 const startConnectionStatusWorker = () =>
   setInterval(async () => {
     await NetInfo.isConnected.fetch()
@@ -176,5 +184,6 @@ export default {
   showConnectivityError,
   getRandomNumber,
   startConnectionStatusWorker,
-  basicSort
+  basicSort,
+  areArrOfNumsEqual
 }
