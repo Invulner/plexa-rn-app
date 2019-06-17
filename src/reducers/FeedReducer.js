@@ -99,58 +99,6 @@ const updatePost = (state, action) => {
   }
 }
 
-// const filterFeature = (arr, itemId) => {
-//   if (arr.includes(itemId)) {
-//     return [...arr].filter(id => id !== itemId)
-//   } else {
-//     return [...arr, itemId]
-//   }
-// }
-
-// const toggleFilterItem = (state, action) => {
-//   const { feature, itemId } = action
-//   const { topic_ids, location_ids, group_id } = state.filter
-  
-//   switch (feature) {
-//     case 'topics':
-//       return {
-//         ...state,
-//         filter: {
-//           ...state.filter,
-//           topic_ids: filterFeature(topic_ids, itemId)
-//         }
-//       }
-
-//     case 'group':
-//       if (group_id !== itemId) {
-//         return {
-//           ...state,
-//           filter: {
-//             ...state.filter,
-//             group_id: itemId
-//           }
-//         }
-//       } else {
-//         return {
-//           ...state,
-//           filter: {
-//             ...state.filter,
-//             group_id: null
-//           }
-//         }
-//       }
-
-//     case 'locations':  
-//       return {
-//         ...state,
-//         filter: {
-//           ...state.filter,
-//           location_ids: filterFeature(location_ids, itemId)
-//         }
-//       }
-//   }
-// }
-
 const FeedReducer = (state = initialState, action) => {
   switch(action.type) {
     case types.SAVE_FEED_DATA:
@@ -224,9 +172,6 @@ const FeedReducer = (state = initialState, action) => {
         ...state,
         filter: action.filter
       }
-
-    // case types.TOGGLE_FILTER_ITEM:
-    //   return toggleFilterItem(state, action)
 
     case types.CLEAR_FILTER:
 

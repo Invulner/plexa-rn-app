@@ -75,12 +75,6 @@ const saveFilter = (filter) => ({
   filter
 })
 
-// const toggleFilterItem = (feature, itemId) => ({
-//   type: types.TOGGLE_FILTER_ITEM,
-//   feature,
-//   itemId
-// })
-
 const clearFilter = () => ({
   type: types.CLEAR_FILTER
 })
@@ -101,6 +95,5 @@ export default {
   updatePost,
   toggleFilter,
   saveFilter,
-  // toggleFilterItem,
   clearFilter
 }

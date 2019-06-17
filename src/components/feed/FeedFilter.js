@@ -29,14 +29,12 @@ const mapDispatchToProps = (dispatch) => {
   const toggleFilter = () => dispatch(FeedActions.toggleFilter())
   const refreshFeed = (page, queryParams) => dispatch(FeedOperations.refreshFeed(page, queryParams))
   const saveFilter = (filter) => dispatch(FeedActions.saveFilter(filter))
-  // const toggleFilterItem = (feature, itemId) => dispatch(FeedActions.toggleFilterItem(feature, itemId))
   const clearFilter = () => dispatch(FeedActions.clearFilter())
 
   return { 
     toggleFilter,
     refreshFeed,
     saveFilter,
-    // toggleFilterItem,
     clearFilter
   }
 }
@@ -75,7 +73,7 @@ class FeedFilter extends Component {
   }
 
   toggleFilterItem = (arr, itemId) => {
-    const { topics, groups, location, toggleFilterItem } = this.props
+    const { topics, groups, location } = this.props
 
     if (arr === topics) {
       this.toggleStateArrItem('topic_ids', itemId)
@@ -96,18 +94,6 @@ class FeedFilter extends Component {
     }
   }
 
-  // toggleFilterItem = (arr, itemId) => {
-  //   const { topics, groups, location, toggleFilterItem } = this.props
-    
-  //   if (arr === topics) {
-  //     toggleFilterItem('topics', itemId)
-  //   } else if (arr === groups) {
-  //     toggleFilterItem('group', itemId)
-  //   } else if (arr === location) {
-  //     toggleFilterItem('locations', itemId)
-  //   }
-  // }
-
   onClosePress = () => {
     this.props.toggleFilter()
   }
@@ -118,7 +104,6 @@ class FeedFilter extends Component {
       location_ids: [],
       group_id: null
     })
-    // this.props.clearFilter()
   }
 
   isFilterChanged = () => {
@@ -150,7 +135,7 @@ class FeedFilter extends Component {
   }
 
   renderItems = (arr, field) => {
-    const { topics, groups } = this.props //filter: { topic_ids, location_ids, group_id }
+    const { topics, groups } = this.props
     const { topic_ids, location_ids, group_id } = this.state
     const currentFilter = arr === topics ? topic_ids : (arr === groups ? group_id : location_ids)
 
