@@ -111,8 +111,10 @@ class PostActionButton extends Component {
   }
   
   sendMessage = () => {
-    const { authorId, postId, feedData, saveChosenUserIds } = this.props
+    const { authorId, postId, feedData, saveChosenUserIds, navigation } = this.props
     const existingChat = this.getChat(authorId)
+    
+    navigation.dangerouslyGetParent().setParams({ isChatsScreen: true })
 
     if (existingChat) {
       this.navigateToChat(existingChat.id, existingChat.title)
