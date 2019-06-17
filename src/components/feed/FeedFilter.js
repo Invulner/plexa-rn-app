@@ -72,9 +72,10 @@ class FeedFilter extends Component {
   }
 
   onApplyPress = () => {
-    const { toggleFilter, refreshFeed, filter } = this.props
+    const { toggleFilter, refreshFeed, filter, feedComponent } = this.props
     
     toggleFilter()
+    feedComponent.scrollToOffset({offset: 0})
     refreshFeed(filter)
   } 
 

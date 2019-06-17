@@ -152,7 +152,7 @@ class FeedScreen extends Component {
           onDidFocus={this.setScreenParams}
           onDidBlur={this.resetScreenParams} />
 
-        <FeedFilter />
+        <FeedFilter feedComponent={this.refs.feedList} />
         {this.state.listEmpty &&
           this.renderListEmptyComponent() 
         }
