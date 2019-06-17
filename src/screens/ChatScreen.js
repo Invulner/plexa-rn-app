@@ -155,11 +155,11 @@ class ChatScreen extends Component {
   }
   
   render() {
-    const { data, loading, navigation } = this.props
+    const { data, loading, navigation, isConnected } = this.props
 
     return (
       <SafeAreaView style={styles.safeArea}>
-        {loading && !data.length && this.getChatId() ?
+        {loading && !data.length && this.getChatId() && isConnected ?
           <Loader />
           :
           <View style={styles.container}>
@@ -169,7 +169,7 @@ class ChatScreen extends Component {
               keyExtractor={item => (item.id ? item.id : (item.date ? item.date : item.text)) + ''}
               renderItem={this.renderItem}
               inverted={true}
-              ListFooterComponent={loading ? <Loader /> : this.renderListFooter()} />
+              ListFooterComponent={loading && isConnected ? <Loader /> : this.renderListFooter()} />
             
             <ReplyBox
               navigation={navigation}
