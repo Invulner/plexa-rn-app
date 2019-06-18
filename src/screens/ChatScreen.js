@@ -91,7 +91,12 @@ class ChatScreen extends Component {
   }
 
   renderListFooter = () => {
-    if (this.isLoadingMore())
+    if (!this.isLoadingMore())
+      return
+    
+    if (this.props.loading) {
+      return <Loader />
+    } else {
       return (
         <TouchableOpacity
           style={styles.btn}
@@ -104,6 +109,7 @@ class ChatScreen extends Component {
           </RegularText>
         </TouchableOpacity>
       )
+    }
   }
 
   isLoadingMore = () => { 
@@ -169,7 +175,7 @@ class ChatScreen extends Component {
               keyExtractor={item => (item.id ? item.id : (item.date ? item.date : item.text)) + ''}
               renderItem={this.renderItem}
               inverted={true}
-              ListFooterComponent={loading && isConnected ? <Loader /> : this.renderListFooter()} />
+              ListFooterComponent={this.renderListFooter()} />
             
             <ReplyBox
               navigation={navigation}
