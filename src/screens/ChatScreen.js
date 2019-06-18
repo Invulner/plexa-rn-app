@@ -91,10 +91,10 @@ class ChatScreen extends Component {
   }
 
   renderListFooter = () => {
-    if(!this.isLoadingMore())
+    if (!this.isLoadingMore())
       return
     
-    if(this.props.loading) {
+    if (this.props.loading) {
       return <Loader />
     } else {
       return (
