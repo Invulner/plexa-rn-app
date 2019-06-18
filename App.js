@@ -2,7 +2,7 @@ import React from 'react'
 import { Provider } from 'react-redux'
 import { store, persistor } from './src/store'
 import { StatusBar } from 'react-native'
-import { Font } from 'expo'
+import * as Font from 'expo-font'
 import { PersistGate } from 'redux-persist/integration/react'
 import AppWrapper from './src/components/AppWrapper'
 
