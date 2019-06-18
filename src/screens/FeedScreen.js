@@ -97,6 +97,10 @@ class FeedScreen extends Component {
     isConnected && this.shouldAddToFeed() && !feedLoading && getFeed(nextPage, filter)
   }
 
+  scrollListToTop = () => {
+    this.refs.feedList.scrollToOffset({offset: 0})
+  }
+
   renderListEmptyComponent = () => {
     return (
       <View style={styles.listEmpty}>
@@ -152,7 +156,7 @@ class FeedScreen extends Component {
           onDidFocus={this.setScreenParams}
           onDidBlur={this.resetScreenParams} />
 
-        <FeedFilter feedComponent={this.refs.feedList} />
+        <FeedFilter scrollListToTop={this.scrollListToTop} />
         {this.state.listEmpty &&
           this.renderListEmptyComponent() 
         }

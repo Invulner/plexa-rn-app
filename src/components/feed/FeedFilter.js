@@ -40,11 +40,7 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 class FeedFilter extends Component {
-  state = {
-    topic_ids: [],
-    location_ids: [],
-    group_id: null
-  }
+  state = {...this.props.filter}
 
   isFilterChosen = () => {
     const { topic_ids, group_id, location_ids } = this.state
@@ -80,17 +76,9 @@ class FeedFilter extends Component {
     } else if (arr === location) {
       this.toggleStateArrItem('location_ids', itemId)
     } else if (arr === groups) {
-      this.setState(prevState => {
-        if (prevState.group_id === itemId) {
-          return {
-            group_id: null
-          }
-        } else {
-          return {
-            group_id: itemId
-          }
-        }
-      })
+      this.setState(prevState => ({
+        group_id: prevState.group_id === itemId ? null : itemId
+      }))
     }
   }
 
@@ -107,27 +95,28 @@ class FeedFilter extends Component {
   }
 
   isFilterChanged = () => {
-    const { filter: { topic_ids, location_ids, group_id } } = this.props
+    const { topic_ids, location_ids, group_id } = this.props.filter
     const areTopicsEqual = utils.areArrOfNumsEqual(topic_ids, this.state.topic_ids)
     const areLocationsEqual = utils.areArrOfNumsEqual(location_ids, this.state.location_ids)
-    
-    return !areTopicsEqual || !areLocationsEqual || group_id !== this.state.group_id
+    const isGroupEqual = group_id === this.state.group_id
+
+    return !areTopicsEqual || !areLocationsEqual || !isGroupEqual
   }
 
   onApplyPress = () => {
-    const { toggleFilter, refreshFeed, filter, feedComponent, saveFilter } = this.props
+    const { toggleFilter, refreshFeed, saveFilter, scrollListToTop } = this.props
     
     toggleFilter()
 
     if (this.isFilterChanged()) {
       saveFilter(this.state)
-      feedComponent.scrollToOffset({offset: 0})
-      refreshFeed(filter)
+      scrollListToTop()
+      refreshFeed(this.state)
     }
   } 
 
   renderIconChecked = (filter, itemId) => {
-    const { group_id } = this.props.filter
+    const { group_id } = this.state
 
     if (filter !== group_id && filter.includes(itemId) || filter === group_id && group_id === itemId) {
       return <IconChecked />
