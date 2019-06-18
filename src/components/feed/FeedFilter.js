@@ -9,6 +9,7 @@ import { getSortedGroups } from '../../selectors/Groups'
 import FeedActions from '../../actions/FeedActions'
 import FeedOperations from '../../operations/FeedOperations'
 import commonStyles from '../../assets/styles/common'
+import utils from '../../utils'
 
 const mapStateToProps = (state) => {
   const { filterVisible, filter } = state.feed
@@ -27,20 +28,22 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   const toggleFilter = () => dispatch(FeedActions.toggleFilter())
   const refreshFeed = (page, queryParams) => dispatch(FeedOperations.refreshFeed(page, queryParams))
-  const toggleFilterItem = (feature, itemId) => dispatch(FeedActions.toggleFilterItem(feature, itemId))
+  const saveFilter = (filter) => dispatch(FeedActions.saveFilter(filter))
   const clearFilter = () => dispatch(FeedActions.clearFilter())
 
   return { 
     toggleFilter,
     refreshFeed,
-    toggleFilterItem,
+    saveFilter,
     clearFilter
   }
 }
 
 class FeedFilter extends Component {
+  state = {...this.props.filter}
+
   isFilterChosen = () => {
-    const { topic_ids, group_id, location_ids } = this.props.filter
+    const { topic_ids, group_id, location_ids } = this.state
 
     return !!topic_ids.length || !!group_id || !!location_ids.length
   }
@@ -51,15 +54,31 @@ class FeedFilter extends Component {
     )
   }
 
+  toggleStateArrItem = (stateArr, itemId) => {
+    this.setState(prevState => {
+      if (prevState[stateArr].includes(itemId)) {
+        return {
+          [stateArr]: prevState[stateArr].filter(id => id !== itemId)
+        }
+      } else {
+        return {
+          [stateArr]: [...prevState[stateArr], itemId]
+        }
+      }
+    })
+  }
+
   toggleFilterItem = (arr, itemId) => {
-    const { topics, groups, location, toggleFilterItem } = this.props
-    
+    const { topics, groups, location } = this.props
+
     if (arr === topics) {
-      toggleFilterItem('topics', itemId)
-    } else if (arr === groups) {
-      toggleFilterItem('group', itemId)
+      this.toggleStateArrItem('topic_ids', itemId)
     } else if (arr === location) {
-      toggleFilterItem('locations', itemId)
+      this.toggleStateArrItem('location_ids', itemId)
+    } else if (arr === groups) {
+      this.setState(prevState => ({
+        group_id: prevState.group_id === itemId ? null : itemId
+      }))
     }
   }
 
@@ -68,18 +87,36 @@ class FeedFilter extends Component {
   }
 
   onClearPress = () => {
-    this.props.clearFilter()
+    this.setState({
+      topic_ids: [],
+      location_ids: [],
+      group_id: null
+    })
+  }
+
+  isFilterChanged = () => {
+    const { topic_ids, location_ids, group_id } = this.props.filter
+    const areTopicsEqual = utils.areArrOfNumsEqual(topic_ids, this.state.topic_ids)
+    const areLocationsEqual = utils.areArrOfNumsEqual(location_ids, this.state.location_ids)
+    const isGroupEqual = group_id === this.state.group_id
+
+    return !areTopicsEqual || !areLocationsEqual || !isGroupEqual
   }
 
   onApplyPress = () => {
-    const { toggleFilter, refreshFeed, filter } = this.props
+    const { toggleFilter, refreshFeed, saveFilter, scrollListToTop } = this.props
     
     toggleFilter()
-    refreshFeed(filter)
+
+    if (this.isFilterChanged()) {
+      saveFilter(this.state)
+      scrollListToTop()
+      refreshFeed(this.state)
+    }
   } 
 
   renderIconChecked = (filter, itemId) => {
-    const { group_id } = this.props.filter
+    const { group_id } = this.state
 
     if (filter !== group_id && filter.includes(itemId) || filter === group_id && group_id === itemId) {
       return <IconChecked />
@@ -87,7 +124,8 @@ class FeedFilter extends Component {
   }
 
   renderItems = (arr, field) => {
-    const { topics, groups, filter: { topic_ids, location_ids, group_id } } = this.props
+    const { topics, groups } = this.props
+    const { topic_ids, location_ids, group_id } = this.state
     const currentFilter = arr === topics ? topic_ids : (arr === groups ? group_id : location_ids)
 
     return arr.map((item, index, arr) => {

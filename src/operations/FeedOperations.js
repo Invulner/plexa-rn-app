@@ -26,7 +26,7 @@ const fetchFeed = (saveOption, { page = 1, ...queryOptions } = {}) => {
               console.log('wrong saveOption')
               break
           }
-
+          console.log('queryOptions :', queryOptions);
           dispatch(FeedActions.updateFeedPage(page))
           dispatch(FeedActions.toggleFeedDataLoading(false))
         })
@@ -44,7 +44,7 @@ const getFeed = (page = 1, queryOptions) => {
 
 const refreshFeed = (queryOptions) => {
   return dispatch => {
-    dispatch(fetchFeed('refresh', { ...queryOptions }))
+    dispatch(fetchFeed('refresh', queryOptions))
   }
 }
 
