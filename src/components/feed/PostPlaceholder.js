@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     justifyContent: 'center',
     backgroundColor: '#fff',
-    marginVertical: 5
+    marginTop: 5
   },
 
   text: {

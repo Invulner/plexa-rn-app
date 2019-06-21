@@ -1,7 +1,8 @@
-import { Permissions, Notifications } from 'expo'
+import { Notifications } from 'expo'
+import * as Permissions from 'expo-permissions'
 import { PUSH_ENDPOINT } from '../constants'
 import { AsyncStorage } from 'react-native'
-import { Constants } from 'expo'
+import Constants from 'expo-constants'
 
 const registerForPushNotificationsAsync = async () => {
   const { status: existingStatus } = await Permissions.getAsync(

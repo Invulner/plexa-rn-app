@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Constants } from 'expo'
+import Constants from 'expo-constants'
 import { connect } from 'react-redux'
 import { View, Image, StyleSheet } from 'react-native'
 import DeviceActions from '../actions/DeviceActions'
