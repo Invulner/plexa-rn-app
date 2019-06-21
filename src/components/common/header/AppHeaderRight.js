@@ -82,11 +82,12 @@ const styles = StyleSheet.create({
 
   addUsersIcon: {
     width: 35,
-    marginBottom: -12,
+    marginBottom: -13,
     resizeMode: 'contain',
   },
 
   filtersIcon: {
+    marginTop: 5,
     width: 27,
     height: 27,
     resizeMode: 'contain'
