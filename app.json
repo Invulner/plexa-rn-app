@@ -24,7 +24,7 @@
     "ios": {
       "bundleIdentifier": "com.plexa.native",
       "buildNumber": "2",
-      "icon": "src/assets/icons/iTunesArtwork@2x.png",
+      "icon": "src/assets/images/iTunesArtwork@2x.png",
       "config": {
         "usesNonExemptEncryption": false
       },
