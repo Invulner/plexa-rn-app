@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Image, StyleSheet, TouchableOpacity } from 'react-native'
+import { Image, StyleSheet, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 
 const mapStateToProps = (state) => {
@@ -34,37 +34,31 @@ class ComposeBtn extends Component {
     const { navigation, isConnected } = this.props
 
     return (
-      <View style={styles.container}>
-      {this.state.path === 'feed' &&
-        <TouchableOpacity
-          disabled={!isConnected} 
-          style={styles.addPostButton} 
-          onPress={() => navigation.navigate('Compose')}>
-          <Image 
-            style={styles.addPostIcon}
-            source={require('../../../assets/icons/plus.png')} />
-        </TouchableOpacity>
-      }
-      </View>
+      <React.Fragment>
+        {this.state.path === 'feed' &&
+          <TouchableOpacity
+            disabled={!isConnected} 
+            style={styles.addPostButton} 
+            onPress={() => navigation.navigate('Compose')}>
+            <Image 
+              style={styles.addPostIcon}
+              source={require('../../../assets/icons/plus.png')} />
+          </TouchableOpacity>
+        }
+       </React.Fragment>
     )
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    paddingLeft: 10,
-    display: 'flex',
-    justifyContent: 'flex-end',
-    alignItems: 'baseline'
-  },
-  
   addPostIcon: {
+    marginTop: 6,
     width: 27,
     height: 27
   },
   
   addPostButton: {
-    justifyContent: 'center'
+    paddingLeft: 10
   }
 })
 
