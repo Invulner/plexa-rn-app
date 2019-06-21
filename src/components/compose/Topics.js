@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import { StyleSheet, TouchableOpacity, ScrollView, View } from 'react-native'
 import { connect } from 'react-redux'
 import { getSortedTopics } from '../../selectors/Topics'
-import { BRAND_DARK, BRAND_LIGHT } from '../../assets/styles/colors'
-import { RegularText } from '../common/fonts'
+import { BRAND_DARK, BRAND_LIGHT, DARK_GRAY } from '../../assets/styles/colors'
+import { RegularText, SemiboldText } from '../common/fonts'
 import PostActions from '../../actions/PostActions'
 
 const mapStateToProps = (state) => {
@@ -51,7 +51,10 @@ class Topics extends Component {
 
   render() {
     return (
-      <View style={{height: 200}}>
+      <View style={{maxHeight: 200}}>
+        <SemiboldText style={styles.label}>
+          Select topics
+        </SemiboldText>
         <ScrollView>
           <View style={styles.topicsBox}>
             {this.renderTopics()}
@@ -63,12 +66,19 @@ class Topics extends Component {
 }
 
 const styles = StyleSheet.create({
+  label: {
+    fontSize: 20, 
+    marginLeft: 10, 
+    color: DARK_GRAY, 
+    marginTop: 10
+  },
+
   topicsBox: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     paddingHorizontal: 10,
     justifyContent: 'flex-start',
-    marginTop: 20
+    marginTop: 10
   },
 
   topic: {
