@@ -52,7 +52,7 @@ class Topics extends Component {
   render() {
     return (
       <View style={{maxHeight: 200}}>
-        <SemiboldText style={{fontSize: 20, marginLeft: 10, color: DARK_GRAY, marginTop: 10}}>
+        <SemiboldText style={styles.label}>
           Select topics
         </SemiboldText>
         <ScrollView>
@@ -66,6 +66,13 @@ class Topics extends Component {
 }
 
 const styles = StyleSheet.create({
+  label: {
+    fontSize: 20, 
+    marginLeft: 10, 
+    color: DARK_GRAY, 
+    marginTop: 10
+  },
+
   topicsBox: {
     flexDirection: 'row',
     flexWrap: 'wrap',
