@@ -6,7 +6,7 @@
     "privacy": "public",
     "sdkVersion": "33.0.0",
     "platforms": ["ios", "android"],
-    "version": "1.0.1",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "src/assets/images/icon.png",
     "splash": {
@@ -22,15 +22,15 @@
       "src/assets/images/*"
     ],
     "ios": {
+      "bundleIdentifier": "com.plexa.native",
+      "buildNumber": "2",
+      "icon": "src/assets/icons/iTunesArtwork@2x.png",
       "config": {
         "usesNonExemptEncryption": false
       },
-      "bundleIdentifier": "com.plexa.native",
-      "buildNumber": "1",
       "infoPlist": {
         "NSPhotoLibraryUsageDescription": "Please provide the Plexa app with permission to access your photos."
-      },
-      "icon": "src/assets/images/iTunesArtwork@2x.png"
+      }
     }
   }
 }
