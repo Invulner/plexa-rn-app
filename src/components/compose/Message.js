@@ -20,13 +20,13 @@ class Message extends Component {
     const { content, saveContent, noImage } = this.props
 
     return (
-        <TextInput
-          placeholder='Enter your message ...'
-          style={[styles.input, noImage && { minHeight: 285 }]}
-          multiline={true}
-          value={content}
-          scrollEnabled={false}
-          onChangeText={content => saveContent(content)} />
+      <TextInput
+        placeholder='Enter your message ...'
+        style={[styles.input, noImage && { minHeight: 285 }]}
+        multiline={true}
+        value={content}
+        scrollEnabled={false}
+        onChangeText={content => saveContent(content)} />
     )
   }
 }
