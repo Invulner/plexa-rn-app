@@ -275,7 +275,6 @@ const styles = StyleSheet.create({
   },
 
   inputBox: {
-    // height: 250,
     flex: 1,
     paddingTop: 20,
     paddingBottom: 15

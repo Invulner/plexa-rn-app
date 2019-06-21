@@ -3,7 +3,7 @@ import { StyleSheet, TouchableOpacity, ScrollView, View } from 'react-native'
 import { connect } from 'react-redux'
 import { getSortedTopics } from '../../selectors/Topics'
 import { BRAND_DARK, BRAND_LIGHT, DARK_GRAY } from '../../assets/styles/colors'
-import { RegularText, SemiboldText } from '../common/fonts'
+import { SemiboldText } from '../common/fonts'
 import PostActions from '../../actions/PostActions'
 
 const mapStateToProps = (state) => {
