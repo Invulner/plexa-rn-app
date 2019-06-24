@@ -4,6 +4,7 @@ import GrayLine from '../common/GrayLine'
 import { RegularText } from '../common/fonts'
 import IconChecked from '../common/IconChecked'
 import { DARK_GRAY } from '../../assets/styles/colors'
+import utils from '../../utils'
 
 function UserListItem(props) {
   const { name, isChosen, onItemPress } = props
@@ -15,7 +16,7 @@ function UserListItem(props) {
           style={styles.btn}
           onPress={onItemPress}>
           <RegularText style={styles.groupText}>
-            {name}
+            {utils.truncate(name, 38)}
           </RegularText>
         </TouchableOpacity>
         {isChosen && <IconChecked />}
