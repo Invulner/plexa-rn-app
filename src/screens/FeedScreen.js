@@ -93,7 +93,7 @@ class FeedScreen extends Component {
   onEndReached = () => {
     const { feed: { page, feedLoading, filter }, getFeed, isConnected }  = this.props
     const nextPage = page + 1
-    
+
     isConnected && this.shouldAddToFeed() && !feedLoading && getFeed(nextPage, filter)
   }
 
