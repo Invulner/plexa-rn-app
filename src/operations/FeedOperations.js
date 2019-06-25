@@ -3,15 +3,16 @@ import { API_URL } from '../constants'
 import FeedActions from '../actions/FeedActions'
 import CommentsActions from '../actions/CommentsActions'
 
-const fetchFeed = (saveOption, { page = 1, ...queryOptions } = {}) => {
+const fetchFeed = (saveOption, { page, isUpdateInBackground, ...queryOptions } = {}) => {
   return dispatch => {
-    dispatch(FeedActions.toggleFeedDataLoading(true))
-    
+    !isUpdateInBackground && dispatch(FeedActions.toggleFeedDataLoading(true))
+    const currentPage = page || 1
+
     return getAxiosInstance().then(api => {
       api.get(`${API_URL}/feed`, {
         params: {
           ...queryOptions,
-          page
+          page: currentPage
         }
       })
         .then(response => {
@@ -27,8 +28,8 @@ const fetchFeed = (saveOption, { page = 1, ...queryOptions } = {}) => {
               break
           }
       
-          dispatch(FeedActions.updateFeedPage(page))
-          dispatch(FeedActions.toggleFeedDataLoading(false))
+          dispatch(FeedActions.updateFeedPage(currentPage))
+          !isUpdateInBackground && dispatch(FeedActions.toggleFeedDataLoading(false))
         })
         .catch(error => console.log('fetchFeed error: ', error))
     })
@@ -42,9 +43,9 @@ const getFeed = (page = 1, queryOptions) => {
   }
 }
 
-const refreshFeed = (queryOptions) => {
+const refreshFeed = (params) => {
   return dispatch => {
-    dispatch(fetchFeed('refresh', queryOptions))
+    dispatch(fetchFeed('refresh', params))
   }
 }
 

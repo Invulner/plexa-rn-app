@@ -9,7 +9,7 @@ import cable from '../action_cable/cable_instance'
 const fetchFreshData = (navigateToRoute, filter) => {
   return dispatch => {
     dispatch(UserOperations.getProfileData(navigateToRoute))
-    dispatch(FeedOperations.refreshFeed(filter))
+    dispatch(FeedOperations.refreshFeed({ ...filter, isUpdateInBackground: true }))
     dispatch(ChatsOperations.getChats())
   }  
 }
