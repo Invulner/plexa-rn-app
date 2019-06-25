@@ -3,9 +3,9 @@ import { API_URL } from '../constants'
 import FeedActions from '../actions/FeedActions'
 import CommentsActions from '../actions/CommentsActions'
 
-const fetchFeed = (saveOption, { page, isUpdateInBackground, ...queryOptions } = {}) => {
+const fetchFeed = (saveOption, { page, silent, ...queryOptions } = {}) => {
   return dispatch => {
-    !isUpdateInBackground && dispatch(FeedActions.toggleFeedDataLoading(true))
+    !silent && dispatch(FeedActions.toggleFeedDataLoading(true))
     const currentPage = page || 1
 
     return getAxiosInstance().then(api => {
@@ -29,7 +29,7 @@ const fetchFeed = (saveOption, { page, isUpdateInBackground, ...queryOptions } =
           }
       
           dispatch(FeedActions.updateFeedPage(currentPage))
-          !isUpdateInBackground && dispatch(FeedActions.toggleFeedDataLoading(false))
+          !silent && dispatch(FeedActions.toggleFeedDataLoading(false))
         })
         .catch(error => console.log('fetchFeed error: ', error))
     })
