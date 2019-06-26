@@ -7,6 +7,15 @@ import Loader from '../components/common/Loader'
 import Featured from '../components/researchFeed/Featured'
 import { NavigationEvents } from 'react-navigation'
 
+const mapStateToProps = (state) => {
+  const { researchFeed, network: { isConnected } } = state
+
+  return { 
+    researchFeed,
+    isConnected
+  }
+}
+
 const mapDispatchToProps = (dispatch) => {
   const getResearchFeed = (page) => dispatch(ResearchFeedOperations.getResearchFeed(page))
   const refreshResearchFeed = () => dispatch(ResearchFeedOperations.refreshResearchFeed())
@@ -17,16 +26,17 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-const mapStateToProps = (state) => {
-  const { researchFeed } = state
-
-  return { researchFeed }
-}
-
 class ResearchFeedScreen extends Component {
   addToFeed = () => {
-    const { getResearchFeed, researchFeed: { page, loading } } = this.props
-    !loading && getResearchFeed(page + 1)
+    const { isConnected, getResearchFeed, researchFeed: { page, loading } } = this.props
+    
+    isConnected && !loading && getResearchFeed(page + 1)
+  }
+
+  refreshFeed = () => {
+    const { isConnected, refreshResearchFeed } = this.props
+
+    isConnected && refreshResearchFeed()
   }
 
   getParentNavigation = () => {
@@ -45,12 +55,8 @@ class ResearchFeedScreen extends Component {
     })
   }
 
-  componentDidMount() {
-    this.props.getResearchFeed()
-  }
-
   render() {
-    const { refreshResearchFeed, researchFeed: { loading, feedData }, navigation } = this.props
+    const { researchFeed: { loading, feedData }, navigation } = this.props
 
     return (
       <SafeArea>
@@ -71,7 +77,7 @@ class ResearchFeedScreen extends Component {
             ListFooterComponent={loading && <Loader />}
             onEndReached={this.addToFeed}
             onEndReachedThreshold={0.5}
-            onRefresh={refreshResearchFeed} />
+            onRefresh={this.refreshFeed} />
         }
       </SafeArea>
     )
