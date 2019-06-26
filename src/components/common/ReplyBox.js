@@ -9,13 +9,14 @@ import utils from '../../utils'
 import ChatsOperations from '../../operations/ChatsOperations'
 
 const mapStateToProps = (state) => {
-  const { user, chats: { chosenUsers }, comments: { editable }, device: { device_name } } = state
+  const { user, chats: { chosenUsers }, comments: { editable }, device: { device_name }, network: { isConnected } } = state
 
   return { 
     user,
     chosenUsers,
     editable,
-    device_name
+    device_name,
+    isConnected
   }
 }
 
@@ -114,6 +115,10 @@ class ReplyBox extends Component {
 
     return this.props.device_name.includes('X') ? xModelsOffset : olderModelsOffset
   }
+
+  isBtnDisabled = () => {
+    return !this.props.isConnected || this.isEmptyInput()
+  }
   
   render() {
     const { reply } = this.state
@@ -136,10 +141,10 @@ class ReplyBox extends Component {
               value={reply} />
 
               <TouchableOpacity 
-                disabled={this.isEmptyInput()}
+                disabled={this.isBtnDisabled()}
                 style={styles.iconBox}
                 onPress={this.onSubmit}>
-                <View style={[styles.icon, !this.isEmptyInput() && styles.inputFocused]}>
+                <View style={[styles.icon, !this.isBtnDisabled() && styles.inputFocused]}>
                   <Image
                     style={styles.iconImage} 
                     source={require('../../assets/icons/send-button.png')} />
