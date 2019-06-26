@@ -5,7 +5,7 @@ import NetworkActions from '../actions/NetworkActions'
 import ChatsActions from '../actions/ChatsActions'
 import { Notifications } from 'expo'
 import cable from '../action_cable/cable_instance'
-import ResearchFeedOperations from './ResearchFeedOperations';
+import ResearchFeedOperations from './ResearchFeedOperations'
 
 const fetchFreshData = (navigateToRoute, filter) => {
   return dispatch => {

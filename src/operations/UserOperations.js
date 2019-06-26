@@ -10,7 +10,7 @@ import ChatsActions from '../actions/ChatsActions'
 import utils from '../utils'
 import FeedOperations from './FeedOperations'
 import ChatsOperations from './ChatsOperations'
-import ResearchFeedOperations from './ResearchFeedOperations';
+import ResearchFeedOperations from './ResearchFeedOperations'
 
 const auth = (credentials, navigation) => {
   return dispatch => {
