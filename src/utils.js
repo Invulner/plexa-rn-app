@@ -141,7 +141,7 @@ const isAuthorizedRequest = (errorStatusCode) => {
 }
 
 const showConnectivityError = () => {
-  Alert.alert('No internet connection')
+  Alert.alert('Network connection is not available.', 'Some functionality might be limited.')
 }
 
 const getRandomNumber = (min, max) => {
