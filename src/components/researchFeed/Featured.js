@@ -7,6 +7,12 @@ import { FEATURED } from '../../assets/styles/colors'
 import { connect } from 'react-redux'
 import PostActions from '../../actions/PostActions'
 
+const mapStateToProps = (state) => {
+  const { isConnected } = state.network
+
+  return { isConnected }
+}
+
 const mapDispatchToProps = (dispatch) => {
   const saveLink = (link, news_id) => dispatch(PostActions.saveLink(link, news_id))
 
@@ -28,7 +34,7 @@ class Featured extends Component {
   }
 
   render() {
-    const { source_title, title, description, url } = this.props.item
+    const { isConnected, item: { source_title, title, description, url } } = this.props
     const colorIndex = this.colorIndex
 
     return (
@@ -37,7 +43,8 @@ class Featured extends Component {
           <View style={styles.iconBox}>
             <NewsIcon style={styles.icon} />
           </View>
-          <TouchableOpacity 
+          <TouchableOpacity
+            disabled={!isConnected} 
             style={styles.btn}
             onPress={this.onPostPress}>
             <RegularText style={styles.btnText}>
@@ -136,4 +143,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect(null, mapDispatchToProps)(Featured)
+export default connect(mapStateToProps, mapDispatchToProps)(Featured)
