@@ -69,3 +69,8 @@ export const feedFilterButton = {
   active: require('./assets/icons/feed-filters.png'),
   inactive: require('./assets/icons/feed-filters-inactive.png')
 }
+
+export const composeButton = {
+  active: require('./assets/icons/plus.png'),
+  inactive: require('./assets/icons/plus-inactive.png')
+}

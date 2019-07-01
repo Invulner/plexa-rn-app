@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Image, StyleSheet, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
+import { composeButton } from '../../../constants'
 
 const mapStateToProps = (state) => {
   const { isConnected } = state.network
@@ -30,11 +31,8 @@ class ComposeBtn extends Component {
     } else return null
   }
 
-  getIconSrc = () => {
-    const activeIconSrc = require('../../../assets/icons/plus.png')
-    const inactiveIconSrc = require('../../../assets/icons/plus-inactive.png')
-
-    return this.props.isConnected ? activeIconSrc : inactiveIconSrc
+  getIcon = () => {
+    return this.props.isConnected ? 'active' : 'inactive'
   }
 
   render() {
@@ -49,7 +47,7 @@ class ComposeBtn extends Component {
             onPress={() => navigation.navigate('Compose')}>
             <Image 
               style={styles.addPostIcon}
-              source={this.getIconSrc()} />
+              source={composeButton[this.getIcon()]} />
           </TouchableOpacity>
         }
        </React.Fragment>
