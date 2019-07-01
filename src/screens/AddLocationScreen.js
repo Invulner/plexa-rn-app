@@ -114,7 +114,7 @@ class AddLocationScreen extends Component {
   }
 
   renderLocationsLists = () => {
-    const { items, location_id, location } = this.props
+    const { items, location_id } = this.props
 
     if (items === null) {
       return (
