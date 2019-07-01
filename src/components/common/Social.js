@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Image, View, StyleSheet, TouchableWithoutFeedback } from 'react-native'
+import { Image, View, StyleSheet, TouchableOpacity } from 'react-native'
 import { LightText } from '../common/fonts'
 import { likeIcons } from '../../constants'
 import { connect } from 'react-redux'
@@ -73,14 +73,17 @@ class Social extends Component {
 
     return (
       <View style={styles.socialContainer}>
-        <TouchableWithoutFeedback onPress={this.onLikePress}>
+        <TouchableOpacity
+          activeOpacity={1}
+          style={styles.btn} 
+          onPress={this.onLikePress}>
           <Image
             source={likeIcons[this.getIcon()]}
             style={styles.icon} />
-        </TouchableWithoutFeedback>
-        <LightText>
-          {likes}
-        </LightText>
+          <LightText>
+            {likes}
+          </LightText>
+        </TouchableOpacity>
         {!!answersCount &&
           <View style={styles.commentsContainer}>
             <Image
@@ -97,12 +100,19 @@ class Social extends Component {
 }
 
 const styles = StyleSheet.create({
+  btn: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingLeft: 10,
+    paddingRight: 20
+  },
+
   icon: {
     width: 15,
     height: 15,
     resizeMode: 'contain',
     marginRight: 7,
-    marginLeft: 10,
     marginBottom: 8
   },
 
