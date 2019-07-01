@@ -73,7 +73,9 @@ class FeedPost extends Component {
 
     return (
       <View style={[feedStyles.postContainer, fullView && styles.fullViewContainer]}>
-        <TouchableOpacity onPress={() => navigation.navigate('Post', { postId })} activeOpacity={1}>
+        <TouchableOpacity 
+          onPress={() => navigation.navigate('Post', { postId })} 
+          activeOpacity={1}>
 
           {!!image_urls.length &&
             <ImagePopUp
