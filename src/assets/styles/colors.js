@@ -10,6 +10,7 @@ export const DARK_GRAY = '#4c4c4c'
 export const NATIVE_GRAY = '#d3d3d3'
 export const RED = '#c84638'
 export const ACTIVE_ICON_FILL = '#494639'
+export const INACTIVE_ICON_FILL = '#D8D8D8'
 export const FEATURED = [
   {
     bg: '#f0bf02',

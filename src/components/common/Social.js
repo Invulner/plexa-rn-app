@@ -10,8 +10,12 @@ import debounce from 'lodash.debounce'
 const mapStateToProps = (state, { id, isComment }) => {
   const items = isComment ? state.comments.items : state.feed.feedData
   const item = items.filter(item => item.id === id)[0]
+  const { isConnected } = state.network
 
-  return { item }
+  return { 
+    item,
+    isConnected
+  }
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -51,7 +55,7 @@ class Social extends Component {
   }, 1000)
 
   getIcon = () => {
-    return this.state.liked ? 'liked' : 'unliked'
+    return !this.props.isConnected ? 'inactive' : this.state.liked ? 'liked' : 'unliked'
   }
 
   componentDidUpdate(prevProps) {
@@ -68,13 +72,14 @@ class Social extends Component {
   }
 
   render() {
-    const { answersCount } = this.props
+    const { answersCount, isConnected } = this.props
     const { likes } = this.state
 
     return (
       <View style={styles.socialContainer}>
         <TouchableOpacity
           activeOpacity={1}
+          disabled={!isConnected}
           style={styles.btn} 
           onPress={this.onLikePress}>
           <Image

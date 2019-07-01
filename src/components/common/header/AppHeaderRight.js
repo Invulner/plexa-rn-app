@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { TouchableOpacity, Image, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
 import FeedActions from '../../../actions/FeedActions'
+import { addUsersButton, feedFilterButton } from '../../../constants'
 
 const mapStateToProps = (state) => {
   const { isConnected } = state.network
@@ -49,6 +50,10 @@ class AppHeaderRight extends Component {
 
   onAddUsersPress = () => this.props.navigation.navigate('AddUsers')
 
+  getIcon = () => {
+    return this.props.isConnected ? 'active' : 'inactive'
+  }
+
   render() {
     const { isConnected } = this.props
     const { path } = this.state
@@ -61,12 +66,12 @@ class AppHeaderRight extends Component {
           {path === 'chats' &&
             <Image
               style={styles.addUsersIcon}
-              source={require('../../../assets/icons/add-users.png')} />
+              source={addUsersButton[this.getIcon()]} />
           }
           {path === 'feed' &&
             <Image
               style={styles.filtersIcon}
-              source={require('../../../assets/icons/feed-filters.png')} />
+              source={feedFilterButton[this.getIcon()]} />
           }
       </TouchableOpacity>
     )

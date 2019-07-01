@@ -30,6 +30,13 @@ class ComposeBtn extends Component {
     } else return null
   }
 
+  getIconSrc = () => {
+    const activeIconSrc = require('../../../assets/icons/plus.png')
+    const inactiveIconSrc = require('../../../assets/icons/plus-inactive.png')
+
+    return this.props.isConnected ? activeIconSrc : inactiveIconSrc
+  }
+
   render() {
     const { navigation, isConnected } = this.props
 
@@ -42,7 +49,7 @@ class ComposeBtn extends Component {
             onPress={() => navigation.navigate('Compose')}>
             <Image 
               style={styles.addPostIcon}
-              source={require('../../../assets/icons/plus.png')} />
+              source={this.getIconSrc()} />
           </TouchableOpacity>
         }
        </React.Fragment>

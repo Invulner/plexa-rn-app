@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { View, StyleSheet, TouchableOpacity, Linking } from 'react-native'
-import { BRAND_LIGHT } from '../../assets/styles/colors'
+import { BRAND_LIGHT, LIGHT_GRAY } from '../../assets/styles/colors'
 import NewsIcon from '../feed/NewsIcon'
 import { RegularText } from '../common/fonts'
 import { FEATURED } from '../../assets/styles/colors'
@@ -33,6 +33,10 @@ class Featured extends Component {
     navigate('Compose')
   }
 
+  getIconBgColor = () => {
+    return this.props.isConnected ? BRAND_LIGHT : LIGHT_GRAY
+  }
+
   render() {
     const { isConnected, item: { source_title, title, description, url } } = this.props
     const colorIndex = this.colorIndex
@@ -45,7 +49,7 @@ class Featured extends Component {
           </View>
           <TouchableOpacity
             disabled={!isConnected} 
-            style={styles.btn}
+            style={[styles.btn, { backgroundColor: this.getIconBgColor() }]}
             onPress={this.onPostPress}>
             <RegularText style={styles.btnText}>
               Post this

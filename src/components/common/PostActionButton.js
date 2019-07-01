@@ -6,16 +6,19 @@ import FeedOperations from '../../operations/FeedOperations'
 import CommentsOperations from '../../operations/CommentsOperations'
 import PostOperations from '../../operations/PostOperations'
 import ChatsActions from '../../actions/ChatsActions'
+import { actionButton } from '../../constants'
 
 const mapStateToProps = (state) => {
   const userId = state.user.id
   const chats = state.chats.items
   const { feedData } = state.feed
+  const { isConnected } = state.network
 
   return { 
     userId,
     chats,
-    feedData
+    feedData,
+    isConnected
   }
 }
 
@@ -173,13 +176,18 @@ class PostActionButton extends Component {
     }, this.onBtnPress)
   }
 
+  getIconSrc = () => {
+    return this.props.isConnected ? 'active' : 'inactive'
+  }
+
   render() {
     return (
       <TouchableOpacity 
         onPress={this.callActionsSheet}
+        disabled={!this.props.isConnected}
         style={styles.actionBtn}>
         <Image
-          source={require('../../assets/icons/ico1-01.png')}
+          source={actionButton[this.getIconSrc()]}
           style={styles.actionIcon} />
       </TouchableOpacity>
     )
