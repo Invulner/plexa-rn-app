@@ -78,10 +78,17 @@ class AddLocationScreen extends Component {
 
   renderUserLocations = () => {
     const { location_id, location, savedLocation } = this.props
-    const isSavedLocationExist = !!savedLocation && !location.filter(item => item.id === location_id).length
-    let newArr = isSavedLocationExist ? [savedLocation, ...location] : location
+    let newArr
 
-    return newArr.map(item => (
+    if (savedLocation && !location) {
+      newArr = [savedLocation]
+    } else if (savedLocation && !location.find(item => item.id === location_id)) {
+      newArr = [savedLocation, ...location]
+    } else {
+      newArr = location
+    }
+
+    return newArr && newArr.map(item => (
       <ListItem
         name={item.name}
         isChosen={location_id === item.id}
@@ -107,7 +114,7 @@ class AddLocationScreen extends Component {
   }
 
   renderLocationsLists = () => {
-    const { items, location_id } = this.props
+    const { items, location_id, location } = this.props
 
     if (items === null) {
       return (
@@ -120,12 +127,7 @@ class AddLocationScreen extends Component {
         </React.Fragment>
       )
     } else {
-
-      if (items.length)
-        return this.renderRemoteLocations()
-      else
-        return this.renderNoResults()
-
+      return items.length ? this.renderRemoteLocations() : this.renderNoResults()
     }
   }
 
