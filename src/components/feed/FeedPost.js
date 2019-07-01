@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Image, StyleSheet, TouchableWithoutFeedback, TouchableOpacity } from 'react-native'
+import { View, Image, StyleSheet, TouchableOpacity } from 'react-native'
 import { RegularText } from '../common/fonts'
 import Research from './Research'
 import LinkPreview from './LinkPreview'
@@ -72,8 +72,9 @@ class FeedPost extends Component {
     const { id: postId, created_at, likes_count, answers_count, image_urls, author, liked } = item
 
     return (
-      <TouchableWithoutFeedback onPress={() => navigation.navigate('Post', { postId })}>
-        <View style={[feedStyles.postContainer, fullView && styles.fullViewContainer]}>
+      <View style={[feedStyles.postContainer, fullView && styles.fullViewContainer]}>
+        <TouchableOpacity onPress={() => navigation.navigate('Post', { postId })} activeOpacity={1}>
+
           {!!image_urls.length &&
             <ImagePopUp
               onModalToggle={this.onModalToggle}
@@ -98,14 +99,14 @@ class FeedPost extends Component {
             }
             {this.renderAttachedBlock()}
           </View>
+        </TouchableOpacity>
 
-          <Social
-            liked={liked}
-            likesCount={likes_count}
-            answersCount={answers_count}
-            id={postId} />
-        </View>
-      </TouchableWithoutFeedback>
+        <Social
+          liked={liked}
+          likesCount={likes_count}
+          answersCount={answers_count}
+          id={postId} />
+      </View>
     )
   }
 }
