@@ -108,7 +108,8 @@ class PostScreen extends Component {
                 <React.Fragment>
                   <GrayLine />
                   <SearchPlaceholder message={'Comments are unavailable in offline mode'} />
-                </React.Fragment>}
+                </React.Fragment>
+              }
               {enabled === false &&
                 <SearchPlaceholder message={'Author has disabled commenting'} />
               }
