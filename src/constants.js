@@ -28,8 +28,10 @@ export const tabIcons = {
 }
 
 export const likeIcons = {
-  liked: require('./assets/icons/like-icon-liked.png'),
-  unliked: require('./assets/icons/like-icon.png')
+  'active-liked': require('./assets/icons/like-icon-liked.png'),
+  'active-unliked': require('./assets/icons/like-icon.png'),
+  'inactive-liked': require('./assets/icons/like-icon-liked-inactive.png'),
+  'inactive-unliked': require('./assets/icons/like-icon-inactive.png')
 }
 
 export const hints = {
@@ -52,4 +54,24 @@ export const postIcons = {
   location: require('./assets/icons/location.png'),
   'users-active': require('./assets/icons/users-group-active.png'),
   users: require('./assets/icons/users-group.png')
+}
+
+export const actionButton = {
+  active: require('./assets/icons/action-button.png'),
+  inactive: require('./assets/icons/action-button-inactive.png')
+}
+
+export const addUsersButton = {
+  active: require('./assets/icons/add-users.png'),
+  inactive: require('./assets/icons/add-users-inactive.png')
+}
+
+export const feedFilterButton = {
+  active: require('./assets/icons/feed-filters.png'),
+  inactive: require('./assets/icons/feed-filters-inactive.png')
+}
+
+export const composeButton = {
+  active: require('./assets/icons/plus.png'),
+  inactive: require('./assets/icons/plus-inactive.png')
 }

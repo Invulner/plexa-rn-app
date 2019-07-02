@@ -9,6 +9,7 @@ export const LIGHT_GRAY = '#bababa'
 export const DARK_GRAY = '#4c4c4c'
 export const NATIVE_GRAY = '#d3d3d3'
 export const RED = '#c84638'
+export const INACTIVE_LIKED_FILL = '#e29d95'
 export const ACTIVE_ICON_FILL = '#494639'
 export const FEATURED = [
   {
