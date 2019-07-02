@@ -3,19 +3,26 @@ import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import ProfileAvatar from './ProfileAvatar'
 import PostActionButton from './PostActionButton'
 import { SemiboldText, RegularText } from './fonts'
+import { connect } from 'react-redux'
 import { withNavigation } from 'react-navigation'
 import ta from 'time-ago'
 
+const mapStateToProps = (state) => {
+  const { isConnected } = state.network
+
+  return { isConnected }
+}
+
 function PostHead(props) {
-  const { navigation, created_at, author, isComment, postId, commentId } = props
+  const { navigation, created_at, author, isComment, postId, commentId, isConnected } = props
   const { avatar_url, full_name, title, id } = author
   
   const handlePress = () => {
-    return isMedbot() ? null : navigation.navigate('PublicProfile', { id })
+    return isMedbot() || !isConnected ? null : navigation.navigate('PublicProfile', { id })
   }
 
   const getBtnOpacity = () => {
-    return isMedbot() ? 1 : 0.2
+      return isMedbot() || !isConnected ? 1 : 0.2
   }
 
   const isMedbot = () => {
@@ -24,7 +31,7 @@ function PostHead(props) {
 
   renderTouchableBlock = (component) => {
     return (
-      <TouchableOpacity 
+      <TouchableOpacity
         onPress={handlePress}
         activeOpacity={getBtnOpacity()}>
         {component}
@@ -112,4 +119,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default withNavigation(PostHead)
+export default withNavigation(connect(mapStateToProps)(PostHead))
