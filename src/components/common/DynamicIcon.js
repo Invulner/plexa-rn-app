@@ -13,11 +13,9 @@ function DynamicIcon({ src, isConnected, style, like }) {
     if (like === undefined) {
       return isConnected ? 'active' : 'inactive'
     } else {
-      if (isConnected) {
-        return like ? 'active-liked' : 'active-unliked'
-      } else {
-        return like ? 'inactive-liked' : 'inactive-unliked'
-      }
+      const prefix = isConnected ? 'active' : 'inactive'
+      
+      return like ? `${prefix}-liked` : `${prefix}-unliked`
     }
   }
 
