@@ -32,10 +32,6 @@ class ComposeBtn extends Component {
     } else return null
   }
 
-  getIcon = () => {
-    return this.props.isConnected ? 'active' : 'inactive'
-  }
-
   render() {
     const { navigation, isConnected } = this.props
 
