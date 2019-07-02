@@ -18,12 +18,14 @@ const mapStateToProps = (state, { navigation }) => {
   const { feedData } = state.feed
   const { loading, enabled } = state.comments
   const post = utils.findItemById(feedData, navigation.getParam('postId'))
+  const { isConnected } = state.network
 
   return {
     items: getSortedComments(state),
     loading,
     post,
-    enabled
+    enabled,
+    isConnected
   }
 }
 
@@ -59,7 +61,9 @@ class PostScreen extends Component {
   }
 
   componentDidMount() {
-    this.props.getComments()
+    const { isConnected, getComments } = this.props
+
+    isConnected && getComments()
   }
 
   componentWillUnmount() {
@@ -69,14 +73,19 @@ class PostScreen extends Component {
   componentDidUpdate(prevProps) {
     const prevLenght = prevProps.items.length
     const currentLength = this.props.items.length
+    const { isConnected, getComments } = this.props
 
     if (prevLenght !== 0 && prevLenght < currentLength) {
       this.scrollFlag = true
     }
+
+    if (prevProps.isConnected !== isConnected && isConnected) {
+      getComments()
+    }
   }
 
   render() {
-    const { navigation, items, loading, post, enabled } = this.props
+    const { navigation, items, loading, post, enabled, isConnected } = this.props
     const postAuthor = post.author.full_name
 
     return (
@@ -93,9 +102,15 @@ class PostScreen extends Component {
             <Loader style={styles.loader} />
             :
             <React.Fragment>
-              {this.renderComments()}
-              {!enabled &&
-                <SearchPlaceholder message={'Author has disabled commenting'}/>
+              {isConnected ? 
+                this.renderComments()
+                :
+                <React.Fragment>
+                  <GrayLine />
+                  <SearchPlaceholder message={'Comments are unavailable in offline mode'} />
+                </React.Fragment>}
+              {enabled === false &&
+                <SearchPlaceholder message={'Author has disabled commenting'} />
               }
             </React.Fragment>
           }

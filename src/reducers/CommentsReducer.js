@@ -3,8 +3,8 @@ import utils from '../utils'
 
 const initialState = {
   items: [],
-  loading: true,
-  enabled: false,
+  loading: false,
+  enabled: null,
   editable: null,
   deleted: false,
   post_id: null
