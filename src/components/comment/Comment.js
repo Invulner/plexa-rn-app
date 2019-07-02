@@ -7,7 +7,6 @@ import Social from '../common/Social'
 import GrayLine from '../common/GrayLine'
 
 function Comment(props) {
-  const { navigation } = props
   const { created_at, author, content, likes_count, id, liked, deleted } = props.item
 
   return (
