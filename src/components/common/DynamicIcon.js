@@ -10,11 +10,11 @@ const mapStateToProps = (state) => {
 
 function DynamicIcon({ src, isConnected, style, like }) {
   const getIconType = () => {
+    const prefix = isConnected ? 'active' : 'inactive'
+
     if (like === undefined) {
-      return isConnected ? 'active' : 'inactive'
+      return prefix
     } else {
-      const prefix = isConnected ? 'active' : 'inactive'
-      
       return like ? `${prefix}-liked` : `${prefix}-unliked`
     }
   }
