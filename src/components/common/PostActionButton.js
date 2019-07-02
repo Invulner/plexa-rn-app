@@ -7,6 +7,7 @@ import CommentsOperations from '../../operations/CommentsOperations'
 import PostOperations from '../../operations/PostOperations'
 import ChatsActions from '../../actions/ChatsActions'
 import { actionButton } from '../../constants'
+import DynamicIcon from './DynamicIcon'
 
 const mapStateToProps = (state) => {
   const userId = state.user.id
@@ -176,9 +177,6 @@ class PostActionButton extends Component {
     }, this.onBtnPress)
   }
 
-  getIconSrc = () => {
-    return this.props.isConnected ? 'active' : 'inactive'
-  }
 
   render() {
     return (
@@ -186,8 +184,8 @@ class PostActionButton extends Component {
         onPress={this.callActionsSheet}
         disabled={!this.props.isConnected}
         style={styles.actionBtn}>
-        <Image
-          source={actionButton[this.getIconSrc()]}
+        <DynamicIcon
+          src={actionButton}
           style={styles.actionIcon} />
       </TouchableOpacity>
     )
