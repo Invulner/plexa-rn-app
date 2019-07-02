@@ -255,17 +255,17 @@ const styles = StyleSheet.create({
 
   imageContainer: {
     position: 'absolute',
-    bottom: 10,
-    width: 175,
-    height: 42,
+    bottom: 20,
+    width: 150,
+    height: 37,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center'
   },
 
   logoImage: {
-    width: 175,
-    height: 42
+    width: 150,
+    height: 37
   }
 })
 
