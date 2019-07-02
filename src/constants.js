@@ -28,9 +28,10 @@ export const tabIcons = {
 }
 
 export const likeIcons = {
-  liked: require('./assets/icons/like-icon-liked.png'),
-  unliked: require('./assets/icons/like-icon.png'),
-  inactive: require('./assets/icons/like-icon-inactive.png')
+  'active-liked': require('./assets/icons/like-icon-liked.png'),
+  'active-unliked': require('./assets/icons/like-icon.png'),
+  'inactive-liked': require('./assets/icons/like-icon-liked-inactive.png'),
+  'inactive-unliked': require('./assets/icons/like-icon-inactive.png')
 }
 
 export const hints = {

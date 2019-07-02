@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import { Image, StyleSheet, TouchableOpacity } from 'react-native'
+import { StyleSheet, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 import { composeButton } from '../../../constants'
+import DynamicIcon from '../DynamicIcon'
 
 const mapStateToProps = (state) => {
   const { isConnected } = state.network
@@ -45,9 +46,9 @@ class ComposeBtn extends Component {
             disabled={!isConnected} 
             style={styles.addPostButton} 
             onPress={() => navigation.navigate('Compose')}>
-            <Image 
+            <DynamicIcon 
               style={styles.addPostIcon}
-              source={composeButton[this.getIcon()]} />
+              src={composeButton} />
           </TouchableOpacity>
         }
        </React.Fragment>

@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 import CommentsOperations from '../../operations/CommentsOperations'
 import FeedOperations from '../../operations/FeedOperations'
 import debounce from 'lodash.debounce'
+import DynamicIcon from './DynamicIcon'
 
 const mapStateToProps = (state, { id, isComment }) => {
   const items = isComment ? state.comments.items : state.feed.feedData
@@ -54,10 +55,6 @@ class Social extends Component {
     isComment ? likeComment(liked, id) : likePost(liked, id)
   }, 1000)
 
-  getIcon = () => {
-    return !this.props.isConnected ? 'inactive' : this.state.liked ? 'liked' : 'unliked'
-  }
-
   componentDidUpdate(prevProps) {
     let { liked: prevLiked, likesCount: prevLikesCount, answersCount: prevAnswersCount } = prevProps
     let { liked, likesCount, answersCount } = this.props
@@ -73,7 +70,7 @@ class Social extends Component {
 
   render() {
     const { answersCount, isConnected } = this.props
-    const { likes } = this.state
+    const { likes, liked } = this.state
 
     return (
       <View style={styles.socialContainer}>
@@ -82,8 +79,9 @@ class Social extends Component {
           disabled={!isConnected}
           style={styles.btn} 
           onPress={this.onLikePress}>
-          <Image
-            source={likeIcons[this.getIcon()]}
+          <DynamicIcon
+            like={liked}
+            src={likeIcons}
             style={styles.icon} />
           <LightText>
             {likes}
