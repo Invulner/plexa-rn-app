@@ -5,7 +5,6 @@ import PostHead from '../common/PostHead'
 import { RegularText } from '../common/fonts'
 import Social from '../common/Social'
 import GrayLine from '../common/GrayLine'
-import { withNavigation } from 'react-navigation'
 
 function Comment(props) {
   const { navigation } = props
@@ -17,7 +16,6 @@ function Comment(props) {
         <GrayLine />
         <View style={styles.container}>
           <PostHead
-            navigation={navigation}
             created_at={created_at}
             commentId={id}
             postId={props.postId}
@@ -44,4 +42,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default withNavigation(Comment)
+export default Comment

@@ -84,7 +84,6 @@ class FeedPost extends Component {
               imageURL={image_urls[0].url} />
           }
           <PostHead
-            navigation={navigation}
             author={author}
             created_at={created_at}
             postId={postId} />
