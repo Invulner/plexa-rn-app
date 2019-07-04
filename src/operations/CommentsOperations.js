@@ -1,5 +1,4 @@
 import getAxiosInstance from '../config/axios'
-import { API_URL } from '../constants'
 import CommentsActions from '../actions/CommentsActions'
 import FeedActions from '../actions/FeedActions'
 
@@ -10,7 +9,7 @@ const getComments = (navigation) => {
     return getAxiosInstance().then(api => {
       const postId = navigation.getParam('postId')
 
-      api.get(`${API_URL}/stories/${postId}/answers`)
+      api.get(`/stories/${postId}/answers`)
         .then(response => {
           dispatch(CommentsActions.saveCommentsData(response.data))
           dispatch(CommentsActions.toggleCommentsLoading(false))
@@ -26,7 +25,7 @@ const postComment = (comment, navigation) => {
     dispatch(CommentsActions.addComment(comment))
 
     getAxiosInstance().then(api => {
-      api.post(`${API_URL}/stories/${postId}/answers`, {content: comment.content})
+      api.post(`/stories/${postId}/answers`, {content: comment.content})
         .then(response => {
           dispatch(CommentsActions.addComment(response.data))
           dispatch(FeedActions.updateCommentsCounter(postId))
@@ -43,7 +42,7 @@ const updateLike = (flag, id) => {
     }
 
     return getAxiosInstance().then(api => {
-      api.post(`${API_URL}/answers/${id}/like`, param)
+      api.post(`/answers/${id}/like`, param)
         .then(response => dispatch(CommentsActions.updateComment(id, response.data)))
         .catch(error => console.log('Like error: ', error))
     })
@@ -59,7 +58,7 @@ const editComment = (id) => {
 const updateComment = (comment) => {
   return dispatch => {
     getAxiosInstance().then(api => {
-      api.put(`${API_URL}/answers/${comment.id}`, {content: comment.content})
+      api.put(`/answers/${comment.id}`, {content: comment.content})
       .then(response => {
         dispatch(CommentsActions.updateComment(response.data.id, {content: response.data.content}))
         dispatch(CommentsActions.cancelEditing())
@@ -72,7 +71,7 @@ const updateComment = (comment) => {
 const deleteComment = (id, post_id) => {
   return dispatch => {
     getAxiosInstance().then(api => {
-      api.delete(`${API_URL}/answers/${id}`)
+      api.delete(`/answers/${id}`)
       .then(() => {
         dispatch(CommentsActions.deleteComment(id))
         dispatch(FeedActions.updateCommentsCounter(post_id, 'decrease'))

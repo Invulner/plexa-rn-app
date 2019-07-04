@@ -1,6 +1,5 @@
 import getAxiosInstance from '../config/axios'
 import ResearchFeedActions from '../actions/ResearchFeedActions'
-import { API_URL } from '../constants'
 
 const fetchResearchFeed = (saveOption, { page, silent } = {}) => {
   return dispatch => {
@@ -8,7 +7,7 @@ const fetchResearchFeed = (saveOption, { page, silent } = {}) => {
 
     return getAxiosInstance().then(api => {
       const currentPage = page || 1
-      api.get(`${API_URL}/feed/featured?page=${currentPage}`)
+      api.get(`/feed/featured?page=${currentPage}`)
         .then(response => {
 
           switch(saveOption) {

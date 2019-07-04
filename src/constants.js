@@ -1,16 +1,13 @@
-export const URLS = {
-  dev: {
-    https: 'https://staging.plexa.ai',
-    wss: 'wss://staging.plexa.ai'
-  },
-  staging: {
-    https: 'https://staging.plexa.ai',
-    wss: 'wss://staging.plexa.ai'
-  },
-  prod: {
-    https: 'https://plexa.ai',
-    wss: 'wss://plexa.ai'
-  }
+export const BASE_URLS = {
+  dev: 'https://staging.plexa.ai',
+  staging: 'https://staging.plexa.ai',
+  prod: 'https://plexa.ai',
+}
+
+export const WEB_SOCKET_URLS = {
+  dev: 'wss://staging.plexa.ai/cable',
+  staging: 'wss://staging.plexa.ai/cable',
+  prod: 'wss://plexa.ai/cable'
 }
 
 export const SIGN_UP_URL = '/sign_up'

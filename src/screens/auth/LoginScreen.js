@@ -83,7 +83,7 @@ class LoginScreen extends Component {
   }
 
   getURL = () => {
-    const baseUrl = utils.getBaseURL().https
+    const baseUrl = utils.getBaseURL()
 
     return {
       singUp: baseUrl + SIGN_UP_URL,

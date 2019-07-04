@@ -1,4 +1,4 @@
-import { MAX_CONTENT_LENGTH, UNAUTHORIZED_STATUS_CODE, URLS } from './constants'
+import { MAX_CONTENT_LENGTH, UNAUTHORIZED_STATUS_CODE, BASE_URLS, WEB_SOCKET_URLS } from './constants'
 import { Alert, NetInfo } from 'react-native'
 import Constants from 'expo-constants'
 
@@ -160,9 +160,17 @@ const areArrOfNumsEqual = (arr1, arr2) => {
 const getBaseURL = () => {
   const { releaseChannel } = Constants.manifest
 
-  if (releaseChannel === undefined) return URLS.dev
-  if (releaseChannel.indexOf('prod') !== -1) return URLS.prod
-  if (releaseChannel.indexOf('staging') !== -1) return URLS.staging
+  if (releaseChannel === undefined) return BASE_URLS.dev
+  if (releaseChannel.indexOf('prod') !== -1) return BASE_URLS.prod
+  if (releaseChannel.indexOf('staging') !== -1) return BASE_URLS.staging
+}
+
+const getWebSocketURL = () => {
+  const { releaseChannel } = Constants.manifest
+
+  if (releaseChannel === undefined) return WEB_SOCKET_URLS.dev
+  if (releaseChannel.indexOf('prod') !== -1) return WEB_SOCKET_URLS.prod
+  if (releaseChannel.indexOf('staging') !== -1) return WEB_SOCKET_URLS.staging
 }
 
 const startConnectionStatusWorker = () =>
@@ -191,5 +199,6 @@ export default {
   startConnectionStatusWorker,
   basicSort,
   areArrOfNumsEqual,
-  getBaseURL
+  getBaseURL,
+  getWebSocketURL
 }
