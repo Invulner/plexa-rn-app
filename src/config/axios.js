@@ -1,5 +1,6 @@
 import Axios from 'axios'
 import { AsyncStorage } from 'react-native'
+import utils from '../utils'
 
 const getAxiosInstance = async (optionalHeaders = {}) => {
   try {
@@ -8,6 +9,7 @@ const getAxiosInstance = async (optionalHeaders = {}) => {
     if (secretData) {
       secretData = JSON.parse(secretData)
       const params = {
+        baseURL: utils.getBaseURL().https,
         headers: {
           'Uid': secretData.uid,
           'Access-Token': secretData['access-token'],

@@ -1,5 +1,6 @@
-import { MAX_CONTENT_LENGTH, UNAUTHORIZED_STATUS_CODE } from './constants'
+import { MAX_CONTENT_LENGTH, UNAUTHORIZED_STATUS_CODE, URLS } from './constants'
 import { Alert, NetInfo } from 'react-native'
+import Constants from 'expo-constants'
 
 const getInitials = (name) => {
   let initials = name.toUpperCase().split(/\s/).reduce((acc, cur) => acc += cur.slice(0,1), '')
@@ -156,6 +157,14 @@ const areArrOfNumsEqual = (arr1, arr2) => {
   return arr1.length === arr2.length && arr1.sort(basicSort).toString() === arr2.sort(basicSort).toString()
 }
 
+const getBaseURL = () => {
+  const { releaseChannel } = Constants.manifest
+
+  if (releaseChannel === undefined) return URLS.dev
+  if (releaseChannel.indexOf('prod') !== -1) return URLS.prod
+  if (releaseChannel.indexOf('staging') !== -1) return URLS.staging
+}
+
 const startConnectionStatusWorker = () =>
   setInterval(async () => {
     await NetInfo.isConnected.fetch()
@@ -181,5 +190,6 @@ export default {
   getRandomNumber,
   startConnectionStatusWorker,
   basicSort,
-  areArrOfNumsEqual
+  areArrOfNumsEqual,
+  getBaseURL
 }

@@ -1,14 +1,28 @@
-export const BASE_URL = 'https://staging.plexa.ai'
-export const WEB_SOCKET_URL = 'wss://staging.plexa.ai/cable'
-export const SIGN_UP_URL = `${BASE_URL}/sign_up`
-export const PASSWORD_URL = `${BASE_URL}/u/password/new`
-export const API_URL = `${BASE_URL}/api/v1`
+export const URLS = {
+  dev: {
+    https: 'https://staging.plexa.ai',
+    wss: 'wss://staging.plexa.ai'
+  },
+  staging: {
+    https: 'https://staging.plexa.ai',
+    wss: 'wss://staging.plexa.ai'
+  },
+  prod: {
+    https: 'https://plexa.ai',
+    wss: 'wss://plexa.ai'
+  }
+}
+
+export const SIGN_UP_URL = '/sign_up'
+export const PASSWORD_URL = '/u/password/new'
+export const API_URL = '/api/v1'
 export const MIN_PASSWORD_LENGTH = 8
 export const MAX_CONTENT_LENGTH = 250
 export const MESSAGES_IN_PAGE = 20
 export const POSTS_IN_PAGE = 25
 export const UNAUTHORIZED_STATUS_CODE = 401
 export const PUSH_ENDPOINT = `${API_URL}/devices`
+
 export const menuIcons = {
   'plexa': require('./assets/icons/logo-min-01.png'),
   'groups': require('./assets/icons/user-groups-01.png'),

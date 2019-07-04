@@ -16,7 +16,7 @@ const auth = (credentials, navigation) => {
   return dispatch => {
     dispatch(UserActions.toggleUserDataLoading(true))
 
-    return Axios.post(`${API_URL}/session/sign_in`, credentials)
+    return Axios.post(`${utils.getBaseURL().https}${API_URL}/session/sign_in`, credentials)
       .then(response => {
         onLoginSuccess(response.data.data, dispatch, navigation)
       })
