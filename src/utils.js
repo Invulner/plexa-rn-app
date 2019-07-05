@@ -157,20 +157,20 @@ const areArrOfNumsEqual = (arr1, arr2) => {
   return arr1.length === arr2.length && arr1.sort(basicSort).toString() === arr2.sort(basicSort).toString()
 }
 
-const getBaseURL = () => {
+const getChannelUrl = (urls) => {
   const { releaseChannel } = Constants.manifest
 
-  if (releaseChannel === undefined) return BASE_URLS.dev
-  if (releaseChannel.indexOf('prod') !== -1) return BASE_URLS.prod
-  if (releaseChannel.indexOf('staging') !== -1) return BASE_URLS.staging
+  if (releaseChannel === undefined) return urls.dev
+  if (releaseChannel.indexOf('prod') !== -1) return urls.prod
+  if (releaseChannel.indexOf('staging') !== -1) return urls.staging
+}
+
+const getBaseURL = () => {
+  return getChannelUrl(BASE_URLS)
 }
 
 const getWebSocketURL = () => {
-  const { releaseChannel } = Constants.manifest
-
-  if (releaseChannel === undefined) return WEB_SOCKET_URLS.dev
-  if (releaseChannel.indexOf('prod') !== -1) return WEB_SOCKET_URLS.prod
-  if (releaseChannel.indexOf('staging') !== -1) return WEB_SOCKET_URLS.staging
+  return getChannelUrl(WEB_SOCKET_URLS)
 }
 
 const startConnectionStatusWorker = () =>

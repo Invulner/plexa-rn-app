@@ -86,7 +86,7 @@ class LoginScreen extends Component {
     const baseUrl = utils.getBaseURL()
 
     return {
-      singUp: baseUrl + SIGN_UP_URL,
+      signUp: baseUrl + SIGN_UP_URL,
       pass: baseUrl + PASSWORD_URL
     }
   }
@@ -138,7 +138,7 @@ class LoginScreen extends Component {
               </LightText>
               <LightText 
                 style={styles.externalLink} 
-                onPress={() => Linking.openURL(this.getURL().singUp)}>
+                onPress={() => Linking.openURL(this.getURL().signUp)}>
                 Sign up
               </LightText>
             </View>
