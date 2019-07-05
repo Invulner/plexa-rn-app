@@ -1,13 +1,12 @@
 import ChatsActions from '../actions/ChatsActions'
 import getAxiosInstance from '../config/axios'
-import { API_URL } from '../constants'
 
 const getChats = () => {
   return dispatch => {
     dispatch(ChatsActions.toggleLoading(true))
 
     return getAxiosInstance().then(api => {
-      api.get(`${API_URL}/rooms`)
+      api.get(`/rooms`)
         .then(response => {
           dispatch(ChatsActions.getChats(response.data))
           dispatch(ChatsActions.toggleLoading(false))
@@ -20,7 +19,7 @@ const getUsers = (q) => {
   return dispatch => {
     dispatch(ChatsActions.toggleUsersLoading(true))
     return getAxiosInstance().then(api => {
-      api.get(`${API_URL}/profiles/search?q=${q}`)
+      api.get(`/profiles/search?q=${q}`)
         .then(result => { 
           dispatch(ChatsActions.getUsers(result.data))
           dispatch(ChatsActions.toggleUsersLoading(false))
@@ -38,7 +37,7 @@ const createChat = (ids, messageParams, navigation) => {
     }
     
     return getAxiosInstance().then(api => {
-      api.post(`${API_URL}/rooms`, params)
+      api.post(`/rooms`, params)
         .then(response => {
           navigation.setParams({ chatId: response.data.id })
           dispatch(ChatsActions.createChat(response.data))
@@ -55,7 +54,7 @@ const getMessages = (id, page = 1) => {
     dispatch(ChatsActions.toggleMessagesLoading(true))
 
     return getAxiosInstance().then(api => {
-      api.get(`${API_URL}/rooms/${id}/messages?page=${page}`)
+      api.get(`/rooms/${id}/messages?page=${page}`)
         .then(response => {
           dispatch(ChatsActions.saveMessages(response.data, id, page))
           dispatch(ChatsActions.toggleMessagesLoading(false))
@@ -69,7 +68,7 @@ const sendMessage = (chatId, params, ifConnectToWs = false) => {
     dispatch(ChatsActions.saveMessage(params, chatId))
 
     return getAxiosInstance().then(api => {
-      api.post(`${API_URL}/rooms/${chatId}/messages`, params)
+      api.post(`/rooms/${chatId}/messages`, params)
         .then(({ data }) => {
           dispatch(ChatsActions.updateChat({last_message: data, unread_count: 0}))
           ifConnectToWs && dispatch(connectToWs(chatId))

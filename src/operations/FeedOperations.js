@@ -1,5 +1,4 @@
 import getAxiosInstance from '../config/axios'
-import { API_URL } from '../constants'
 import FeedActions from '../actions/FeedActions'
 import CommentsActions from '../actions/CommentsActions'
 
@@ -9,7 +8,7 @@ const fetchFeed = (saveOption, { page, silent, ...queryOptions } = {}) => {
     const currentPage = page || 1
 
     return getAxiosInstance().then(api => {
-      api.get(`${API_URL}/feed`, {
+      api.get(`/feed`, {
         params: {
           ...queryOptions,
           page: currentPage
@@ -56,7 +55,7 @@ const updateLike = (flag, id) => {
     }
 
     return getAxiosInstance().then(api => {
-      api.post(`${API_URL}/stories/${id}/like`, param)
+      api.post(`/stories/${id}/like`, param)
         .then(response => dispatch(FeedActions.updatePostLike(id, response.data)))
         .catch(error => console.log('LIKE ERROR: ', error))
     })
@@ -67,7 +66,7 @@ const hidePost = (postId, cb) => {
   return dispatch => {
 
     return getAxiosInstance().then(api => {
-      api.post(`${API_URL}/stories/${postId}/hide`)
+      api.post(`/stories/${postId}/hide`)
         .then(response => {
           response.data.hidden && dispatch(FeedActions.hidePost(postId))
           cb()
@@ -80,7 +79,7 @@ const reportPost = (postId, cb) => {
   return dispatch => {
 
     return getAxiosInstance().then(api => {
-      api.post(`${API_URL}/stories/${postId}/report`)
+      api.post(`/stories/${postId}/report`)
         .then(response => {
           response.data.reported && dispatch(FeedActions.reportPost(postId))
           cb()
@@ -93,7 +92,7 @@ const blockUser = (userId, cb) => {
   return dispatch => {
 
     return getAxiosInstance().then(api => {
-      api.post(`${API_URL}/profiles/${userId}/block`)
+      api.post(`/profiles/${userId}/block`)
         .then(response => {
           response.data.blocked && dispatch(FeedActions.blockUser(userId))
           cb()
@@ -106,7 +105,7 @@ const deletePost = (postId, cb) => {
   return dispatch => {
 
     return getAxiosInstance().then(api => {
-      api.delete(`${API_URL}/stories/${postId}`)
+      api.delete(`/stories/${postId}`)
         .then(response => {
           response.data.deleted && dispatch(FeedActions.deletePost(postId))
           cb()
@@ -119,7 +118,7 @@ const submitPost = (post, cb) => {
   return dispatch => {
 
     getAxiosInstance().then(api => {
-      api.post(`${API_URL}/stories`, post)
+      api.post(`/stories`, post)
       .then(res => {
         dispatch(FeedActions.saveComposedPost(res.data))
         cb()
@@ -175,7 +174,7 @@ const submitPostWithImage = (image, post, cb, postId) => {
     }
 
     return getAxiosInstance(optionalHeaders).then(api => {
-      api.post(`${API_URL}/stories/images`, image)
+      api.post(`/stories/images`, image)
         .then(response => {
           const newPost = {
             ...post,
@@ -192,7 +191,7 @@ const submitPostWithImage = (image, post, cb, postId) => {
 const submitPostUpdate = (postId, post, cb) => {
   return dispatch => {
     return getAxiosInstance().then(api => {
-      api.put(`${API_URL}/stories/${postId}`, post)
+      api.put(`/stories/${postId}`, post)
         .then(response => {
           dispatch(FeedActions.updatePost(response.data))
           cb()

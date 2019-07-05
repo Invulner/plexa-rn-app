@@ -16,7 +16,7 @@ const auth = (credentials, navigation) => {
   return dispatch => {
     dispatch(UserActions.toggleUserDataLoading(true))
 
-    return Axios.post(`${API_URL}/session/sign_in`, credentials)
+    return Axios.post(`${utils.getBaseURL()}${API_URL}/session/sign_in`, credentials)
       .then(response => {
         onLoginSuccess(response.data.data, dispatch, navigation)
       })
@@ -28,7 +28,7 @@ const getProfileData = (navigate, cb) => {
   return dispatch => {
 
     return getAxiosInstance().then(api => {
-      api.get(`${API_URL}/profiles/me`)
+      api.get(`/profiles/me`)
         .then(response => {
           dispatch(UserActions.saveUserData(response.data))
           cb && cb()

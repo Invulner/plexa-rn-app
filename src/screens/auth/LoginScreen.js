@@ -82,6 +82,15 @@ class LoginScreen extends Component {
       this.showValidationMessage()
   }
 
+  getURL = () => {
+    const baseUrl = utils.getBaseURL()
+
+    return {
+      signUp: baseUrl + SIGN_UP_URL,
+      pass: baseUrl + PASSWORD_URL
+    }
+  }
+
   render() {
     const { email, password } = this.state
     const { loading, navigation } = this.props
@@ -129,14 +138,14 @@ class LoginScreen extends Component {
               </LightText>
               <LightText 
                 style={styles.externalLink} 
-                onPress={() => Linking.openURL(SIGN_UP_URL)}>
+                onPress={() => Linking.openURL(this.getURL().signUp)}>
                 Sign up
               </LightText>
             </View>
 
             <LightText
               style={styles.externalLink}
-              onPress={() => Linking.openURL(PASSWORD_URL)}>
+              onPress={() => Linking.openURL(this.getURL().pass)}>
               Forgot password?
             </LightText>
 
