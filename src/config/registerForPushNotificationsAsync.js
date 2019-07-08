@@ -3,6 +3,7 @@ import * as Permissions from 'expo-permissions'
 import { PUSH_ENDPOINT } from '../constants'
 import { AsyncStorage } from 'react-native'
 import Constants from 'expo-constants'
+import getAxiosInstance from './axios'
 
 const registerForPushNotificationsAsync = async () => {
   const { status: existingStatus } = await Permissions.getAsync(
@@ -29,23 +30,20 @@ const registerForPushNotificationsAsync = async () => {
   let secretData = await AsyncStorage.getItem('secretData')
   secretData = JSON.parse(secretData)
 
-  // POST the token to your backend server from where you can retrieve it to send push notifications.
-  return fetch(PUSH_ENDPOINT, {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      'Uid': secretData.uid,
-      'Access-Token': secretData['access-token'],
-      'Client': secretData.client,
-    },
-    body: JSON.stringify({
-      push_token: token,
-      uuid: Constants.installationId || Constants.deviceId,
-      platform: Object.keys(Constants.platform)[0],
-      device_name: Constants.deviceName
-    }),
-  });
+  const optionalHeaders = {
+    Accept: 'application/json',
+    'Content-Type': 'application/json'
+  }
+  const data = {
+    push_token: token,
+    uuid: Constants.installationId || Constants.deviceId,
+    platform: Object.keys(Constants.platform)[0],
+    device_name: Constants.deviceName
+  }
+
+  return getAxiosInstance(optionalHeaders).then(api => {
+    api.post(PUSH_ENDPOINT, data)
+  })
 }
 
 export default registerForPushNotificationsAsync
