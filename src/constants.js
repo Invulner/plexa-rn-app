@@ -18,7 +18,7 @@ export const MAX_CONTENT_LENGTH = 250
 export const MESSAGES_IN_PAGE = 20
 export const POSTS_IN_PAGE = 25
 export const UNAUTHORIZED_STATUS_CODE = 401
-export const PUSH_ENDPOINT = `${API_URL}/devices`
+export const PUSH_ENDPOINT = `/devices`
 
 export const menuIcons = {
   'plexa': require('./assets/icons/logo-min-01.png'),
