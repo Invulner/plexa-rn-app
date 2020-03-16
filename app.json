@@ -24,7 +24,7 @@
       "src/assets/images/*"
     ],
     "ios": {
-      "bundleIdentifier": "com.plexa.native",
+      "bundleIdentifier": "com.plexa.ai",
       "buildNumber": "2",
       "icon": "src/assets/icons/iTunesArtwork@2x.png",
       "config": {
@@ -33,6 +33,10 @@
       "infoPlist": {
         "NSPhotoLibraryUsageDescription": "Please provide the Plexa app with permission to access your photos."
       }
+    },
+    "android": {
+      "package": "com.plexa.ai",
+      "versionCode": 1
     }
   }
 }

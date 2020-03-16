@@ -18,6 +18,7 @@
     "expo-permissions": "~7.0.0",
     "lodash.debounce": "^4.0.8",
     "react": "16.8.3",
+    "react-devtools": "^4.5.0",
     "react-dom": "^16.13.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-35.0.0.tar.gz",
     "react-native-action-sheet": "^2.1.0",
