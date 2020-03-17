@@ -15,7 +15,6 @@ import ResearchFeedOperations from './ResearchFeedOperations'
 const auth = (credentials, navigation) => {
   return dispatch => {
     dispatch(UserActions.toggleUserDataLoading(true))
-
     return Axios.post(`${utils.getBaseURL()}${API_URL}/session/sign_in`, credentials)
       .then(response => {
         onLoginSuccess(response.data.data, dispatch, navigation)

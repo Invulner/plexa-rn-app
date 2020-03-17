@@ -10,7 +10,7 @@
     ],
     "version": "1.0.2",
     "orientation": "portrait",
-    "icon": "src/assets/images/icon.png",
+    "icon": "src/assets/images/logo-min.png",
     "splash": {
       "image": "src/assets/images/nav-bg_90.png",
       "resizeMode": "cover",
@@ -36,7 +36,8 @@
     },
     "android": {
       "package": "com.plexa.ai",
-      "versionCode": 1
+      "versionCode": 1,
+      "icon": "src/assets/images/playstore-icon.png"
     }
   }
 }
