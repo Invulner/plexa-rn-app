@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { AppState, NetInfo } from 'react-native'
+import { AppState } from 'react-native'
+import NetInfo from "@react-native-community/netinfo"
 import SwitchAppNavigator from '../navigators/SwitchAppNavigator'
 import { createAppContainer } from 'react-navigation'
 import registerForPushNotificationsAsync from '../config/registerForPushNotificationsAsync'
@@ -79,17 +80,17 @@ class AppWrapper extends React.Component {
     this.navigator.dispatch(NavigationActions.navigate({routeName, params}))
   }
 
-  onConnectionChange = (isConnected) => {
+  onConnectionChange = (state) => {
     const { updateConnectionStatus, fetchFreshData, filter } = this.props
 
-    updateConnectionStatus(isConnected)
-    !isConnected && utils.showConnectivityError()
+    updateConnectionStatus(state.isConnected)
+    !state.isConnected && utils.showConnectivityError()
 
-    isConnected && this.isUserSaved() && fetchFreshData(this.navigateToRoute, filter)
+    state.isConnected && this.isUserSaved() && fetchFreshData(this.navigateToRoute, filter)
   }
 
   addEventListeners = () => {
-    NetInfo.isConnected.addEventListener('connectionChange', this.onConnectionChange)
+    NetInfo.addEventListener(this.onConnectionChange)
     AppState.addEventListener('change', this._handleAppStateChange)
   }
 

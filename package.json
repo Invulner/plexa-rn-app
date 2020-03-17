@@ -10,6 +10,7 @@
     "postinstall": "rndebugger-open"
   },
   "dependencies": {
+    "@react-native-community/netinfo": "^3.2.1",
     "axios": "^0.18.0",
     "expo": "^35.0.0",
     "expo-constants": "~7.0.0",
