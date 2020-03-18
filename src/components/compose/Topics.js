@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, TouchableOpacity, ScrollView, View } from 'react-native'
+import { StyleSheet, TouchableOpacity, ScrollView, View, Platform } from 'react-native'
 import { connect } from 'react-redux'
 import { getSortedTopics } from '../../selectors/Topics'
 import { BRAND_DARK, BRAND_LIGHT, DARK_GRAY } from '../../assets/styles/colors'
@@ -84,6 +84,7 @@ const styles = StyleSheet.create({
   topic: {
     justifyContent: 'center',
     paddingHorizontal: 4,
+    paddingBottom: Platform.OS === 'ios' ? 0 : 8,
     backgroundColor: BRAND_LIGHT,
     height: 25,
     borderRadius: 5,

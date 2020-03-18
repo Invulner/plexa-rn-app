@@ -255,7 +255,6 @@ class ComposeScreen extends Component {
                   route={'AddGroup'} />
               </View>
               
-              <GrayLine boxStyle={[styles.lineSolid, { marginBottom: 20 }]} />
             </React.Fragment>
           }
  

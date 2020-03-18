@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Switch, TouchableOpacity, StyleSheet, Alert } from 'react-native'
+import { Platform, View, Switch, TouchableOpacity, StyleSheet, Alert } from 'react-native'
 import { connect } from 'react-redux'
 import { SemiboldText, BoldText } from '../common/fonts'
 import { hints } from '../../constants'
@@ -104,7 +104,8 @@ const styles = StyleSheet.create({
     backgroundColor: GRAY,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 6
+    paddingBottom: Platform.OS === 'ios' ? 0 : 2,
+    marginTop: Platform.OS === 'ios' ? 6 : 13
   },
 
   question: {

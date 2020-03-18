@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { RegularText } from '../fonts'
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, Platform } from 'react-native'
 import { BRAND_DARK } from '../../../assets/styles/colors'
 
 class HeaderTitle extends Component {
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 20,
     color: BRAND_DARK,
-    marginTop: 10
+    marginTop: Platform.OS === 'ios' ? 11 : 4
   }
 })
 
