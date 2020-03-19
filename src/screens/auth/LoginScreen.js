@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, TextInput, StyleSheet, TouchableOpacity, Linking, Image, Alert, ActivityIndicator } from 'react-native'
+import { View, TextInput, StyleSheet, TouchableOpacity, Linking, Image, Alert, ActivityIndicator, Platform } from 'react-native'
 import { connect } from 'react-redux'
 import UserOperations from '../../operations/UserOperations'
 import { SIGN_UP_URL, MIN_PASSWORD_LENGTH, PASSWORD_URL } from '../../constants'
@@ -213,6 +213,7 @@ const styles = StyleSheet.create({
   input: {
     ...formControl,
     marginBottom: 17,
+    paddingBottom: 20,
     fontSize: 20,
     textAlign: 'center'
   },
@@ -231,8 +232,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: '#fff',
     textAlign: 'center',
-    marginBottom: -5,
-    marginTop: 2
+    marginTop: Platform.OS === 'ios'? 5 : -3
   },
 
   signUpOuterContainer: {
