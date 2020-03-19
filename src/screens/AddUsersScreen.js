@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, TextInput, TouchableOpacity, ScrollView, Image } from 'react-native'
+import { View, StyleSheet, TextInput, TouchableOpacity, ScrollView, Image, Platform } from 'react-native'
 import SafeArea from '../components/common/SafeArea'
 import ChatsOperations from '../operations/ChatsOperations'
 import RoundAvatar from '../components/common/RoundAvatar'
@@ -259,7 +259,7 @@ const styles = StyleSheet.create({
 
   name: {
     fontSize: 18,
-    marginTop: 8
+    marginTop: Platform.OS === 'ios'? 8 : -1
   },
 
   leftBox: {
@@ -274,7 +274,7 @@ const styles = StyleSheet.create({
   },
 
   horizontalScrollViewBox: {
-    height: 70
+    height: 85
   },
 
   userList: {
@@ -282,9 +282,9 @@ const styles = StyleSheet.create({
   },
 
   removeIcon: {
-    position: 'absolute',
-    right: 5,
-    top: -5,
+    position: 'relative',
+    left: 33,
+    top: 5,
     width: 13,
     height: 13,
     resizeMode: 'contain'

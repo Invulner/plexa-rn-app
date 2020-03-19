@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View, Platform } from 'react-native'
 import { RED } from '../../assets/styles/colors'
 import { BoldText } from '../common/fonts'
 
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
   },
 
   badgeText: {
-    marginTop: 4,
+    marginTop: Platform.OS === 'ios' ? 4 : -1,
     color: '#fff',
   },
 

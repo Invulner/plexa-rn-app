@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Image, View } from 'react-native'
+import { StyleSheet, Image, View, Platform } from 'react-native'
 import { RegularText } from './fonts'
 import utils from '../../utils'
 import { BRAND_LIGHT } from '../../assets/styles/colors'
@@ -25,7 +25,7 @@ function RoundAvatar(props) {
 const styles = StyleSheet.create({
   initials: {
     color: '#fff',
-    marginTop: 7
+    marginTop: Platform.OS === 'ios' ? 7 : 0
   },
 
   avatar: {
