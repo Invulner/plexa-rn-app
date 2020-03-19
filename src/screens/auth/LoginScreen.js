@@ -214,6 +214,7 @@ const styles = StyleSheet.create({
     ...formControl,
     marginBottom: 17,
     paddingBottom: 20,
+    paddingHorizontal: 30,
     fontSize: 20,
     textAlign: 'center'
   },
