@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet, Platform } from 'react-native'
 import { PREVIEW_LIGHT } from '../colors'
 
 export const feedStyles = StyleSheet.create({
@@ -39,10 +39,11 @@ export const feedStyles = StyleSheet.create({
     backgroundColor: PREVIEW_LIGHT,
     flex: -1,
     padding: 10,
-    paddingBottom: 5,
+    paddingBottom: Platform.OS === 'ios' ? 5 : 11,
     marginLeft: 10,
     marginTop: -15,
-    marginRight: 'auto'
+    marginRight: 'auto',
+    textAlignVertical: 'center'
   },
 
   sourceOnPostScreen: {

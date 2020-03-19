@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Image, View, StyleSheet, TouchableOpacity } from 'react-native'
+import { Image, View, StyleSheet, TouchableOpacity, Platform } from 'react-native'
 import { LightText } from '../common/fonts'
 import { likeIcons } from '../../constants'
 import { connect } from 'react-redux'
@@ -116,13 +116,14 @@ const styles = StyleSheet.create({
     height: 15,
     resizeMode: 'contain',
     marginRight: 7,
-    marginBottom: 8
+    marginBottom: Platform.OS === 'ios'? 8 : -2
   },
 
   socialContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 10
+    marginTop: 10,
+    marginBottom: Platform.OS === 'ios'? 0 : 5
   },
 
   commentsContainer: {

@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, StyleSheet, TouchableOpacity, Platform } from 'react-native'
 import ProfileAvatar from './ProfileAvatar'
 import PostActionButton from './PostActionButton'
 import { SemiboldText, RegularText } from './fonts'
@@ -94,8 +94,7 @@ const styles = StyleSheet.create({
 
   postAuthor: {
     fontSize: 18,
-    letterSpacing: 0.5,
-    fontStyle: 'italic'
+    letterSpacing: 0.5
   },
 
   authorRowContainer: {
@@ -108,14 +107,14 @@ const styles = StyleSheet.create({
     width: 5,
     height: 5,
     borderRadius: 50,
-    backgroundColor: 'green',
     marginHorizontal: 10,
-    marginBottom: 8,
+    marginBottom: Platform.OS === 'ios' ? 8 : -4,
     backgroundColor: '#ddd'
   },
 
   hoursAgo: {
-    color: '#b4b4b4'
+    color: '#b4b4b4',
+    marginBottom: Platform.OS === 'ios' ? 0 : -3
   }
 })
 
