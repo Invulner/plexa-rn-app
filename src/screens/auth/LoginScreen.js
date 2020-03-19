@@ -30,7 +30,7 @@ class LoginScreen extends Component {
   }
 
   onEmailChange = (email) => {
-    this.setState({ email: email.toLowerCase() })
+    this.setState({ email })
   }
 
   onPasswordChange = (password) => {
@@ -108,6 +108,9 @@ class LoginScreen extends Component {
             value={email}
             textContentType='emailAddress'
             keyboardType='email-address'
+            autoCompleteType="off"
+            autoCorrect={false}
+            importantForAutofill="no"
             onChangeText={(value) => this.onEmailChange(value)} />
 
           <TextInput
