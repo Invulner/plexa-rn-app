@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Modal, View, StyleSheet, SafeAreaView, Image, Dimensions, ScrollView, TouchableOpacity } from 'react-native'
+import { Modal, View, StyleSheet, SafeAreaView, Image, Dimensions, ScrollView, TouchableOpacity, Platform } from 'react-native'
 import IconChecked from '../common/IconChecked'
 import { RegularText } from '../common/fonts'
 import { connect } from 'react-redux'
@@ -277,7 +277,7 @@ const styles = StyleSheet.create({
   title: {
     color: BRAND_DARK, 
     fontSize: 20, 
-    marginTop: 10
+    marginTop: Platform.OS === 'ios' ? 10 : -2
   },
 
   itemText: {
@@ -289,6 +289,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row', 
     justifyContent: 'space-between', 
     paddingHorizontal: 10,
+    paddingVertical: Platform.OS === 'ios' ? 2 : 11,
     borderBottomWidth: 1,
     borderBottomColor: NATIVE_GRAY
   }
