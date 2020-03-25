@@ -1,7 +1,7 @@
 import React from 'react'
 import { Provider } from 'react-redux'
 import { store, persistor } from './src/store'
-import { StatusBar } from 'react-native'
+import { StatusBar, YellowBox } from 'react-native'
 import * as Font from 'expo-font'
 import { PersistGate } from 'redux-persist/integration/react'
 import AppWrapper from './src/components/AppWrapper'
@@ -21,6 +21,7 @@ export default class App extends React.Component {
     this.setState({
       fontsLoaded: true
     })
+    YellowBox.ignoreWarnings(['The method or property Expo.Notifications.setBadgeNumberAsync', 'Must be on a physical device'])
   }
   
   render() {
