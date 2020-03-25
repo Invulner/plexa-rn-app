@@ -12,7 +12,7 @@ const getPost = (id, cb) => {
           response.data.location && dispatch(LocationsOperations.saveLocation(response.data.location[0]))
           cb()
         }).catch(error => console.log('ERROR: ', error))
-    })
+    }).catch(error => console.log('Axios config error: ', error))
   }
 }
 

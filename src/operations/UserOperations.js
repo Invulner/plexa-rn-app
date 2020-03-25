@@ -33,7 +33,7 @@ const getProfileData = (navigate, cb) => {
           cb && cb()
         })
         .catch(error => !utils.isAuthorizedRequest(error.response.status) && dispatch(logout(navigate)))
-    })
+    }).catch(error => console.log('Axios config error: ', error))
   }
 }
 

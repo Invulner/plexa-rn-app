@@ -59,7 +59,7 @@ const getMessages = (id, page = 1) => {
           dispatch(ChatsActions.saveMessages(response.data, id, page))
           dispatch(ChatsActions.toggleMessagesLoading(false))
         }).catch(error => console.log('getMessages CHAT OPERATION ERROR: ', error))
-    })
+    }).catch(error => console.log('Axios config error: ', error))
   }
 }
 

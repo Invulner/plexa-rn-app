@@ -12,7 +12,7 @@ const getLocations = (q) => {
           dispatch(LocationsActions.saveLocations(response.data))
           dispatch(LocationsActions.toggleLoading(false))
         }).catch(error => console.log('GET LOCATIONS ERROR', error))
-    })
+    }).catch(error => console.log('Axios config error: ', error))
   }
 }
 

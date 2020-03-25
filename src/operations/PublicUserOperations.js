@@ -16,7 +16,7 @@ const getPublicUserProfile = (navigation) => {
           dispatch(PublicUserActions.togglePublicUserLoading(false))
         })
         .catch(error => console.log('PUBLIC USER PROFILE REQUEST ERROR: ', error))
-    })
+    }).catch(error => console.log('Axios config error: ', error))
   }
 }
 
