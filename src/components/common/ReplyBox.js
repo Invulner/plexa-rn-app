@@ -111,7 +111,7 @@ class ReplyBox extends Component {
 
   getAvoidingViewOffset = () => {
     const xModelsOffset = 88
-    const olderModelsOffset = 65
+    const olderModelsOffset = 80
 
     return this.props.device_name.includes('X') ? xModelsOffset : olderModelsOffset
   }
