@@ -50,7 +50,7 @@ class HeaderTitle extends Component {
 
   render() {
     return (
-      <View>
+      <View style={styles.view}>
         <RegularText style={styles.text}>
           {this.renderTitle()}
         </RegularText>
@@ -60,6 +60,10 @@ class HeaderTitle extends Component {
 }
 
 const styles = StyleSheet.create({
+  view: {
+    flex: 1,
+    alignItems: 'center'
+  },
   text: {
     fontSize: 20,
     color: BRAND_DARK,
