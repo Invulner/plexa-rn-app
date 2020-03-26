@@ -149,6 +149,7 @@ class FeedScreen extends Component {
 
   render() {
     const { feed: { feedData, feedLoading } } = this.props
+    const feedRefreshing = false
 
     return (
       <SafeArea>
@@ -172,7 +173,7 @@ class FeedScreen extends Component {
             onEndReached={this.onEndReached} 
             onEndReachedThreshold={1}
             onRefresh={this.refreshFeed}
-            refreshing={feedLoading}
+            refreshing={feedRefreshing}
             ListFooterComponent={feedLoading && <Loader style={{marginTop: 15}} />} />
         }
       </SafeArea>
