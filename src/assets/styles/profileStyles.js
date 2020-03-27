@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet, Platform } from 'react-native'
 
 const detailBox = {
   backgroundColor: '#fff',
@@ -51,7 +51,7 @@ const profileStyles = StyleSheet.create({
   initials: {
     color: '#fff',
     fontSize: 26,
-    paddingTop: 10
+    marginTop: Platform.OS === 'ios' ? 13 : -4
   },
 
   profileDetails: {
