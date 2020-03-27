@@ -37,13 +37,11 @@ export const feedStyles = StyleSheet.create({
 
   newsSourceBox: {
     backgroundColor: PREVIEW_LIGHT,
-    flex: -1,
     padding: 10,
     paddingBottom: Platform.OS === 'ios' ? 5 : 11,
     marginLeft: 10,
     marginTop: -15,
-    marginRight: 'auto',
-    textAlignVertical: 'center'
+    marginRight: 'auto'
   },
 
   sourceOnPostScreen: {

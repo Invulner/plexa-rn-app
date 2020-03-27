@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, TouchableOpacity, Linking } from 'react-native'
+import { View, StyleSheet, TouchableOpacity, Linking, Platform } from 'react-native'
 import { BRAND_LIGHT, LIGHT_GRAY } from '../../assets/styles/colors'
 import NewsIcon from '../feed/NewsIcon'
 import { RegularText } from '../common/fonts'
@@ -113,7 +113,8 @@ const styles = StyleSheet.create({
   },
 
   btnText: {
-    color: '#fff'
+    color: '#fff',
+    marginTop: Platform.OS === 'ios'? 0 : -10
   },
 
   newsTitle: {
@@ -137,7 +138,8 @@ const styles = StyleSheet.create({
 
   sourceText: {
     color: '#fff',
-    fontSize: 16
+    fontSize: 16,
+    marginTop: Platform.OS === 'ios'? 0 : -10
 },
 
   newsText: {
