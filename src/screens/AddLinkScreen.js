@@ -62,7 +62,8 @@ const styles = StyleSheet.create({
     width: '100%',
     fontSize: 20,
     marginBottom: 15,
-    flex: 1
+    flex: 1,
+    textAlignVertical: 'top'
   },
 
   container: {
