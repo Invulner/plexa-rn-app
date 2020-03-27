@@ -84,7 +84,7 @@ const MainStack = createStackNavigator({
   Chat: {
     screen: ChatScreen,
     navigationOptions: ({ navigation }) => ({
-      headerTitle: <HeaderTitle title={navigation.getParam('chatTitle')} />
+      headerTitle: <HeaderTitle style={{marginLeft: -30}} title={navigation.getParam('chatTitle')} />
     })
   }
 }, {
