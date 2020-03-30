@@ -57,6 +57,7 @@ class ResearchFeedScreen extends Component {
 
   render() {
     const { researchFeed: { loading, feedData }, navigation } = this.props
+    const feedRefreshing = false
 
     return (
       <SafeArea>
@@ -73,7 +74,7 @@ class ResearchFeedScreen extends Component {
               <Featured 
                 item={item} 
                 navigation={navigation} />)}
-            refreshing={loading}
+            refreshing={feedRefreshing}
             ListFooterComponent={loading && <Loader />}
             onEndReached={this.addToFeed}
             onEndReachedThreshold={0.5}
