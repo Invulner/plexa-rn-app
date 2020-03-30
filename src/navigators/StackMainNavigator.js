@@ -1,4 +1,5 @@
 import React from 'react'
+import { Platform } from 'react-native'
 import { createStackNavigator } from 'react-navigation'
 import SwitchMainNavigator from './SwitchMainNavigator'
 import BackArrow from '../components/common/header/BackArrow'
@@ -65,13 +66,13 @@ const MainStack = createStackNavigator({
   AddGroup: {
     screen: AddGroupScreen,
     navigationOptions: () => ({
-      headerTitle: <HeaderTitle title={'Select group'} />
+      headerTitle: <HeaderTitle style={{marginLeft: Platform.OS === 'ios' ? 0 : -30}} title={'Select group'} />
     })
   },
   AddLocation: {
     screen: AddLocationScreen,
     navigationOptions: () => ({
-      headerTitle: <HeaderTitle title={'Target location'} />
+      headerTitle: <HeaderTitle style={{marginLeft: Platform.OS === 'ios' ? 0 : -30}} title={'Target location'} />
     })
   },
   AddUsers: {
@@ -84,7 +85,7 @@ const MainStack = createStackNavigator({
   Chat: {
     screen: ChatScreen,
     navigationOptions: ({ navigation }) => ({
-      headerTitle: <HeaderTitle style={{marginLeft: -30}} title={navigation.getParam('chatTitle')} />
+      headerTitle: <HeaderTitle style={{marginLeft: Platform.OS === 'ios' ? 0 : -30}} title={navigation.getParam('chatTitle')} />
     })
   }
 }, {
