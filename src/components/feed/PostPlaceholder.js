@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, Platform } from 'react-native'
 import { RegularText } from '../common/fonts'
 
 function PostPlaceholder(props) {
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
 
   text: {
     fontSize: 16,
-    marginTop: 7
+    marginTop: Platform.OS === 'ios' ? 7 : -2
   }
 })
 

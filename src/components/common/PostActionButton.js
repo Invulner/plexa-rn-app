@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { Image, StyleSheet, TouchableOpacity, Platform, Alert } from 'react-native'
-import ActionSheet from 'react-native-action-sheet'
+import { Image, StyleSheet, TouchableOpacity, Platform, Alert, ActionSheetIOS } from 'react-native'
+import ActionSheet from 'react-native-actionsheet'
 import { connect } from 'react-redux'
 import FeedOperations from '../../operations/FeedOperations'
 import CommentsOperations from '../../operations/CommentsOperations'
@@ -149,7 +149,16 @@ class PostActionButton extends Component {
     }
   }
 
-  callActionsSheet = () => {
+  callActionsSheetIOS = () => {
+    ActionSheetIOS.showActionSheetWithOptions({
+      options: this.getOptions(),
+      cancelButtonIndex: this.getOptions().length - 1,
+      destructiveButtonIndex: this.getOptions().indexOf('Delete'),
+      tintColor: 'blue'
+    }, this.onBtnPress)
+  }
+
+  getOptions = () => {
     const btnsCommon = [
       'Send message',
       'Hide post',
@@ -162,31 +171,30 @@ class PostActionButton extends Component {
       'Delete'
     ]
 
-    const btnsAndroid = this.props.isMedbot ? btnsMedbot : (this.isOwnPost() ? btnsUser : btnsCommon)
-    const btnsIOS = [
-      ...btnsAndroid,
-      'Cancel'
-    ]
-
-    const cancelIndex = btnsIOS.length - 1
-
-    ActionSheet.showActionSheetWithOptions({
-      options: (Platform.OS == 'ios') ? btnsIOS : btnsAndroid,
-      cancelButtonIndex: cancelIndex,
-      tintColor: 'blue'
-    }, this.onBtnPress)
+    let btns = this.props.isMedbot ? btnsMedbot : (this.isOwnPost() ? btnsUser : btnsCommon)
+    btns.push('Cancel')
+    return btns
   }
 
 
   render() {
     return (
-      <TouchableOpacity 
-        onPress={this.callActionsSheet}
+      <TouchableOpacity
+        onPress={ Platform.OS === 'android' ? () => this.ActionSheet.show() : this.callActionsSheetIOS}
         disabled={!this.props.isConnected}
         style={styles.actionBtn}>
         <DynamicIcon
           src={actionButton}
           style={styles.actionIcon} />
+        { Platform.OS === 'android' &&
+            <ActionSheet
+              ref={o => this.ActionSheet = o}
+              options={this.getOptions()}
+              cancelButtonIndex={this.getOptions().length - 1}
+              destructiveButtonIndex={this.getOptions().indexOf('Delete')}
+              onPress={this.onBtnPress}
+            />
+        }
       </TouchableOpacity>
     )
   }
