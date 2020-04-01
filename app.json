@@ -36,7 +36,7 @@
     },
     "android": {
       "package": "com.plexa.ai",
-      "versionCode": 1,
+      "versionCode": 3,
       "icon": "src/assets/images/playstore-icon.png"
     }
   }
